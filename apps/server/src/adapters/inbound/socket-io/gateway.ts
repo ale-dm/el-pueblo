@@ -96,6 +96,13 @@ export function attachGateway(io: Server, deps: GatewayDeps) {
       }),
     );
 
+    socket.on("match:view", (payload: unknown, ack?: Ack) =>
+      respond(ack, deps, async () => {
+        const body = isObject(payload) ? payload : {};
+        return services.getView({ matchId: str(body.matchId, "partida"), token: str(body.token, "token") });
+      }),
+    );
+
     socket.on("disconnect", () => {
       const viewer = viewers.detach(socket.id);
       if (viewer) void services.setConnection(viewer.matchId, viewer.playerId, false);

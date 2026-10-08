@@ -19,7 +19,7 @@ export function loadTestCatalog(): Catalog {
   for (const r of rows<any>("roles")) {
     roles.set(r.key, {
       key: r.key, name: r.name, faction: r.faction_key, alignmentKey: r.alignment_key, priority: r.priority,
-      isUnique: r.is_unique, mvp: r.mvp, attack: r.attack, defense: r.defense, attributeLines: r.attribute_lines,
+      isUnique: r.is_unique, mvp: r.mvp, attack: r.attack, defense: r.defense, attributeLines: r.attribute_lines, summary: r.summary,
     });
   }
   const phaseTimings: PhaseTiming[] = rows<any>("phase_timings").map((p) => ({

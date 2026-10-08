@@ -15,6 +15,8 @@ export interface RoleDefinition {
   attack: string | null;
   defense: string | null;
   attributeLines: string[];
+  /** Resumen de la wiki (una frase), para la carta del rol. */
+  summary: string | null;
 }
 
 export interface PhaseTiming {

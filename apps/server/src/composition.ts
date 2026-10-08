@@ -5,6 +5,7 @@ import { joinRoom } from "./application/use-cases/joinRoom.js";
 import { reconnect } from "./application/use-cases/reconnect.js";
 import { setConnection } from "./application/use-cases/setConnection.js";
 import { recoverTimers } from "./application/use-cases/recoverTimers.js";
+import { getView } from "./application/use-cases/getView.js";
 import { startMatch } from "./application/use-cases/startMatch.js";
 import { submitCommand, type SubmitCommandDeps } from "./application/use-cases/submitCommand.js";
 import type { Scheduler } from "./application/ports.js";
@@ -25,6 +26,7 @@ export function createServices(deps: Deps) {
     startMatch: startMatch({ ...deps, queue, advance }),
     submitCommand: submitCommand({ ...deps, queue, advance }),
     reconnect: reconnect(deps),
+    getView: getView(deps),
     setConnection: setConnection(deps),
     recoverTimers: recoverTimers(deps),
     advance,

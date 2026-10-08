@@ -14,6 +14,7 @@ interface RoleRow {
   attack: string | null;
   defense: string | null;
   attribute_lines: string[];
+  summary: string | null;
 }
 
 interface PhaseRow {
@@ -45,6 +46,7 @@ export function loadCatalog(dir: string): Catalog {
       attack: r.attack,
       defense: r.defense,
       attributeLines: r.attribute_lines,
+      summary: r.summary,
     });
   }
   const phaseTimings: PhaseTiming[] = readRows<PhaseRow>(dir, "phase_timings").map((p) => ({
