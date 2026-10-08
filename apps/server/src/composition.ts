@@ -3,6 +3,7 @@ import { createRoom, type CreateRoomDeps } from "./application/use-cases/createR
 import { joinRoom } from "./application/use-cases/joinRoom.js";
 import { reconnect } from "./application/use-cases/reconnect.js";
 import { submitCommand, type SubmitCommandDeps } from "./application/use-cases/submitCommand.js";
+import { startMatch } from "./application/use-cases/startMatch.js";
 
 /**
  * Dependencias de infraestructura: la unión de los puertos que usan los casos de uso.
@@ -16,6 +17,7 @@ export function createServices(deps: Deps) {
   return {
     createRoom: createRoom(deps),
     joinRoom: joinRoom(deps),
+    startMatch: startMatch({ ...deps, queue }),
     submitCommand: submitCommand({ ...deps, queue }),
     reconnect: reconnect(deps),
   };

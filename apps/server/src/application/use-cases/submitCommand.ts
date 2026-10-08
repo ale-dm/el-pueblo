@@ -55,6 +55,9 @@ export function submitCommand(deps: SubmitCommandDeps) {
         if (error instanceof ConcurrencyError) throw new AppError("conflict", error.message);
         throw error;
       }
+      if (decision.value.some((e) => e.type === "game.ended")) {
+        await deps.matches.update({ ...match, status: "finished" });
+      }
       await deps.broadcaster.publish(match.id, decision.value);
       return { events: decision.value };
     });

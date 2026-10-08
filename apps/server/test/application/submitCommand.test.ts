@@ -35,7 +35,7 @@ describe("submitCommand", () => {
     ).rejects.toMatchObject({ code: "invalid_state" });
   });
 
-  it("devuelve engine_rejected cuando el motor no implementa el comando (estado actual)", async () => {
+  it("el motor rechaza un comando fuera de fase y no escribe nada", async () => {
     const { app, host } = await playingRoom();
     await expect(
       app.services.submitCommand({
@@ -43,8 +43,7 @@ describe("submitCommand", () => {
         token: host.token,
         command: { type: "vote", voterId: host.playerId, targetId: null },
       }),
-    ).rejects.toMatchObject({ code: "engine_rejected", message: expect.stringContaining("pendiente") });
-    // Un comando rechazado no escribe nada ni se publica.
+    ).rejects.toMatchObject({ code: "engine_rejected", message: expect.stringContaining("votación") });
     expect(await app.events.read(host.matchId)).toEqual([]);
     expect(app.broadcaster.published).toEqual([]);
   });

@@ -4,8 +4,8 @@ import type { MatchRecord, PlayerRecord } from "../ports.js";
 /** Estado del motor antes de cualquier evento. Los eventos posteriores lo completan con `replay`. */
 export function initialState(match: MatchRecord, players: readonly PlayerRecord[]): GameState {
   const playerStates: PlayerState[] = players.map(
-    ({ id, seat, nick, roleKey, faction, status, connected, deathReason }) => ({
-      id, seat, nick, roleKey, faction, status, connected, deathReason,
+    ({ id, seat, nick, roleKey, faction, status, connected, deathReason, usesLeft, flags }) => ({
+      id, seat, nick, roleKey, faction, status, connected, deathReason, usesLeft, flags,
     }),
   );
   return {
@@ -13,9 +13,15 @@ export function initialState(match: MatchRecord, players: readonly PlayerRecord[
     engineVersion: match.engineVersion,
     phase: "day_1",
     dayNumber: 1,
-    trialsToday: 0,
-    players: playerStates,
     seq: 0,
     winner: null,
+    players: playerStates,
+    trialsToday: 0,
+    votes: {},
+    verdicts: {},
+    defendantId: null,
+    nightActions: {},
+    traps: {},
+    dayActionDay: {},
   };
 }

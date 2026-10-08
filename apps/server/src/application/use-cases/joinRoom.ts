@@ -53,6 +53,8 @@ export function joinRoom(deps: JoinRoomDeps) {
       status: "alive",
       connected: true,
       deathReason: null,
+      usesLeft: {},
+      flags: {},
       tokenHash: deps.security.hashToken(token),
     });
 

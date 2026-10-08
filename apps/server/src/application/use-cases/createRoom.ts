@@ -61,6 +61,8 @@ export function createRoom(deps: CreateRoomDeps) {
       status: "alive",
       connected: true,
       deathReason: null,
+      usesLeft: {},
+      flags: {},
       tokenHash: deps.security.hashToken(token),
     });
 
