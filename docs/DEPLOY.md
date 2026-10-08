@@ -80,8 +80,17 @@ Probar la restauración una vez antes de la primera partida con amigos.
 
 ## Red y acceso público
 
-- Dominio: `xelements.es` (NAS `elements`). Subdominio propuesto: **`pueblo.xelements.es`**, con un registro
-  DNS que apunte a la misma IP que el resto de servicios de `xelements.es`.
+- Dominio: `xelements.es` (NAS `elements`), gestionado en Cloudflare. Subdominio **`pueblo.xelements.es`**:
+  registro DNS `A` hacia la IP pública de casa, con el **proxy de Cloudflare activado** (nube naranja). Así la IP
+  de casa no aparece en el DNS y Cloudflare sirve el HTTPS hacia el visitante.
+- Certificado de Nginx Proxy Manager con **desafío DNS** (Cloudflare), no HTTP. Con el proxy activado, el desafío
+  HTTP de Let's Encrypt no es fiable. Necesitas un token de API de Cloudflare con permiso
+  `Zone → DNS → Edit` sobre `xelements.es`, guardado en NPM (SSL Certificates → Let's Encrypt → DNS Challenge →
+  Cloudflare). No va a git.
+- En Cloudflare, el modo SSL/TLS debe ser **Full (strict)**: el tráfico entre Cloudflare y NPM va cifrado con el
+  certificado de Let's Encrypt.
+- Socket.IO envía pings periódicos, así que las conexiones WebSocket no se cierran por inactividad detrás del proxy.
+  Confirmar en la documentación de Cloudflare que el plan que uses permite WebSockets.
 - Nginx Proxy Manager es el único punto de entrada. Host proxy `pueblo.xelements.es` → `elpueblo-server:3000`, con
   **Websockets Support** activado (Socket.IO) y certificado Let's Encrypt con forzar HTTPS.
 - `postgres` nunca publica puertos. `server` solo habla con NPM por la red `proxy`.
