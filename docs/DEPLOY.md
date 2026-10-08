@@ -50,7 +50,8 @@ La configuración (`.env`) se guarda en el propio stack de Portainer.
 |---|---|
 | `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Base de datos |
 | `GOOGLE_API_KEY`, `GEMINI_MODEL` | Narración |
-| `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Web Push (M5) |
+| `PUBLIC_URL` | `https://pueblo.xelements.es`. Enlaces y CORS |
+| `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Web Push (M5). `VAPID_SUBJECT` = `mailto:` de contacto |
 | `BACKUP_KEEP` | Número de copias nocturnas que se conservan |
 | `LOG_LEVEL` | `info` por defecto |
 
@@ -79,7 +80,9 @@ Probar la restauración una vez antes de la primera partida con amigos.
 
 ## Red y acceso público
 
-- Nginx Proxy Manager es el único punto de entrada. Host proxy hacia `elpueblo-server:3000`, con
+- Dominio: `xelements.es` (NAS `elements`). Subdominio propuesto: **`pueblo.xelements.es`**, con un registro
+  DNS que apunte a la misma IP que el resto de servicios de `xelements.es`.
+- Nginx Proxy Manager es el único punto de entrada. Host proxy `pueblo.xelements.es` → `elpueblo-server:3000`, con
   **Websockets Support** activado (Socket.IO) y certificado Let's Encrypt con forzar HTTPS.
 - `postgres` nunca publica puertos. `server` solo habla con NPM por la red `proxy`.
 - Las notificaciones push y la instalación de la PWA necesitan HTTPS.
