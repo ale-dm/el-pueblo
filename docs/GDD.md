@@ -120,7 +120,7 @@ docs/          Este documento
 - **Información oculta.** Cada jugador recibe solo lo que puede ver. Los roles se envían por mensaje privado, no en un estado compartido.
 - **Timers en el servidor.** Cada fase tiene un temporizador del servidor. Si un cliente se queda sin conexión, la fase sigue.
 - **Reconexión.** Al entrar, el cliente guarda un token de jugador en IndexedDB. Al volver a la app, reconecta con el token y el servidor le envía el estado actual.
-- **Motor puro.** `packages/engine` recibe `(estado, acción) → (nuevo estado, eventos)`. No accede a red ni a reloj: el tiempo entra como parámetro.
+- **Motor puro.** `packages/engine` recibe `(estado, acción) → (nuevo estado, eventos)`. No accede a red ni a reloj: el tiempo entra como parámetro. Estructura y decisiones en `docs/ENGINE.md`.
 - **Narración asíncrona.** El motor produce eventos resueltos. Gemini los convierte en texto en segundo plano. Si la IA tarda o falla, la fase no se bloquea y se usa una plantilla fija.
 - **Push.** El servidor envía Web Push a los jugadores cuando empieza la noche o el día, si la PWA está instalada.
 - **Persistencia por eventos.** Cada evento del motor se guarda en `events` (solo escritura). El estado se reconstruye reproduciendo los eventos desde el último snapshot. Así una partida sobrevive a un reinicio del servidor y queda registro completo para estadísticas y depuración.

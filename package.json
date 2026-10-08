@@ -1,0 +1,12 @@
+{
+  "name": "el-pueblo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.10.1",
+  "engines": { "node": ">=22.12" },
+  "scripts": {
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "check": "pnpm typecheck && pnpm test"
+  }
+}
