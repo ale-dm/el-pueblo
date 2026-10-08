@@ -1,0 +1,24 @@
+# Probar el stack en local: docker compose -f deploy/docker-compose.local.yml up --build
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: elpueblo
+      POSTGRES_USER: elpueblo
+      POSTGRES_PASSWORD: elpueblo-local
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../data/postgres:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: ..
+    env_file:
+      - ../.env
+    environment:
+      DATABASE_URL: postgres://elpueblo:elpueblo-local@postgres:5432/elpueblo
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"

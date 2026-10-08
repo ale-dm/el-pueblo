@@ -1,0 +1,18 @@
+# Solo entra en la imagen el código necesario para construirla.
+# Datos, logs, backups, docs y tests no van a la imagen.
+node_modules
+.git
+.env
+.env.*
+!.env.example
+# Variables del stack de Portainer (las escribe en la raíz del repo clonado)
+stack.env
+.claude
+.vscode
+data
+logs
+backups
+docs
+tests
+coverage
+*.md

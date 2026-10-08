@@ -1,0 +1,68 @@
+# Stack de Portainer desde el repositorio (Stacks → Add stack → Repository, Compose path = deploy/portainer-stack.yml).
+# Portainer clona el repo y construye la imagen con el Dockerfile de la raíz; pull_policy build la reconstruye
+# en cada "Pull and redeploy". Las variables se cargan en el stack ("Load variables from .env file") y
+# Portainer las guarda en stack.env, en la raíz del repo clonado: por eso ../stack.env.
+#
+# La red "proxy" es la que comparte Nginx Proxy Manager. El servidor se publica solo hacia ella.
+services:
+  postgres:
+    image: postgres:17
+    container_name: elpueblo-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-elpueblo}
+      POSTGRES_USER: ${POSTGRES_USER:-elpueblo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: Europe/Madrid
+    restart: unless-stopped
+    volumes:
+      - /compose/el-pueblo/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # Sin "ports": nunca accesible desde fuera del stack
+
+  server:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: el-pueblo-server:latest
+    pull_policy: build
+    container_name: elpueblo-server
+    env_file:
+      - ../stack.env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-elpueblo}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-elpueblo}
+      TZ: Europe/Madrid
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - /compose/el-pueblo/logs:/app/logs
+    networks:
+      - default
+      - proxy
+
+  backup:
+    image: postgres:17
+    container_name: elpueblo-backup
+    entrypoint: ["/bin/sh", "/deploy/backup.sh"]
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-elpueblo}
+      POSTGRES_USER: ${POSTGRES_USER:-elpueblo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      BACKUP_KEEP: ${BACKUP_KEEP:-7}
+      TZ: Europe/Madrid
+    volumes:
+      - ./backup.sh:/deploy/backup.sh:ro
+      - /compose/el-pueblo/backups:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true

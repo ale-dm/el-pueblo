@@ -1,53 +1,102 @@
-# Despliegue en el NAS
+# Despliegue
 
-Hardware: Intel Core i3-13100 (4 núcleos, 8 hilos), x86-64. Sobra para el servidor de Node y PostgreSQL con 10–15 jugadores.
-Gestión: Docker con Portainer. El stack se despliega desde el repositorio, en la rama `main`.
+Mismo flujo que el bot de Discord: el servidor corre en Docker en el NAS (OpenMediaVault + Portainer), como
+stack de Portainer **desde el repositorio de GitHub** (`ale-dm/el-pueblo`, privado). Portainer clona el repo y
+construye la imagen él mismo. No hay que copiar código a mano.
 
-## Servicios
+**Estado:** los ficheros existen, pero el servidor todavía no (`apps/server` es solo el esquema de BD). El
+despliegue no funcionará hasta M2. El `Dockerfile` y el `docker-entrypoint.sh` son borradores.
 
-| Servicio | Imagen | Expuesto | Notas |
-|---|---|---|---|
-| `npm` (Nginx Proxy Manager) | imagen oficial de NPM | Puertos 80 y 443 | Único punto de entrada. HTTPS con Let's Encrypt |
-| `server` | build de `apps/server` | Solo a la red interna de Docker | Fastify + Socket.IO + API. Sirve la PWA estática |
-| `postgres` | imagen oficial de PostgreSQL, versión mayor fijada | No publicado | Solo accesible desde `server` |
+## Datos en el servidor
 
-`postgres` y `server` nunca publican puertos al host. Solo NPM habla con el exterior.
+```
+/compose/el-pueblo/
+├── postgres/   datos de PostgreSQL → /var/lib/postgresql/data
+├── backups/    copias nocturnas (pg_dump, formato custom) → /backups
+└── logs/       logs del servidor → /app/logs
+```
 
-## Red y acceso
+La configuración (`.env`) se guarda en el propio stack de Portainer.
 
-1. **Router:** reenviar los puertos 80 y 443 hacia la IP del NAS.
-2. **DNS:** un dominio con registro A hacia la IP pública. Si la IP es dinámica, un servicio de DDNS.
-3. **NPM:** un host proxy para el dominio, apuntando a `server:3000`, con **Websockets Support** activado (Socket.IO lo necesita) y certificado Let's Encrypt con forzar HTTPS.
-4. **Panel de NPM y Portainer:** solo accesibles desde la red local, nunca desde internet.
+## Ficheros
 
-**Alternativa:** Cloudflare Tunnel evita abrir puertos en el router y oculta la IP de casa. Lo dejo anotado; la decisión actual es NPM.
+| Fichero | Función |
+|---|---|
+| `Dockerfile` | Imagen del servidor (Node 22, pnpm workspaces) |
+| `deploy/portainer-stack.yml` | Stack: `postgres`, `server` y `backup` |
+| `deploy/docker-entrypoint.sh` | Aplica migraciones y arranca el servidor |
+| `deploy/backup.sh` | Copia diaria a las 04:30 (Madrid), retención `BACKUP_KEEP` (7 por defecto) |
+| `deploy/docker-compose.local.yml` | Probar el stack en local |
+| `.dockerignore` | Deja fuera datos, backups, docs y tests |
 
-## Requisitos de la PWA
+## Primera vez
 
-- HTTPS obligatorio: sin él no hay service worker, ni instalación, ni notificaciones push.
-- Las notificaciones push de iOS requieren la PWA instalada en la pantalla de inicio (iOS 16.4 o superior).
+1. **Token de GitHub** para que Portainer lea el repo privado: GitHub → Settings → Developer settings →
+   Personal access tokens → **Fine-grained tokens** → Generate. Repository access: *Only select repositories* →
+   `el-pueblo`. Permissions → Repository → **Contents: Read-only**.
+2. **Carpetas:** `mkdir -p /compose/el-pueblo/{postgres,backups,logs}`.
+3. **Red `proxy`:** debe existir (la crea el stack de Nginx Proxy Manager). El servidor se publica hacia ella.
+4. Portainer → Stacks → **Add stack** → nombre `el-pueblo` → **Repository**:
+   - Repository URL: `https://github.com/ale-dm/el-pueblo`
+   - Repository reference: `refs/heads/main`
+   - Compose path: `deploy/portainer-stack.yml`
+   - **Authentication**: usuario `ale-dm` y el token del paso 1.
+   - Environment variables → **Load variables from .env file** → subir el `.env` (Portainer lo guarda en `stack.env`).
+5. **Deploy the stack**. Comprobar con `docker logs -f elpueblo-server`.
 
-## Operación 24/7
+### Variables del `.env`
 
-- Todos los contenedores con `restart: unless-stopped`.
-- En la BIOS del NAS: encendido automático tras corte de corriente.
-- SAI (UPS) recomendado: un corte sin aviso corta una partida en curso.
-- Comprobación de salud: `GET /health` del servidor, vigilado por un monitor externo de uptime, si quieres aviso cuando caiga.
+| Variable | Uso |
+|---|---|
+| `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Base de datos |
+| `GOOGLE_API_KEY`, `GEMINI_MODEL` | Narración |
+| `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Web Push (M5) |
+| `BACKUP_KEEP` | Número de copias nocturnas que se conservan |
+| `LOG_LEVEL` | `info` por defecto |
+
+`DATABASE_URL` la monta el propio stack a partir de estas variables. No hace falta ponerla a mano.
+
+## Actualizar
+
+1. En el PC: `pnpm check` y `git push` a `developer`. Para publicar, merge a `main`.
+2. Copia de la BD antes de tocar nada:
+
+       docker exec elpueblo-backup sh -c 'PGPASSWORD=$POSTGRES_PASSWORD pg_dump -h postgres -U $POSTGRES_USER -Fc $POSTGRES_DB' > /compose/el-pueblo/backups/manual-$(date +%F-%H%M).dump
+
+3. Portainer → Stacks → `el-pueblo` → **Pull and redeploy**. Reconstruye la imagen (`pull_policy: build`).
+   (`docker restart` no sirve: seguiría con la imagen anterior.)
+4. `docker logs -f elpueblo-server` y probar en el navegador.
+
+Las migraciones de BD se aplican solas al arrancar, desde `apps/server/drizzle/`.
+
+## Restaurar una copia
+
+    docker stop elpueblo-server
+    docker exec -i elpueblo-postgres pg_restore -U $POSTGRES_USER -d $POSTGRES_DB --clean < /compose/el-pueblo/backups/<fichero>.dump
+    docker start elpueblo-server
+
+Probar la restauración una vez antes de la primera partida con amigos.
+
+## Red y acceso público
+
+- Nginx Proxy Manager es el único punto de entrada. Host proxy hacia `elpueblo-server:3000`, con
+  **Websockets Support** activado (Socket.IO) y certificado Let's Encrypt con forzar HTTPS.
+- `postgres` nunca publica puertos. `server` solo habla con NPM por la red `proxy`.
+- Las notificaciones push y la instalación de la PWA necesitan HTTPS.
 
 ## Copias de seguridad
 
-- `pg_dump` cada noche a una carpeta del NAS, con retención de 14 días.
-- Restauración probada al menos una vez antes de la primera partida con amigos.
-- Copia del volumen de PostgreSQL y de la configuración de NPM en un disco distinto, si el NAS tiene RAID o un segundo disco.
+- `backup` hace `pg_dump` cada noche a `/compose/el-pueblo/backups` y conserva `BACKUP_KEEP` copias.
+- Igual que en el bot, es el mismo disco: conviene copiar esa carpeta a otro sitio.
 
-## Seguridad
+## Qué hace el contenedor del servidor
 
-- Ningún secreto en git: claves de Gemini, `DATABASE_URL` y claves VAPID van como variables del stack en Portainer.
-- Actualizaciones de imágenes periódicas: Portainer → stack → actualizar.
-- Rate limit en el servidor para creación de salas y chat (ya previsto en el GDD).
-- Contraseñas fuertes en NPM y Portainer, con 2FA si lo soportan.
+- `docker-entrypoint.sh`, bajo `tini`: migraciones → servidor. `docker stop` lo para ordenadamente.
+- `restart: unless-stopped`: si el proceso se cae, Docker lo vuelve a levantar.
+- Logs en `/compose/el-pueblo/logs`, con rotación.
 
-## Pendiente de decidir
+## Probar en local
 
-- Dominio y proveedor de DDNS, si la IP es dinámica.
-- Si el panel de NPM se gestiona desde VPN o solo desde la red local.
+    docker compose -f deploy/docker-compose.local.yml up --build
+
+Levanta PostgreSQL en `localhost:5432` y el servidor en `localhost:3000`.
