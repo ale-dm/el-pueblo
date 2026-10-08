@@ -60,11 +60,11 @@ roles.append({"key":"werewolf","name":"Werewolf","wiki_title":"Werewolf (ToS)","
 
 # ── phase timings ──
 cfg = json.load(open("data/game_config.json"))
-phases = ["day_d1","discussion","voting","defense","judgement","last_words","night"]
+phases = ["day_1","discussion","voting","defense","judgement","last_words","night"]  # "day_1" = day_d1 de game_config
 phase_timings = []
 for mode, secs in cfg["phases"]["seconds"].items():
     for i, p in enumerate(phases):
-        phase_timings.append({"mode": mode, "phase": p, "seconds": secs.get(p), "sort_order": i})
+        phase_timings.append({"mode": mode, "phase": p, "seconds": secs.get("day_d1" if p == "day_1" else p), "sort_order": i})
 
 # ── game modes (Mafia) ──
 modes_src = cfg["modes_mafia_scope"]

@@ -1,7 +1,7 @@
 [
  {
   "mode": "standard",
-  "phase": "day_d1",
+  "phase": "day_1",
   "seconds": 15,
   "sort_order": 0
  },
@@ -43,7 +43,7 @@
  },
  {
   "mode": "rapid_tos1",
-  "phase": "day_d1",
+  "phase": "day_1",
   "seconds": 15,
   "sort_order": 0
  },
@@ -85,7 +85,7 @@
  },
  {
   "mode": "rapid_tos2",
-  "phase": "day_d1",
+  "phase": "day_1",
   "seconds": null,
   "sort_order": 0
  },
@@ -127,7 +127,7 @@
  },
  {
   "mode": "fast_mode_tos2",
-  "phase": "day_d1",
+  "phase": "day_1",
   "seconds": 15,
   "sort_order": 0
  },

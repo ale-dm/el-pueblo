@@ -26,6 +26,7 @@ export interface MatchStore {
   insert(match: MatchRecord): Promise<void>;
   findById(id: string): Promise<MatchRecord | null>;
   findActiveByRoomCode(roomCode: string): Promise<MatchRecord | null>;
+  listByStatus(status: MatchStatus): Promise<MatchRecord[]>;
   update(match: MatchRecord): Promise<void>;
 }
 
@@ -71,4 +72,10 @@ export interface Security {
   hashToken(token: string): string;
   /** Semilla para una partida nueva. */
   newSeed(): number;
+}
+
+/** Temporizadores de fase: uno por partida. Programar otro cancela el anterior. */
+export interface Scheduler {
+  schedule(matchId: string, delayMs: number, onFire: () => void): void;
+  cancel(matchId: string): void;
 }

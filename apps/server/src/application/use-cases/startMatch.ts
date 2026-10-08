@@ -2,7 +2,8 @@ import { createRng, decide, type Catalog } from "@el-pueblo/engine";
 import { AppError } from "../errors.js";
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
 import { initialState } from "../state/initialState.js";
-import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Security } from "../ports.js";
+import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler, Security } from "../ports.js";
+import { modeOf, phaseDelayMs } from "../timing.js";
 
 export interface StartMatchDeps {
   matches: MatchStore;
@@ -13,6 +14,9 @@ export interface StartMatchDeps {
   clock: Clock;
   security: Security;
   queue: KeyedQueue;
+  scheduler: Scheduler;
+  /** Avance por tiempo (ver advanceOnTimeout). Se inyecta al componer. */
+  advance: (matchId: string) => Promise<void>;
 }
 
 export interface StartMatchInput {
@@ -61,6 +65,8 @@ export function startMatch(deps: StartMatchDeps) {
       }
       await deps.matches.update({ ...match, status: "playing" });
       await deps.broadcaster.publish(match.id, decision.value);
+      const delay = phaseDelayMs(await cachedCatalog, modeOf(match.config), "day_1");
+      if (delay !== null) deps.scheduler.schedule(match.id, delay, () => void deps.advance(match.id));
       return { events: decision.value.length };
     });
 }

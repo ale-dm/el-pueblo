@@ -2,7 +2,8 @@ import { createRng, decide, replay, type Catalog, type Command } from "@el-puebl
 import { AppError, ConcurrencyError } from "../errors.js";
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
 import { initialState } from "../state/initialState.js";
-import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Security } from "../ports.js";
+import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler, Security } from "../ports.js";
+import { modeOf, phaseDelayMs } from "../timing.js";
 
 export interface SubmitCommandDeps {
   matches: MatchStore;
@@ -13,6 +14,8 @@ export interface SubmitCommandDeps {
   clock: Clock;
   security: Security;
   queue: KeyedQueue;
+  scheduler: Scheduler;
+  advance: (matchId: string) => Promise<void>;
 }
 
 export interface SubmitCommandInput {
@@ -55,10 +58,17 @@ export function submitCommand(deps: SubmitCommandDeps) {
         if (error instanceof ConcurrencyError) throw new AppError("conflict", error.message);
         throw error;
       }
-      if (decision.value.some((e) => e.type === "game.ended")) {
+      const ended = decision.value.some((e) => e.type === "game.ended");
+      if (ended) {
         await deps.matches.update({ ...match, status: "finished" });
+        deps.scheduler.cancel(match.id);
       }
       await deps.broadcaster.publish(match.id, decision.value);
+      const phaseStart = decision.value.filter((e) => e.type === "phase.started").at(-1);
+      if (phaseStart?.type === "phase.started" && !ended) {
+        const delay = phaseDelayMs(await loadCatalog(), modeOf(match.config), phaseStart.payload.phase);
+        if (delay !== null) deps.scheduler.schedule(match.id, delay, () => void deps.advance(match.id));
+      }
       return { events: decision.value };
     });
 }

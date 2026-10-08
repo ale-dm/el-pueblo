@@ -1,4 +1,4 @@
-# Servidor de El Pueblo. BORRADOR: no se puede construir hasta que exista apps/server/package.json (M2).
+# Servidor de El Pueblo. Ejecuta TypeScript con tsx: no hay paso de compilación.
 # Node 22 como el bot; pnpm workspaces, por eso se copia todo el monorepo.
 FROM node:22-bookworm-slim
 
@@ -9,15 +9,13 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/server/package.json apps/server/
 COPY packages/engine/package.json packages/engine/
-COPY packages/shared/package.json packages/shared/
 RUN pnpm install --frozen-lockfile
 
 COPY . .
-RUN pnpm --filter @el-pueblo/server build \
-    && chmod +x deploy/docker-entrypoint.sh
+RUN chmod +x deploy/docker-entrypoint.sh
 
 ENV NODE_ENV=production
 EXPOSE 3000
 
-# Aplica migraciones y arranca el servidor
+# Aplica migraciones, siembra el catálogo y arranca el servidor
 CMD ["deploy/docker-entrypoint.sh"]

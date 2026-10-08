@@ -98,7 +98,8 @@ La UI no decide reglas. Solo renderiza los eventos proyectados que llegan del se
 
 ## Estado
 
-- **Hecho:** puertos, errores, límites, cola por partida, estado inicial, casos de uso `createRoom`, `joinRoom`, `submitCommand` y `reconnect`, adaptadores en memoria, catálogo desde JSON y composición. **21 tests en verde** (`apps/server`), con los casos de uso probados sin base de datos ni red.
-- **Pendiente:** los comandos reales del motor (`decide` aún devuelve `not_implemented`), el `Scheduler`, los adaptadores de PostgreSQL (`outbound/postgres`, falta la implementación de los puertos, el esquema ya existe), Socket.IO y `main.ts`.
-- **Movido:** el código de base de datos vive ahora en `adapters/outbound/postgres/`. El entrypoint del contenedor y `drizzle.config.ts` apuntan ahí.
-
+- **Motor:** completo para Mafia (MVP): arranque, día, votación, juicio, noche con 30 roles, chat por canal y victoria. 85 tests, incluida una simulación de 300 partidas completas.
+- **Servidor:** casos de uso sobre el motor real. Adaptadores de PostgreSQL (partidas, jugadores, log de eventos con control de concurrencia), Socket.IO (proyección por jugador), temporizadores de fase y recuperación tras reinicio. 38 tests.
+- **Verificado de extremo a extremo** contra PostgreSQL 16 real: arranque de 10 jugadores, rol privado para cada uno, chat público, avance por temporizador real, reconexión, y reprogramación de una partida tras reiniciar el servidor.
+- **Pendiente:** cliente web (M3), narración con Gemini (M4) y Web Push (M5).
+- **Movido:** el código de base de datos vive en `adapters/outbound/postgres/`. El contenedor ejecuta TypeScript con `tsx`, sin compilar.

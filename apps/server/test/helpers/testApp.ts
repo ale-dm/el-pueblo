@@ -3,6 +3,7 @@ import { createServices } from "../../src/composition.js";
 import { JsonCatalogSource } from "../../src/adapters/outbound/catalog-json/loadCatalog.js";
 import { InMemoryEventLog, InMemoryMatchStore, InMemoryPlayerStore } from "../../src/adapters/outbound/memory/stores.js";
 import { FixedClock, RecordingBroadcaster, SequentialIds, SequentialSecurity } from "../../src/adapters/outbound/memory/services.js";
+import { ManualScheduler } from "../../src/adapters/outbound/memory/scheduler.js";
 
 export const CATALOG_DIR = fileURLToPath(new URL("../../../../data/catalog", import.meta.url));
 
@@ -15,6 +16,7 @@ export function createTestApp() {
   const clock = new FixedClock();
   const ids = new SequentialIds();
   const security = new SequentialSecurity();
+  const scheduler = new ManualScheduler();
   const services = createServices({
     matches,
     players,
@@ -24,7 +26,8 @@ export function createTestApp() {
     clock,
     ids,
     security,
+    scheduler,
     engineVersion: "0.1.0",
   });
-  return { services, matches, players, events, broadcaster, clock, ids, security };
+  return { services, matches, players, events, broadcaster, clock, ids, security, scheduler };
 }

@@ -15,6 +15,13 @@
       "when": 1791499600460,
       "tag": "0001_catalog_and_wiki",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791501015799,
+      "tag": "0002_match_seed",
+      "breakpoints": true
     }
   ]
 }

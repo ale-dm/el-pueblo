@@ -23,6 +23,10 @@ export class InMemoryMatchStore implements MatchStore {
     return null;
   }
 
+  async listByStatus(status: MatchRecord["status"]) {
+    return [...this.byId.values()].filter((m) => m.status === status).map((m) => ({ ...m }));
+  }
+
   async update(match: MatchRecord) {
     if (!this.byId.has(match.id)) throw new Error(`update: partida ${match.id} no existe`);
     this.byId.set(match.id, { ...match });

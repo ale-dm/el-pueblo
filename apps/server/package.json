@@ -10,11 +10,16 @@
   "dependencies": {
     "@el-pueblo/engine": "workspace:*",
     "drizzle-orm": "0.45.4",
-    "postgres": "3.4.9"
+    "fastify": "5.12.5",
+    "postgres": "3.4.9",
+    "socket.io": "4.8.4",
+    "tsx": "4.23.15"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
     "@types/node": "26.6.4",
     "drizzle-kit": "0.31.11",
+    "socket.io-client": "4.8.4",
     "typescript": "7.0.2",
     "vitest": "5.0.3"
   }

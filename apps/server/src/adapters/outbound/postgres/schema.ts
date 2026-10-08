@@ -211,6 +211,8 @@ export const matches = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     roomCode: varchar("room_code", { length: 8 }).notNull(),
     status: matchStatus("status").notNull().default("lobby"),
+    // Semilla del azar de la partida: con ella y los comandos, el motor reproduce el mismo resultado.
+    seed: bigint("seed", { mode: "number" }).notNull(),
     // Configuración de la sala: roles activos, duración de fases, modo de facción, reglas extra.
     config: jsonb("config").notNull(),
     // Versión del motor con la que se jugó: necesaria para reproducir eventos antiguos.
