@@ -125,7 +125,7 @@ docs/          Este documento
 
 ### 5.1 Jugadores y configuración
 
-- Jugadores: 10–15. *(propuesta: mínimo 10, la misma cifra que el modo Classic usa para arrancar con 15 — confirmar)*
+- Jugadores: 10–15. *(propuesta: mínimo 10; el modo Classic arranca automáticamente con 15 — confirmar)*
 - Reparto de facciones *(propuesta)*:
 
 | Jugadores | Mafia | Town |
@@ -170,7 +170,7 @@ Rapid y Fast Mode están en `data/game_config.json`.
 
 - **Town gana** cuando no queda ningún miembro vivo de Mafia (ni de otras facciones que deban morir).
 - **Mafia gana** cuando no queda ningún Town vivo.
-- **Empate:** no se aplica en el MVP mientras no haya roles neutrales. Si ambos bandos mueren a la vez, gana el que tenga el último evento.
+- **Empate:** pendiente de definir. Con solo Town y Mafia no debería darse, pero conviene decidir qué pasa si el último Día y la última Noche terminan sin ganador.
 - **Reglas 1 contra 1** (Tavern Keeper, Jailor sin ejecuciones, Godfather): pendientes para una iteración posterior. El MVP usa la regla general.
 
 ### 5.6 Chat
