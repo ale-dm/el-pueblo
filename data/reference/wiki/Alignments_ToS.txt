@@ -1,0 +1,251 @@
+Example of an alignment on a Role Card ( Bodyguard, a Town Protective)
+
+In Town of Salem, there are 12 alignments which serve the purpose of categorizing all of the roles according to their abilities (killing, investigation, protection, support, etc.). The Any role will be a random role of any alignment. The Random Town, Random Mafia, Random Coven or Random Neutral alignments may be a random role of their respective faction.
+
+ Town Alignments[]
+
+ | Alignment Name
+
+ | Roles
+
+ | Town Investigative
+
+ | Investigator
+
+ | Lookout
+
+ | Psychic
+
+ | Sheriff
+
+ | Spy
+
+ | Tracker
+
+ | Town Protective
+
+ | Bodyguard
+
+ | Crusader
+
+ | Doctor
+
+ | Trapper
+
+ | ‎‏‏‎ ‎
+
+ | ‏‏‎ ‎
+
+ | Town Killing
+
+ | Jailor
+ | Vampire Hunter
+ | Veteran
+ | Vigilante
+
+ | ‏‏‎ ‎
+
+ | ‏‏‎ ‎
+
+ | Town Support
+
+ | Mayor
+ | Medium
+
+ | Retributionist
+ | Tavern Keeper
+
+ | Transporter
+
+ | ‏‏‎ ‎
+
+: Unique role.
+
+: Coven Expansion Role.
+
+: This role may only exist if there is at least 1 Vampire in the game.
+
+ Mafia Alignments[]
+
+ | Alignment Name
+
+ | Roles
+
+ | Mafia Deception
+
+ | Disguiser
+
+ | Forger
+
+ | Framer
+
+ | Hypnotist
+
+ | Janitor
+
+ | Mafia Killing
+
+ | Ambusher
+ | Godfather
+ | Mafioso
+ | ‏‏‎ ‎
+
+ | ‏‏‎ ‎
+
+ | Mafia Support
+
+ | Blackmailer
+
+ | Bootlegger
+
+ | Consigliere
+
+ | ‏‏‎ ‎
+
+ | ‏‏‎ ‎
+
+: Unique Role.
+
+: Kill capable Mafia role.
+
+ Neutral Alignments[]
+
+ | Alignment Name
+
+ | Roles
+
+ | Neutral Benign
+
+ | Amnesiac
+
+ | Guardian Angel
+ | Survivor
+
+ | ‏‏‎ ‎
+
+ | Neutral Evil
+
+ | Executioner
+
+ | Jester
+
+ | Witch
+ | ‏‏‎ ‎
+
+ | Neutral Killing
+
+ | Arsonist
+
+ | Juggernaut
+ | Serial Killer
+
+ | Werewolf
+
+ | Neutral Chaos
+
+ | Pirate
+ | Pestilence
+ | Plaguebearer
+ | Vampire
+
+: Unique role.
+
+: Coven Expansion Role.
+
+: You cannot roll this Role, you have to roll Plaguebearer and infect everyone.
+
+: This Role is not playable in the Coven Expansion.
+
+ Coven Alignments[]
+
+ | Alignment Name
+
+ | Roles
+
+ | Coven Evil
+
+ | Coven Leader
+ | Medusa
+ | Hex Master
+ | Poisoner
+ | Potion Master
+ | Necromancer
+
+: Unique role.
+
+: Coven Expansion Role.
+
+Trivia[]
+
+In the Public Test Realm, there used to be a now-scrapped Coven Support alignment. Most notably, the only known role to fit in this alignment was the Potion Master.
+
+The Transporter was once mistaken as a Town Protective due to the typo on the Transporter's role card.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

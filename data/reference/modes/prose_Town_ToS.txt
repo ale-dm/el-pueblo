@@ -1,0 +1,284 @@
+The Townies are the "good" side of Town of Salem. Their aim is to "hang every criminal and evildoer," referring to the rival factions that may harm the Town. These include: the Mafia, the Coven, Neutral Killing, Neutral Chaos (excluding Pirate), and the Witch, who cannot win with the Town. To that end, each innocent Town member contributes with varied abilities according to their roles and sub-alignments, which are categorized into Town Investigative, Town Killing, Town Protective, and Town Support. These sub-alignments can help the Town to be led to victory when working together to combine all their abilities.
+
+Compared to the other factions, the Town's primary method of elimination is by hanging their opponents in trials (due to their relative size in membership), keeping the majority of votes and power in numbers, as well as the abundance of intelligence gathering roles. Using the correct information and the Townies' majority, the evildoers will be hanged after voting.
+
+This doesn't mean the Townies lack the ability to directly kill their enemies, nor does it mean they are sitting ducks waiting to be killed should the hanging not go as smoothly as planned. The Town Killing and Town Protective roles are there precisely for this reason. But these roles most of the time can't reliably win the game for their fellow Townies, so active and accurate hangings are still very much desired and necessary to win games.
+
+It is thus crucial for the Townies to accurately parse the truths from the lies, which their enemies will no doubt spread. It is also important for them to act and not be passive at trials before they lose their voting power to the evil-doers; as innocent Townies die almost every Night, their doom draws ever nearer.
+
+List of Town Roles[]
+
+ | Role Name
+
+ | Role Alignment/Category
+
+ | Role Description
+
+ | Bodyguard 
+
+ | Town Protective
+
+ | Choose someone to protect at Night. You will protect your target from one direct attack, taking the attacker down with you. You have one Bulletproof Vest that grants Basic Defense.
+
+ | Crusader 
+
+ | Town Protective
+
+ | Protect someone each Night. You grant them Powerful Defense and deal a Basic Attack to one visitor at random.
+
+ | Doctor 
+
+ | Town Protective
+
+ | Heal one person each Night. You grant them Powerful defense and cure them from Poison. You have one self-Heal that grants Powerful Defense.
+
+ | Tavern Keeper 
+
+ | Town Support
+
+ | Distract someone each Night, preventing them from using their night ability. Roleblocking a Serial Killer that isn't Cautious or Werewolf on a Full Moon Night will force them to attack you.
+
+ | Investigator 
+
+ | Town Investigative
+
+ | Investigate someone each Night for a clue to their role. A Framer, Disguiser, Arsonist, or Hex Master can throw off your results.
+
+ | Jailor 
+
+ | Town Killing
+
+ | Choose someone each day to jail for the Night. You may choose to execute them, dealing an Unstoppable Attack. A Serial Killer that isn't Cautious or Werewolf on a Full Moon Night will attack you if they are not executed. You cannot execute on the first Night. You have 3 executions. If you execute a Townie or you run out of executions. If you jail Pestilence, you will die if you do not have a Doctor or Crusader protecting you.
+
+ | Lookout 
+
+ | Town Investigative
+
+ | Watch someone at Night to see who visits them. If 4 or more people visit, you will only know 3 of the visitors. A Disguiser can throw off your results.
+
+ | Mayor 
+
+ | Town Support
+
+ | Choose to reveal yourself as the Mayor of the Town. Your vote becomes three, but a Doctor cannot heal you, and you won't be able to whisper or be whispered to.
+
+ | Medium 
+
+ | Town Support
+
+ | Speak with the dead at Night. Seance a living player once to speak with them the following Night. You may only seance when you are dead.
+
+ | Psychic 
+
+ | Town Investigative
+
+ | Will be given three player names every odd-numbered Night, at least one of which will be evil. Will be given two player names every even-numbered Night, at least one of which will be good.
+
+ | Retributionist 
+
+ | Town Support
+
+ | Raise a dead Townie each Night and use their ability on another player.
+
+ | Sheriff 
+
+ | Town Investigative
+
+ | Check one person each Night for suspicious activity. A Framer, Disguiser, or Hex Master can throw off your results.
+
+ | Spy 
+
+ | Town Investigative
+
+ | Choose to bug a player each Night. You will see all physical actions against them.
+
+Know who the Mafia and Coven visit each Night.
+
+A Hypnotist or Disguiser can throw off your results.
+
+ | Tracker 
+
+ | Town Investigative
+
+ | Watch someone at Night to see who they visit.
+
+ | Transporter 
+
+ | Town Support
+
+ | Choose two people to switch places with each other at Night. You may transport yourself.
+
+ | Trapper 
+
+ | Town Protective
+
+ | Choose a player to Trap each Night. Traps take one Night to build. A trap will provide Powerful Defense against one direct attacker and will deliver a Powerful Attack to a random attacker. Traps reveal the roles of all visitors.
+
+ | Vampire Hunter 
+
+ | Town Killing
+
+ | Check for Vampires each Night, staking them if they visit you or vice versa. You will become a Vigilante with one bullet when all Vampires are dead.
+
+ | Veteran 
+
+ | Town Killing
+
+ | Choose to alert each Night. You will deal a Powerful Attack to all visitors and gain Basic Defense on alert. You have three alerts.
+
+ | Vigilante 
+
+ | Town Killing
+
+ | Choose to take justice in your own hands and shoot someone, delivering a Basic Attack. If you shoot a Townie, you will commit suicide over the guilt the next Night. You only have 3 bullets. You cannot shoot a player on the first Night.
+
+ Easily confirmable Town Roles
+
+ Unique Town Roles
+
+ Roles exclusive to the Coven Expansion
+
+Strategies[]
+
+ Town Protective
+
+Try to protect the most useful players (eg, Sheriff, Investigator, Jailor) once you know who the Townies are. This is helpful as a Late Game Strategy.
+
+A combination of Doctors and Crusaders are nearly unstoppable to bypass as their Powerful Defense each role gives prevents any killing. A Doctor- Bodyguard works similarly, but the Bodyguard can only protect from one single direct attack. Any attacks made by the Rampage ability or an Ambusher cannot be countered.
+
+In addition, all of these combinations can be stopped by any role-blocking role, a Transporter or Witch/ Coven Leader, and any role with an Unstoppable Attack.
+
+ Town Investigative:
+
+Always have evidence if you want someone hanged. Otherwise, you will sound like an Executioner.
+
+If possible, team up with a Vigilante or Jailor; You can secretly find a Mafia member or Neutral Evil role, then tell your ally to kill them in a whisper without needing to reveal yourself to the Town (Mind the Blackmailer, though).
+
+If you have any information at all, DO NOT leave the game once you are dead as there could still be a Medium . If you are dead and a Medium is alive, they could talk to you at Night and you could share your info with them. They could either write the info down in their Last Will or tell the Town about it the next day if they survive (Just in case you die, you should always put important information in your Last Will as soon as you receive it). Also, even if the Medium is dead, The Town could still be provided with info. If the Medium hasn't used their Seance, then they could still share the info that they have received from you with a trustworthy player via the Seance. If there is no Medium at all, you should still be sure to ALWAYS share the info that you have with the dead players in the chat.
+
+ Town Killing
+
+It is not recommended to random shoot as Vigilante unless other evil factions are quickly gaining a majority or it you have a strong suspicion a certain player is evil. Sometimes, if you have a small reason to shoot someone for any reason at all, such as their behavior, you should make sure the risk is worth it first. Even then, be careful, as if you shoot s Townie, you die from guilt. It's not technically gamethrowing to do so, yet it is heavily frowned upon.
+
+ Veteran should save alerts and draw attention away from themselves until the situation is right. You can become a powerful role if you have 3 or 2 alerts left late in the game. Of course, this does come with the risk of the Mafia randomly attacking you early on. It can be a good strategy to ask for Town Protectives and/or Lookouts on you so you can save your alerts, but this can lead to Town thinking of you as suspicious when you claim Veteran.
+
+Since Veteran and Vigilante are in this alignment, you can take advantage of this to become more powerful.
+
+As Vigilante, you can claim Veteran to make Mafia not visit you. The downside of this is if a real Veteran sees your claim, they may think that you're evil and reveal to get you hanged.
+
+As Veteran, claim Vigilante and that you are thinking about shooting an evil role. Mafia/ Coven may attack you to stop you from killing, and a Witch will attempt to control you into shooting someone. However, some Town Protectives or Lookouts might want to protect/watch you.
+
+If a Vigilante shoots Night one, they were controlled by a Witch or a Coven Leader.
+
+ Vampires don't confirm that a Vampire Hunter exists, but a Vampire Hunter confirms that Vampires exist.
+
+In General:
+
+If you think someone is evil, don't vote innocent unless there is proof that they are not.
+
+Try to stay on topic--unless there is no evidence--especially if everyone else is roleplaying. Town of Salem is not a chatroom, despite how fun roleplaying is. Many evil roles try to sway the topic discussed in chat to distract Townies and ensure their win. Also, by staying on topic, you may catch mistakes that evil people may say in chat that other people may not notice.
+
+If there is a Mayor, tell them information in chat. This will allow them to lead the Town to possibly hang an evil role.
+
+Properly prioritizing enemies is essential to victory:
+
+The Mafia/ Coven and Vampires are the highest priority throughout the game, as they have the ability to collectively sway the Town's vote through deception and numbers.
+
+Early on in the game, Neutral Killing roles and the Plaguebearer are of lower priority as they can harm the Mafia as well as the Town.
+
+ Witches generally hold a high priority, as they can cause Townies to die by Town Killing, prevent evil roles from getting killed or caught at Night, and free a role blocked Mafia Killing role.
+
+ Survivors generally holds a low priority during the day and is usually best hanged if more threatening targets are unknown.
+
+Late in the game, Neutral Killing may be manipulated as a check to the remaining Mafia/ Coven, or you may be able to trick an Arsonist or Plaguebearer to help vote up the last Mafia/ Coven if the said killer is unable to kill the next Night. An attentive Mayor can outright exploit this limitation to ensure a Town victory.
+
+While most Neutral Evil roles do not need to be killed in order for Town to win, it is often best to do so due to their freedom; they could be an extra vote against the Town, as the Mafia/ Coven would be more willing to help the Neutral Evil win. Usually, the only reason to keep them alive is when the Town desperately needs one more vote, and they think they can trust that Neutral Evil.
+
+Late in the game, if you are the only Town member left and the two killers remaining can both kill each other, try to avoid choosing winners and hope they do just that. Roles capable of killing each other include:
+
+ Medusa and any non- Coven role, excluding Pestilence.
+
+ Arsonist and Werewolf, although Juggernaut may also substitute for either.
+
+ Mafioso and any member of the Coven, excluding the Coven Leader.
+
+A Vampire and any member of the Mafia or Coven lacking defense. Bear in mind, however, that the Vampire is highly likely to simply bite you, as doing so is in line with their win condition.
+
+While you may be ordered around by Mayor, Jailor, or some other confirmed Town, don't let yourself be blindly led to hanging someone you feel is pretty innocent.
+
+While it's good to avoid hanging blindly, don't become too fixated on requiring 'perfect' information; there are times when it's necessary for the Town to take a risk and hang someone simply for being suspicious or for being unconfirmed late in the game.
+
+Pay attention to the number of Town versus evils remaining. Late in the game, if the evils are likely to have a majority the next day, you must hang someone, even if it's just a glorified hunch with a low chance of hanging the right person. Hanging semi-blindly has risks, yes, but being too passive means the Town will definitely lose. It is better to have a chance of winning than a certain loss.
+
+Similarly, when you have a large number of confirmed town, hanging people who cannot or will not confirm themselves becomes an increasingly effective strategy.
+
+If someone posts their Last Will and you find something off about it (e.g. no name, spaces between "N1" and "[Name]", they already wrote a Night's results before said Night), it is almost certain that they have just written their Last Will and are lying. This tactic can also be applied to a lot of numbers written in the Last Will. This isn't always the case, so be sure to be cautious while using these methods.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

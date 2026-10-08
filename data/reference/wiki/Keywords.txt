@@ -1,0 +1,1558 @@
+| Keywords Table of Contents 
+
+ | • ...
+
+• Abstain • Admire • Aegis • Alert • Anon Voting • Anon Players • Apocalypse • Astral Visit • Attack • Autopsy
+
+• Barrier • Basic Attack • Basic Defense • Bestow • Bite • Blind • Blood Ritual • Bread • Bug • Build
+
+• Camouflage • Care • Cautious • Chatterbox • Claim • Conjure • Control • Convert • Counter Claim • Crime
+
+• Deafen • Death Guess • Death Roll • Defense
+• Doom • Douse • Drain • Dreamweave • 
+ Drink 
+
+• Enchant • Evil • Examine • Execute 
+
+• Fast Mode • Fortify • Four Horsemen 
+
+• Gaze • Ghost Town • Good • Guard • Guest List • Guilty
+
+• Hang • Hangman • Harmful Visit • Haunt • Hex • Hidden Roles • Hungover
+
+• Ignite • Illuminated • Illusion • Indoctrinate • Innocent • Insomniac • Intuit • Investigate • Invincible Defense
+
+• Jail • Jinx
+
+• Knight
+
+• Landlubber • Load
+
+• Magic Mirror • Murder
+
+• Necronomicon • No Crime • No Attack • No Defense • Not Sus
+
+• Obsession • One Trial per Day • Overcharge • 
+
+• Party • Perfect Town • Pestilence • Plague • Plunder • Powerful Attack • Powerful Defense • Prosecute • Protect
+
+• Raise • Rampage • Rapid Mode • Rebecca • Remember • Retrain • Reveal • Revealed • Roleblock
+
+• Scour • Scrolls • Scroll Slot • Search • Secret Killers • Sense • Shoot • Shroud • Shufflebox • Silence • Slow Mode • Smog • Soul Swap • Stoned • Stone Gaze • Sus
+
+• Tome of Fate • Torment • Town Elder • Town Traitor • Track • Trap • Trespassing • Tribunal
+
+• Unique • Unleash • Unstoppable Attack • Unknown Obstacle
+
+• Vote For Alignment • VIP • Vision • Visit • Vote 
+
+• Watch
+
+NOTE: Text in this font and color is not listed in the game and is only on the wiki.
+
+ ...
+
+This message will display when a player has been Silenced and tries to talk on trial.
+
+Be aware that players can fake this message!
+
+ Silenced players cannot talk during the Day, nor vote during the discussion phase.
+
+ Abstain
+
+Players can Abstain from voting during Judgment phase by not selecting an option.
+
+Doing this will cause your Vote to not be counted towards the Guilty or Innocent Votes.
+
+ Admire
+
+The Admirer can Admire a player at Night to check if they are their secret Obsession or not.
+
+If the Admirer finds their secret Obsession, then they unlock the ability to care for them.
+
+ Aegis
+
+An Oracle may choose to cast their Aegis over another role.
+
+Players with the same role as the chosen role will be protected by a Barrier, giving them Powerful Defense that Night.
+
+ Evil-Aligned Oracles may cast their Aegis over any non- Town roles.
+
+ Alert
+
+ Veterans can choose to go on Alert at Night gaining Basic Defense, and dealing a Powerful Attack to any visitors.
+
+ Anon Voting
+
+ Anon Voting makes all Votes anonymous when voting a player to the stand, and when the results are revealed.
+
+ Anon Players
+
+Anonymous players randomizes all cosmetics, and disables picking an in-game name!
+
+ Apocalypse
+
+ Death can bring about Armageddon at the end of the Day they transform, killing all players.
+
+ Astral Visit
+
+ Astral Visit does not trigger visit related abilities and cannot be detected.
+ Astral abilities are not stopped by Unknown Obstacles.
+
+The following are Astral Visits:
+
+ Hex Master (With Necronomicon)
+
+ Ritualist ( Blood Ritual)
+
+ Doomsayer ( Doom)
+
+ Illusionist ( Illusion, targeting Coven)
+
+ Soul Collector ( Reap)
+
+ Shroud ( Shroud)
+
+ Oracle ( Aegis)
+
+ Cursed Soul ( Soul Swap)
+
+Arsonist (Ignite)
+
+The visits of a player blessed by an Admirer's Bestow ability.
+
+The visits of a Sovereign who is not a member of the Town faction.
+
+ Attack
+
+Many roles have the ability to Attack players having the potential to kill them.
+
+There are 4 tiers of Attack.
+
+ No Attack for roles that can't Attack.
+
+ Basic Attack which can kill any player with No Defense.
+
+ Powerful Attack which can kill any player with Basic Defense or lower Defense.
+
+ Unstoppable Attack which can kill any player with Powerful or lower Defense.
+
+ Unstoppable+ Attack which can kill any player regardless of their Defense including Invincible Defense. Currently only Hex Bomb, Pestilence, Starvation, Boredom ( Jester) and Doom ( Doomsayer to self) will deal an Unstoppable+ Attack.
+
+A role's Attack level can be found by looking at the sword icon on the role card.
+
+Some roles have abilities that alter their Attack levels.
+
+ Autopsy
+
+The Coroner may Autopsy a dead player during the day to get info about who killed them.
+
+Once a Coroner has done this, they can Examine players at Night to see if they were the killer.
+
+The Shroud can make their target kill another player, even if they couldn't normally kill.
+
+ Barrier
+
+Players with a Barrier will be given Powerful Defense at Night.
+
+Roles that can give player a Barrier are the Cleric, Oracle and the Potion Master.
+
+The Admirer role may also grant a Barrier by Caring for their found Obsession. This Barrier will be placed on both the Admirer and their Obsession. 
+
+ Basic Attack
+
+ Basic Attacks will kill anybody with a Defense value of none.
+
+A player's Attack must be stronger than their target's Defense to successfully kill them.
+
+ Basic Defense
+
+Players with Basic Defense will survive Basic Attacks even if they weren't protected at Night.
+
+A players Defense must be equal or stronger than an attacker's Attack to survive.
+
+ Bestow
+
+The Admirer can Bestow a player during Day. This ability has 2 charges.
+
+ Bestowing a player grants them Astral Visits, Roleblock Immunity and Control Immunity.
+
+ Blood Ritual
+
+The Ritualist can perform a Blood Ritual at Night attempting to guess a players role. This ability has 2 charges.
+
+If the Ritualist guesses the player's role correctly, then they are dealt an Unstoppable Astral Attack.
+
+ Bread
+
+Players with Bread do not know they have Bread until Famine starts.
+
+If there are less than 3 players alive but all remaining players have Bread, you will transform into Famine.
+
+When the Famine starts players with Bread will live 3 extra days.
+
+ Famine can visit a player with Bread to Starve a player. This causes them to die 1 day faster.
+
+ Bug
+
+The Spy can Bug a player's house to see what Evil roles visit them.
+
+The Spies bug will remain on the target until triggered.
+
+The Spy can also detect the feedback the player gets upon a bugged player dying.
+
+ Enchanted and Reaped players will trigger your Bugs regardless of their alignment, unless the Enchanter/ Soul Collector is Town-aligned.
+
+Non- Town Aligned Town roles may trigger your Bugs. This does not include the Town Traitor.
+
+You will not trigger your own Bugs if you are Enchanted, Reaped or Evil-Aligned.
+
+ Illusioned players will not trigger your Bugs.
+
+ Build
+
+ Trappers must Build their Trap before they can lay it.
+
+When a Trapper dismantles their Trap they will rebuild it the same Night.
+
+ Camouflage
+
+With the Camouflage attribute, you are invisible to roles that see visitors.
+
+This mechanic has been removed but the keyword still remains in the game.
+
+ Care
+
+When the Admirer has found their secret Obsession, they can choose to Care for them at Night.
+
+ Caring for your Obsession will Barrier both you and them for the Night.
+
+ Care bypasses Jails targeting restrictions.
+
+ Witches cannot Control you while you have a found Obsession.
+
+ Cautious
+
+The Serial Killer can choose to be Cautious at Night.
+
+A Serial Killer who is Cautious will not attack Roleblockers.
+
+ Chatterbox
+
+In Text Chat Gamemodes as a Jester you will be required to send 1-4 chat messages every Day.
+
+If you fail to do this, you will die of Boredom at Night.
+
+If you fail to do this and are executed at the gallows, your win will be invalidated.
+
+If you are Silenced, you will not be required to send any messages for that Day.
+
+Claim
+
+When a player asks you to claim they are asking you for your role.
+
+The player could be asking for your role directly, but be careful! Some roles can use this information against you. These roles are the Ritualist, and the Doomsayer.
+
+It is generally safer to claim your "subalignment", typically just called your " Alignment" when asked for, or making a claim, unless you know the roles that can use your role against you are dead, or not possible.
+
+Your subalignment is shown under your role card under your role and faction. this would be things like Town Protective, or Town Investigative.
+
+ Conjure
+
+The Conjurer is able to summon a Meteor during the Day.
+
+The meteor will deal a Powerful Attack to the Conjurer's target.
+
+ Control
+
+ Controlling a player allows the controller to choose a target for their abilities if they have a targetable ability.
+
+ Controlled players can target themselves.
+
+The role of the Controlled player will be revealed to the controller.
+
+Ability feedback from the Controlled player is given to the controller.
+
+The following are immune to Control:
+
+ Hungover players.
+
+ Retributionist, Socialite, Necromancer.
+
+Players blessed by an Admirer's Bestow ability.
+
+ Veteran, Admirer (Found Obsession), Oracle, Doomsayer Poisoner and Ritualist (Without Necronomicon) are functionally Control Immune however will not produce the standard Control Immune message when Controlled.
+
+( Election Modifier) An elected Sovereign who is not a part of the Town faction.
+
+ Convert
+
+The Vampires can Bite a player at Night Converting them.
+
+ Converted players will join the Vampire faction.
+
+Only Town-Aligned players without Defense can be converted to the Vampire faction.
+
+ Counter Claim
+
+ Counter Claim is a term used by players when they want to refute another player's claim.
+
+Players will often abbreviate this term with CC.
+
+ Crime
+
+The Investigator can visit a player to see if they can find any crimes they committed.
+
+There are two types of Crimes that the Investigator can find, Murder and Trespassing
+
+ Murder indicates the target has attacked another player, and Trespassing indicates the target has visited an opposing-factioned player at same point in the game.
+
+ Enchanters, Illusionists and Soul Collectors will affect your investigation results.
+
+ Death Guess
+
+Challenge other dead players or Rebecca to see who has the best feeling who will die first.
+
+Both players will choose a player they think will die first, and the first one of those 2 choices to die wins!
+
+In the event of both players dying on the same Night, or the game ending first it will be a draw and the Ghost Points wagered will be refunded.
+
+ Death Roll
+
+Wager ghost points against other dead players, or Rebecca in this role down style minigame.
+
+Death Rolls start with a player rolling from 0-1000, and whatever is rolled becomes the new max roll for the next player.
+
+The first one to roll a 0 loses!
+
+ Defense
+
+Many roles in the game have the ability to survive players attacking them.
+
+There are 4 tiers of Defense.
+
+ No Defense for roles that will die to any Attack made against them.
+
+ Basic Defense which can survive a Basic Attack.
+
+ Powerful Defense which can survive a Powerful or lower Attack.
+
+ Invincible Defense which can survive Unstoppable or lower Attack.
+
+A role's Defense level can be found by looking at the shield icon on the role card.
+
+Some roles have abilities that can alter Defense levels.
+
+ Jester Tokens may upgrade or downgrade the Defense of players.
+
+ Doom
+
+The Doomsayer can doom three players, attempting to guess their roles.
+
+If the Doomsayer guesses the players role's correctly then they will all be doomed, causing them to be dealt Unstoppable Astral Attacks the next Day.
+
+If the Doomsayer guesses the players role's wrong, they will get a message back saying at least one of their guesses was wrong.
+
+The Doomsayer will die to Doom if there are fewer than 3 other players remaining. They will be dealt an Unstoppable+ Attack on the same Night.
+
+ Douse
+
+ Doused players can be Ignited by the Arsonist dealing an Unstoppable Attack.
+
+Players will not know they have been Doused in gas.
+
+If the Arsonist chooses to stay home they will remove any Douses on themselves.
+
+ Drain
+
+As a Vampire, deal a Basic Attack to your target.
+
+ Dreamweave
+
+The Dreamweaver can visit a player to invade their dreams.
+
+ Dreamweave can only affect Town roles.
+
+ Town players affected by Dreamweave must be visited by a Town role the following Night, or they will develop Insomnia.
+
+ Coven members are not immune to Dreamweave.
+
+ Drink
+
+The Tavern Keeper can force a player to have a drink them.
+
+A Roleblocked Serial Killer, or Werewolf will attack the Tavern Keeper.
+
+The Poisoner, The Witch, Pirates Wars, Pestilences, Tricksters and other Tavern Keepers are immune to roleblocks.
+
+This keyword is currently outdated:
+
+ Trickster and Pirate are no longer Roleblock Immune.
+
+ Retributionist, Socialite, Necromancer and Serial Killer are also Roleblock Immune.
+
+ Enchant
+
+ Enchanted players will appear to be Evil to the Psychic.
+
+ Enchanted players will appear to be Suspicious to the Sheriff.
+
+ Enchanted players will appear to be a Coven member to an Investigator.
+
+ Enchanted players will appear to be a Coven member to a Seer.
+
+ Enchanted players will be considered as a Coven member when determining Trespassing.
+
+ Enchanted players will have Murder to an Investigator.
+
+ Enchanted players can trigger Spy Bugs regardless of their alignment or role.
+
+ Coroners, Lookouts and Trackers are unaffected by Enchants.
+
+ Evil
+
+ Evil roles are any role that isn't a Town role.
+
+This is not always the case, as a Socialite is Evil, but a Poisoner is not Evil.
+
+Certain Evil roles can appear Good to different investigative roles.
+
+The holder of the Necronomicon will appear as not Evil to the Sheriff.
+
+The Illusionist can make coven members appear not Evil to the Sheriff, Seer, Psychic and Investigator.
+
+The Enchanter can make non- Coven members appear as Evil to the Sheriff, Seer, Psychic and Investigator.
+
+The Soul Collector can make non- Apocalypse appear as Evil to the Sheriff, Seer, Psychic and Investigator.
+
+ Jesters will appear as not Evil to the Sheriff, Seer and Investigator.
+
+ Neutral Killing, and Neutral Apocalypse roles will not appear as Evil to the Sheriff.
+
+ Apocalypse members with teammates will appear as Evil to the Sheriff.
+
+ Town Traitors, Necronomicon wielders and solo Vampires will not appear as Evil to the Sheriff.
+
+ Examine
+
+ Examining a player at Night allows the Coroner to determine if that player had killed any of their Autopsy targets.
+
+The Shroud can Shroud another player, making them deal a Basic Attack to their target and show as a killer.
+
+Your ability is unaffected by Enchants, Illusions and Reaps.
+
+ Execute
+
+The Jailor can choose to Execute the player they Jail dealing a Powerful Attack.
+
+If the Jailor Executes a Town member they will lose their ability to Jail.
+
+ Serial Killers and Werewolves will counterattack the Jailor if they are not Executed while in Jail. Serial Killers will wipe your last will after counterattacking you.
+
+While the Jailor is Overcharged, they may choose to Execute one or both players they Jailed. However, due to a bug attempting to Execute only one of them will Execute both jailed players.
+
+Although in-game considered to be a Powerful Attack, its an Unstoppable Attack that gets prevented by a Barrier meaning Jailor will bypass some forms of Defense.
+
+ Fast Mode
+
+ Fast Mode halves the amount of time players have for voting and discussion.
+
+ Fortify
+
+The Crusader can choose to Fortify a player at Night granting Powerful Defense.
+
+The Crusader will perform a Basic Attack against one random visitor of their target.
+
+ Four Horsemen
+
+ Four Horsemen allows up to 4 Apocalypse roles to spawn at once.
+
+ Apocalypse roles will start with no Defense and will share a Night chat.
+
+ Apocalypse members will appear Suspicious to a Sheriff.
+
+If there is only one Apocalypse member alive, none of these conditions will apply.
+
+ Gaze
+
+The Seer can compare two players factions to see if they are the same or different.
+
+The Enchanter can make a player seem like a Coven member.
+
+The Illusionist can make a Coven player seem like a Town member.
+
+ Soul Collector can make an non- Apocalypse player seem like an Apocalypse member.
+
+The Jester will seem like a Town member.
+
+The Seer cannot target themselves, revealed Town members, or the players they previously targeted.
+
+ Ghost Town
+
+ Ghost Town is a custom game modifier that allows dead players to continue participating in the game from the grave!
+
+Dead players may continue to vote for players from the grave with this custom modifier..
+
+Dead players' votes during discussion are anonymous, but are not anonymous when the verdict is revealed after the trial.
+
+Votes from when the dead player was alive will not carry over.
+
+ Good
+
+ Good roles are Town roles.
+
+Certain Evil roles can appear Good to certain investigative roles.
+
+The holder of the Necronomicon will appear as good to the Sheriff
+
+The Illusionist can make Coven members look Good to the Sheriff, Seer, Psychic and Investigator.
+
+The Enchanter can make non- Coven players not appear as Good to the Sheriff, Seer, Psychic and Investigator.
+
+ Neutral Killing, and Neutral Apocalypse roles will appear as Good to the Sheriff.
+
+Only Solo- Apocalypse members will appear as Good to the Sheriff and will instead appear Evil if they have teammates.
+
+ Jesters will appear as Good to the Sheriff, Seer and Investigator.
+
+ Town Traitors and solo Vampires will appear as Good to the Sheriff.
+
+ Guard
+
+The Bodyguard can choose to Guard a player at Night redirecting one harmful visit from their target to themself.*
+
+The Bodyguard will fight the player who was redirected dealing a Powerful Attack.
+
+ Shrouded players have a Harmful Visit resulting in you attacking them. This can result in you attacking yourself if you are Shrouded.
+
+ Guest List
+
+The Socialite can choose to add players to their Guest List.
+
+Players on the Socialites Guest List will be allowed to attend their Parties at Night.
+
+ Guilty
+
+ Guilty is one of the options available to players during judgement phase.
+
+Choosing this option with more players voting Guilty than Innocent will cause the player to be hanged.
+
+Hang
+
+You can hang a player by having a majority of players vote for them after the discussion phase, then more vote Guilty during the judgement phase.
+
+Players who are hanged will die, even if they have Invincible Defense.
+
+Some roles have special effects related to hanging. This includes Prosecutor, Jester and Executioner.
+
+Hangman
+
+The Hangman.
+
+The Hangman will come to town to punish certain Town members by publicly executing them. Currently no Town role has this mechanic.
+
+When the Feelin' Lucky? modifier is enabled, there's a chance that using a Jester Token will result in you being executed by the Hangman. This does not take the place of any trials remaining.
+
+Prior to Version R.1.4.00, The Hangman used to come to punish certain town members when they kill another Town member. This included the Vigilante, Deputy and Prosecutor.
+
+ Harmful Visit
+
+ Harmful Visits include any Attack and the Poisoners Poison ability.
+
+The Poison ability is no longer in the game.
+
+ Illusionists can make harmful coven visit seem non-harmful
+
+ Shroud can make their shrouded targets visit into a Harmful Visit.
+
+ Bodyguards and Trappers will protect players from Harmful Visits. 
+unless they possess an Astral visit.
+
+ Haunt
+
+The Jester can Haunt a player if they are hanged at the gallows
+
+Only players who voted Guilty, or Abstained can be Haunted.
+
+ Haunt bypasses Jail protection.
+
+If the Jester dies while Overcharged, visually they may select 2 players to Haunt but due to a bug only one of the players will be Haunted.
+
+ Hex
+
+ Hexed players will not know they have been Hexed.
+
+If the Hex Master is alive and all non- Coven players are Hexed the Hex Master will kill all Hexed players.
+
+The Necromancer can reanimate the Hex Master to cause all Hexes to go off killing all Hexed players if all non- Coven players are Hexed.
+
+ Hex Bomb will bypass all forms of Defense including Invincible Defense.
+
+ Hidden Roles
+
+ Hidden Roles prevents a players role from being revealed when they die!
+
+ Hungover
+
+When a player is Roleblocked by a Tavern Keeper, or Poisoner; or Controlled by a Witch, the following Night they will be Hungover.
+
+Players who are Hungover cannot be Roleblocked or Controlled that Night.
+
+ Ignite
+
+The Arsonist can Ignite all players they have Doused.
+
+ Ignite deals an Unstoppable Attack to all Doused players.
+
+ Illuminated
+
+ Illuminated players have been Revealed by a Witch, or a Potion Master.
+
+A Ritualist cannot perform a Blood Ritual on an Illuminated player.
+
+Players who have been previously Illuminated also cannot be the target of a Blood Ritual although this may be due to a bug.
+
+The Illuminated status effect will last for 2 Nights.
+
+If an Illuminated player publicly reveals their role, the status effect will vanish early.
+
+ Illusion
+
+ Illusioned targets will appear as Town to the Seer.
+
+ Illusioned targets will appear as innocent to the Sheriff.
+
+ Illusioned targets will appear as not the killer to the Investigator.
+
+ Illusioned targets will appear as Good to the Psychic.
+
+ Illusioned targets will appear as non-harmful visitors to the Bodyguards and Trappers.
+
+ Illusions are an Astral Visit.
+
+ Indoctrinate
+
+As a Cultist, Convert a Town member onto the Coven faction.
+
+The Converted Town member will be able to use the Necronomicon.
+
+ Indoctrinated Town members may wield the Necronomicon once all Coven members have died. If the Indoctrinated player is a Town Protective or Trickster, they will forego their original ability in order to attack with the Necronomicon.
+
+ Indoctrinated Town will be seen as Coven members to Town Investigative roles.
+
+ Indoctrinated Jailors cannot Attack a player with the Necronomicon and Execute a player in the same Night unless they are Overcharged.
+
+ Innocent
+
+ Innocent is one of the options available to players during the judgement phase.
+
+Choosing this option with more players voting Innocent than Guilty will cause the player to be acquitted!
+
+ Insomniac
+
+ Insomniac players cannot use abilities during the Day or Night.
+
+ Insomniac player can be cured by killing the Dreamweaver.
+
+ Intuit
+
+The Seer can compare two players factions to see if they are the same or different.
+
+The Enchanter can make a player seem like a Coven member.
+
+The Illusionist can make a Coven player seem like a Town member.
+
+ Soul Collector can make an non- Apocalypse player seem like an Apocalypse member.
+
+The Jester will seem like a Town member.
+
+The Seer cannot target themselves, revealed Town members, or the players they previously targeted.
+
+ Investigate
+
+ Investigating a player reveals the Crimes the player had committed.
+
+ Illusioned Coven members won't show any Crimes.
+
+ Enchanted players will show as Murder and Trespassing, depending on who they visited.
+
+ Reaped players will appear as a member of the Apocalypse when checking for Trespassing.
+
+ Invincible Defense
+
+Players with Invincible Defense cannot be killed at Night.
+
+A players Defense must be equal to or stronger than an attackers attack to survive.
+
+ Jail
+
+The Jailor can choose to Jail a player during the Day.
+
+Being in Jail causes most all direct visits to fail against the player, except Jester Haunts.
+
+ Jail can be bypassed by Astral Visits.
+
+Players cannot be Jailed two Nights in a row.
+
+ Jinx
+
+The Jinx is able to lie in wait outside a players house.
+
+The Jinx will attack one random non- Coven visitor.
+
+All players visiting the Jinx's target will have the Jinx's name revealed to them.
+
+ Knight
+
+The Monarch can Knight a player making their vote count for one extra.
+
+As long as a knight is alive the Monarch will have Basic Defense.
+
+The Monarch will only gain Basic Defense from players they Knighted and not players Knighted by other Monarchs or Jester Tokens.
+
+ Landlubber
+
+The Pirate must eliminate all 3 Landlubbers by any means.
+
+The Pirate will learn the roles of all 3 Landlubbers, but not who they are.
+
+The Pirate will have at least 1 Town Landlubber if possible. Neutral Evils and Cursed Souls cannot be Landlubbers.
+
+The Pirate can Scour a player learning if they are or aren't a Landlubber.
+
+The Pirate will leave the Town in victory if all three Landlubbers perish.
+
+ Load
+
+As a Vigilante, load an unloaded bullet into your gun.
+
+ Magic Mirror
+
+The Trickster can place Magic Mirrors at anyone they want at Night.
+
+When a Trickster successfully absorbs an attack via a Magic Mirror they may Unleash the Attack on another player on a future Night.
+
+The Trickster will absorb Rampage attacks.
+
+ Murder
+
+The Investigator can visit a player to see if they can find any crimes they committed
+
+If a player has committed Murder it could mean that they killed a player the Night they were investigated. It could also mean they were Enchanted by the Enchanter, or a Shroud Shrouded them.
+
+If a player hasn't have committed Murder it could mean that they didn't kill someone last Night. This doesn't mean that they aren't a killer though. A Coven killer could have been Illusioned by the Illusionist.
+
+ Necronomicon
+
+Possessing the Necronomicon grants the holder a Basic Attack.
+
+Some Coven roles get special abilities with the Necronomicon such as the Potion Master being granted a third potion option, and the Hex Master gaining Astral Visits.
+
+With the Necronomicon the holder appears not Suspicious to a Sheriff.
+
+The Coven may vote for who will receive the Necronomicon during the Day.
+
+ No Crime
+
+The Investigator can visit a player to see if they can find any evidence to two crimes committed.
+
+If a player has committed Murder it could mean that they killed a player the Night they were investigated. It could also mean they were Enchanted by the Enchanter, or a Shroud Shrouded them.
+
+If a player doesn't have committed Murder it could mean that they didn't kill someone last Night. This doesn't mean that they aren't a killer though. A Coven killer could have been Illusioned by the Illusionist.
+
+If a player has committed Trespassing it could mean they visited a player of an opposing faction at any point of the game. It could also mean either the target they visited or the Investigator's target visited were Enchanted by the Enchanter. Furthermore, it could have meant they are a non- Apocalypse member who was Reaped or visited a player that was Reaped.
+
+If a player didn't commit Trespassing it could mean that they didn't visit somebody last Night. This doesn't mean they aren't Evil though. A Coven role could have been Illusioned by the Illusionist. Moreover, if a Coven member visits an Enchanted players they wont be seen Trespassing. The same applies to Apocalypse members visiting Reaped players.
+
+ No Attack
+
+Players with No Attack cannot attack players directly.
+
+A player's attack must be stronger than their targets Defense to successfully kill them.
+
+ No Defense
+
+Players with no No Defense will die to any attack, unless protected.
+
+A players defense must be equal to or stronger than an attacker's attack to survive.
+
+ Perfect Town
+
+The Perfect Town modifier causes all Town members to die if a Town member is hanged!
+
+Not Sus
+
+Players who are "Not Sus" are players you don't suspect of being Evil.
+
+ Obsession
+
+The Admirer starts the game with a secret Obsession.
+
+The secret Obsession is a Town role that is not an Amnesiac, Town Outlier or Town Power role.
+
+If the Admirer finds their secret Obsession, they will gain the ability to Care for them.
+
+If the secret Obsession dies before the Admirer finds them, the Admirer gets a new alive player as their secret Obsession.
+
+ One Trial Per Day
+
+The One Trial Per Day modifier will limit the amount of trials held per day to one!
+
+ Overcharge
+
+While Overcharged you will be able to use your abilities twice in one day/night.
+
+An Overcharged Night ability must be input during both 19 second sections of the Night.
+
+Some Roles have special interactions while overcharged:
+
+ Mayor will gain 2 votes from Confidence instead of 1.
+
+ Executioner will take 2 trials instead of 1.
+
+ Marshal will add 2 extra executions during Tribunal instead of 1.
+
+More special interactions for being Overcharged can be seen [[Catalyst#Special Interactions with Overcharge]|Here]]
+
+ Party
+
+The Socialite can choose to throw a Party at a a players house at Night.
+
+Any players on the Socialite's Guest List will be allowed to attend the Party.
+
+Any player not on the Socialites Guest List will be rejected from entering the Party, causing their ability to fail.
+
+The Socialite cannot Party at the same person's house twice.
+
+ Pestilence
+
+When Pestilence, Horseman of the Apocalypse transforms, all Plague mutates into Pestilence.
+
+Players gain 1 stack of Pestilence per visit they receive.
+
+If a player visits Pestilence, Horseman of the Apocalypse they will get a Stack of Pestilence.
+
+If Pestilence, Horseman of the Apocalypse visits a player, then they will be raised to the max stacks of 3 Pestilence.
+
+When a player has 3 stacks of Pestilence they die.
+
+ Plague
+
+Infected players can spread the Plague on visiting or being visited.
+
+Infection cannot be protected against or removed.
+
+You will see who Infected players spread the Plague to during the Night.
+
+ Plunder
+
+As a Pirate deal a Basic Attack to your target.
+
+If you kill a player who isn't a Landlubber, you will lose all remaining ability charges.
+
+ Powerful Attack
+
+ Powerful Attacks will kill anyone with a Defense value of Basic or None.
+
+A players Attack must be stronger than their targets defense to successfully kill them.
+
+ Powerful Defense
+
+Players with Powerful Defense survive Powerful Attacks, even if they aren't protected.
+
+A player's defense must be equal to or stronger than an attackers Attack to survive.
+
+Currently no role has natural Powerful Defense and can only gain this level of Defense by either getting Barriered by a Cleric, Oracle, Potion Master, Admirer, or by being fortified by a Crusader.
+
+Players can also gain Powerful Defense using Jester Tokens.
+
+ Prosecute
+
+The Prosecutor can choose to force someone to the stand causing them to be hanged.
+
+ Prosecute does not take the place of any trials remaining.
+
+ Protect
+
+Several roles in the game have abilities that can save players from certain Attacks.
+
+The Potion Master, Cleric and Oracle roles have a barrier that will grant the player Powerful Defense for the Night.
+
+The Bodyguard role can Guard a player redirecting one attacker to themselves, and fighting the player dealing a Powerful Attack to the attacker.
+
+The Trapper role is able to Trap a player stopping one attacker from attacking their target dealing a Powerful Attack to the attacker.
+
+The Crusader role is able to Fortify a player granting them Powerful Defense for the Night, and attacking one random visitor.
+
+The Trickster is able to Magic Mirror a player absorbing one direct attack.
+
+The Admirer is able to Care at Night casting a Barrier on themselves and their Obsession.
+
+ Raise
+
+The Retributionist and Necromancer can reanimate players for a Night and use their Night ability on their second target.
+
+The Retributionist can only raise Town members.
+
+The Necromancer can raise any dead player with an usable ability.
+
+ Rampage
+
+Attacks affect not only the target, but also all players visiting the target.
+
+The roles Berserker (with two kills), War, Serial Killer (with Bloodlust) and Werewolf have this ability.
+
+The Veteran functionally Rampages at their own home when they Alert.
+
+ Rapid Mode
+
+Rapid Mode activates in 1v1 scenarios that are not a stalemate to help speed up the game.
+
+During Rapid Mode, the discussion phase, and voting phase will only last 10 seconds. The Night phase will only last 15 seconds.
+
+Rapid Mode triggers at the beginning of the Day.
+
+During Rapid Mode, the Potion Master will be unable to use their Barrier Potion.
+
+ Rebecca
+
+The friendly ghost of Salem, Rebecca is always willing to play games with those new to the afterlife to help them destress.
+
+ Rebecca will offer players ways to engage in different in mini games while dead, and can be challenged to these games as well!
+
+Players can challenge Rebecca to a "Death Roll" or a "Death Guess" where players may wager Ghost Points earned from dying, or from winning these minigames.
+
+ Remember
+
+The Amnesiac will try to Remember a Town role in the graveyard every Day.
+
+If there are multiple roles it will Remember a random one, prioritizing Town Powers first.
+
+ Amnesiacs may remember any role including non- Town roles as long as they are remembering the role of a Town-Aligned player.
+
+ Retrain
+
+The Archmage is able to unlock the full potential of the Necronomicon.
+
+The Archmage may transform another Coven member or themself into another Coven role.
+
+Other Coven roles can only be Retrained into Coven Deception and Coven Utility roles.
+
+The Archmage can retrain themself into any Coven role.
+
+ Reveal
+
+The Potion Master is able to use a reveal potion to Reveal a player's role to all the Coven members.
+
+All revealed players will be Illuminated for two Nights.
+
+ Revealed
+
+When the Mayor reveals everyone will be told who the Mayor is.
+
+A revealed Mayors vote counts for two extra votes.
+
+This keyword is currently outdated.
+
+The Mayor instead gains a vote at the start of each day after revealing.
+
+ Roleblock
+
+ Roleblocked players will not perform their Night ability the Night they are Roleblocked.
+
+Roles that can Roleblock players are the Poisoner, and the Tavern Keeper.
+
+Some roles are immune to Roleblocks, or perform different actions when Roleblocked.
+
+Players that get Roleblocked will be Hungover the following Night.
+
+ Scour
+
+As a Pirate check a player to see if they are a Landlubber or not.
+
+ Scrolls
+
+ Scrolls are a consumable item that are given to players in the new player experience track, earned through the cauldron, and can be purchased in the shop.
+
+There are 2 types of Scrolls, Blessed and Cursed.
+
+ Blessed Scrolls increase your chances of become a Role, Sub-Alignment or Faction by 10x.
+
+ Cursed Scrolls reduce your chances of becoming a role by 10x.
+
+See the Scrolls section in the "Introduction" tab of the settings menu for more information.
+
+ Scroll Slot
+
+ Scroll Slots are a feature that can be purchased in the shop that allows you to equip more Scrolls.
+
+You can have a maximum of 5 Blessed and 5 Cursed Scroll Slots.
+
+ Search
+
+The Sheriff can search a player's house for suspicious activity.
+
+The Enchanter and Soul Collector can make a player seem suspicious.
+
+The Illusionist can make a Coven member seem not suspicious.
+
+For the full investigative results of Sheriff click here.
+
+ Secret Killers
+
+ Secret Killers prevents the role of the killer from being revealed when a player is killed.
+
+ Sense
+
+The Wildling has heightened senses, allowing them to visit a player and see all players who visit them, and who they visit at Night.
+
+The Wildling has heightened sense also allows them to hear all whispers.
+
+ Shoot
+
+The Vigilante can choose to Shoot a player at Night dealing a Basic Attack.
+
+The Deputy can choose to Shoot a player during the day dealing a Basic Attack.
+
+The Veteran may Alert during the Night Shooting all players that visit them.
+
+ Shroud
+
+The Shroud can Shroud a player causing that player to deal a Basic Attack to the person they visit.
+
+ Shufflebox
+
+In Voice Chat Gamemodes as a Jester you will be required to walk 20-30 silly steps every Day.
+
+If you fail to do this, you will die of Boredom at Night.
+
+If you fail to do this and are executed at the gallows, your win will be invalidated.
+
+ Silence
+
+ Silenced players cannot speak during the day the Night after they are Silenced.
+
+ Silenced players cannot vote during discussion the Night after they are Silenced.
+
+ Silenced players can still vote Innocent or Guilty on a trial.
+
+ Slow Mode
+
+ Slow Mode doubles the amount of time players have for discussion and voting!
+
+ Smog
+
+The Poisoner may Smog someone's house, preventing all visitors abilities. All visitors will see an Unknown Obstacle.
+
+ Soul Swap
+
+The Cursed Soul can Astral Visit a player to swap souls with them.
+
+Swapping souls will swap your role and your targets role. You do not swap factions upon swapping roles.
+
+You have a 50% chance of swapping with your target.
+
+You have a 50% chance of swapping with another random player.
+
+This is a mandatory action. If you do not choose a player, a random player will be swapped with you.
+
+ Cursed Souls will have a 100% chance of swapping with their target if the Cursed Soul is not on the Town or Wandering Souls faction.
+
+You cannot swap with Neutral Evils or Vampires.
+
+ Stoned
+
+ Stoned players will not have their roles and last wills revealed.
+
+Everyone in the Stoning Medusa's faction will be able see Stoned players role and fraction, along with their will.
+
+ Stone Gaze
+
+ Stoned victims' will not have their roles and last wills revealed.
+
+Everyone in the Stoning Medusa's faction will be able see Stoned players role and fraction, along with their will.
+
+Sus
+
+Sus players are players you suspect of being Evil.
+
+Tome of Fate
+
+The Tome of Fate is a permanent feature that can be purchased in the shop that increases your chances of becoming a Role, Sub-Alignment or Faction of your choosing.
+
+The Increase from the Tome of Fate stacks with scrolls additively.
+
+The Tome of Fate can level up to increase the chance of you becoming a Role, Sub-Alignment, or Faction further.
+
+Consuming scrolls grants the Tome of Fate experience. The more scrolls are consumed the more experience is gained. Blessed scrolls give more experience than cursed scrolls.
+
+At max level the Tome of Fate grants 100x chance to become the Role, Sub-Alignment or Faction of your choosing.
+
+ Torment
+
+The Executioner's target is hanged they will Torment their target instead of them getting hung.
+
+There will be one less trials per day for the rest of the game upon an Executioner victory.
+
+If the Executioner was Overcharged there will be two less trials per day for the rest of the game upon an Executioner victory.
+
+ Town Elder
+
+ Town Elders are players who have opted in to help mentor new players
+
+To become a Town Elder you must have at least 50 games played.
+
+Town Elders earn extra rewards for being helpful to new players, but can incur harsher penalties if reported for abusive behavior.
+
+This mechanic has been removed from the game but the keyword still remains in the game.
+
+ Town Traitor
+
+In Town Traitor games a random Town member will be granted Town Traitor status.
+
+The Town Traitor wins with the Coven
+
+The Town Traitor can talk with the Coven at Night, and see what actions the Coven performs.
+
+If there is no other Coven members left alive, then the Town has 3 days to find the Town Traitor, or the Coven win.
+
+Unlike Indoctrinated players, the Town Traitor will be seen as a Town member to investigative abilities.
+
+Unlike Indoctrinated players, the Town Traitor will not be able to use the Necronomicon.
+
+ Track
+
+The Tracker can target a player to see who they visit at Night.
+
+The Tracker cannot see Astral visits, and will see his target stay at home.
+
+ Trap
+
+ Traps will trigger on players directly visiting the trapped player, but will only harm players with Harmful Visits.
+
+The owner of the Trap is told the roles of the players who visits a trapped target when it triggers.
+
+ Trespassing
+
+The Investigator can visit a player to see if they can find any Crimes they committed.
+
+If a player has committed Trespassing it could mean they visited a player of an opposing faction at any point of the game. It could also mean either the target they visited or the Investigator's target visited were Enchanted by the Enchanter. The same logic applies to Reaped players.
+
+If a player didn't commit Trespassing it could mean that they didn't visit somebody last Night. This doesn't mean they aren't Evil though. A Coven role could have been Illusioned by the Illusionist. It could also mean that they were a Coven member who only visited Enchanted players or an Apocalypse member who only visited Reaped players.
+
+ Tribunal
+
+The Marshal can start a Tribunal during the Voting phase.
+
+During a Tribunal players that are voted up will be executed without a chance to defend themselves.
+
+2 players can be executed during a Tribunal
+
+Players executed during a Tribunal will no longer have their role or will revealed until the Tribunal is over.
+
+If the Marshal is Overcharged when they start the Tribunal, up to 3 players may be executed.
+
+ Unique
+
+If a role is Unique that means there can only be one of them in the game.
+
+A Unique Town role can be remembered by an Amnesiac causing two of them to appear in a game, but only once that role has died.
+
+The Unique Town roles are the Town Power roles Jailor, Marshal, Mayor, Monarch, and Prosecutor.
+
+The Catalyst is also Unique.
+
+All Coven roles are Unique. 
+(with the exception of Covenite)
+
+The Unique Neutral roles are the Neutral Apocalypse roles Baker, Berserker, Plaguebearer, Soul Collector, along with the Pirate role. The Executioner role is also Unique
+
+ Unleash
+
+When a Trickster successfully absorbs an Attack via a Magic Mirror they may Unleash the absorbed Attack on another player in a future Night.
+
+ Unleashing deals the same Attack level as what the absorbed Attack is to the player.
+
+A Trickster may not place any more Magic Mirrors until they Unleash an absorbed Attack they have.
+
+If the Trickster absorbs a Rampage attack, the player they Unleash on will also be rampaged.
+
+If the Trickster absorbs the Convert of a Vampire, while Unleashing they will deal a Basic Attack instead of converting their target.
+
+ Unstoppable Attack
+
+ Unstoppable Attacks will kill anyone with a Defense value of Powerful, Basic, or None.
+
+A players Attack must be stronger than their target's Defense to successfully kill them.
+
+ Unknown Obstacle
+
+The Socialite, Jailor or Poisoner may cause abilities to fail towards other players.
+
+When your ability fails you will see that it failed due to an Unknown Obstacle.
+
+Vote For Alignment
+
+Vote For Alignment, or VFA, is a strategy used by players for a number of reasons, both Good and Evil.
+
+This strategy entails voting players up to a Trial to force them to claim their Alignment, or risk being hanged.
+
+ VIP
+
+In VIP games a random eligible Town member will be granted VIP status.
+
+The Town must protect the VIP at all costs.
+
+If the VIP dies the Town loses.
+
+If the VIP disconnects before dying, a new VIP will be designated if possible.
+
+The VIP cannot be the Admirer, Amnesiac, or Bodyguard.
+
+The Admirer can now be the VIP after its overhaul in Patch R1.5.00
+
+ Vision
+
+The Psychic can target a player to have a Vision that includes them.
+
+On odd Nights that vision will show their target, and one other player. One of them being Good.
+
+The Illusionist can make a coven member seem Good.
+
+On even Nights that vision will show their target, and two other players. one of them being Evil.
+
+The Enchanter can make a player seem Evil. The Soul Collector can also make Reaped players appear as Evil..
+
+Visit
+
+Many roles in the game visit players, or care about players Visiting other players.
+
+When a player targets another player with an ability it is likely that player will visit the targeted player.
+
+There are 3 types of visits.
+
+ Astral Visits are visits not seen by roles that cares about visits. This could be hidden from a Lookouts results, not dying to Veteran and more.
+
+ Harmful Visits are Visits that can trigger Traps, and Bodyguards causing them to attack the player. This includes attacks, shrouded players and the Poison ability from the Poisoner.
+
+ Non Harmful Visit are the standard Visit that most roles do. They can be seen by Lookouts, wont trigger Bodyguards or Traps, and will die to rampaging roles.
+
+Vote
+
+Players can vote another player up to the stand to defend themselves after the discussion phase of the game
+
+ Watch
+
+The Lookout can Watch a player a Night and see who visits them
+
+The Lookout cannot see Astral visits
+
+Unimplemented Keywords
+
+ Alter / Alterate
+
+The Enchanter may Alter a person who dies the same Night to make them appear as another Role and replace their Last Will with one they've written on their own.
+
+All Coven will know the Altered player's true role, but that player's original Last Will will be lost. 
+
+This ability can be used twice per game.
+
+ High Noon
+
+A Deputy may attempt to shoot a player during the day using High noon.
+
+If the player is Town-aligned or has at least Basic Defense, the Deputy will miss their shot.
+
+If the player is not Town-aligned and does not have Basic Defense, the Deputy will successfully shoot and kill their target.
+
+ Reap
+
+Each Night, the Soul Collector may choose someone to Reap, making them appear to be an Soul Collector when visiting.
+
+If a Reaped player dies, the counter of the Soul Collector increases by 1 soul. Once 7 souls have been collected, the Soul Collector becomes Death at the start of the next Day.
+
+Reaped players will appear as evil to Sheriffs, Psychics and Deputies.
+
+Reaped players will appear as a member of the Apocalypse to Seers and Investigators.
+
+Removed Keywords
+
+ | Name
+
+ | Description
+
+ | Removed/Reworked in
+
+ | Reason 
+
+ | Toxic Relationship
+
+ | 
+
+The Admirer can Propose to a player
+
+If the player Proposed to accepts, and they are not Town, then the Admirer will be in a Toxic Relationship, and be Silenced the next Day.
+
+ | Patch R.1.5.00 - 06/25/2025
+
+ | Admirer rework
+
+ | Proposal
+
+ | 
+
+The Admirer can Propose to a player.
+
+When the Night starts the player will be able to accept or decline the Proposal.
+
+If a Town role accepts you will be Lovers.
+
+If a non- Town role accepts you will be in a Toxic Relationship.
+
+ | Patch R.1.5.00 - 06/25/2025
+
+ | Admirer rework
+
+ | Lover
+
+ | 
+
+The Admirer can Propose to a player.
+
+If a Town player accepts Admirer's Proposal, then they become Lover, and both players roles are shown to each other.
+
+If you are killed, your Lover will also die, and vice versa. This does not apply to disconnects.
+
+ | Patch R.1.5.00 - 06/25/2025
+
+ | Admirer rework
+
+ | Bite
+
+ | 
+
+The Vampires can vote to Bite a player at Night.
+
+The player with the most votes against them will be Bit.
+
+If the player Bit is a Town member or a Jester then they will be Converted into a Vampire.
+
+The youngest Vampire is the Vampire that visits players to Bite them.
+
+ | Patch R.1.5.00 - 06/25/2025
+
+ | Vampire rework
+
+ | Blood
+
+ | 
+
+The Investigator can toggle between 2 abilities. Investigate, and Percept.
+
+The Investigator can use their Investigate ability to visit a player to see if they can find any Blood in their home.
+
+If a player has Blood in their home it could mean that they have attacked a player. It could also mean they were Enchanted by the Enchanter, or a Shroud Shrouded them.
+
+If a player doesn't have Blood it could mean that they haven't attacked anyone yet. This doesn't mean that they aren't a killer though. A Coven killer could have been Illusioned by the Illusionist.
+
+ | Patch R.1.4.00 - 12/10/2024
+
+ | Investigator rework
+
+ | No Blood
+
+ | 
+
+The Investigator can visit a player to see if they can find any Blood in their home.
+
+If a player has Blood in their home it could mean that they killed a player the Night they were investigated. It could also mean they were Enchanted by the Enchanter, or a Shroud Shrouded them.
+
+If a player doesn't have Blood it could mean they didn't kill somebody last Night. This doesn't mean they aren't a killer though. A Coven killer could have been Illusioned by the Illusionist.
+
+ | Patch R.1.4.00 - 12/10/2024
+
+ | Investigator rework
+
+ | Percept
+
+ | 
+
+The Investigator can toggle between 2 abilities. Investigate, and Percept.
+
+When the Investigator uses their Percept ability on a player they will see the roles of all the Evil players that visited them.
+
+Seems to also activate on Trackers, to prove against Werewolf claims.
+
+ | Patch R.1.4.00 - 12/10/2024
+
+ | Investigator rework
+
+ | Poison
+
+ | 
+
+Players who are Poisoned by the Poisoner will be dealt a Basic Attack, unless visited by a Cleric or a Potion Master.
+
+ | Patch R.1.4.00 - 12/10/2024
+
+ | Poisoner rework
+
+ | Taunt
+
+ | 
+
+The Trickster can Taunt a player at Night causing their target to Attack them if able.
+
+A Taunted player will not Attack the Trickster if the taunted player is Roleblocked.
+
+The Trickster will deal a Powerful Attack to Taunted players if they Attack the Trickster.
+
+ | Patch R.1.2.64 - 05/16/2024
+
+ | Trickster rework
+
+ | Empower
+
+ | 
+
+The Archmage is able to unlock the full potential of the Necronomicon.
+
+The Archmage can swap the Necronomicon's power between Defense, granting Basic Defense and Basic Attack or Offense, granting No Defense but a Powerful Attack and Roleblock Immunity.
+
+ | Patch R.1.2.64 - 05/16/2024
+
+ | Archmage rework
+
+ | Insane
+
+ | 
+
+ Insane players will target a random player with their abilities.
+
+ Insane players cannot use abilities during the Day.
+
+ Insane players will vote randomly on player on trial.
+
+ Insane players can be cured by killing the Dreamweaver.
+
+ | Patch R.1.2.64 - 05/16/2024
+
+ | Dreamweaver rework
+
+History
+
+Patch R.1.5.14 - 07/27/2026
+
+ Shufflebox keyword added.
+
+Patch R.1.5.05 - 09/16/2025
+
+ Search and Four Horsemen keyword updated to reflect new changes.
+
+Patch R.1.5.00 - 06/25/2025
+
+ Admire, Bestow, Drain, Indoctrinate, Obsession, Overcharge and Soul Swap keywords added.
+
+ Care, Convert and Astral Visit keywords changed to reflect new changes.
+
+ Proposal, Lover, Toxic Relationship and Bite keyword removed.
+
+Patch R.1.4.05 - 02/19/2025
+
+Fixed Blood Ritual Keyword stating Ritualist will be revealed upon a wrong guess.
+
+Patch R.1.4.00 - 12/10/2024
+
+Several new keywords added for new abilities. This includes: Aegis, Anon Players, Camouflage, Chatterbox, Crime, Four Horsemen, Illuminated, Landlubber, Murder, Necronomicon, No Crime, Plunder, Scour, Smog, Trespassing, Unleash and Unknown Obstacle.
+
+Several keywords removed to reflect new changes. This includes: Blood, No Blood, Percept and Poison.
+
+Several keywords changed to reflect new changes. This includes: Barrier, Bug, Doom, Dreamweave, Illusion, Investigate, Protect, Torment, Unique and VIP.
+
+Patch R.1.2.67 - 06/14/2024
+
+Updated Vision and Unique keyword.
+
+Patch R.1.2.66 - 05/30/2024
+
+ Unique keyword updated to say Deputy is a Unique role.
+
+Updated Vision keyword to account for the Psychic changes.
+
+Patch R.1.2.64 - 05/16/2024
+
+ Guest List and Party Keyword.*
+
+ Magic Mirror keyword added.*
+
+ Retrain keyword added.*
+
+ Insomniac keyword added.*
+
+Patch R.1.1.53 - 03/05/2024
+
+ Scrolls, Scroll Slot, Tome of Fate keywords added.
+
+Patch R.1.1.49 - 02/07/2024
+
+ Percept keyword added.
+
+The Investigate, Blood, and No Blood keywords have been updated.
+
+Patch R.1.1.46 - 01/16/2024
+
+Added Marshal to the Unique keyword.
+
+Removed mention of Pestilence from the Drink keyword as it no longer counterattacks role blockers.
+
+Patch R.1.1.45 - 01/16/2024
+
+Added Tribunal and Entertain keyword.
+
+Patch R.1.1.38 - 10/18/2023
+
+Added Blood, No Blood, Vote For Alignment, Town Elder and Claim keywords.
+
+Patch R.0.1.31 - 09/20/2023
+
+Fixed a grammar error in the Silence keyword.
+
+Added Unique Keyword.
+
+Patch B.0.1.15 - 07/21/2023
+
+Clarified that Amnesiac prioritizes remembering Town Power roles on the Remember keyword.
+
+Added Pestilence keyword that explains how the Pestilence disease mechanic works.
+
+Patch B.0.1.14 - 07/20/2023
+
+Updated VIP keyword to say that Amnesiac and Trickster may not become the VIP.
+
+Patch B.0.1.12 - 07/05/2023
+
+Updated Autopsy and Examine keywords to remove the lines saying Enchanter affects the Coroner.
+
+Patch B.0.1.7 - 06/20/2023
+
+Updated Search keyword to mention Apocalypse roles.
+
+ Rebecca, Build, Ghost Town and Rapid Mode keywords added.
+
+Patch B.0.1.5 - 06/06/2023
+
+ Taunt and Torment keywords added.
+
+Fixed a spelling error in the Enchant keyword.
+
+Patch 0.0.47 - 05/15/2023
+
+ Toxic Relationship and Care keywords added.
+
+Updated Proposal and Lovers keywords.
+
+ Silence keyword now mentions that players can't vote the day after being Silenced.
+
+Patch 0.0.39 - 04/21/2023
+
+ Sense, Empower, Reveal, Conjure, Jinx, Blood Ritual, Doom, Haunt, Ignite and Cautious keywords added.

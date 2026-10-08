@@ -1,0 +1,118 @@
+Neutral Killing (NK) is the alignment of evildoers who don't work for the Mafia nor the Coven, but only themselves. As the name suggests, they are all capable of killing at Night. Unique to this alignment, every one of its roles is a faction of their own, which means an Amnesiac can remember Werewolf or Juggernaut and give them the win when dead, although such a faction typically only has one member in competitive rounds. This doesn't make them any less threatening, however, as these roles are some of the most capable killers in the game. For example, the Werewolf can rampage at their target's house on Full Moon Nights, dealing a powerful attack to both the target and all visitors, excluding itself. All Neutral Killings have the ability to attack at least 2 players in one Night ( Serial Killer attacking role blockers and initial target, Werewolf and Juggernaut (after second kill) rampages, and Arsonist ignition). In addition to their stunning capacity to kill, all Neutral Killing roles have Basic Defense, making them a real headache for the Mafia and the Vampires, as the killers' insubordination cannot be rectified through "normal means".
+
+Because only one faction can win in each game and every faction aims to see all other faction members dead, Neutral Killing roles violently clash with Townies, the Mafia, the Coven, the Vampires, the Plaguebearer/ Pestilence and other Neutral Killing roles that are not of their own. For example, Serial Killers cannot win with Arsonists but can win with other Serial Killers. This also means they can only ever win with non-faction roles ( Neutral Evil, Neutral Benign and Pirate) and their own kind.
+
+Due to their "third party" or "outsider" nature, it is important for Neutral Killing to keep both the Townies and the Mafia/ Coven equally matched throughout the game, and try to keep others of their kind alive, such that when the dust is settled, other factions no longer have the means to oppose the killers. To further reward the killers' ability to maintain balance around the Town, they always win by default in stalemates. In a kingmaker situation (1 v 1 v 1), it is somewhat considered more "sportsmanlike" to side with a Neutral Killing role over a member of the Mafia or Coven due to the increased challenge the killer faces, such as being an alone faction.
+
+In most game modes, there will only be a single Neutral Killing role in play, and thus have a lower win rate than Town or Mafia. However, more may appear when a game with an Any slot has said slot become another Neutral Killing role. When this happens, the two Neutral Killings will most likely be opposing each other. However, in rare occasions, there could be two identical Neutral Killing roles in the game, in which case they will be a powerful force to be reckoned with. Rainbow Mode features more Neutral Killing roles than any other game mode (except some Custom Setups and sometimes All Any): The Arsonist and Serial Killer both appear twice among the Rainbow Mode role list, making more havoc and a higher win rate for the 2 Neutrals if they decide to work together. 
+
+Each Neutral Killing role can win with the following:
+
+Other Neutral Killings that share their role (e.g. Serial Killer and Serial Killer)
+
+All Neutral Benign (If an Amnesiac does not remember an opposing role)
+
+All Neutral Evil
+
+ Pirate
+
+ Neutral Killing[]
+
+ | Role Name
+
+ | Role Description
+
+ | Arsonist 
+
+ | Douse someone in gasoline each Night (Only Arsonists are notified about being Doused). Selecting yourself will ignite all targets from any Arsonist, dealing an Unstoppable Attack to them. Doused targets show up as Bodyguard, Godfather, Arsonist, or Crusader to an Investigator, and as an Arsonist to a Consigliere. Choosing no action at Night will clean any gasoline from you. You will passively Douse people who visit you.
+
+ | Juggernaut 
+
+ | 
+
+ | Coven Expansion exclusive.
+
+You may choose to Attack a player on Full Moon Nights, dealing a Powerful Attack. Each kill will grant you a new ability. You can power up three times. In order, you can gain the following abilities: " Attack every Night", "Rampage", then " Unstoppable Attack value (ignores Jail)".
+
+(Cannot be directly added in Custom.)
+
+ | Serial Killer 
+
+ | Choose to kill someone each night. If you are role blocked, you will Attack the role blocker in addition to your target. You can spare role blockers by choosing to be Cautious. When you kill the offending role blocker, their Last Wills will be covered in blood and cannot be read by anyone. You cannot be role blocked by Tavern Keepers or Bootleggers. Your Attack holds a Basic Attack value.
+
+ | 
+
+ | 
+
+ | Werewolf 
+
+ | Go on a rampage on every Full Moon Night. You will deal a Powerful Attack to your target and all visitors to your target. You can also choose to stay at home and deal a Powerful Attack to all those who visit you. If you are role blocked or jailed (and not executed), you will be forced to rampage at home or the Jailor's house. You will appear innocent to a Sheriff on non- Full Moon Nights.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

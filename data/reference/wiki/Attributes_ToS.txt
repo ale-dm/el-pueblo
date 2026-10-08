@@ -1,0 +1,2057 @@
+Roles may have attributes, altering the way how they are affected by other roles' abilities. Attributes are integral to gameplay. You can find a role's Attributes by looking at their card and reading the "Attributes" section.
+
+ Defense[]
+
+ Defense allows you to survive Attacks during the Night. You may start with Defense or be granted it by a protective role. Defense can be split into Basic Defense, Powerful Defense and Invincible Defense. If you Attack somebody with Defense, you will get the message "Your target's defense was too strong to kill.".
+
+ Basic Defense is a form of immunity which protects a character from being killed at Night from a Basic Attack. Roles with Basic Defense must be Hanged during the Day or killed at Night by roles who have Powerful or higher Attack strength.
+
+ Powerful Defense is an immunity which protects a player from being killed at Night from a Powerful or Basic Attack. Roles who are given Powerful Defense are unable to be killed at Night unless said person is dealt an Unstoppable Attack. Guardian Angel and Jailor is the only exception to this role, with the Guardian Angel being able to protect their target from being executed.
+
+The Invincible Defense cannot be killed at Night by any means. A Basic, Powerful, or Unstoppable Attack will not bypass this Defense. The only way to bypass this Defense is by Hanging said target during the Day.
+
+ | Role
+
+ | Basic Defense
+
+ | Powerful Defense
+
+ | Invincible Defense
+
+ | Bodyguard
+
+ | (Bulletproof vest)
+
+ | (Against 1 direct attacker)
+
+ | 
+
+ | Crusader
+
+ | 
+
+ | 
+
+ | 
+
+ | Doctor
+
+ | 
+
+ | 
+
+ | 
+
+ | Jailor
+
+ | 
+
+ | 
+
+ | 
+
+ | Trapper
+
+ | 
+
+ | (Against 1 direct attacker)
+
+ | 
+
+ | Vampire Hunter
+
+ | (Only against Vampires)
+
+ | 
+
+ | 
+
+ | Veteran
+
+ | (Alert)
+
+ | 
+
+ | 
+
+ | Godfather
+
+ | 
+
+ | 
+
+ | 
+
+ | Coven Leader
+
+ | (Necronomicon)
+
+ | 
+
+ | 
+
+ | Potion Master
+
+ | 
+
+ | 
+
+ | 
+
+ | Serial Killer
+
+ | 
+
+ | 
+
+ | 
+
+ | Arsonist
+
+ | 
+
+ | 
+
+ | 
+
+ | Werewolf
+
+ | 
+
+ | 
+
+ | 
+
+ | Juggernaut
+
+ | 
+
+ | 
+
+ | 
+
+ | Plaguebearer
+
+ | 
+
+ | 
+
+ | 
+
+ | Executioner
+
+ | 
+
+ | 
+
+ | 
+
+ | Witch
+
+ | (Lost upon being dealt a Basic Attack)
+
+ | 
+
+ | 
+
+ | Survivor
+
+ | (Bulletproof vest)
+
+ | 
+
+ | 
+
+ | Guardian Angel
+
+ | 
+
+ | 
+
+ | 
+
+ | Pestilence
+
+ | 
+
+ | 
+
+ | 
+
+ Attack[]
+
+ Attack allows you to kill players with a lower Defense than your Attack. Attack can be split into Basic Attack, Powerful Attack and Unstoppable Attack
+
+ Basic Attack allows you to kill players with No Defense. 
+
+ Powerful Attack allows you to kill players with either Basic Defense or No Defense.
+
+ Unstoppable Attack allows you to kill players with any Defense including Powerful except for Invincible
+
+ | Role
+
+ | Basic Attack
+
+ | Powerful Attack
+
+ | Unstoppable Attack
+
+ | Bodyguard
+
+ | 
+
+ | 
+
+ | 
+
+ | Crusader
+
+ | 
+
+ | 
+
+ | 
+
+ | Trapper
+
+ | 
+
+ | 
+
+ | 
+
+ | Vampire Hunter
+
+ | (Only against Vampires)
+
+ | 
+
+ | 
+
+ | Veteran
+
+ | 
+
+ | ( Alert)
+
+ | 
+
+ | Vigilante
+
+ | 
+
+ | 
+
+ | 
+
+ | Ambusher
+
+ | 
+
+ | 
+
+ | 
+
+ | Godfather
+
+ | 
+
+ | 
+
+ | 
+
+ | Mafioso
+
+ | 
+
+ | 
+
+ | 
+
+ | Medusa
+
+ | 
+
+ | 
+
+ | 
+
+ | Poisoner
+
+ | 
+
+ | ( Poison)
+
+ | 
+
+ | Arsonist
+
+ | 
+
+ | 
+
+ | (Igniting)
+
+ | Serial Killer
+
+ | 
+
+ | 
+
+ | 
+
+ | Werewolf
+
+ | 
+
+ | 
+
+ | 
+
+ | Juggernaut
+
+ | 
+
+ | (0-2 Kills)
+
+ | (3+ Kills)
+
+ | Pestilence
+
+ | 
+
+ | 
+
+ | 
+
+ | Pirate
+
+ | 
+
+ | (Plundering)
+
+ | 
+
+ | Jailor
+
+ | 
+
+ | 
+
+ | (Executing)
+
+ | Hex Master
+
+ | 
+
+ | 
+
+ | (Hex Bomb)
+
+ | Jester
+
+ | 
+
+ | 
+
+ | (Haunting)
+
+ | Live Die
+
+ | No Attack
+
+ | Basic Attack
+
+ | Powerful Attack
+
+ | Unstoppable Attack
+
+ | Hanging
+
+ | No Defense
+
+ | 
+ | 
+ | 
+ | 
+ | 
+
+ | Basic Defense
+
+ | 
+ | 
+ | 
+ | 
+ | 
+
+ | Powerful Defense
+
+ | 
+ | 
+ | 
+ | 
+ | 
+
+ | Invincible Defense
+
+ | 
+ | 
+ | 
+ | 
+ | 
+
+ | Guardian Angel Protection
+
+ | 
+ | 
+ | 
+ | 
+ | 
+
+Detailed death chart[]
+
+ | This section is a work in progress.
+
+Columns are for Attack, while rows are for Defense.
+
+ means the role will live after being inflicted with that Attack.
+
+ means the role will die after being inflicted with that Attack.
+
+ means the role cannot be attacked that way unless they are controlled.
+
+ means the role cannot be attacked that way.
+
+ | Attack vs Defense
+ | Bodyguard
+ | Trapper
+ | Jailor
+ | Veteran
+ | Hex Master (final Hex)
+ | Hex Master ( Necronomicon)
+ | Medusa (without Necronomicon)
+ | Medusa (with Necronomicon)
+ | Poisoner
+ | Arsonist
+ | Juggernaut (0-2 kills)
+ | Juggernaut (3 kills)
+ | Werewolf
+ | Pestilence
+ | Pirate
+ | Jester
+ | Ambusher
+ | Coven Leader
+ | Crusader
+ | Godfather
+ | Mafioso
+ | Necromancer (using Basic Attack)
+ | Necromancer (using Powerful Attack)
+ | Necromancer (using Unstoppable Attack)
+ | Potion Master
+ | Serial Killer
+ | Vampire
+ | Vampire Hunter
+ | Vigilante
+ | Retributionist (using Basic Attack)
+ | Retributionist (using Powerful Attack)
+ | Die guarding someone
+ | Die from guilt
+ | Broken heart
+ | Hanging
+ | Suicide
+
+ | Godfather
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Serial Killer
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Werewolf
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Godfather 
+
+ (ordering Mafioso)
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Veteran 
+
+ (on alert)
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Executioner
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Bodyguard 
+
+ (using their vest)
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Doctor 
+
+ (using their self heal)
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ Survivor 
+
+ (using their vest)
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Arsonist
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Plaguebearer
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Pestilence
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ Immunity[]
+
+Immunity refers to one of four types of special attributes held by many roles in the game. They will prevent certain abilities of having an effect. Each of these immunities is entirely beneficial to the character. The four kinds of immunities are Roleblock Immunity, Control Immunity, Night Immunity ( Defense), and Detection Immunity.
+
+ Detection Immunity applies to roles that "seem innocent" to the Sheriff that are not Townies. Detection Immunity can be bypassed by Lookouts (Excluding Disguised players), Trackers and Trappers.
+
+ Roleblock Immunity is a type of a immunity where roles are unaffected by role blocking. If a Bootlegger, Tavern Keeper, or Pirate role blocks any role block immune role, the role block will fail, and the role will still perform their action. When in jail, you are effectively super role blocked, even if you are role block immune. Jailors are partially role block immune, since they are only role blocked from executing and not jailing their target. Vampire Hunter, Arsonist, Werewolf and Hex Master are all partially role block immune since their passives will still be active when role blocked. 
+If any role with Roleblock Immunity is role blocked, they will receive the message: "Someone tried to role block you but you are immune!" 
+
+ Control Immunity is a type of immunity which allows a character to be unaffected by a Witch/ Coven Leader's attempt to Control them. However, they may still be the secondary target. If a Witch/ Coven Leader attempts to (or is forced to by a Transporter), their ability will fail and their target will be notified. Any role without a Night ability is unaffected by a Witch/ Coven Leader's Control, however some roles may be forced visit their target, such as a Werewolf on any non- Full Moon Night.
+
+ | Role
+
+ | Detection Immunity
+
+ | Roleblock Immunity
+
+ | Control Immunity
+
+ | Retributionist
+
+ | 
+
+ | 
+
+ | 
+
+ | Tavern Keeper
+
+ | 
+
+ | 
+
+ | 
+
+ | Transporter
+
+ | 
+
+ | 
+
+ | 
+
+ | Veteran
+
+ | 
+
+ | 
+
+ | 
+
+ | Godfather
+
+ | 
+
+ | 
+
+ | 
+
+ | Mafioso (Ordered by Godfather)
+
+ | 
+
+ | 
+
+ | 
+
+ | Disguised* Mafia member
+
+ | 
+
+ | 
+
+ | 
+
+ | Bootlegger
+
+ | 
+
+ | 
+
+ | 
+
+ | Coven member (With Necronomicon)
+
+ | 
+
+ | 
+
+ | 
+
+ | Coven Leader (Without Necronomicon)
+
+ | 
+
+ | 
+
+ | 
+
+ | Necromancer (Without Necronomicon)
+
+ | 
+
+ | 
+
+ | 
+
+ | Amnesiac
+
+ | 
+
+ | 
+
+ | 
+
+ | Survivor
+
+ | 
+
+ | 
+
+ | 
+
+ | Guardian Angel
+
+ | 
+
+ | 
+
+ | 
+
+ | Executioner
+
+ | 
+
+ | 
+
+ | 
+
+ | Jester
+
+ | 
+
+ | 
+
+ | 
+
+ | Witch
+
+ | 
+
+ | 
+
+ | 
+
+ | Arsonist
+
+ | 
+
+ | 
+
+ | 
+
+ | Serial Killer
+
+ | 
+
+ | 
+
+ | 
+
+ | Juggernaut
+
+ | 
+
+ | 
+
+ | 
+
+ | Werewolf (Non- Full Moon Night)
+
+ | 
+
+ | 
+
+ | 
+
+ | Pirate
+
+ | 
+
+ | 
+
+ | 
+
+ | Plaguebearer
+
+ | 
+
+ | 
+
+ | 
+
+ | Pestilence
+
+ | 
+
+ | 
+
+ | 
+
+ | Vampire
+
+ | 
+
+ | 
+
+ | 
+
+Visits[]
+
+Visits refer to targeting another players home during the Night. There are 3 main types of immunities, Non- Harmful Visits Harmful Visit, and Astral Visit.
+
+Non- Harmful Visit is a type of visit where you do not deal any Attacks towards your target and will trigger any mechanics that relies on you visiting a player.
+
+ Harmful Visit is a type of visit where you deal your target a Basic Attack or higher and will be attacked by any Bodyguards and Trappers protecting your target. This will also trigger any mechanic that relies on you visiting a player.
+
+ Astral Visits are a form of visit where you do not leave your house. This visit will not be seen by Lookouts, Trackers or Spies that are on your target, and will not trigger any mechanic that relies on you visiting a player.
+
+ | Role
+
+ | Astral Visit
+
+ | Harmful Visit
+
+ | Bodyguard*
+
+ | 
+
+ | 
+
+ | Crusader*
+
+ | 
+
+ | 
+
+ | Trapper*
+
+ | 
+
+ | 
+
+ | Vampire Hunter*
+
+ | 
+
+ | 
+
+ | Veteran*
+
+ | 
+
+ | 
+
+ | Vigilante
+
+ | 
+
+ | 
+
+ | Ambusher*
+
+ | 
+
+ | 
+
+ | Godfather (Without Mafioso)
+
+ | 
+
+ | 
+
+ | Mafioso
+
+ | 
+
+ | 
+
+ | Coven Leader ( Necronomicon)
+
+ | 
+
+ | 
+
+ | Hex Master ( Necronomicon)
+
+ | 
+
+ | 
+
+ | Medusa*
+
+ | 
+
+ | 
+
+ | Medusa ( Necronomicon)
+
+ | 
+
+ | 
+
+ | Necromancer ( Ghoul)
+
+ | 
+
+ | 
+
+ | Poisoner (Poisoning/ Necronomicon)
+
+ | 
+
+ | 
+
+ | Potion Master (Attack Potion)
+
+ | 
+
+ | 
+
+ | Amnesiac*
+
+ | 
+
+ | 
+
+ | Guardian Angel*
+
+ | 
+
+ | 
+
+ | Arsonist*
+
+ | 
+
+ | 
+
+ | Serial Killer*
+
+ | 
+
+ | 
+
+ | Juggernaut*
+
+ | 
+
+ | 
+
+ | Werewolf*
+
+ | 
+
+ | 
+
+ | Pestilence*
+
+ | 
+
+ | 
+
+ | Pirate (Plundering)
+
+ | 
+
+ | 
+
+ | Vampire
+
+ | 
+
+ | 
+
+Priority[]
+
+Priority determines which roles do their actions first in what order. Each role with a Night ability has a priority labeled 1 through 6, with 1 being the highest priority and 6 being the lowest. For example, if a Mafioso, which has a priority of 5, attacks a Veteran on alert, which has a priority of 1, the Veteran will kill the Mafioso and gain defense before the Mafioso can kill the Veteran because it has a higher priority. Other roles have priorities yet to be determined because of how long it takes for their ability to take effect. Only one role, the Executioner, has no ability, therefore, they have no priority.
+
+Note that abilities which take place during the Day or are selected in the Day will have higher priority than priority 1. Day abilities include a Jailor choosing who to jail, a Mayor revealing to the Town, a Pirate choosing who to plunder, and a dead Medium choosing who to seance the following night.
+
+ | Priority
+
+ | Roles
+
+ | 1 (Highest)
+
+ | 
+
+ Transporter
+
+ Veteran (on alert)
+
+ Vigilante (committing suicide)
+
+ Jester (haunting)
+
+ | 1
+
+ | 
+
+ Medium
+
+ Trapper
+
+ Retributionist
+
+ Ambusher
+
+ Pirate
+
+ Necromancer
+
+ | 2 (Highest)
+
+ | Tavern Keeper
+
+ Bootlegger
+
+ | 2
+
+ | Witch
+
+ Coven Leader
+
+ Guardian Angel
+
+ | 3
+
+ | Bodyguard
+
+ Crusader
+
+ Doctor
+
+ Tracker
+
+ Blackmailer 
+
+ Disguiser
+
+ Forger
+
+ Framer
+
+ Hypnotist
+
+ Janitor
+
+ Arsonist (dousing)
+
+ Survivor
+
+ Hex Master
+
+ Medusa (stoning upon visit)
+
+ Potion Master (healing)
+
+ | 4
+
+ | 
+
+ Investigator
+
+ Lookout
+
+ Psychic
+
+ Sheriff
+
+ Consigliere
+
+ Potion Master (investigating)
+
+ | 5
+
+ | Jailor (executing)
+
+ Vampire Hunter
+
+ Vigilante
+
+ Godfather
+
+ Mafioso
+
+ Arsonist (igniting)
+
+ Juggernaut
+
+ Pestilence
+
+ Plaguebearer
+
+ Serial Killer
+
+ Werewolf
+
+ Vampire
+
+ Poisoner (visiting)
+
+ Potion Master (attacking)
+
+ Medusa (visiting players to stone them)
+
+ | 6
+
+ | Spy
+
+ Amnesiac
+
+ Plaguebearer (becoming Pestilence)
+
+ Hex Master (final Attack)
+
+Special Attributes[]
+
+There are few attributes which aren't immunities. Below is a list of current special attributes.
+
+ | Role Name
+
+ | Special Attributes
+
+ | Spy
+
+ | Can see who the Mafia and Coven visit at Night.
+
+ | Vigilante
+
+ | Commits suicide the following Night if they kill a Town member.
+
+ | Medium
+
+ | Can speak with the dead at Night when alive, can speak with a player alive for one Night once when dead.
+
+ | Vampire Hunter
+
+ | Can read Vampire Chat at Night.
+
+Will Attack visiting Vampires.
+
+Will become Vigilante with 1 bullet if all Vampires are dead.
+
+ | Blackmailer
+
+ | Can read all whispers.
+
+ | Ambusher
+
+ | Will reveal their name to all visitors of their target.
+
+ | Mafioso
+
+ | Will become Godfather if the Godfather dies.
+
+ | Any member of the Mafia except Mafioso and Godfather
+
+ | Will become Mafioso if the last Mafia Killing role dies.
+
+ | All members of the Mafia
+
+ | Can read Mafia Chat at Night.
+
+ | Executioner
+
+ | Will become a Jester if their target dies at Night.
+
+ | Guardian Angel
+
+ | Will become a Survivor with no bulletproof vests if their target dies.
+
+ | Arsonist (when igniting)
+
+ | Will also ignite doused targets of other Arsonists.
+
+ | Juggernaut
+
+ | Gains up to 3 new abilities after each kill for 3 kills.
+
+ | Serial Killer
+
+ | Will Attack role blockers, and will Attack Jailor when jailed if they aren't executed, assuming they chose not to be cautious that night.
+
+ | Werewolf (during Full Moon nights)
+
+ | 
+
+Will Attack role blockers, and will Attack Jailor when jailed if they aren't executed.
+
+ | Pestilence
+
+ | Will Attack visitors, and will Attack Jailor when jailed even if they try to execute you.
+
+ | Plaguebearer
+
+ | Will become Pestilence when all other players are infected.
+
+ | Vampire
+
+ | Can read Vampire chat at Night.
+
+ | Coven Leader
+
+ | Receives the Necronomicon before every other Coven member.
+
+ | Medusa
+
+ | Receives the Necronomicon after every other Coven member.
+
+ | All members of the Coven
+
+ | Can read Coven Chat at Night.
+
+Can inherit the Necronomicon.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

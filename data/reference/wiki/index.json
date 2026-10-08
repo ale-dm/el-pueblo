@@ -1,0 +1,142 @@
+{
+ "Coven Evil": {
+  "file": "Coven_Evil.txt",
+  "chars": 6753,
+  "has_wikitext": true
+ },
+ "Mafia Deception": {
+  "file": "Mafia_Deception.txt",
+  "chars": 4589,
+  "has_wikitext": true
+ },
+ "Mafia Killing": {
+  "file": "Mafia_Killing.txt",
+  "chars": 5159,
+  "has_wikitext": true
+ },
+ "Mafia Support": {
+  "file": "Mafia_Support.txt",
+  "chars": 3893,
+  "has_wikitext": true
+ },
+ "Neutral Benign": {
+  "file": "Neutral_Benign.txt",
+  "chars": 4272,
+  "has_wikitext": true
+ },
+ "Neutral Chaos": {
+  "file": "Neutral_Chaos.txt",
+  "chars": 5671,
+  "has_wikitext": true
+ },
+ "Neutral Evil (ToS)": {
+  "file": "Neutral_Evil_ToS.txt",
+  "chars": 6115,
+  "has_wikitext": true
+ },
+ "Neutral Killing (ToS)": {
+  "file": "Neutral_Killing_ToS.txt",
+  "chars": 6038,
+  "has_wikitext": true
+ },
+ "Town Investigative (ToS)": {
+  "file": "Town_Investigative_ToS.txt",
+  "chars": 6194,
+  "has_wikitext": true
+ },
+ "Town Killing (ToS)": {
+  "file": "Town_Killing_ToS.txt",
+  "chars": 6693,
+  "has_wikitext": true
+ },
+ "Town Protective (ToS)": {
+  "file": "Town_Protective_ToS.txt",
+  "chars": 4809,
+  "has_wikitext": true
+ },
+ "Town Support (ToS)": {
+  "file": "Town_Support_ToS.txt",
+  "chars": 5096,
+  "has_wikitext": true
+ },
+ "Alignments (ToS)": {
+  "file": "Alignments_ToS.txt",
+  "chars": 3270,
+  "has_wikitext": true
+ },
+ "Attributes (ToS)": {
+  "file": "Attributes_ToS.txt",
+  "chars": 16494,
+  "has_wikitext": true
+ },
+ "Abilities (ToS)": {
+  "file": "Abilities_ToS.txt",
+  "chars": 18125,
+  "has_wikitext": true
+ },
+ "Roles (ToS)": {
+  "file": "Roles_ToS.txt",
+  "chars": 7941,
+  "has_wikitext": true
+ },
+ "Factions (ToS)": {
+  "file": "Factions_ToS.txt",
+  "chars": 12015,
+  "has_wikitext": true
+ },
+ "Neutral (ToS)": {
+  "file": "Neutral_ToS.txt",
+  "chars": 7848,
+  "has_wikitext": true
+ },
+ "Town (ToS)": {
+  "file": "Town_ToS.txt",
+  "chars": 14228,
+  "has_wikitext": true
+ },
+ "Mafia": {
+  "file": "Mafia.txt",
+  "chars": 36311,
+  "has_wikitext": true
+ },
+ "Coven (ToS)": {
+  "file": "Coven_ToS.txt",
+  "chars": 9854,
+  "has_wikitext": true
+ },
+ "Vampire (ToS)": {
+  "file": "Vampire_ToS.txt",
+  "chars": 39414,
+  "has_wikitext": true
+ },
+ "Unique Role": {
+  "file": "Unique_Role.txt",
+  "chars": 12355,
+  "has_wikitext": true
+ },
+ "Keywords": {
+  "file": "Keywords.txt",
+  "chars": 51884,
+  "has_wikitext": true
+ },
+ "Outlier": {
+  "file": "Outlier.txt",
+  "chars": 8092,
+  "has_wikitext": true
+ },
+ "Glossary of Abbreviations (ToS)": {
+  "file": "Glossary_of_Abbreviations_ToS.txt",
+  "chars": 16531,
+  "has_wikitext": true
+ },
+ "Phases": {
+  "file": "Phases.txt",
+  "chars": 8645,
+  "has_wikitext": true
+ },
+ "Death (state)": {
+  "file": "Death_state.txt",
+  "chars": 9708,
+  "has_wikitext": true
+ }
+}

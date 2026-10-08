@@ -1,0 +1,167 @@
+{
+ "source": "https://town-of-salem.fandom.com (Town of Salem Wiki, MediaWiki API)",
+ "scope": "Mafia (faction) + Town. Neutral y Coven/Vampire descartados en esta fase.",
+ "phases": {
+  "order": [
+   "Day (solo D1)",
+   "Discussion",
+   "Voting",
+   "Defense",
+   "Judgement",
+   "Last Words",
+   "Night"
+  ],
+  "seconds": {
+   "standard": {
+    "day_d1": 15,
+    "discussion": 45,
+    "voting": 30,
+    "defense": 20,
+    "judgement": 20,
+    "last_words": 7,
+    "night": 37
+   },
+   "rapid_tos1": {
+    "day_d1": 15,
+    "discussion": 15,
+    "voting": 30,
+    "defense": 20,
+    "judgement": 20,
+    "last_words": 7,
+    "night": 10
+   },
+   "rapid_tos2": {
+    "day_d1": null,
+    "discussion": 10,
+    "voting": 10,
+    "defense": 20,
+    "judgement": 20,
+    "last_words": 7,
+    "night": 15
+   },
+   "fast_mode_tos2": {
+    "day_d1": 15,
+    "discussion": 22,
+    "voting": 15,
+    "defense": 20,
+    "judgement": 20,
+    "last_words": 7,
+    "night": 40
+   }
+  },
+  "notes": [
+   "Defense, Judgement y Last Words solo ocurren si alguien va a juicio en Voting.",
+   "Un juicio exitoso (mayoría de culpables) pasa por Last Words y ahorca al jugador.",
+   "Se pueden hacer hasta 3 juicios por día; el tercero termina el Día.",
+   "Tribunal (Marshal): 60 s fijos, sin Defense ni Judgement; tras 2 ejecuciones o al acabar el Tribunal, se revelan roles y se pasa a Noche."
+  ]
+ },
+ "voting": {
+  "votes_required_formula": "ceil(vivos / 2)",
+  "examples": {
+   "15": 8,
+   "14": 7,
+   "13": 7,
+   "12": 6,
+   "11": 6,
+   "10": 5,
+   "9": 5,
+   "8": 4,
+   "7": 4,
+   "6": 3,
+   "5": 3,
+   "4": 2,
+   "3": 2
+  },
+  "notes": [
+   "Los jugadores desconectados cuentan como muertos en la votación (los silenciados no)."
+  ]
+ },
+ "modes_mafia_scope": [
+  {
+   "name": "Classic",
+   "players": 15,
+   "auto_start_at": 15,
+   "roles": [
+    "Sheriff",
+    "Lookout",
+    "Investigator",
+    "Jailor",
+    "Doctor",
+    "Tavern Keeper",
+    "Medium",
+    "Town Killing (slot)",
+    "Random Town (slot)",
+    "Godfather",
+    "Mafioso",
+    "Framer",
+    "Serial Killer",
+    "Executioner",
+    "Jester"
+   ],
+   "notes": "Casi todos los roles fijos; solo cambian Random Town y Town Killing."
+  },
+  {
+   "name": "Ranked Practice",
+   "players": 15,
+   "roles": [
+    "Jailor",
+    "Town Investigative x2",
+    "Town Protective",
+    "Random Town x5",
+    "Godfather",
+    "Mafioso",
+    "Mafia Support",
+    "Random Mafia",
+    "Neutral Evil",
+    "Neutral Killing"
+   ],
+   "notes": "Misma lista que Ranked. Se puede jugar en grupo."
+  },
+  {
+   "name": "Ranked",
+   "players": 15,
+   "roles_same_as": "Ranked Practice",
+   "notes": "Cola sin lobby, sin grupos, sin Scrolls, nicks anónimos. Requiere 50 partidas previas."
+  },
+  {
+   "name": "Rapid",
+   "players": 15,
+   "notes": "Tiempos de fase a la mitad (ver phases.rapid_tos1 / rapid_tos2)."
+  },
+  {
+   "name": "All Any",
+   "players": 15,
+   "roles": "15 slots Any, cualquiera de los 35 roles de Classic",
+   "notes": "Aleatorio. Pueden salir hasta 4 Mafia y 0 es posible."
+  },
+  {
+   "name": "Custom",
+   "players": "15 slots de rol",
+   "notes": "El host elige hasta 15 roles/bandos aleatorios; se aplican las restricciones de custom_host_rules."
+  }
+ ],
+ "custom_host_rules": [
+  "Debe haber al menos un rol que se oponga a otro.",
+  "No puede haber más de un rol Unique.",
+  "No puede haber más de cuatro Mafia o Vampiros.",
+  "No puede haber Vampire Hunter sin al menos un Vampiro.",
+  "No puede haber Executioner sin al menos un Townie que no sea Mayor o Jailor.",
+  "No puede haber Mafia sin Mafioso o Godfather.",
+  "No puede haber más de cuatro roles Any.",
+  "No puede haber más de seis de un mismo rol o alineamiento.",
+  "Si el host sale, un jugador aleatorio pasa a ser host; /repick con 7+ jugadores."
+ ],
+ "modifiers_sample": [
+  "All Outliers",
+  "Anomaly",
+  "Anon Players",
+  "Four Horsemen",
+  "No Scrolls",
+  "Election",
+  "Feelin' Lucky?",
+  "Ghost Town",
+  "Grace Period"
+ ],
+ "modifiers_note": "Hay 18 modificadores. Lista completa y descripciones en prose_Modifiers.txt."
+}

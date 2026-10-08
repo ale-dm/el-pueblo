@@ -1,0 +1,380 @@
+The Mafia are a faction of evildoers that serve as the primary enemy of the Town. All members have one common goal: to kill anyone that will not submit to the Mafia. Unlike the Town, the Mafia know who each other are from the beginning of the game. Every Mafia member has a unique function and unique attributes, much like the Town and Coven. However, there are a few major differences in numbers, since the Town primarily has multiple members at a time, while the Mafia can only have up to 4 members, similar to the Coven. Unlike the Coven however, the Mafia can pose themselves as another normal Townie much easier. Their main intention is to eliminate every faction opposed to them, such as the Coven, Vampires, most Neutrals, and the Town. Despite the overall advantage in numbers within the Town, the Mafia's ability to consistently kill and intercept them can quickly back them into a corner, diminish their numbers, and by redirecting or concealing information; use their own noose against them, murdering and hanging each Townie one-by-one, until they have the primary majority over everyone else, including the vote to hang.
+
+Unsurprisingly, many Townies will try to stand in their way. A suspicious Sheriff or Investigator can lead to their demise on the stand, and the Jailor or Vigilante won't hesitate to take them out with their ability to kill for the Town. Thus, the Mafia must kill off the Townies in the Night, while using their deception abilities to try and trick the Town during the Day. They must also be aware at all times, as the Town may outsmart them and reveal important information at any time, and end the Mafia in Days .
+
+ | Godfather and Mafioso nightly kill interactions 
+
+ | 
+
+ | Godfather picks a target
+
+ | Godfather does not pick target
+
+ | Godfather is controlled
+
+ | Godfather was roleblocked / No Godfather
+
+ | Mafioso picks a target
+
+ | Mafioso attacks Godfather's target
+
+ | Mafioso attacks their own target
+
+ | Mafioso attacks Godfather's controller's target
+
+ | Mafioso attacks their own target
+
+ | Mafioso does not pick target
+
+ | Mafioso attacks Godfather's target
+
+ | No attack
+
+ | Mafioso attacks Godfather's controller's target
+
+ | No attack
+
+ | Mafioso is controlled
+
+ | Mafioso attacks Godfather's target
+
+ | Mafioso attacks controller's target
+
+ | Mafioso attacks Godfather's controller's target
+
+ | Mafioso attacks controller's target
+
+ | Mafioso was roleblocked / No Mafioso
+
+ | Godfather attacks their own target
+
+ | No attack
+
+ | Godfather attacks controller's target
+
+ | No attack
+
+List of Mafia Roles[]
+
+ | Role Name
+
+ | Role Alignment/Category
+
+ | Role Description
+
+ | Ambusher 
+
+ | Mafia Killing
+
+ | Choose one person to lie in wait outside their house each Night. You will kill one random visitor. All visitors will know your name.
+
+ | Blackmailer 
+
+ | Mafia Support
+
+ | Choose one person each Night to blackmail. They are prevented from speaking, and on trial they can only say "I am blackmailed." once. You can also hear whispers.
+
+ | Bootlegger 
+
+ | Mafia Support
+
+ | Distract someone each Night. You prevent them from using their Night ability. Role blocking a Serial Killer that isn't Cautious or Werewolf on a Full Moon Night will force them to attack you.
+
+ | Consigliere 
+
+ | Mafia Support
+
+ | Check one person for their exact role each Night. Anyone that was doused or hexed will come up as an Arsonist or Hex Master respectively.
+
+ | Disguiser 
+
+ | Mafia Deception
+
+ | Choose a Mafia member to disguise as someone else each Night. Any Investigators checking the disguised player will see the results of the role you disguised them as. A Sheriff will see them as innocent/suspicious depending on who you disguised them as. A Lookout will see the person they are disguised as visit, instead of them. A Spy will not see their visit if they are disguised as a Townie. Disguises last for the Night up until the next Day.
+
+ | Forger 
+
+ | Mafia Deception
+
+ | Choose a person to rewrite their Last Will and Role at Night. If they are killed, your forgery will replace their Last Will and their Role. You have two forgeries.
+
+ | Framer 
+
+ | Mafia Deception
+
+ | Choose one person to frame each Night. A Sheriff will see the target as suspicious, and an Investigator will see them as a Framer, Vampire, Jester, or Hex Master. Frames last until the framed player is investigated.
+
+ | Hypnotist 
+
+ | Mafia Deception
+
+ | Choose a target to hypnotize each night. They will receive a false memory of your choosing at the end of the night.
+
+ | Janitor 
+
+ | Mafia Deception
+
+ | Choose a person to clean each Night. If they die, their Role and Last Will is hidden to the Town, and only you will know both. You have three Cleanings.
+
+ | Godfather 
+
+ | Mafia Killing
+
+ | Choose who to kill at Night. If a Mafioso is alive, they will attack the target for you. You have Basic Defense and will appear innocent to a Sheriff.
+
+ | Mafioso 
+
+ | Mafia Killing
+
+ | Choose a target to kill at Night. If there is a Godfather, anyone they pick overrides your decision. You will become the new Godfather if the current one is killed.
+
+ Kill capable Mafia Roles
+
+ Unique Mafia Roles
+
+Strategy[]
+
+General strategy[]
+
+You could put your name and role in your Last Will, along with other Mafia roles with names of people who aren't members of the Mafia. If you die, the Town might think you're throwing the game and hang someone who's innocent, helping the Mafia win. This strategy only works against extremely inexperienced players, so Classic Mode is recommended for this play to work.
+
+You may be reported for game-throwing, but it isn't as long as the names that are in your will are not Mafia.
+
+It is useful to talk a lot during the Day because usually members of the Mafia are very quiet. If you talk frequently, you draw attention, and people who draw attention have 'nothing to hide'.
+
+It is good to make up a role in advance in case you are asked or jailed:
+
+ Jailor: Try to be as convincing as possible: Depending on your performance, the Jailor might execute you on the spot. Also, the Jailor will typically execute Neutral roles, so acting like a Jester is a bad idea.
+
+ Spy: If there's no Disguiser and if you are able to, scramble your Last Will so the Spy won't catch you visiting the same people as the Mafia every Night so easily. You can also throw in other people who fit with your claim. For example, if you're a Blackmailer, put down somebody who didn't talk on a Day. If you're a Bootlegger, replace one of your targets with somebody else who claimed to be roleblocked, or act like you roleblocked a fellow Mafia member.
+
+ Investigator: The role you claim must match the investigation if the Investigator has already proven their role. So for example, as a Mafioso or Ambusher, claim to be a Vigilante or Veteran. Veteran is a better claim because if the Town believes you are a Vigilante, they may ask you to shoot known members of the Mafia (but, beware! The Veteran is a Unique Role, so if you claim it, you will be called out if a real Veteran exists). As a Bootlegger, claim to be an Tavern Keeper or Transporter. A Consigliere should pick Investigator or Tracker, a Blackmailer should claim to be a Spy or Guardian Angel (Remember to say who your target is). A Hypnotist should claim to be a Transporter or Tavern Keeper, a Forger should claim to be a Lookout, and a Janitor should claim to be a Medium or Trapper. Framers, Disguisers, and the Godfather are less obvious cases. Since the Framer's ability is to make other people appear as Framer/ Vampire/ Jester/ Hex Master, you can claim anything (This can also work if a Hex Master has been confirmed to be in the town). A Disguiser (or Disguised Mafia) can claim to be a Doctor or any other role depending on what they come up as, since that hints the second target's role. However, claiming Doctor itself can get you executed by a Jailor or hanged for suspect of being a Serial Killer or Potion Master. The Godfather is mixed, they can either claim a role and say they have been doused by an Arsonist, or they can claim to be a Bodyguard or Crusader, although these claims generally don't work.
+
+ Lookout: They will know you are able to visit if they watch you visit someone. In most cases, you can refer to the strategy for Investigators. As a Consigliere, Disguiser or Framer, you should definitely claim a visiting role which is not noticeable (e.g. targets will know if they are roleblocked and/or blackmailed, but not if they were investigated).
+
+ Sheriff: If you get found as suspicious; claim you might be framed, say you were transported or accuse the Sheriff of being an Executioner.
+
+ Tracker: If you suspect that you are being tracked as a Mafioso, simply don't act for that Night. They will see that you visited nobody, and will hopefully think you are innocent.
+
+ Psychic: If you are accused of coming up in an evil vision, claim a Town role and try to shift suspicion onto another person from the vision. Try to role block on an odd-numbered Night to reduce the risk of appearing twice in another vision (or blackmail them every Night). If you come up twice, however, say they are an Executioner or a fake Psychic as there aren't many ways to get out of this situation.
+
+Work to identify your allies.
+
+ Executioners want to hang a Townie, so it makes sense to support them; be careful about what you claim, since unlike them, you usually have to maintain plausibility even after their target is hanged and revealed as a Townie. If you do claim a Town Investigative role to support them, sometimes claiming to be a second Executioner with the same target after your lies are revealed can be helpful. You can identify Executioners by looking for people who seem to focus on accusing one target, especially if they accuse a non-member of the Mafia of being a member of the Mafia; however, be careful, since your Night-immune rivals like the Coven, Serial Killer, Werewolf, and Arsonist may sometimes pose as an Executioner to deflect attention. It's a good idea to try and get them hanged after they've hung their "target" or investigate them at Night, just in case.
+
+ Jesters want to be hanged, which wastes the Town's time and (assuming all the Mafia votes innocent for them) can kill a Townie, Coven or a possible Neutral role. You can identify Jesters by looking for people who make claims you know to be false, such as claiming they were attacked on a Night you were roleblocked. It's best not to kill Jesters; they can distract the Town, Neutral Killing, and other evil rivals.
+
+ Witches win with you, but can be very dangerous if they're targeting blindly; making contact with them is very important. Witches often claim to be a Lookout; other evil roles often do as well, but either way, it's a waste of time to attack them unless they are really a Lookout. You don't usually need to tell witches you are mafia, but by not telling the town you were witched, they may be more likely to help you later. Additionally, since Witches win with all evil roles and need to last to the end, it can sometimes be worth just calling on Witches to identify themselves if doing so will result in you having a majority.
+
+ Survivors want to survive, if you identify them, you may try to whisper and convince them that the Mafia has a better chance of winning than the Town. In return, you can promise them the Mafia won't attack said Survivor. In the best case, the Survivor will help you hang the Town, the Coven or Neutral Killing roles in the late game, resulting in you having a majority.
+
+ Amnesiacs want to remember a role. Amnesiacs are always a double-edged sword; they can be an enemy or an ally to the Mafia. If you know who they are, keep them alive for the time being. If they remember themselves as a dead Mafia member, Pirate, Neutral Benign, or Neutral Evil, they can become a quick ally. If they become a Townie or Coven, you can take them out swiftly. Worst case scenario is if they become a Neutral Killing or Plaguebearer, but by then your team can work a claim against them to get them hanged.
+
+ Guardian Angels: The Guardian Angel seeks to ensure that their target survives until the end of the game. If the Guardian Angel has one of the Mafia as their target, then you can whisper them to strike a deal. The Mafia will leave them alone or even defend them if they are accused, and in return, the Guardian Angel works with you and helps to defend their target, who is one of your teammates. This also works if the Guardian Angel has any Survivors, Neutral Evil roles or a Pirate as their target, although it does depend on whether the neutral target of the Guardian Angel is willing to side with the Mafia. However, If the Guardian Angel has a Town member, Coven member or a member of the Vampires as their target, you should eliminate them, as they are defending one of your enemies.
+
+ Pirates: The Pirate seeks to plunder two players. If you can identify who the Pirate is, you can whisper them, asking them not to plunder any of the Mafia, and in return, the Mafia will not attack them at Night. You could also try to appease the Pirate if they become a Kingmaker. You could use the fact that the Mafia left them alone all game and did not out them or attack them in order to try and get them to vote with you. Also, note that the Pirate may side with another faction over the Mafia. If they publicly announce that they are helping a faction other than yours during the Day, try to get them killed as soon as possible, either by murdering them at Night or convincing the Town to hang the Pirate as they can kill Townies and as such must be eliminated.
+
+Dealing with a Jailor:
+
+The Jailor is the most powerful Town role, and can single-handedly cost you the game if not dealt with, especially if you lack a Godfather and Mafioso combo - in that case, having your killer jailed will result in no Mafia kill the next Day, usually getting them executed or paralyzing the entire Mafia. Therefore it is vital to identify and kill the Jailor as quickly as possible.
+
+Unless the Town screws up or you have a Consigliere, it may be very difficult to identify the Jailor directly. However, you can identify who is not the Jailor, and narrow your attacks down to people on that list to increase your chances of killing them.
+
+Sometimes, a Jailor will reveal Day 1 and ask for Town Protective roles and Lookouts to stay on them. In this case, it is very important to kill off the Town Protectives. Doctors waste you a Night by undoing your kill, the Trapper, Bodyguard, and Crusader can get you killed (as well as preventing the Jailor's death), and a Lookout can out you as the Mafia's primary killing role. A Blackmailer can give you targets to kill/role block to vanquish the Jailor's protections. An Ambusher can assist in killing off the Town Protectives, but can also be easily outed if there's more than 1 visitor. For Lookouts, you can either have a Disguiser disguise you or (provided there's no Spy) claim that a Disguiser disguised the killer as you.
+
+Keep track of anyone who announces that they were jailed; it's extremely unlikely that the Jailor would lie about this (since whoever they really jailed would either call them out or need to know their identity), so you can usually scratch them off the list of possible Jailors. People who talk to the Jailor during the Day are probably not the Jailor, either, but a few Jailors might lie this way to deflect evil attention.
+
+Keep track of other evils, likely Jesters and Executioners, and anyone else who generally don't seem to be helping the Town. They're probably not the Jailor, either.
+
+Keep track of anyone whose role is known, either via Consigliere or some other source. Before attacking a known non- Jailor Townie, consider whether it's more important to kill them or to find the Jailor - you might be better off focusing on unknown people instead.
+
+The Consigliere should also follow these instructions to increase their chances of identifying the Jailor as quickly as possible.
+
+It's generally a bad idea to press the Jailor for their identity when jailed. Even if you've convinced them you're a Town Protective, Jailors will find it suspicious - and even if they do tell you their role, if you've claimed Town Protective, killing them will out that as a lie when their will pops up. You may, however, be able to tell them to signal you when they trust you with some secret code word or phrase, like "shrimp".
+
+Dealing with Evil Rivals.
+
+ Serial Killer: As the Serial Killer is an "every- Night" killer, it makes it easier to play as. If you find the Serial Killer early-on in a match, keep them alive for a bit, as your common enemy is the Town. If they start killing Mafia, it is late game, or you are in a struggle, it's best to out them, or, in serious situations, try getting them to attack your Godfather (who has Basic Defense) if one is available. Claiming Sheriff and finding them as suspicious is also a good claim.
+
+ Arsonist: Arsonists have the power of dousing undetected, which can move onto your Mafia team. If you have a Godfather, he is useless against the Arsonist by himself. If you manage to find the Arsonist, it's best to out them as soon as possible or even better have a Bootlegger roleblock them, since some of your Mafia friends or you may be doused.
+
+ Werewolf: Dealing with a Werewolf can be a large struggle since it kills all its visitors, which can include your fellow members of the Mafia. If you find them through ways of their Defense value being higher than the Mafioso/ Godfather's Attack value or a Consigliere, it's best to out them as soon as possible, especially during late game. You can also claim you are Sheriff and say they are suspicious during Full Moon.
+
+ Vampire: Depending on the Game Mode, Vampires can be either a large, common threat or a small threat capable of being brought down. Vampires can be a problem, however, due to the fact they can spread undetected and kill all your Mafia members besides the Godfather. Finding Vampires and killing them can improve your team's survival. If there is a known Vampire Hunter, without killing them or revealing your identity, you should try teaming up with them to kill any possible Vampires. Vampires can also be used to distract the Town or trick them into hanging confirmed Townies if there is suspicion they have been converted.
+
+ Coven: The Coven will be your major contenders in the battle for supremacy over the Town. The best strategy for the Mafia is to remove them as quickly as possible after identifying them, but you may try to let someone else kill (or just simply hang) the Medusa as she will turn your fellow members or you into stone. However, if you have a Bootlegger, you can roleblock the Medusa, and the Mafioso/ Godfather can easily kill her. If the Consigliere found a member of the Coven (except the Hex Master who might have hexed other roles), it's better for the Mafia Killing to kill them unless the Coven Leader has the Necronomicon, in which case you need to hang them.
+
+ Plaguebearer: The Plaguebearer is initially not a major concern for the Mafia as they cannot directly kill your teammates, and it will take them a long time to infect everyone. If you discover their identity in the game's early stages, consider leaving them alone whilst you focus on your more powerful rivals at the start, such as the Town, the Coven, and any Vampires. However, if the Plaguebearer goes undetected for a long period of time, you run the risk that he will transform into Pestilence. If Pestilence emerges, and you cannot quickly find out who it is, the Mafia are doomed. Therefore, if you discover the identity of the Plaguebearer in the middle to late game stages, or if you discover the identity of the Pestilence, you should out them immediately as by then they pose a serious threat.
+
+ Juggernaut: The Juggernaut is especially dangerous throughout the game, and only poses more and more of a threat the longer they survive and the more kills they earn. While you cannot kill them directly, a Bootlegger can permanently shut them down at any time and give you time to find a majority to hang them. However, keep in mind no Juggernaut will want to be constantly roleblocked throughout the game, and the Town can reveal your identities early on if they are not kept in check as well. Sometimes taking the risk for the Juggernaut to kill off enough Townies at the cost of your own Mafia members may be needed in order to hang them and secure your own victory.
+
+During the Day[]
+
+If one of the members of the Mafia is being hanged and you cannot prevent it, vote guilty to avoid suspicion of being Mafia. This will also allow you to point out anyone who abstained or voted innocent as possible Mafia.
+
+If you recognize that an Executioner is trying to hang someone, and the hang vote comes, then vote innocent. This will make it seem more like you're a Townie. This has the potential downside of the Executioner siding against you, however. If the other killing roles, like Serial Killer, are dead, and the Town mob votes someone and you are sure they will vote guilty, then vote guilty as well (unless the Mafia vote would override guilty).
+
+It is important to avoid hanging a known Serial Killer too soon. He can help you double the deaths of Townies, as well as double your chances of killing any dangerous Townies. Try to find out who they are (by noting the people with Defense) but do not reveal it too soon. Towards the end, if many members of the Mafia are alive and you know who the Serial Killer is, you can hang them. Otherwise, if you are confident you can win without them, write down in the Death Note that their Defense value is higher than your Attack value and kill someone else. The Death Note will be visible to the Town and since both the Town and the Mafia want the Serial Killer dead, it is very likely that the Town will vote them up.
+
+Remember however to play along with the Town. Try to behave the same way most Townies do, so as not to stick out. If for example, many Town members are ignoring a Last Will that says a specific other player is the Serial Killer, try not to draw too much attention while pointing them in that direction. This is especially true with your own Death Notes. If you use the Death Note to reveal sensitive information to the Town, don't start shouting about it the next Day in the chat. It will make the Townies suspect you as the writer of that note.
+
+It is very important to hang all the Neutral Killing roles especially if there are 4 members of the Mafia because the Serial Killer and Werewolf can be a big threat while the Arsonist might burn the whole Mafia.
+
+Sometimes, enough members of the Mafia will stay alive that you have the majority, possibly including a Witch or other Neutral. If the Town has no Vigilante, Jailor, or Mayor left alive, you can easily reveal yourself during the Day and hang the remaining Townies one by one (without wasting time with Veterans, Town Protective, or dangerous Town Support roles).
+
+One of you pretends to be the Sheriff. If someone is immune to your attack, then say that they are Neutral Killing. If they are, then you will receive trust from the Town, and won't have to worry about getting hanged. Remember that the Executioner, Werewolf, Juggernaut, Plaguebearer/ Pestilence, and Arsonist are also immune. If you think you've identified the Werewolf, you can accuse them after a Full Moon Night, but you have to use the right accusation or the Town may grow suspicious. Another danger here is that whoever you attacked, they'll know they were hit by the Mafia, and will likely say so on the stand, which could get you hung the next Night (or even immediately if the Town cares more about hanging the Mafia than an immune role), which is why having a Consigliere search for them is advisable.
+
+Try to get the Jester hanged for an extra kill that Night. Just make sure the other members of the Mafia vote innocent.
+
+Sometimes, you'll find out that hanging your own teammate is the only way out. This happens when an Tavern Keeper (or Jailor) keeps role blocking the only Mafia Killing role that the Mafia has, but the votes are not enough to hang them during the Day. To avoid a draw, you might be forced to contribute to the voting and hanging them.
+
+Example: Player A, Player B, and Player C are confirmed members of Mafia and the Tavern Keeper has role blocked Player A for two days and since then, there were no Mafia kills. Since nobody is getting hanged, and the Tavern Keeper will keep role blocking Player A since they are a confirmed Godfather/ Mafioso, hang them. This will make one of your teammates get promoted to a Mafioso and the Tavern Keeper will not be sure on who to role block anymore. This can only buy you some time since the Tavern Keeper could be lucky and role block the new Mafioso, but sometimes it needs to be done to avoid a stalemate.
+
+One risky strategy is to pretend to be an Executioner or Jester and accuse a fellow member of the Mafia, but with some flaw in your accusation (for instance, claiming to be an Investigator and saying that they came up as Mafia, rather than listing an investigative result that an Investigator would receive). This can accomplish several valuable things; if the Town believes you're an Executioner, they may assume your target is a Townie , whereas if they believe you're a Jester, they may ignore you. Even better, if your target later dies and is revealed as a Mafia, you can use your accusation to say that you're a "confirmed" Town Investigative, which may get some Townies to listen to you despite your 'mistakes' earlier on.
+
+This is risky, though, since you're calling attention to two members of the Mafia and could get shot by a Vigilante, executed by a Jailor, or hanged by a Jester-unwary Town for making a bad accusation; alternatively, the Town might not notice the flaw in your accusation and hang the accused member of the Mafia anyway.
+
+If during the Day, you seem absolutely certain to be hanged, and a Jailor is still alive, consider claiming Jailor. This should only be done when you feel absolutely certain you'll be hanged otherwise since it usually guarantees your execution by the real Jailor the next Night; you can often be caught out if people ask who you jailed. But it has several advantages that can benefit the surviving members of the Mafia:
+
+ Townies often reflexively vote innocent on Jailor claims, giving the real Jailor a chance to deal with them; because Jailor is unique and the real Jailor can execute fake claims in this manner, even transparently false Jailor claims can sometimes make the Town pause due to the sheer rarity of people claiming it falsely. And if the Town does let the real Jailor handle it, this forces them to waste a Night and an execution dealing with you, which could have otherwise been spent elsewhere. If you have a Bootlegger or Witch on your side, they can even make a guess at the real Jailor to save your life.
+
+If you do survive to the Night and get jailed, tell the Jailor that you are a Veteran trying to bait. Depending on the evidence against you, it may not be sufficient to save your life, but it's the most plausible explanation for why a Townie would falsely claim Jailor.
+
+Sometimes, the real Jailor might reveal to counter-claim you, exposing them to the Mafia.
+
+Since the Jailor is such a powerful claim, you can sometimes push to successfully hang your main accuser; this also tends to make it more likely that the real Jailor will speak out, exposing themselves.
+
+In All Any, the Jailor might not even be present, allowing you to claim them safely; since the claim is still so risky, many Townies will reflexively accept it regardless of the evidence against you.
+
+Do not do this if you are the sole Mafia Killing role since it will leave the Mafia unable to kill that Night; or if you're the last surviving Mafia member overall, since there won't be anyone to benefit from your sacrifice.
+
+At Night[]
+
+Choosing a target to kill[]
+
+If someone is being accused of being Mafia and they are not, not killing them will waste the Town's time investigating them at Night or questioning them during the Day. On the other hand, killing them may redirect suspicion to the accuser. Even better, killing their accuser may increase suspicion on them; however, it risks wasting one of your kills hitting an Executioner or Jester.
+
+If you have someone trying to hang you, don't kill them too soon. It would be too obvious. However, if you wait too long, then you might get hanged because you let that person convince the Town to hang you. Additionally, if they're a genuine Investigator or Sheriff, it might be better for you to simply bite the bullet and kill them as soon as possible even if it gets one of you hung rather than leaving them alive to potentially discover the rest of the Mafia.
+
+If there is a Jailor, you can sometimes choose not to kill anyone: it will seem like the jailed person is the Godfather or Mafioso. Note that there are other possibilities for this, such as hitting a target with Basic Defense
+
+Additionally, a strategy that sometimes works early game is by not killing at all, and having the Random Mafia visit, assuming that there is a Random Mafia at all. If there is a Spy, it would make it look like the person the Random Mafia visited was immune.
+
+Try killing the person who is least expected to be killed. If someone says, "I'm an Investigator/ Sheriff/ Doctor/or any Town role in fact", Don't kill them. The Lookout might catch you doing it; the Doctor might heal them; they may be a Veteran trying to lure you in, and so on; the Bodyguard, Crusader, or Trapper might protect them which can result in your death; the Transporter might have Transported them.
+
+The Mafia benefits by having a complacent or distracted Town. Therefore, you should generally avoid killing people who obviously seem to be wasting the Town's time with false accusations, off-topic arguments and so on. Often, they'll turn out to be Jesters or Executioners anyway. Conversely, it's often a good idea to kill people who seem too competent or directed.
+
+If you get accused and people vote for you, but they don't manage to get you up to the stand, it can be dangerous to kill your accuser; but people are less likely to notice if you kill the voters.
+
+The Town, the Coven and Vampires are the biggest threat to the Mafia. Try focusing on eliminating them first unless Neutral Killing and/or Pestilences gets in the way.
+
+The Jailor is the most dangerous member of the Town, so you should make it a priority to find them. One way to go about this is to skip anyone who you know isn't the Jailor - if you eliminate your fellow Mafia, plus anyone who has claimed another role, plus anyone who has been seen visiting or otherwise identified as a non- Jailor by investigators, there usually aren't many options left in the late game. For this reason, it's often also worth skipping people identified by your Consiglieres unless it is someone you absolutely must kill immediately.
+
+Using the chat[]
+
+The Mafia's greatest strength is knowing their allies and being able to talk to them privately at Night. If someone in the Mafia is being accused of being Mafia, you can team up with the other Mafia to invent "proof" that they are innocent; e.g. claiming that you role blocked your Godfather or Mafioso, have been Healed by a member of the Mafia, having Transported them, etc. This will cause the remaining Townies to be unsure who is lying, giving you time (or possibly hanging a Townie) until the Town does not have the numbers to hang you anymore. However, this must be done with care, since if your story falls apart, you might all get revealed. If you don't feel you can defend a fellow member of the Mafia successfully, hang them anyways so you don't seem suspicious to the rest of the Town.
+
+If you die and the Medium is still alive, then tell them the names of people who are Mafia (but really aren't). Since you can still see the Mafia log when you're dead, check first to see who the Mafia is going to kill, and call other people as Mafia. But advanced and experienced players are harder to trick, as they don't trust the Mafia. If you name someone as Mafia but then they die, and it's revealed they are Town, then the Medium will likely not believe you if you give out false information again.
+
+You may have better luck falsely telling them that someone is a Coven member or Neutral Killing role; you can claim that they're immune or that your Consigliere identified them. A Medium is more likely to believe you on this because it would make sense for you to reveal enemies that are shared between the Mafia and the Town.
+
+What is recommended to do while in jail if you are the only Mafia Killing role:
+
+If the Jailor jails you, and you are the only killing role in your team ( Mafioso or Godfather) then you are in trouble. When the next Day comes and the Jailor sees that the Mafia hasn't killed, they will jail you again and again, and even execute you if they have the power to do so. The Jailor will likely call you out the following Day. When jailed, do your usual role claim, and then, at the very beginning of the Day, say, "I was in jail and someone tried to attack me." This might only buy you an extra Day (since the Jailor will jail you again just to double check) but you might make the Town think you are not the Godfather/ Mafioso. Another member of the Mafia can also cover for you (by saying, "Thanks, Doctor.", by claiming to be a Survivor who blocked an attack with their bulletproof vest, sending a protect message as a Hypnotist and so on), which may be more likely to be believed; but this is dangerous, since you're exposing another member of the Mafia to suspicion, and if there's clearly only one Doctor when you claim to have been healed, then they'll know you're lying.
+
+Trivia[]
+
+Prior to Version 1.3.0, the Mafia could start the game with 5 or more members on their team.
+
+However, during the offseason between Season 4 and 5 of Ranked, one of the experimental role lists included 5 Mafia members.
+
+It is still possible to have 5+ Mafia members, with the help of Amnesiacs.
+
+Prior to Version 1.5.0.3431, the Mafia could not be killed by a bite from a Vampire.
+
+Prior to Version 2.0.0.6537, the Spy could read Mafia chat during the Night. This was removed due to it giving the Town too much of an edge against the Mafia.
+
+Prior to Version 3.3.0, the Hypnotist and the Ambusher were only accessible in the Coven Expansion DLC add-on of the game.
+
+Currently, the Mafia is the only faction with all roles available in Classic Town of Salem.
+
+The Mafia is the only faction whose killing roles deal only Basic Attacks.
+
+The Godfather is the only non- Neutral role that has permanent Basic Defense.
+
+The Mafia is the only faction without a protective role.
+
+Although the Hypnotist can produce a protect message, they cannot actually prevent someone from dying.
+
+In Town Traitor however, a Town Protective is possible.
+
+The Mafia and Coven are similar: both have multiple diverse roles, both can talk to each other at Night, both know each other's identities, both die from Vampire bites, both seek a majority in the trials, both are main evil-doers and both collude to destroy the Town. They have very different strategies though.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

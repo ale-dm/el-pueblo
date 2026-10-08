@@ -1,0 +1,110 @@
+Town Protective (TP) is the alignment of protective roles that are sided with the Townies. Their main function is to protect other members of the Town- either by sacrificing themselves to kill an evil role, killing the attacker, or preventing a Townie from death via healing.
+
+The existence of this alignment is crucial in setting the evil-doers back by posing a threat, protecting important Town members such as the Mayor or Jailor, and turning every Night into a battle of wits among the protective roles and the evil-doers, such as the Mafia or Serial Killer. It is important for roles of this alignment to anticipate the victim of each Night and understand the risk in not protecting obvious options, like any confirmed Town role, especially roles such as the Jailor or Mayor. Currently, only four roles exist in this alignment: Doctor, Bodyguard, Crusader, and Trapper. In the classic version, only the Bodyguard and Doctor are available to play.
+
+Some Town Protective roles also have the ability to save themselves once every game. These two roles are Bodyguard and Doctor. This makes killing these roles difficult even if their identity has been compromised. However, you must use them wisely, as you only have one chance. If wasted, you may be killed later on. As for other Town Protective roles, you will have to get other Town Protectives on you to be able to keep doing your job.
+
+Generally, protecting the most obvious confirmed Town is the best option. While it is true that evils are unlikely to kill the most obvious target for protection, in almost all cases the cost of losing that important Town isn't worth taking the risk. (But beware, a Vampire might bite them, because a strategy for them is to bite the most confirmed Town so everyone else won't suspect them) Just be careful of having too many Town Protectives on one person, when more people could be protected.
+However, the Mayor cannot be healed by the Doctor once revealed. If the Doctor is the only Town Protective, you will be an easy target to kill.
+
+Finding another Town Protective and protecting each other is a valuable tactic. Such example is a Doctor- Bodyguard combo. If the Bodyguard is attacked, the Doctor will heal them. If the Doctor is attacked, the Bodyguard will fight off the attacker, and the Doctor will save them from death.
+However, this takes away Town Protectives from other roles that are important, like a Jailor. Make sure to stay on the most important Townie, as they have more chance of bringing your team closer to winning.
+
+ Town Protective[]
+
+ | Role Name
+
+ | Role Description
+
+ | Bodyguard 
+
+ | Protect one person from being attacked each Night. You will deal a Powerful Attack to one direct attacker and give your target Powerful Defense against that attack, but will deal a Powerful Attack to yourself in the process. You may choose to put on a single bulletproof vest during the Night, granting yourself Basic Defense.
+
+ | Crusader 
+
+ | Protect a player during the Night giving them Powerful Defense and dealing a Basic Attack to a random visitor during the night. Your attacks will not kill a Vampire but it will stop them from biting or converting.
+
+ | Coven Expansion exclusive.
+
+ | Doctor 
+
+ | Heal a player during the night granting them Powerful Defense and curing Poison. You cannot heal a revealed Mayor
+
+ | Trapper 
+
+ | You may set up a trap at another player's house. Traps take one Day to build, and you can tear them down by selecting yourself. Anyone visiting your target will trigger the trap, revealing the roles of the visitors, and you will deal a Powerful Attack to one direct attacker and grant your target Powerful Defense against that attack.
+
+ | Coven Expansion exclusive.
+
+Trivia[]
+
+The Transporter was once mistaken as a Town Protective due to the typo on the Transporter's role card.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

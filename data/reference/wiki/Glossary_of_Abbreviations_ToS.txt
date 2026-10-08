@@ -1,0 +1,565 @@
+In order to find evildoers efficiently, the Town relies heavily on communication between players. Since the discussion phases are fairly short, and a lot of evidence may need to be considered in these short spans of time, abbreviations and acronyms of various references can be quite helpful. Here is a list of common abbreviations and their meanings. This list is only a small summary of all possible variations; many others can and will be used.
+
+This list is intended for the English locale. However, certain terminology may still be used outside of it.
+
+Roles[]
+
+ Town[]
+
+ | Role/Alignment
+
+ | Abbreviation(s)
+
+ | Random Town
+
+ | RT
+
+ | Town Investigative
+
+ | TI
+
+ | Town Killing
+
+ | TK
+
+ | Town Protective
+
+ | TP
+
+ | Town Support
+
+ | TS
+
+ | Bodyguard
+
+ | BG
+
+ | Crusader
+
+ | Crus
+
+ | Doctor
+
+ | Doc
+
+ | Investigator
+
+ | Invest
+
+ | Inv
+
+ | Lookout
+
+ | LO
+
+ | Medium
+
+ | Med
+
+ | Psychic
+
+ | Psy
+
+ | Psych
+
+ | Retributionist
+
+ | Ret
+
+ | Retri
+
+ | Sheriff
+
+ | Sher
+
+ | Tavern Keeper
+
+ | Tav
+
+ | Esc
+
+ | TK
+
+ | Transporter
+
+ | Trans
+
+ | Trapper
+
+ | Trap
+
+ | Vampire Hunter
+
+ | VH
+
+ | Veteran
+
+ | Vet
+
+ | Vigilante
+
+ | Vig
+
+ | Vigi
+
+ Mafia[]
+
+ | Role/Alignment
+
+ | Abbreviation(s)
+
+ | Mafia
+
+ | Maf
+
+ | Mafs
+
+ | Random Mafia
+
+ | RM
+
+ | Mafia Deception
+
+ | MD
+
+ | Mafia Killing
+
+ | MK
+
+ | Mafia Support
+
+ | MS
+
+ | Ambusher
+
+ | Amb
+
+ | Blackmailer
+
+ | BM
+
+ | BMer
+
+ | Consort
+
+ | Cons
+
+ | Consigliere
+
+ | Consig
+
+ | Disguiser
+
+ | Disg
+
+ | Forger
+
+ | Forg
+
+ | Godfather
+
+ | GF
+
+ | Hypnotist
+
+ | Hypno
+
+ | Janitor
+
+ | Jan
+
+ | Jani
+
+ | Mafioso
+
+ | Maf
+
+ | MK
+
+ Coven[]
+
+ | Role/Alignment
+
+ | Abbreviation(s)
+
+ | Random Coven
+
+ | RC
+
+ | Coven Evil
+
+ | CE
+
+ | Coven Leader
+
+ | CL
+
+ | Hex Master
+
+ | HM
+
+ | Hex
+
+ | Medusa
+
+ | Medu
+
+ | Dusa
+
+ | Necromancer
+
+ | Necro
+
+ | Poisoner
+
+ | Pois
+
+ | Potion Master
+
+ | PM
+
+ | PMer
+
+ Neutral[]
+
+ | Role/Alignment
+
+ | Abbreviation(s)
+
+ | Neutral
+
+ | Neut
+
+ | Random Neutral
+
+ | RN
+
+ | Neutral Killing
+
+ | NK
+
+ | Neutral Evil
+
+ | NE
+
+ | Neutral Benign
+
+ | NB
+
+ | Neutral Chaos
+
+ | NC
+
+ | Amnesiac
+
+ | Amne
+
+ | Arsonist
+
+ | Arso
+
+ | Executioner
+
+ | Exe
+
+ | Guardian Angel
+
+ | GA
+
+ | Jester
+
+ | Jest
+
+ | Juggernaut
+
+ | Jugg
+
+ | Plaguebearer
+
+ | PB
+
+ | Plague
+
+ | Serial Killer
+
+ | SK
+
+ | Survivor
+
+ | Surv
+
+ | Werewolf
+
+ | WW
+
+ | Vampire
+
+ | Vamp
+
+ | Pestilence
+
+ | Pest
+
+ | Pesti
+
+Action Slang[]
+
+Alert / Alt - Referring to a Veteran's Alert ability.
+
+Atk - Attack
+
+Atkd / Atk'd - Referring to the given player claiming they were attacked, usually followed by a claim that they were healed by a Doctor or saved by another Town Protective role.
+
+B - Referring to a Spy's Bug ability. Common in Spy Last Wills.
+
+BMd / BM'd / BMed / BM - Blackmailed. Not to be confused with the Blackmailer abbreviation.
+
+CV - (Only in the Coven Expansion) Coven Visited; common in Spy Last Wills.
+
+Def - Defense.
+
+Exe - Referring to the Jailor's Execute ability. Not to be confused with the Executioner abbreviation.
+
+GAHS - Good At Hiding Secrets, a reference to Detection Immunity.
+
+Healed / Protected / TP'd - Saved by Town Protective.
+
+Hypnoed - Hypnotized. Usually used when a person receives a message that would be impossible without a Hypnotist (a Roleblocked message while still receiving Town Investigative results.
+
+Immune - When somebody's Defense is too high to be killed. This originated in the old Night-immunity system used 2017 and prior.
+
+Invest - Investigated. Often used to mean Investigator.
+
+Invested / Invd - Investigated.
+
+Jailed - Used by players and Jailor to inform Town who was Jailed.
+
+NV - Used by either a Tracker or Lookout to indicate a lack of visits.
+
+MV - Mafia Visited; common in Spy Last Wills.
+
+Random Shoot / RDM - A random kill, usually referring to a Vigilante shooting at random.
+
+RB / RBed / RBd / RB'd - Roleblocked.
+
+Rev / Reveal - Used when players ask a Mayor claim to reveal.
+
+Selfed - Doctor or Bodyguard protected themselves with a self-heal. May also refer to a role targeting themselves.
+
+TT - Town Traitor/ Town Traitor
+
+Transed / TPd / TPed / TP'd - Transported Not to be confused with the Transporter abbreviation.
+
+Vested - Survivor or Bodyguard protected themselves with a vest.
+
+W - Whisper.
+
+Witched - Controlled by a Witch or Coven Leader.
+
+Show by Action[]
+
+Cure that player / Doc on the player / Doc on - (Only in the Coven Expansion) When somebody has been Poisoned, a Doctor should cure that player's Poison.
+
+Post Will - When a player claims a role that should have a Last Will (like Psychic, Lookout, or Sheriff), and have not posted their Last Will in the chat. Posting their Last Will can make this player less suspicious to the Town.
+
+Reveal or Die - When a player is suspected of being either an evil role said player will be put on trial. If they do not reveal themselves, the said player will be hanged. This is commonly used when they claimed to be a Mayor, as Mayors can reveal themselves and therefore confirm themselves to the Town by pressing "Reveal".
+
+Vig shoot player - Asking a Vigilante to shoot someone. Mainly used if an assumed evil is almost hanged, but sometimes used by Vigilantes to signal who they’re going to shoot.
+
+Jailor exe player - Asking a Jailor to jail and Execute someone. Mainly used if an assumed evil is almost hanged.
+
+Vote to Confirm - When a Mayor votes to confirm that they have not been bitten by a Vampire. However, this could get an innocent Townie put on the stand if the voting requirement is low enough.
+
+Another less risky variation on this is that a player attempts to whisper to the Mayor, as a true revealed Mayor cannot send or receive whispers.
+
+Voting and canceling your vote many times- This is the sign for being blackmailed. Note: This won't work for a revealed Mayor if 3 or fewer votes are required to put someone on trial, as a Mayor's vote counts as 3 votes, and it may lead other Townies to actually hangedsaid player. Members of the Mafia can also use this to a certain player to indicate that the player needs to be acted upon by a member of the Mafia, but this is rarely used.
+
+Discussion Slang[]
+
+# for # / #f# - Refers to the number of players that contradict each other, usually dealt with by Hanging one player and dealing with the others based on their role. For example, if a Sheriff and Lookout both accuse the same player (for being "suspicious" and for visiting a dead player), it would be a 2f1, which means that if the target is guilty, the Sheriff and Lookout are now trusted, and if the target is innocent, the Sheriff and Lookout are both guilty, and vice versa. The most common form of this is 1f1.
+
+# v # / #v# - Refers to the number of players left alive in each faction. A "4 v 4" would be 4 evils versus 4 Townies. Typically, numbers are named at the point where evil roles equal Town roles and it is thus safer for evil roles not to vote.
+
+AA - All Any.
+
+BMG - BlankMediaGames.
+
+Book / Necro - Sometimes used as a term for the Necronomicon. Not to be confused with the Necromancer abbreviation.
+
+Bussing - When a member of the Mafia claims a Town Investigative role and calls out and pushes to hangedone of their own members to seem to be a "confirmed Townie".
+
+CAA - (Only in the Coven Expansion) Coven All Any.
+
+CC - Counterclaim. This is used when one player claims a role, but another player claims to have the same role (or another role of the same alignment).
+
+Claim - The action of someone saying their role (true or not) in the chat.
+
+Confirmed/Conf - When someone is undoubtedly a certain role or faction, such as a revealed Mayor. Often used as a synonym for trust.
+
+D# - Day# - Analogous to N#; rarely used as most events happen at Night, often used by Survivors usually only the Mayor uses this, but it's also rare for that to happen. Extremely common in reports. (Example: I told you that I am a Sheriff since D2 ( Day 2).)
+
+DB - Digital Bandidos.
+
+DN - Death Note.
+
+Framing - The act of an evil role throwing suspicion on a Town role (e.g. by using Death Notes). Not to be confused with the Framer's ability.
+
+Gui - Sometimes used during the Judgement phase as an abbreviation for "Guilty".
+
+GY - Graveyard.
+
+Hard CC - A counterclaim where one player claims to be a Unique Role, but another player also claims to be that same role, meaning one of the two claims has to be fake. (Example: A player claims Veteran, but you hard CC Veteran and claim that the other player is lying.)
+
+Inno - Innocent. Also used to tell the other players to vote innocent on a player.
+
+Jest a Joke - Since Jester's abbreviation is "Jest", some players replace the word "Just" with it as a pun. Commonly said by Jesters when hanged. There is also a Lobby Icon named "Jest A Prank".
+
+Jest is Best - Also commonly said by Jesters when hanged. Sometimes also used by people when they get hanged and pretend to be a Jester as a joke.
+
+Mass Role Call - When everyone starts to claim their roles in an attempt to find the last evil role. (Normally just called "Role Call")
+
+Maj - Majority. Used to tell when the alive factions have a player ratio of 1:1 or higher. For example, if three Mafia members and two Townies are the last players alive, it is Maf maj ( Mafia majority).
+
+MP - Merit Points.
+
+N# - Night# - Analogous to D#; commonly used in a Last Will or Death Note. (Example: I healed John Proctor N1 ( Night 1).)
+
+NA - Not Attacked (sometimes used by Bodyguards and Doctors or even Survivors in their Last Will to show that they were not attacked that Night). Also can mean "Not applicable".
+
+NS - Not Suspicious; Common in Sheriff Last Wills.
+
+NV - No visits; Common in Lookout and Tracker Last Wills.
+
+Random Hang / RL - Voting or Hanging somebody with little or no proof.
+
+Reghunt / Reghunting / Reghunter - Regular hunt / Regular hunting / Regular hunter; a player that is purposefully targeting other players that use the same name every game (regulars) for reasons outside of the current game. Admitting to doing this may get you punished for breaking the rules.
+
+RP - Ranked Practice (Classic/Coven). Can also refer to role-playing depending on the context.
+
+Scum - Someone with an evil role, generally used in the same ways as "Sus".
+
+Slow on #/Slow Town - The vote target takes a long time to be voted up during voting. Usually players claim that this means the target is a member of the Mafia or Coven.
+
+Soft Claiming - The action of a player hinting their role. For example, a player that is whispering with another player on Day 1, resulting in them getting watched over on Night 1, would imply that they are soft claiming Guardian Angel.
+
+Sus / Susp - Suspicious.
+
+TiS / TIS - Traitors in Salem.
+
+ToS / TOS - Town of Salem. Can also mean "Terms of Service" depending on the context.
+
+TP - From most to least common: Town Protective, Transporter, Town Points, Town Power.
+
+TP/LO/(Tav/Spy) on me - Town Protective and Lookout on me (sometimes with Tavern Keeper and Spy). Usually said by players who want protection, such as after a Sheriff successfully accuses and hanges a member of the Mafia, after a Mayor reveals, or after a Townie confirms themselves as a dangerous role, especially Jailor.
+
+TT - Town Traitor/ Town Traitor Used in the Town Traitor/ Town Traitor game mode of the same name where one Townie is on the side of the Mafia/ Coven. Can refer to the Traitor themselves or the game mode itself depending on the context. Also can be used in other modes to refer to a Townie making a bad play, such as a Jailor Executing a Townie.
+
+VB - Visited By; common in Lookout Last Wills.
+
+V - Visited; common in Tracker Last Wills.
+
+VFR - Vote For Roles. This is when a confirmed Townie (often, but it is possible to be started by a non-confirmed Townie), usually a Mayor, votes everyone up just to get their roles.
+
+Will / LW - Last Will.
+
+Retired Abbreviations[]
+
+Res / Rev / Ret / Rez - Resurrect/Revive. ( Retributionist no longer brings someone back to life.)
+
+Remember/Revive/Res someone tonight - When somebody claims Amnesiac/ Retributionist. If they do not remember or revive a role, they will be hanged. ( Retributionist no longer brings someone back to life.)
+
+AFAIK - As far as I know.
+
+LyLo - A "hangedor Lose" Day, if the Town doesn't hangedan evil role today, they will lose.
+
+MyLo - A "Mishang and Lose" Day, similar to LyLo.
+
+NoHang / NL - Don't hangedanyone today.
+
+TR - Trial Rating. Relates to the number of reports a player has voted correctly on in the Trial System.
+
+Freelo - Refers to the award of Elo after an easy game; so easy it is basically free. ( Ranked is rarely played anymore.)
+
+Dub - Used as a slang term for victory (e.g. "Easy dub").
+
+POG - Play of the game; used when a player exhibits extreme skill.
+
+Purr - A slang term used to indicate excitement and/or approval. It also signifies finality.
+
+F - Used to show respect for somebody, such as an Amnesiac dying before remembering what role they were or a Survivor, Jester, or Medium dying on the first Night.
+
+Miscellaneous[]
+
+These are abbreviations you will encounter anywhere on the internet or multiplayer games.
+
+AFK - Away From Keyboard (can be used to signal a player that isn't active, and not just away from their keyboard).
+
+AKA - Also known as.
+
+Carry - Referring to someone who won the game for their faction. They "carried" all the other members of the faction to victory. Similar to MVP.
+
+DC / DC'D - Disconnected (left the game).
+
+EZ - Easy (Mostly said when someone wins a game easily or when somebody is gloating).
+
+GG / GGs / GGWP - Good Game / Good Game, Well Played (amicable thing to say at the end of a game, or a way to say that the game is over, and there is nothing that can change the outcome).
+
+GJ - Good Job (Mostly said when a Townie successfully kills/hanges a member of the Mafia or a Neutral Killing).
+
+GL - Good Luck (amicable thing to say at the start of a game).
+
+GLHF - Good Luck, Have Fun (amicable thing to say at the start of a game).
+
+GTG - Got to go (indicating that they will leave or be idle).
+
+HF - Have Fun (amicable thing to say at the start of a game).
+
+IDC - I don't care.
+
+IDK - I don't know.
+
+IDR - I don't remember.
+
+IG - "I guess" or "In-game" depending on the context.
+
+IGN - In-game name.
+
+IIRC - If I recall correctly.
+
+IMO - In my opinion.
+
+inb4 - In Before. Used to essentially say something before anyone else, or make an outlandish/unlikely prediction. For example, after Hanging someone that gives Mafia majority in Ranked with a dead Vigilante, someone could say "inb4 Random Town Veteran."
+
+Meta - Most Effective Team Available. The metagame, or the current top strategies. Used when discussing tactics players may use, for example, "You know, claiming to be an Executioner is the new Godfather meta." Often times used sarcastically or in a joking way.
+
+MVP - Most Valuable Player. (Usually, a compliment given to the player who was the most beneficial to their team).
+
+N/A - Not Available.
+
+OP - Overpowered (Too strong). Opposite of UP.
+
+PM - Private Message (Also known as a whisper). Not to be confused with the Potion Master abbreviation.
+
+Repick - Usually said before the game starts in the lobby, asking for the host to be repicked using the command /repick. This has no significance and is mainly just for laughs unless used in Classic Custom, Coven Custom, or Rapid Mode.
+
+RNG - Random Number Generator. This mostly refers to game mechanics involving randomness, such as Psychic results.
+
+TBH - To Be Honest (Normally used when defending on trial or building up an accusation early in the morning. Example: "TBH, there's got be 2 members of the Mafia left, and Giles Corey has to be one of them.")
+
+Theme - Usually said before the game starts in the Lobby, and typically has a reference or popular trend before it, such as "Superhero" or "Food." This means a player wants to have the other players choose a name that would be related to the theme.
+
+Thrower / Throwing - Short for Gamethrower / Gamethrowing, an action that is against the rules. Usually said when one player accuses another of gamethrowing (deliberately causing their Faction to lose).
+
+Tldr / Tl;dr - Too Long; Didn't Read (sometimes used when a Last Will is too long, and the player doesn't want to read it).
+
+TY / Thx / Tysm - Thank You / Thanks / Thank you so much (usually said after one player has been helped by someone else, for example, "TY Doctor for healing me", or "Thx for voting innocent on me").
+
+UP - Underpowered (Not strong enough). Opposite of OP.
+
+WB - Welcome Back.
+
+WIP - Work In Progress.
+
+↑ The use of this is discouraged, as it can be confused with Town Killing.
+
+↑ Typically not used to refer to the Ambusher

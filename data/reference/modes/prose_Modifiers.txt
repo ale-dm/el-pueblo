@@ -1,0 +1,437 @@
+Modifiers can be used in Custom lobbies, but also appear in the Casual mode decks or in the various All Any decks. These change the game in various ways. Currently, there are eighteen different Modifiers that can be used.
+
+Modifiers here are listed under different unofficial categories, which summarize the differnent ways they impact the game.
+
+Pre-game modifiers do not have any direct effect after the beginning of Day 1.
+
+Information modifiers change the information presented by the game or players during the game.
+
+Gameplay modifiers affect actions that can be taken during the course of the game.
+
+Victory modifiers change the victory requirements for some amount of players in the game.
+
+List of Modifiers[]
+
+ | Modifier Alignment
+
+ | Modifier Name
+
+ | Description
+
+ | Game Modes it can spawn in
+
+ | Icon
+
+ | Pregame Modifiers
+
+ | All Outliers
+
+ | Allows Outlier roles to spawn in the Random Town, Random Coven, Random Neutral, and Any buckets.
+
+ | True All Any
+
+ Pandemonium
+
+ | 
+
+ | Anomaly
+
+ | Adds random modifiers and bans.
+
+ | Anomaly All Any
+
+ | 
+
+ | Anon Players
+
+ | Randomizes the name and cosmetics of all players.
+
+ | Ranked
+
+ | 
+
+ | Four Horsemen
+
+ | Allows for more than one Neutral Apocalypse role to spawn in the game.
+
+ | All Any
+
+ True All Any
+
+ All Any Fools
+
+ Four Horsemen
+
+ Incineration
+
+ Pyrophobia
+
+ Vampocalypse
+
+ Wandering Souls
+
+ Witchcraft and War
+
+ | 
+
+ | No Scrolls
+
+ | Prevents the usage of Scrolls and the Tome of Fate.
+
+ | Ranked
+
+ | 
+
+ | Gameplay Modifiers
+
+ | Election
+
+ | Players vote for a Sovereign, who gains additional voting power.
+
+ | Election
+
+ | 
+
+ | Feelin' Lucky?
+
+ | Players are given Jester Tokens, which they can use to gain a variety of random effects.
+
+ | All Any Fools
+
+ | 
+
+ | Ghost Town
+
+ | Dead players can anonymously vote in trials.
+
+ | No Lists
+
+ | 
+
+ | Grace Period
+
+ | Attacking and protective abilities cannot be used on Night 1.
+
+ | Ranked
+
+ Blood and Belief
+
+ Calamity
+
+ Catastrophe
+
+ Carnival
+
+ Cata-List
+
+ Corrupted Ballot
+
+ Coven of Salem
+
+ Don't Fear The Reaper
+
+ Disinformation
+
+ Dracula's Palace
+
+ Dracula's Souls
+
+ Election
+
+ Four Horsemen
+
+ Hexageddon
+
+ Incineration
+
+ Indoctrination
+
+ Merry-Go-Round
+
+ Pandemonium
+
+ Powerless
+
+ Pyrophobia
+
+ Showdown
+
+ Standard
+
+ Vampocalypse
+
+ VIP
+
+ Wandering Souls
+
+ Watch Your Step
+
+ Witchcraft and War
+
+ | 
+
+ | One Trial Per Day
+
+ | Only one player can be voted up to the stand in a Day.
+
+ | No Lists
+
+ | 
+
+ | Information Modifiers
+
+ | Anon Voting
+
+ | Players are only told the total vote count, not who made what vote.
+
+ | Fog of War
+
+ | 
+
+ | Fast Mode
+
+ | Day phases are shortened.
+
+ | No Lists
+
+ | 
+
+ | Hidden Roles
+
+ | The roles of dead players are not revealed.
+
+ | Fog of War
+
+ | 
+
+ | Secret Killers
+
+ | The roles of killers are not revealed.
+
+ | Ranked
+
+ Calamity
+
+ Catastrophe
+
+ Cata-List
+
+ Disinformation
+
+ Fog of War
+
+ Pandemonium
+
+ Powerless
+
+ Showdown
+
+ Standard
+
+ Watch Your Step
+
+ | 
+
+ | Slow Mode
+
+ | Day phases are lengthened.
+
+ | No Lists
+
+ | 
+
+ | Victory Modifiers
+
+ | Perfect Town
+
+ | All Townies die after a Town member is hanged.
+
+ | No Lists
+
+ | 
+
+ | Town Traitor
+
+ | One Town member gains the Coven's win condition and Night Chat
+
+ | False Town
+
+ Town Traitor
+
+ Unholy Alliance
+
+ | 
+
+ | VIP
+
+ | If a randomly selected Town member dies, the Town loses.
+
+ | VIP
+
+ | 
+
+History[]
+
+Patch R.1.5.14 - 07/27/2026
+
+ No Scrolls modifier added.
+
+Patch R.1.5.13 - 04/15/2026
+
+ Anomaly can no longer spawn Perfect Town.
+
+Patch R.1.5.11 - 03/24/2026
+
+ Anomaly modifier added.
+
+ Common Town and Common Coven buckets can no longer spawn Outliers.
+
+Patch R.1.5.05 - 09/16/2025
+
+Fixed bug where Necronomicon passing votes did not correctly count in Grace Period.
+
+Patch R1.5.03 - 07/28/2025
+
+ Grace Period now has a Night 1 notification to let you know it is active.
+
+Fixed Hidden Roles bug where faction is intercepted via checking chat logs.
+
+Patch R.1.5.02 Hotfix - 07/18/2025
+
+ Town Traitor can now be targeted by Coven member wielding the Necronomicon.
+
+ Town Traitor Deputy, Prosecutor and Vigilante can now target Coven members.
+
+Patch R.1.5.01 - 07/07/2025
+
+ Cleric, Bodyguard and Oracle can no longer use their ability Night 1 in Grace Period.
+
+Patch R.1.5.00 Hotfix 2 - 07/03/2025
+
+ Ritualist can no longer guess Night 1 in Grace Period.
+
+The All Outliers modifier will now correctly spawn all Outliers.
+
+Removed the No Vowels effect from Feelin' Lucky?.
+
+Patch R.1.5.00 - 6/26/2025
+
+ All Outliers modifier added.
+
+ Election modifier added.
+
+ Grace Period modifier added.
+
+In Four Horsemen, at any point during the game when an Apocalypse member becomes solo they will gain Defense and Detection Immunity.
+
+Patch R.1.4.09 - 04/06/2025
+
+ Jailor can no longer be revived in Feelin' Lucky?
+
+Fixed a few missing feedback messages in Feelin' Lucky?.
+
+Fixed Mayor and Marshal's votes not being inverted correctly in Feelin' Lucky?.
+
+Patch R.1.4.08 - 03/31/2025
+
+ Feelin' Lucky? modifier added.
+
+Patch R.1.4.01 - 12/19/2024
+
+Four Horsemen Modifier Change: Four Horsemen Modifier's effects will not apply if the Neutral Apocalypse role spawns solo.
+
+Patch R1.4.00 - 12/10/2024
+
+ Anon Players modifier added.
+
+ Four Horsemen modifier added.
+
+ Trickster, Vigilante, Deputy & Prosecutor can now be VIP
+
+Fixed Town Traitor occasionally getting the Necronomicon, preventing a Town Traitor Hunt from starting.
+
+Patch R.1.2.65 - 05/21/2024
+
+Fixed Town Traitor hunt being 2 days instead of 3 at the start in some cases.
+
+Patch R.1.2.60 - 04/04/2024
+
+Fixed a bug where Town Traitors would not display on the Previous Game menu.
+
+Patch R.1.0.34 - 10/03/2023
+
+ Town Traitor Static mode added.
+
+ VIP Static mode added.
+
+Patch B.0.1.19 - 8/10/2023
+
+Fixed an issue where the Traitor tag was not displaying properly in the graveyard in games with the Town Traitor game modifier.
+
+Fixed an issue where the traitor role was displayed in incorrect color in player popup
+
+Fixed the hover outlines on expandable hidden role.
+
+Patch B.0.1.18 - 08/02/2023
+
+Fixed bug where players who died from VIP/ Perfect Town with Hidden Roles on would show the role as () instead of (Hidden) (edited)
+
+Hangman will no longer wipeout all Town members in Perfect Town.
+
+Patch B.0.1.17 - 07/27/2023
+
+Fixed "Unknown role" bug when a day kill happens with hidden roles modifier.
+
+Patch B.0.1.16 - 07/27/2023
+
+ Perfect Town Modifier added.
+
+ Slow Mode and Fast Mode modifier added.
+
+ Anon Voting modifier added.
+
+ Secret Killers modifier added.
+
+ Hidden Roles modifier added.
+
+ One Trial Per Day modifier added.
+
+Patch B.0.1.15 - 07/21/2023
+
+When a Neutral Evil kills a VIP it will now kill all of the Town members.
+
+Patch B.0.1.14 - 07/20/2023
+
+Updated the VIP game mode modifier descriptions to state that Amnesiac and Trickster cannot be the VIP.
+
+Patch B.0.1.12 - 07/05/2023
+
+Hangman and Execution results header will now show the Town Traitor's faction correctly (as Evil) when they are hanged.
+
+Patch B.0.1.10 - 06/28/2023
+
+1v1 auto-end stalemates turned off in Ghost Town mode.
+
+Patch B.0.1.7 - 06/20/2023
+
+Added Ghost Town modifier.
+
+Patch B.0.1.6 - 06/08/2023
+
+ Town Traitors now count as Coven, not Town member, when checking if a deck has 2 opposing factions and the game can start.
+
+ Trickster cannot target VIP anymore.
+
+Dead VIP will not reassign VIP when disconnecting anymore.
+
+Added VIP player effect icon.
+
+ Town Traitor Trickster cannot target Coven anymore.
+
+Patch B.0.1.2 - 05/30/2023
+
+Fixed bug where Town Traitor was being revealed as Coven to Admirer.
+
+Town of Salem 2 Release
+
+Introduced.

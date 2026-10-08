@@ -1,0 +1,737 @@
+Unique Roles are roles that are limited to 1 player per game. Usually, there will never be two in one game, unless an Amnesiac or Amnesiac remembers that role; the Godfather and Mafioso can be inherited, but even for those, only one of each can be alive at once, and even the Archmage cannot Retrain a player into a Coven role that currently or previously existed. For most Unique roles, it may be due to conflicting priority issues, hence only one of them exists.
+
+Town of Salem
+
+Town of Salem 2
+
+Traitors in Salem
+
+Currently, there are 18 Unique Roles.
+
+Most Unique Roles have abilities which would cause gameplay issues if there was more than one player with the same role.
+
+For instance, a Jailor jailing another Jailor would cause nonsensical results.
+
+Other Unique Roles have powerful abilities and would upset game balance if there was more than one.
+
+The Veteran and Werewolf are prime examples.
+
+Lastly, some Unique Roles only make practical sense if they are unique.
+
+The Mayor and the Godfather are prime examples.
+
+ Amnesiacs can remember any deceased Unique Role of their choosing. This includes unique Town roles.
+
+Unique Roles primarily consist of support and killing roles.
+
+Four Town roles, two Town Support and Town Killing, all Mafia Killing, two Neutral Killing, three Neutral Chaos, and all Coven roles are unique.
+
+The Plaguebearer and Pestilence, despite functioning as the same faction, are both unique roles.
+
+Seeing two unique roles in a game means that one of the following had happened:
+
+A Forger has forged that player's role. This can happen multiple times.
+
+If the role was a Godfather or Mafioso, a member of the Mafia has died after being promoted. This can happen multiple times with a Mafioso, and usually only once with a Godfather.
+
+An Amnesiac has died after remembering that unique role. This can happen multiple times.
+
+Lists of Unique Roles[]
+
+ Town[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Jailor 
+
+ | Town Killing
+
+ | 
+
+Choose one person to Jail each Night.
+
+ | Mayor 
+
+ | Town Support
+
+ | Gain 3 votes when you Reveal yourself as Mayor.
+
+ | Retributionist 
+
+ | Town Support
+
+ | Resurrect a dead Townie to use their ability on your target.
+
+ | Veteran 
+
+ | Town Killing
+
+ | Decide if you will go on Alert and kill anyone who visits you.
+
+ Mafia[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Godfather 
+
+ | Mafia Killing
+
+ | Kill someone each Night.
+
+ | Mafioso 
+
+ | Mafia Killing
+
+ | Carry out the Godfather's orders.
+
+ | Ambusher 
+
+ | Mafia Killing
+
+ | 
+
+Choose to lie in wait outside your target's house.
+
+ Neutral[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Coven Exclusive?
+
+ | Juggernaut 
+
+ | Neutral Killing
+
+ | Gets stronger with each kill.
+
+ | 
+
+ | Plaguebearer 
+
+ | Neutral Chaos
+
+ | Infect someone with the Plague each Night.
+
+ | 
+
+ | Pestilence 
+
+ | Neutral Chaos
+
+ | Rampage at someone's house each Night.
+
+ | 
+
+ | Pirate 
+
+ | Neutral Chaos
+
+ | Choose one person to Duel each Night.
+
+ | 
+
+ | Werewolf 
+
+ | Neutral Killing
+
+ | Go on a Rampage at somebody's house every Full Moon.
+
+ | 
+
+ Coven[]
+
+ | All roles in this section are Coven Expansion exclusive.
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Coven Leader 
+
+ | Coven Evil
+
+ | Control someone to use their ability on another player.
+
+ | Necromancer 
+
+ | Coven Evil
+
+ | Reanimate a dead player to use their ability on your target.
+
+ | Medusa 
+
+ | Coven Evil
+
+ | Decide if you want to Stone Gaze at Night and kill anyone that visits you.
+
+ | Poisoner 
+
+ | Coven Evil
+
+ | Poison a player, killing them the next Night.
+
+ | Hex Master 
+
+ | Coven Evil
+
+ | Hex a player at Night.
+
+ | Potion Master 
+
+ | Coven Evil
+
+ | Choose to use a Potion on a player each Night.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire
+
+Role uniqueness is usually determined based on the role's alignment: all Town Power, Coven, and Apocalypse roles are unique (except Covenite), while almost every other role is not, with some notable exceptions of Pirate, Executioner, Catalyst, and Vampire.
+
+Seeing two unique roles in a game means that one of the following had happened:
+
+A Enchanter has alterated that player's role. This can happen up to two times, unless an Amnesiac Remembers an Enchanter.
+
+An Illusionist has made their will to appear as that role. This can happen only once, unless an Amnesiac Remembers an Illusionist.
+
+An Amnesiac has died after remembering that unique role. This usually happens only once.
+
+A Vampire-Aligned player was promoted after the previous Vampire died.
+
+List of Unique Roles[]
+
+ Town[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Jailor
+
+ | Town Power
+
+ | During the Day, you may choose one person to Jail for the Night.
+
+ | Mayor
+
+ | Town Power
+
+ | You may Reveal yourself as the Mayor of the Town.
+
+ | Monarch
+
+ | Town Power
+
+ | Choose a player to Knight at Night.
+
+ | Prosecutor
+
+ | Town Power
+
+ | You may perform a Prosecution against a player during the day.
+
+ | Marshal
+
+ | Town Power
+
+ | You may start a Tribunal during the Voting phase.
+
+ | Catalyst
+
+ | Town Outlier
+
+ | You may Overcharge a player, allowing them to perform their ability twice.
+
+ Coven[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Necronomicon Priority
+
+ | Archmage
+
+ | Coven Power
+
+ | 
+
+You may choose to Retrain someone each Night into a Common Coven role. 
+
+ | 1
+
+ | Hex Master
+
+ | Coven Power
+
+ | You may choose to Hex a player each Night.
+
+ | 10 
+
+ | Witch
+
+ | Coven Power
+
+ | Control someone each Night.
+
+ | 5
+
+ | Jinx
+
+ | Coven Killing
+
+ | You may choose to lie in wait at your target's house and Jinx a random non- Coven visitor.
+
+ | 15
+
+ | Ritualist
+
+ | Coven Killing
+
+ | You may perform a Blood Ritual on a player attempting to guess their role.
+
+ | 14
+
+ | Conjurer
+
+ | Coven Killing
+
+ | You may choose to kill one player during the Day.
+
+ | 2
+
+ | Dreamweaver
+
+ | Coven Deception
+
+ | You may invade the dreams of your target and attempt to induce Insomnia.
+
+ | 7
+
+ | Enchanter
+
+ | Coven Deception
+
+ | You may choose to Enchant a player with evil each Night.
+
+You may also place a fake last will on your target.
+
+ | 8
+
+ | Illusionist
+
+ | Coven Deception
+
+ | You may cast an Illusion on a Coven member to make them appear Innocent.
+
+You may also cast Phantasms on your whole team.
+
+ | 13
+
+ | Medusa
+
+ | Coven Deception
+
+ | You may choose to Stone Gaze a player each Night.
+
+ | 3
+
+ | Necromancer
+
+ | Coven Utility
+
+ | You may reanimate a dead player and use their ability on another player.
+
+ | 11
+
+ | Poisoner
+
+ | Coven Utility
+
+ | Have a beverage with your target at Night, roleblocking them.
+
+You can instead choose to apply Smog to a player each Night, blocking all visitors.
+
+ | 4
+
+ | Potion Master
+
+ | Coven Utility
+
+ | You may choose to use a potion on a player each Night.
+
+ | 12 
+
+ | Voodoo Master
+
+ | Coven Utility
+
+ | Choose one person each Night to make a Voodoo doll of.
+
+ | 9
+
+ | Wildling
+
+ | Coven Utility
+
+ | You can track who your target visits at Night and see everyone that visits your target.
+
+ | 6
+
+ | Cultist
+
+ | Coven Outlier
+
+ | You may convert a Town member to join your faction during the Day.
+
+ | 16
+
+ Apocalypse[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Baker
+
+ | Neutral Apocalypse
+
+ | Choose a player to give Bread to each Night.
+
+ | Berserker
+
+ | Neutral Apocalypse
+
+ | You may choose to Attack a player starting on Night 2.
+
+ | Plaguebearer
+
+ | Neutral Apocalypse
+
+ | You may choose to Infect a player with the Plague each Night.
+
+ | Soul Collector
+
+ | Neutral Apocalypse
+
+ | Choose a player at Night and attempt to collect their Soul.
+
+ Horseman[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Famine
+
+ | Neutral Apocalypse
+
+ | Choose a player at Night to speed up their starvation.
+
+ | War
+
+ | Neutral Apocalypse
+
+ | You may target two players to Attack at Night.
+
+ | Pestilence
+
+ | Neutral Apocalypse
+
+ | You may choose to spread pestilence to one player each Night.
+
+ | Death
+
+ | Neutral Apocalypse
+
+ | Deliver Armageddon to the Town.
+
+ Neutral[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Pirate
+
+ | Neutral Evil
+
+ | Get the Landlubbers killed.
+
+ | Executioner
+
+ | Neutral Evil
+
+ | Get your target hanged at any cost.
+
+ | Vampire
+
+ | Neutral Outlier
+
+ | At Night you may choose to Drain or Convert another player. If you attempt to Convert a non- Town player, you will Drain them instead.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Coroner • Investigator • Lookout • Psychic • Seer • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Protective | | Bodyguard • Cleric • Crusader • Oracle • Trapper
+
+ | 
+
+ | Town Killing | | Deputy • Trickster • Veteran • Vigilante
+
+ | 
+
+ | Town Power | | Jailor • Marshal • Mayor • Monarch • Prosecutor
+
+ | 
+
+ | Town Support | | Admirer • Amnesiac • Retributionist • Socialite • Tavern Keeper
+
+ | 
+
+ | Town Outlier | | Catalyst • Pilgrim
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Deception | | Dreamweaver • Enchanter • Illusionist • Medusa | | 
+
+ | 
+
+ | Coven Killing | | Conjurer • Jinx • Ritualist
+
+ | 
+
+ | Coven Utility | | Necromancer • Poisoner • Potion Master • Voodoo Master • Wildling
+
+ | 
+
+ | Coven Power | | Archmage • Hex Master • Witch
+
+ | 
+
+ | Coven Outlier | | Covenite • Cultist
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Apocalypse | | Baker/ Famine • Berserker/ War • Plaguebearer/ Pestilence • Soul Collector/ Death | | 
+
+ | 
+
+ | Neutral Evil | | Doomsayer • Executioner • Jester • Pirate
+
+ | 
+
+ | Neutral Killing | | Arsonist • Serial Killer • Shroud • Werewolf
+
+ | 
+
+ | Neutral Outlier | | Cursed Soul • Vampire
+
+ Town[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Mayor 
+
+ | Power Town
+
+ | Reveal yourself to the Town making your vote count for 1 more.
+
+ | Prosecutor 
+
+ | Power Town
+
+ | Prosecute a player forcing them to the gallows where they will be guiltied by everybody. If you prosecute a Town member you will die to guilt.
+
+ Traitor[]
+
+ | Role Name
+
+ | Role Alignment
+
+ | Role Description
+
+ | Cultist 
+
+ | Power Traitor
+
+ | You are able to kill non- Traitor-factioned players with a cooldown. You may once convert a Townie into a Cult Member, the Townie will retain their original roles abilities depending on what it is.
+
+ | Hex Master 
+
+ | Power Traitor
+
+ | You are able to kill non- Traitor-factioned players with a cooldown. You may hex a player and once all alive Town have been hexed you will hex bomb the town winning the game.
+
+ | Necromancer 
+
+ | Power Traitor
+
+ | You are able to kill non- Traitor-factioned players with a cooldown. You can summon a minion to kill your target, the minion will spawn in the graveyard and will get faster the longer their target is alive.
+
+ | Serial Killer 
+
+ | Power Traitor
+
+ | You are able to kill non- Traitor-factioned players. After killing a player you gain Bloodlust for a short period of time where you may kill another player.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Investigative Town | | Investigator • Medium • Seer • Sheriff • Tracker | | 
+
+ | 
+
+ | Power Town | | King • Mayor • Prosecutor • Veteran • Vigilante
+
+ | 
+
+ | Utility Town | | Coroner • Lookout • Psychic • Saint • Transporter
+
+ | 
+
+ | Town | | Townie
+
+ | 
+ Traitor
+
+ | 
+
+ | Deception Traitor | | Arsonist • Disguiser • Illusionist • Poisoner • Wraith | | 
+
+ | 
+
+ | Power Traitor | | Cultist • Hex Master • Necromancer • Serial Killer
+
+ | 
+
+ | Utility Traitor | | Banshee • Executioner • Inquisitor • Jester • Wildling
+
+ | 
+
+ | Traitor | | Traitor

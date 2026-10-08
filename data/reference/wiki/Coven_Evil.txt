@@ -1,0 +1,119 @@
+| 
+
+ | This page describes content that can only be accessed in the Coven Expansion.
+
+ Coven Evil (CE) is an Alignment that works with the newest faction that is only available in the Coven Expansion. It is also currently the only Alignment of the Coven. Every Coven role is currently in this Alignment. Each role in this Alignment is unique, and they are all very powerful on their own; this Alignment is also the only one to receive a special buff in the form of a Necronomicon. A Potion Master, Poisoner, Medusa, and all other Coven Evil (indirectly) are capable of killing without the Necronomicon, and every Coven Evil are capable of killing every Night with the Necronomicon, however some Coven Evil roles perform their Necronomicon kills as well as their normal action e.g. Necromancer.
+Similar to the Mafia, they are an evil faction to the Town. However, the Mafia can also be their major rivals, due to being able to easily kill and Hang the Coven. The entire faction can also single-handedly deal a devastating blow to the Town. The Coven Leader can Control a killing role to murder another, control a role to the gazing Medusa, who will stone them, or with the Necronomicon, they can drain their victims with a Basic Attack and gain a mystical barrier that grants them permanent basic defense. The Medusa themselves can choose to kill anyone who visits them with a simple gaze, or with the Necronomicon, they can visit targets to stone them which can also kill off night immune roles that are normally a hassle for the Mafia. The Poisoner can choose to poison someone, and the next Day, they will die if not healed by a Doctor, or with the Necronomicon, they can make their poison incurable for any Doctor. The Necromancer can reanimate a dead player, and use their killing power if said dead player has one to kill a living player, or they can summon a ghoul with the Necronomicon that can deal a Basic Attack. The Potion Master can also use their killing potion to deal a Basic Attack, and with the Necronomicon, this has no cooldown. The Hex Master, once they have Hexed all players aside from the Coven, can deal a devastating blow to all Hexed players, or use Astral visits to their advantage, to directly attack players without leaving a trace with the Necronomicon. 
+
+The icon that displays next to the Necronomicon holder in the player list
+
+ This means that unlike the Mafia, which focuses on deception, the Coven focuses on sheer power, with every single member having the potential to kill. However, if they kill someone, the role that killed that person will appear instead of it saying the player was killed by a member of the Coven, unlike the Mafioso and Godfather. For example, if a Coven Leader with the Necronomicon killed a player, the death message would state that they were drained by a Coven Leader.
+
+Some roles cannot kill multiple Nights in a row, such as a Potion Master having a cooldown (without the Necronomicon) or the Hex Master (also without the Necronomicon), only killing when every player except the Coven has been Hexed. Although they all are powerful, they are not invincible. They can be locked down by an Tavern Keeper/ Bootlegger, a Pirate, found by a Sheriff (without the Necronomicon), Investigator/ Consigliere, or killed. Once a Coven member is found, it is very unlikely that they will survive the Night. This is why the Necronomicon helps the Coven member to stay undercover and not be discovered, since the Coven member also obtains Detection Immunity by wielding the Necronomicon.
+
+ Coven Evil[]
+
+ | Role Name
+
+ | Role Description
+
+ | Coven Leader 
+
+ | Control someone each Night. They are forced to use their Night ability onto the second target. You will receive the role of the first target. With the Necronomicon, you will deal a Basic Attack to your first target and gain Basic Defense. You cannot be roleblocked.
+
+ | Hex Master 
+
+ | Choose to Hex someone each Night. When all players that aren't Coven are Hexed, you will deal an Unstoppable Attack to them all. Hexed targets will show up as "suspicious" to the Sheriff, as " Framer, Vampire, Jester or Hex Master" to an Investigator, and as a Hex Master to a Consigliere. With the Necronomicon, you will deal a Basic Attack to those you Hex, and your Hexes become Astral.
+
+ | Medusa 
+
+ | Choose to use a Stone Gaze during the Night. All visitors to you will be dealt a Powerful Attack, and their role and Last Will are hidden from everyone. With the Necronomicon, you may visit players directly to turn them into stone.
+
+ | Necromancer 
+
+ | Choose a dead target to use their ability on your second target. You can only use each dead person once before their corpse rots away. With the Necronomicon, you may also select yourself to send a ghoul to your target, dealing a Basic Attack to them. You cannot be roleblocked or controlled.
+
+ | Poisoner 
+
+ | Choose to Poison someone each Night. Your target will know they were Poisoned. You will deal a Basic Attack to them the next Night after they were Poisoned. A Doctor, Potion Master or Guardian Angel can cure Poison. The Necronomicon makes your Poison incurable by Doctors and the Potion Master.
+
+ | Potion Master 
+
+ | Choose someone to use a potion on each Night. Your potions can either heal the target (granting them Powerful Defense and curing Poison), reveal the exact role of the target, or deal a Basic Attack to the target. Each potion has a 3 Day cooldown. The Necronomicon removes the cooldown.
+
+Trivia[]
+
+The Coven Evil Alignment is the only Alignment to receive a special ability enhancer (in the form of the Necronomicon).
+
+The Coven Evil Alignment cannot be added in Custom, since all Coven roles are in this Alignment.
+
+The Random Coven Alignment serves the same purpose as Coven Evil.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

@@ -1,0 +1,113 @@
+The Neutral Benign (NB) alignment consists of three roles who have the ability to win with any faction in the game. Unlike Neutral Evil roles, however, Neutral Benign roles only focus on maintaining complete neutrality unless a situation arises where they must choose a side, in which they can become kingmakers on the right occasion - for example, when both factions know each other's identities but need an extra vote to lynch any of their opponents.
+
+ Neutral Benign roles often face a lot of persecution from the Town because it is easy for evil roles to fake being one of them. Instances of a Survivor or once in a while an Amnesiac being shot by a Vigilante, executed by a Jailor, or lynched by the Town are common due to posing somewhat of a threat. 
+
+A Neutral Benign role should remind the Town that these hostile actions do have an opportunity cost, however minor; that the wasted execution method could have been saved for an actual evildoer, that the Town had just wasted their time. If any Neutral Benign role manages to survive halfway through, they should be careful of how they act and who they vote for. If they draw too much attention to themselves, seem dangerous, hostile, or unwilling to eventually choose a side, opposing factions may turn and direct attention to them instead.
+
+ Neutral Benign roles should also be cautious in announcing their chosen allies, most notably the Guardian Angel and Amnesiac, as that can lead to persecution from other factions who would rather not deal with increased opposition. Remaining too quiet can also lead to accusations, as many evil roles often claim to be Neutrals to shield themselves.
+
+Below is a list of all Neutral Benign roles:
+
+ Neutral Benign[]
+
+ | Role Name
+
+ | Role Description
+
+ | 
+ Amnesiac 
+
+ | Remember who you were by selecting a graveyard role. You can not select anyone who was Cleaned by a Janitor or turned to stone by a Medusa. Complete that role's objective to win. If you are attacked on the same Night you remember, you still die as an Amnesiac no matter what role you attempted to remember yourself as.
+
+ | Survivor 
+
+ | Put on a bulletproof vest at Night. You have four vests, each one giving you Basic Defense. Survive the whole game to win, even through a draw.
+
+ | Guardian Angel 
+
+ | 
+
+ | Coven Expansion exclusive.
+
+Keep your target alive for the whole game to win. You can protect your target twice the entire game, giving them temporary Powerful Defense. You can still protect your target even if you are dead. Protecting your target prevents them from being lynched the next Day.
+
+Protecting your target purges them, removing any negative effects such as Douses or Poison.
+
+If your target is killed at Night, you will become a Survivor with no vests. If this happens, you must survive to win.
+
+Trivia[]
+
+The Amnesiac is the only Neutral role without a victory screen. This is because an Amnesiac must win as their remembered role, not as themselves.
+
+If an Amnesiac remembers any role on a Night that they are attacked, they will fail to remember the role and die. This means that they will lose the game, as they did not remember a role. Because of this, it's important to remember a role quickly, before you die.
+
+Contrary to popular belief, a Guardian Angel's Purge cannot remove Hexes.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

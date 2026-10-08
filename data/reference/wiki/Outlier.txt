@@ -1,0 +1,565 @@
+Outlier is a sub-alignment for Town, Coven, and Neutrals in Town of Salem 2 under which a variety of Roles fall under. This sub-alignment was introduced to the game on June 26, 2025 following the release of Patch R.1.5.00. 
+
+Roles with the Outlier alignment are special. They will only appear in a game when specified in the Role Deck, and often make dramatic changes to the flow of a game. Note that each Outlier role's faction varies.
+
+There are currently six Outlier Roles in the game, with two of them having no abilities or achievements.
+
+ All Outliers[]
+
+The All Outliers modifier allows Outlier Roles to naturally spawn in all "Random Buckets" just like any other alignment. This includes:
+
+ Any, Random Town and Common Town for Town Outlier .
+
+ Any, Random Coven and Common Coven for Coven Outlier .
+
+ Any and Random Neutral for Neutral Outlier .
+
+The following game modes use this modifier: True All Any, Pandemonium
+
+Town Outliers
+
+Coven Outliers
+
+Neutral Outliers
+
+ Town Outlier Roles[]
+
+ Catalyst[]
+
+ Catalyst is a special Town role that can Overcharge a target which allows them to use their ability twice during the following day or night.
+
+ Cursed Soul is immune to Overcharge
+
+ Catalyst is a Unique role.
+
+ Town[]
+
+ Pilgrim is a basic Town role with no abilities.
+
+There may be up to 15 Pilgrims in a game.
+
+ Coven Outlier roles[]
+
+ Cultist[]
+
+The Cultist may convert Townies to the Coven faction during the day, and does not change the target's role.
+
+ Cultist has Basic Defense until they successfully Indoctrinate someone.
+
+ Cultist is a Unique role.
+
+ Coven[]
+
+ Covenite is a basic Coven role that has no abilities and can wield the Necronomicon at Night.
+
+There may be up to 4 Covenites in a game.
+
+ Neutral Outlier roles[]
+
+ Vampire[]
+
+The Vampire can Convert Townies to the Vampire faction, but do not change their target's role.
+
+Players part of the Vampire faction may converse at night, much like the Coven or Apocalypse factions.
+
+If the Vampire dies, a random Converted member of the Vampire faction will change roles and become the new Vampire.
+
+However, there is a certain priority to this promotion mechanic, which goes from: Town Investigative -> Town Protective -> Town Support -> Town Killing -> Town Power -> Town Outlier.
+
+The Vampire has Basic Defense and will not appear Suspicious to a Sheriff if there are no other living members of the Vampire faction.
+
+The Vampire may Drain a player at night, dealing a Basic Attack. If an attempt to Convert a player fails, their target will be attacked instead.
+
+ Vampire is a Unique role, and there may only ever be 1 living Vampire at a time.
+
+ Cursed Soul[]
+
+Players with the Cursed Soul role at the start are part of the Wandering Souls faction.
+
+Their goal is to kill the players with the Cursed Soul role.
+
+The Cursed Soul role trades roles with other players at night, but each player's faction is unchanged.
+
+Members of the Wandering Souls faction may converse at night, much like the Coven or Apocalypse factions.
+
+Members of the Wandering Souls faction have Basic Defense until Day 3.
+
+There may be up to 4 Cursed Souls in a game.
+
+ Outlier Appearance in Roledecks[]
+
+ | Roledeck
+
+ | Catalyst
+
+ | Cultist
+
+ | Cursed Soul
+
+ | Vampire 
+
+ | Casual Roledecks
+
+ | Blood and Belief
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Calamity
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Carnival
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Cata-List
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Corrupted Ballot
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Coven Of Salem
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Disinformation
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Dracula's Palace
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Dracula's Souls
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Don't Fear The Reaper
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Election
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | False Town
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Fog of War
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Four Horsemen
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Incineration
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Indoctrination
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Merry-Go-Round
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Pandemonium
+
+ | *
+
+ | *
+
+ | *
+
+ | *
+
+ | Powerless
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Town Traitor
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Unholy Alliance
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | VIP
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Wandering Souls
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Watch Your Step
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Witchcraft and War
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | All Any Modes
+
+ | All Any
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | All Any Fools
+
+ | 
+
+ | 
+
+ | 
+
+ | 
+
+ | Anomaly All Any
+
+ | *
+
+ | *
+
+ | *
+
+ | *
+
+ | True All Any
+
+ | *
+
+ | *
+
+ | *
+
+ | *
+
+ | Results
+
+ | Total
+
+ | 4/29*
+
+ | 6/29*
+
+ | 5/29*
+
+ | 5/29*
+
+ Covenite and Pilgrim are currently not in any roledecks, causing them to not be included in the above table.
+
+The Roles are, however, banned in Pandemonium and True All Any.
+
+Trivia[]
+
+ Cultist and Vampire are more similar than any other Outliers as both Roles can convert a Townie to their faction.
+
+However, there are some major differences between the Roles, such as:
+
+ Cultist's conversion is a Day ability while Vampire's conversion is a Night ability.
+
+ Cultist's conversion cannot be prevented while Vampire's conversion can. (via Town Protective, Admirer, or Potion Master)
+
+ Cultist only has one charge of Indoctrinate while Vampire has three charges of Convert.
+
+ Pilgrim and Vampire are the only Outliers whose role names do not begin with a C.
+
+Neither Pilgrim nor Covenite have any achievements, causing them to be the only Roles in the game without achievements.
+
+ Covenite is the only Non- Unique Coven role.
+
+ Pilgrim is the only role to be able to spawn more than six of (without the help of an Amnesiac)
+
+History[]
+
+ | Date
+
+ | Change
+
+ | Patch R.1.5.05 - 09/16/2025
+
+ | Role Changes
+
+ Catalyst can no longer be the target of an Executioner.
+
+ Wandering Souls now appear Suspicious to a Sheriff.
+
+ Cursed Soul now has a 100% chance of swapping with their target if the Cursed Soul is not on the Town or Wandering Souls faction.
+
+ Wandering Souls members now gain Invincible Defense when the final Cursed Soul dies.
+
+ Pirate can no longer start with a Cursed Soul Landlubber.
+
+ | Patch R.1.5.04 - 08/07/2025
+
+ | Indoctrinated Prosecutor will no longer Attack the player they previously Prosecuted at Night.
+
+ | Patch R.1.5.03 - 07/28/2025
+
+ | Roles with special targeting menus now work correctly while Overcharged.
+
+ | Patch R.1.5.02 Hotfix - 07/18/2025
+
+ | Bug Fixes
+
+Roles with dual targeting for different abilities now work correctly while Overcharged.
+
+Fixed various role interactions with Overcharge.
+
+ Cultist's Indoctrinate ability will no longer fail during trials.
+
+ | Patch R.1.5.01 - 07/07/2025
+
+ | All players will now show as Vampire on the Vampire win screen.
+
+ | Patch R.1.5.00 Hotfix 2 - 07/03/2025
+
+ | A Cultist's Indoctrinated player will now win while on the Wandering Souls faction.
+
+ | Patch R.1.5.00 - 6/26/2025
+
+ | Outlier alignment introduced.
+
+ Vampire and Cursed Soul overhauled.
+
+ Catalyst, Cultist, Covenite, Pilgrim introduced to the game.
+
+ Catalyst, Cultist, and Cursed Soul silhouettes added.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Coroner • Investigator • Lookout • Psychic • Seer • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Protective | | Bodyguard • Cleric • Crusader • Oracle • Trapper
+
+ | 
+
+ | Town Killing | | Deputy • Trickster • Veteran • Vigilante
+
+ | 
+
+ | Town Power | | Jailor • Marshal • Mayor • Monarch • Prosecutor
+
+ | 
+
+ | Town Support | | Admirer • Amnesiac • Retributionist • Socialite • Tavern Keeper
+
+ | 
+
+ | Town Outlier | | Catalyst • Pilgrim
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Deception | | Dreamweaver • Enchanter • Illusionist • Medusa | | 
+
+ | 
+
+ | Coven Killing | | Conjurer • Jinx • Ritualist
+
+ | 
+
+ | Coven Utility | | Necromancer • Poisoner • Potion Master • Voodoo Master • Wildling
+
+ | 
+
+ | Coven Power | | Archmage • Hex Master • Witch
+
+ | 
+
+ | Coven Outlier | | Covenite • Cultist
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Apocalypse | | Baker/ Famine • Berserker/ War • Plaguebearer/ Pestilence • Soul Collector/ Death | | 
+
+ | 
+
+ | Neutral Evil | | Doomsayer • Executioner • Jester • Pirate
+
+ | 
+
+ | Neutral Killing | | Arsonist • Serial Killer • Shroud • Werewolf
+
+ | 
+
+ | Neutral Outlier | | Cursed Soul • Vampire
+
+↑ https://www.youtube.com/watch?v=4TQvOV__h7Y&t=521s
