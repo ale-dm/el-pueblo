@@ -1,0 +1,980 @@
+{
+ "roles": [
+  {
+   "name": "Ambusher",
+   "faction": "Mafia",
+   "slug": "Ambusher",
+   "mvp": true
+  },
+  {
+   "name": "Amnesiac",
+   "faction": "Neutral",
+   "slug": "Amnesiac",
+   "mvp": false
+  },
+  {
+   "name": "Arsonist",
+   "faction": "Neutral",
+   "slug": "Arsonist",
+   "mvp": false
+  },
+  {
+   "name": "Blackmailer",
+   "faction": "Mafia",
+   "slug": "Blackmailer",
+   "mvp": true
+  },
+  {
+   "name": "Bodyguard",
+   "faction": "Town",
+   "slug": "Bodyguard",
+   "mvp": true
+  },
+  {
+   "name": "Bootlegger",
+   "faction": "Mafia",
+   "slug": "Bootlegger",
+   "mvp": true
+  },
+  {
+   "name": "Consigliere",
+   "faction": "Mafia",
+   "slug": "Consigliere",
+   "mvp": true
+  },
+  {
+   "name": "Coven Leader",
+   "faction": "Coven",
+   "slug": "Coven_Leader",
+   "mvp": false
+  },
+  {
+   "name": "Crusader",
+   "faction": "Town",
+   "slug": "Crusader",
+   "mvp": true
+  },
+  {
+   "name": "Disguiser",
+   "faction": "Mafia",
+   "slug": "Disguiser",
+   "mvp": true
+  },
+  {
+   "name": "Doctor",
+   "faction": "Town",
+   "slug": "Doctor",
+   "mvp": true
+  },
+  {
+   "name": "Executioner",
+   "faction": "Neutral",
+   "slug": "Executioner",
+   "mvp": false
+  },
+  {
+   "name": "Forger",
+   "faction": "Mafia",
+   "slug": "Forger",
+   "mvp": true
+  },
+  {
+   "name": "Framer",
+   "faction": "Mafia",
+   "slug": "Framer",
+   "mvp": true
+  },
+  {
+   "name": "Godfather",
+   "faction": "Mafia",
+   "slug": "Godfather",
+   "mvp": true
+  },
+  {
+   "name": "Guardian Angel",
+   "faction": "Neutral",
+   "slug": "Guardian_Angel",
+   "mvp": false
+  },
+  {
+   "name": "Hex Master",
+   "faction": "Coven",
+   "slug": "Hex_Master",
+   "mvp": false
+  },
+  {
+   "name": "Hypnotist",
+   "faction": "Mafia",
+   "slug": "Hypnotist",
+   "mvp": true
+  },
+  {
+   "name": "Investigator",
+   "faction": "Town",
+   "slug": "Investigator",
+   "mvp": true
+  },
+  {
+   "name": "Jailor",
+   "faction": "Town",
+   "slug": "Jailor",
+   "mvp": true
+  },
+  {
+   "name": "Janitor",
+   "faction": "Mafia",
+   "slug": "Janitor",
+   "mvp": true
+  },
+  {
+   "name": "Jester",
+   "faction": "Neutral",
+   "slug": "Jester",
+   "mvp": false
+  },
+  {
+   "name": "Juggernaut",
+   "faction": "Neutral",
+   "slug": "Juggernaut",
+   "mvp": false
+  },
+  {
+   "name": "Lookout",
+   "faction": "Town",
+   "slug": "Lookout",
+   "mvp": true
+  },
+  {
+   "name": "Mafioso",
+   "faction": "Mafia",
+   "slug": "Mafioso",
+   "mvp": true
+  },
+  {
+   "name": "Mayor",
+   "faction": "Town",
+   "slug": "Mayor",
+   "mvp": true
+  },
+  {
+   "name": "Medium",
+   "faction": "Town",
+   "slug": "Medium",
+   "mvp": true
+  },
+  {
+   "name": "Medusa",
+   "faction": "Coven",
+   "slug": "Medusa",
+   "mvp": false
+  },
+  {
+   "name": "Necromancer",
+   "faction": "Coven",
+   "slug": "Necromancer",
+   "mvp": false
+  },
+  {
+   "name": "Pestilence",
+   "faction": "Neutral",
+   "slug": "Pestilence",
+   "mvp": false
+  },
+  {
+   "name": "Pirate",
+   "faction": "Neutral",
+   "slug": "Pirate",
+   "mvp": false
+  },
+  {
+   "name": "Plaguebearer",
+   "faction": "Neutral",
+   "slug": "Plaguebearer",
+   "mvp": false
+  },
+  {
+   "name": "Poisoner",
+   "faction": "Coven",
+   "slug": "Poisoner",
+   "mvp": false
+  },
+  {
+   "name": "Potion Master",
+   "faction": "Coven",
+   "slug": "Potion_Master",
+   "mvp": false
+  },
+  {
+   "name": "Psychic",
+   "faction": "Town",
+   "slug": "Psychic",
+   "mvp": true
+  },
+  {
+   "name": "Retributionist",
+   "faction": "Town",
+   "slug": "Retributionist",
+   "mvp": true
+  },
+  {
+   "name": "Serial Killer",
+   "faction": "Neutral",
+   "slug": "Serial_Killer",
+   "mvp": false
+  },
+  {
+   "name": "Sheriff",
+   "faction": "Town",
+   "slug": "Sheriff",
+   "mvp": true
+  },
+  {
+   "name": "Spy",
+   "faction": "Town",
+   "slug": "Spy",
+   "mvp": true
+  },
+  {
+   "name": "Survivor",
+   "faction": "Neutral",
+   "slug": "Survivor",
+   "mvp": false
+  },
+  {
+   "name": "Tavern Keeper",
+   "faction": "Town",
+   "slug": "Tavern_Keeper",
+   "mvp": true
+  },
+  {
+   "name": "Tracker",
+   "faction": "Town",
+   "slug": "Tracker",
+   "mvp": true
+  },
+  {
+   "name": "Transporter",
+   "faction": "Town",
+   "slug": "Transporter",
+   "mvp": true
+  },
+  {
+   "name": "Trapper",
+   "faction": "Town",
+   "slug": "Trapper",
+   "mvp": true
+  },
+  {
+   "name": "Vampire",
+   "faction": "Neutral",
+   "slug": "Vampire",
+   "mvp": false
+  },
+  {
+   "name": "Vampire Hunter",
+   "faction": "Town",
+   "slug": "Vampire_Hunter",
+   "mvp": true
+  },
+  {
+   "name": "Veteran",
+   "faction": "Town",
+   "slug": "Veteran",
+   "mvp": true
+  },
+  {
+   "name": "Vigilante",
+   "faction": "Town",
+   "slug": "Vigilante",
+   "mvp": true
+  },
+  {
+   "name": "Witch",
+   "faction": "Neutral",
+   "slug": "Witch",
+   "mvp": false
+  }
+ ],
+ "wiki": [
+  {
+   "title": "Abilities (ToS)",
+   "slug": "Abilities_ToS"
+  },
+  {
+   "title": "Achievements",
+   "slug": "Achievements"
+  },
+  {
+   "title": "Achievements Guide",
+   "slug": "Achievements_Guide"
+  },
+  {
+   "title": "Achievements Guide (ToS)",
+   "slug": "Achievements_Guide_ToS"
+  },
+  {
+   "title": "Achievements (ToS)",
+   "slug": "Achievements_ToS"
+  },
+  {
+   "title": "Abilities",
+   "slug": "Abilities"
+  },
+  {
+   "title": "Alignments",
+   "slug": "Alignments"
+  },
+  {
+   "title": "Amnesiac",
+   "slug": "Amnesiac"
+  },
+  {
+   "title": "Alignments (ToS)",
+   "slug": "Alignments_ToS"
+  },
+  {
+   "title": "Avatars (ToS)",
+   "slug": "Avatars_ToS"
+  },
+  {
+   "title": "Attributes (ToS)",
+   "slug": "Attributes_ToS"
+  },
+  {
+   "title": "Arsonist",
+   "slug": "Arsonist"
+  },
+  {
+   "title": "Auditor",
+   "slug": "Auditor"
+  },
+  {
+   "title": "Attributes",
+   "slug": "Attributes"
+  },
+  {
+   "title": "Avatars",
+   "slug": "Avatars"
+  },
+  {
+   "title": "BlankMediaGames",
+   "slug": "BlankMediaGames"
+  },
+  {
+   "title": "Bodyguard",
+   "slug": "Bodyguard"
+  },
+  {
+   "title": "Bundles (ToS)",
+   "slug": "Bundles_ToS"
+  },
+  {
+   "title": "Bundles",
+   "slug": "Bundles"
+  },
+  {
+   "title": "Common Player Behaviors",
+   "slug": "Common_Player_Behaviors"
+  },
+  {
+   "title": "Chat (ToS)",
+   "slug": "Chat_ToS"
+  },
+  {
+   "title": "Coroner",
+   "slug": "Coroner"
+  },
+  {
+   "title": "Chat",
+   "slug": "Chat"
+  },
+  {
+   "title": "Coven (ToS)",
+   "slug": "Coven_ToS"
+  },
+  {
+   "title": "Coven",
+   "slug": "Coven"
+  },
+  {
+   "title": "Custom Stories",
+   "slug": "Custom_Stories"
+  },
+  {
+   "title": "Custom Stories - Coven",
+   "slug": "Custom_Stories_Coven"
+  },
+  {
+   "title": "Crusader",
+   "slug": "Crusader"
+  },
+  {
+   "title": "Cultist",
+   "slug": "Cultist"
+  },
+  {
+   "title": "Custom",
+   "slug": "Custom"
+  },
+  {
+   "title": "Custom Non-Role Stories",
+   "slug": "Custom_Non_Role_Stories"
+  },
+  {
+   "title": "Dead: What Now? (ToS)",
+   "slug": "Dead_What_Now_ToS"
+  },
+  {
+   "title": "Daily Brew (ToS)",
+   "slug": "Daily_Brew_ToS"
+  },
+  {
+   "title": "Death",
+   "slug": "Death"
+  },
+  {
+   "title": "Daily Brew",
+   "slug": "Daily_Brew"
+  },
+  {
+   "title": "Dead: What Now?",
+   "slug": "Dead_What_Now"
+  },
+  {
+   "title": "Death Note",
+   "slug": "Death_Note"
+  },
+  {
+   "title": "Death Animations (ToS)",
+   "slug": "Death_Animations_ToS"
+  },
+  {
+   "title": "Death (state)",
+   "slug": "Death_state"
+  },
+  {
+   "title": "Disguiser",
+   "slug": "Disguiser"
+  },
+  {
+   "title": "Death Animation",
+   "slug": "Death_Animation"
+  },
+  {
+   "title": "Death Note (ToS)",
+   "slug": "Death_Note_ToS"
+  },
+  {
+   "title": "Elo",
+   "slug": "Elo"
+  },
+  {
+   "title": "Dracula's Palace",
+   "slug": "Dracula_s_Palace"
+  },
+  {
+   "title": "Executioner",
+   "slug": "Executioner"
+  },
+  {
+   "title": "Friends (ToS)",
+   "slug": "Friends_ToS"
+  },
+  {
+   "title": "Factions (ToS)",
+   "slug": "Factions_ToS"
+  },
+  {
+   "title": "Factions",
+   "slug": "Factions"
+  },
+  {
+   "title": "Friends",
+   "slug": "Friends"
+  },
+  {
+   "title": "Game Modes (ToS)",
+   "slug": "Game_Modes_ToS"
+  },
+  {
+   "title": "Future Updates",
+   "slug": "Future_Updates"
+  },
+  {
+   "title": "Getting Started",
+   "slug": "Getting_Started"
+  },
+  {
+   "title": "Game Modes",
+   "slug": "Game_Modes"
+  },
+  {
+   "title": "Hanging (ToS)",
+   "slug": "Hanging_ToS"
+  },
+  {
+   "title": "Glossary of Abbreviations",
+   "slug": "Glossary_of_Abbreviations"
+  },
+  {
+   "title": "Graveyard",
+   "slug": "Graveyard"
+  },
+  {
+   "title": "Hanging",
+   "slug": "Hanging"
+  },
+  {
+   "title": "Glossary of Abbreviations (ToS)",
+   "slug": "Glossary_of_Abbreviations_ToS"
+  },
+  {
+   "title": "Houses (ToS)",
+   "slug": "Houses_ToS"
+  },
+  {
+   "title": "Host",
+   "slug": "Host"
+  },
+  {
+   "title": "Hex Master",
+   "slug": "Hex_Master"
+  },
+  {
+   "title": "Houses",
+   "slug": "Houses"
+  },
+  {
+   "title": "Icon",
+   "slug": "Icon"
+  },
+  {
+   "title": "Investigator",
+   "slug": "Investigator"
+  },
+  {
+   "title": "Illusionist",
+   "slug": "Illusionist"
+  },
+  {
+   "title": "Jailor",
+   "slug": "Jailor"
+  },
+  {
+   "title": "Jackal",
+   "slug": "Jackal"
+  },
+  {
+   "title": "Judge",
+   "slug": "Judge"
+  },
+  {
+   "title": "Jester",
+   "slug": "Jester"
+  },
+  {
+   "title": "Last Will (ToS)",
+   "slug": "Last_Will_ToS"
+  },
+  {
+   "title": "Keyword System",
+   "slug": "Keyword_System"
+  },
+  {
+   "title": "Last Will",
+   "slug": "Last_Will"
+  },
+  {
+   "title": "Lookout",
+   "slug": "Lookout"
+  },
+  {
+   "title": "Mafia",
+   "slug": "Mafia"
+  },
+  {
+   "title": "Mafia Killing",
+   "slug": "Mafia_Killing"
+  },
+  {
+   "title": "Mafia Support",
+   "slug": "Mafia_Support"
+  },
+  {
+   "title": "Mafia Deception",
+   "slug": "Mafia_Deception"
+  },
+  {
+   "title": "Maps (ToS)",
+   "slug": "Maps_ToS"
+  },
+  {
+   "title": "Maps",
+   "slug": "Maps"
+  },
+  {
+   "title": "Mayor",
+   "slug": "Mayor"
+  },
+  {
+   "title": "Metagaming",
+   "slug": "Metagaming"
+  },
+  {
+   "title": "Messages (ToS)",
+   "slug": "Messages_ToS"
+  },
+  {
+   "title": "Medium",
+   "slug": "Medium"
+  },
+  {
+   "title": "Medusa",
+   "slug": "Medusa"
+  },
+  {
+   "title": "Messages",
+   "slug": "Messages"
+  },
+  {
+   "title": "Neutral (ToS)",
+   "slug": "Neutral_ToS"
+  },
+  {
+   "title": "Neutral Benign",
+   "slug": "Neutral_Benign"
+  },
+  {
+   "title": "Neutral Killing (ToS)",
+   "slug": "Neutral_Killing_ToS"
+  },
+  {
+   "title": "Neutral Evil (ToS)",
+   "slug": "Neutral_Evil_ToS"
+  },
+  {
+   "title": "Name",
+   "slug": "Name"
+  },
+  {
+   "title": "Neutral Chaos",
+   "slug": "Neutral_Chaos"
+  },
+  {
+   "title": "Necronomicon (ToS)",
+   "slug": "Necronomicon_ToS"
+  },
+  {
+   "title": "Necromancer",
+   "slug": "Necromancer"
+  },
+  {
+   "title": "Necronomicon",
+   "slug": "Necronomicon"
+  },
+  {
+   "title": "Neutral Killing",
+   "slug": "Neutral_Killing"
+  },
+  {
+   "title": "Neutral Evil",
+   "slug": "Neutral_Evil"
+  },
+  {
+   "title": "Neutral",
+   "slug": "Neutral"
+  },
+  {
+   "title": "Notes (ToS)",
+   "slug": "Notes_ToS"
+  },
+  {
+   "title": "Official Town of Salem Stories",
+   "slug": "Official_Town_of_Salem_Stories"
+  },
+  {
+   "title": "Notes",
+   "slug": "Notes"
+  },
+  {
+   "title": "Pets (ToS)",
+   "slug": "Pets_ToS"
+  },
+  {
+   "title": "Phases",
+   "slug": "Phases"
+  },
+  {
+   "title": "Pirate",
+   "slug": "Pirate"
+  },
+  {
+   "title": "Plaguebearer",
+   "slug": "Plaguebearer"
+  },
+  {
+   "title": "Pestilence",
+   "slug": "Pestilence"
+  },
+  {
+   "title": "Pets",
+   "slug": "Pets"
+  },
+  {
+   "title": "Points (ToS)",
+   "slug": "Points_ToS"
+  },
+  {
+   "title": "Poisoner",
+   "slug": "Poisoner"
+  },
+  {
+   "title": "Potion Master",
+   "slug": "Potion_Master"
+  },
+  {
+   "title": "Points",
+   "slug": "Points"
+  },
+  {
+   "title": "Ranked",
+   "slug": "Ranked"
+  },
+  {
+   "title": "Public Test Realm",
+   "slug": "Public_Test_Realm"
+  },
+  {
+   "title": "Prosecutor",
+   "slug": "Prosecutor"
+  },
+  {
+   "title": "Psychic",
+   "slug": "Psychic"
+  },
+  {
+   "title": "Ranked Practice",
+   "slug": "Ranked_Practice"
+  },
+  {
+   "title": "Retributionist",
+   "slug": "Retributionist"
+  },
+  {
+   "title": "Roles (ToS)",
+   "slug": "Roles_ToS"
+  },
+  {
+   "title": "Scrolls (ToS)",
+   "slug": "Scrolls_ToS"
+  },
+  {
+   "title": "Scum Reading and the Numbers Game",
+   "slug": "Scum_Reading_and_the_Numbers_Game"
+  },
+  {
+   "title": "Sandbox",
+   "slug": "Sandbox"
+  },
+  {
+   "title": "Roles",
+   "slug": "Roles"
+  },
+  {
+   "title": "Scrolls",
+   "slug": "Scrolls"
+  },
+  {
+   "title": "Settings (ToS)",
+   "slug": "Settings_ToS"
+  },
+  {
+   "title": "Seer",
+   "slug": "Seer"
+  },
+  {
+   "title": "Sheriff",
+   "slug": "Sheriff"
+  },
+  {
+   "title": "Serial Killer",
+   "slug": "Serial_Killer"
+  },
+  {
+   "title": "Settings",
+   "slug": "Settings"
+  },
+  {
+   "title": "Statistics",
+   "slug": "Statistics"
+  },
+  {
+   "title": "So You Think You Can Write",
+   "slug": "So_You_Think_You_Can_Write"
+  },
+  {
+   "title": "Spy",
+   "slug": "Spy"
+  },
+  {
+   "title": "Strategies",
+   "slug": "Strategies"
+  },
+  {
+   "title": "String Table Localization",
+   "slug": "String_Table_Localization"
+  },
+  {
+   "title": "Summer Solstice Writing Event",
+   "slug": "Summer_Solstice_Writing_Event"
+  },
+  {
+   "title": "Taunts",
+   "slug": "Taunts"
+  },
+  {
+   "title": "Tavern Keeper",
+   "slug": "Tavern_Keeper"
+  },
+  {
+   "title": "Town (ToS)",
+   "slug": "Town_ToS"
+  },
+  {
+   "title": "Town Killing (ToS)",
+   "slug": "Town_Killing_ToS"
+  },
+  {
+   "title": "Town Investigative (ToS)",
+   "slug": "Town_Investigative_ToS"
+  },
+  {
+   "title": "Tips and Tricks",
+   "slug": "Tips_and_Tricks"
+  },
+  {
+   "title": "Town",
+   "slug": "Town"
+  },
+  {
+   "title": "Town Investigative",
+   "slug": "Town_Investigative"
+  },
+  {
+   "title": "Town Killing",
+   "slug": "Town_Killing"
+  },
+  {
+   "title": "Town of Salem Wiki",
+   "slug": "Town_of_Salem_Wiki"
+  },
+  {
+   "title": "Town Support (ToS)",
+   "slug": "Town_Support_ToS"
+  },
+  {
+   "title": "Town Protective (ToS)",
+   "slug": "Town_Protective_ToS"
+  },
+  {
+   "title": "Town of Salem Rules",
+   "slug": "Town_of_Salem_Rules"
+  },
+  {
+   "title": "Town of Salem",
+   "slug": "Town_of_Salem"
+  },
+  {
+   "title": "Town of Salem Card Game",
+   "slug": "Town_of_Salem_Card_Game"
+  },
+  {
+   "title": "Town of Salem – The Savior of Salem",
+   "slug": "Town_of_Salem_The_Savior_of_Salem"
+  },
+  {
+   "title": "Town Traitor",
+   "slug": "Town_Traitor"
+  },
+  {
+   "title": "Tracker",
+   "slug": "Tracker"
+  },
+  {
+   "title": "Town Protective",
+   "slug": "Town_Protective"
+  },
+  {
+   "title": "Town Support",
+   "slug": "Town_Support"
+  },
+  {
+   "title": "Tutorial",
+   "slug": "Tutorial"
+  },
+  {
+   "title": "Trial System",
+   "slug": "Trial_System"
+  },
+  {
+   "title": "Transporter",
+   "slug": "Transporter"
+  },
+  {
+   "title": "Trapper",
+   "slug": "Trapper"
+  },
+  {
+   "title": "Version History",
+   "slug": "Version_History"
+  },
+  {
+   "title": "VIP",
+   "slug": "VIP"
+  },
+  {
+   "title": "Veteran",
+   "slug": "Veteran"
+  },
+  {
+   "title": "Vampire",
+   "slug": "Vampire"
+  },
+  {
+   "title": "Version History (ToS)",
+   "slug": "Version_History_ToS"
+  },
+  {
+   "title": "Victory (ToS)",
+   "slug": "Victory_ToS"
+  },
+  {
+   "title": "Web Premium",
+   "slug": "Web_Premium"
+  },
+  {
+   "title": "Vigilante",
+   "slug": "Vigilante"
+  },
+  {
+   "title": "Werewolf",
+   "slug": "Werewolf"
+  },
+  {
+   "title": "Victory",
+   "slug": "Victory"
+  },
+  {
+   "title": "Werewolf (ToS)",
+   "slug": "Werewolf_ToS"
+  },
+  {
+   "title": "Wildling",
+   "slug": "Wildling"
+  },
+  {
+   "title": "Witch",
+   "slug": "Witch"
+  }
+ ]
+}

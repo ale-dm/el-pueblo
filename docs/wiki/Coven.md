@@ -1,0 +1,13 @@
+# Coven
+
+Fuente: https://town-of-salem.fandom.com/wiki/Coven
+
+Coven may refer to:
+
+ Coven, a faction in Town of Salem
+
+ Coven, a faction in Town of Salem 2
+
+ | 
+
+ | The contents of this article have often been confused with each other. This page clears up any misunderstanding caused by an Amnesiac. This is a disambiguation page.

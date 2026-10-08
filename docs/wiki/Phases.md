@@ -1,0 +1,266 @@
+# Phases
+
+Fuente: https://town-of-salem.fandom.com/wiki/Phases
+
+| 
+
+ | NOTE:
+
+These phases are exactly the same in both Town of Salem 1 and Town of Salem 2, with the exception of the various Rapid and Fast Modes.
+
+The gameplay of Town of Salem is split up into two primary phases, Day and Night. The Day is divided into several sub-phases: Discussion, Voting, Defense, Judgement, and Last Words. The Night phase contains a special function that modifies the abilities of some roles, deemed a Full Moon.
+
+The town will only go through the Defense (and subsequent Judgement and Last Words phases) if someone is put on trial during the Voting phase, and will only go through the Last Words phase if said person is deemed guilty by the majority of players and hanged.
+
+Town of Salem's Rapid Mode is a Classic Game Mode identical to Custom, but with the Discussion and Night phases reduced. There is no Coven equivalent.
+
+In Town of Salem 2, Fast Mode is a Modifier that can be added to a Custom lobby. The term Rapid Mode is changed to refer to the shortening of the timer that occurs at the beginning of the Day if only two players are left alive.
+
+ | Phase
+
+ | Time in seconds
+
+ | Time in seconds
+
+ | Time in seconds
+
+ | Time in seconds
+
+ | Game Mode
+
+ | Standard Modes
+
+ | Rapid Mode (ToS)
+
+ | Rapid Mode (ToS 2)
+
+ | Fast Mode
+
+ | Day (Only on D1)
+
+ | 15
+
+ | 15
+
+ | N/A
+
+ | 15
+
+ | Discussion
+
+ | 45
+
+ | 15
+
+ | 10
+
+ | 22
+
+ | Voting
+
+ | 30
+
+ | 30
+
+ | 10
+
+ | 15
+
+ | Defense
+
+ | 20
+
+ | 20
+
+ | 20
+
+ | 20
+
+ | Judgement
+
+ | 20
+
+ | 20
+
+ | 20
+
+ | 20
+
+ | Last Words
+
+ | 7
+
+ | 7
+
+ | 7
+
+ | 7
+
+ | Night
+
+ | 37
+
+ | 10
+
+ | 15
+
+ | 40
+
+"Standard Modes" refers to all game types in Town of Salem and Town of Salem 2 that are not Rapid Mode/ Fast Mode.
+
+ Day[]
+
+https://town-of-salem.fandom.com/wiki/File:Day_Theme.mp3
+
+The total time of the Day phase in the standard game modes will range from 75 to 721 seconds (1 minute and 15 seconds to 12 minutes and 1 second), while it will range from 45 to 691 seconds (3/4 of a minute to 11 minutes and 31 seconds) in Rapid Mode. This is not counting the transitions between the Day phases and the transition into the Night phase.
+
+Discussion[]
+
+https://town-of-salem.fandom.com/wiki/File:Discussion_Theme.mp3
+
+The Discussion phase in standard game modes lasts 45 seconds, while only lasting 15 seconds in Rapid Mode.
+
+This is the primary phase of all game modes, where the players get to discuss among themselves, reflecting on previous Days and Nights.
+
+ Town Investigatives are all but required to post their information during this phase, not doing so is seen as highly Suspicious.
+
+Voting[]
+
+https://town-of-salem.fandom.com/wiki/File:Voting_Theme.mp3
+
+The Voting phase lasts 30 seconds in all game modes.
+
+During this phase, players can vote for others to put on trial. The number of votes required to put someone on trial is a simple majority.
+
+The Monarch and Jester Tokens can change the amount of votes a player has. This does not affect the number of votes required to put someone up to the stand.
+
+ | # of votes required
+ | # of alive players 
+
+ | 8
+
+ | 15
+
+ | 14
+
+ | 7
+
+ | 13
+
+ | 12
+
+ | 6
+
+ | 11
+
+ | 10
+
+ | 5
+
+ | 9
+
+ | 8
+
+ | 4
+
+ | 7
+
+ | 6
+
+ | 3
+
+ | 5
+
+ | 4
+
+ | 2
+
+ | 3
+
+ | 2
+
+ | Players that have disconnected (left the game) are immediately counted as dead during voting, but Silenced players are not.
+
+Players can be put on trial 3 times in a Day. After the third trial, the Day phase immediately ends, regardless of how much time is left.
+
+ Jester Tokens can change this number to a random number between 1 and 5.
+
+This number is reduced if an Executioner Tormented their target.
+
+A Marshal can use their Day ability during the voting phase to change the phase into a Tribunal.
+
+This lasts 60 seconds, regardless of how much time there was when the Marshal started a Tribunal.
+
+During a Tribunal, the Defense and Judgement phases are removed; a player voted up is immediately given their Last Words and hanged.
+
+After two successful executions (or the end of the Tribunal), the Last Wills and roles of the players are revealed, and the game transitions into the Night phase.
+
+If a player isn't sent to trial, the Day phase ends, and the game will transition into the Night phase.
+
+In Classic Custom, Coven Custom and Rapid Mode, Anonymous Voting may be enabled by the host before the game. This will hide which player voted a certain player. The Anon Voting modifier also makes votes anonymous, and the votes of dead players (in Ghost Town) are always anonymous.
+
+Defense[]
+
+https://town-of-salem.fandom.com/wiki/File:Defense_Theme.mp3
+
+The Defense phase lasts 20 seconds in all game modes.
+
+The Town will only go through this phase if a player is voted up to trial during the Voting phase.
+
+During this phase, the player in question gives a Defense. Only this player can speak (with the exception that the town can whisper to each other).
+
+If a player is Prosecuted, both them and the Prosecutor can speak during the Defense phase.
+
+In Town of Salem 1, Blackmailed players may only say "I am blackmailed." once as their defense.
+
+Evil roles can use this as a last resort if they are not ready to claim a role.
+
+In Town of Salem 2, Silenced players may only say "..." once as their defense.
+
+In both games, the players cannot repeat the phrase if they are voted up a second time.
+
+Judgement[]
+
+The Judgement phase lasts 20 seconds in all game modes.
+
+The town will only go through this phase if a player is voted up on trial during the Voting phase.
+
+This phase is skipped during a Prosecution, as the Prosecutor automatically votes Guilty.
+
+During this phase, all players (besides the player voted up on trial) vote on whether or not the player is Guilty or Innocent. However, players don't have to vote, and in that case, can abstain from voting. Players must take notice that a Jester can haunt any player of that group who did not vote innocent.
+
+Last Words[]
+
+The Last Words phase lasts 7 seconds in all game modes.
+
+The town will only go through this phase if a player is voted up on trial during the Voting phase and is voted Guilty by majority vote during the Judgement phase.
+
+During this phase, the player in question can deliver a final statement to the town before being killed by their death animation). Only this player can speak.
+
+Due to a bug, the player cannot speak during this phase if Prosecuted.
+
+After the player is hanged (or killed another way depending on their death animation) their Last Will and role is shown, and other players may speak again. This includes Silenced players (due to a Bug). The Day phase then ends, and the game transitions into the Night phase.
+
+Note that spamming at any time during any phase is against the rules and could get you banned. Refer to this page for more info.
+
+ Night[]
+
+https://town-of-salem.fandom.com/wiki/File:Night_Theme.mp3
+
+The Night phase in standard game modes lasts 37 seconds, and only lasts 10 seconds in Rapid Mode. This is not counting the transition into the Day phase.
+
+In Town of Salem 1, during this phase, players who have a Night ability are given an opportunity to use it, excluding roles who have passive Night abilities (such as the Medium). Additionally, the Mafia, Coven, and Vampires may speak to each other, Mediums may speak with anyone in the graveyard or 1 alive player (if using their Seance), and the Jailor may speak with their Jailee.
+
+In Town of Salem 2, during this phase, players who have a Night ability are given an opportunity to use it, excluding roles who have passive Night abilities (such as the Amnesiac). Additionally, the Coven, Apocalypse, Vampires, and Wandering Souls may speak to each other, and the Jailor may speak with their Jailee.
+
+With the Feelin' Lucky? modifier enabled, a certain Jester Token can allow for the entire town to chat the following Night. This will replace the night chat of the Coven, Apocalypse, Vampires, and Wandering Souls but not of the Jailor and their Jailee.
+
+ Full Moon[]
+
+Every Night in the game except for Night 1 and Night 3 will be a Full Moon Night.
+
+At this time, the Werewolf transforms into his beast form and can choose to rampage at any player's home, dealing a Powerful Attack to them and everyone who chooses to visit them. This can backfire if a Tavern Keeper/ Tavern Keeper, Bootlegger (or Poisoner in ToS2), Pirate or Jailor/ Jailor occupies their Night, in which case, the Werewolf will be forced to stay home and attack them.
+
+If there are few players left alive, it is ill-advised to visit any player during these Nights, as it may get you killed inadvertently.
+
+Initially, the Juggernaut can only attack during a Full Moon Night. After successfully killing someone, they will be able to attack every Night.

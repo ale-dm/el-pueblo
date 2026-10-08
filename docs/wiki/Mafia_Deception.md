@@ -1,0 +1,106 @@
+# Mafia Deception
+
+Fuente: https://town-of-salem.fandom.com/wiki/Mafia_Deception
+
+The Mafia Deception (MD) alignment is a group of roles that work with the Mafia, and as the name implies, are used to throw off the Town Investigative and the Town (or occasionally Neutrals). The Mafia Deception roles are more suited for tricking the Town than outright killing them (like the Coven): by either concealing or changing the Town's information. While the Framer, Hypnotist and Disguiser can use their ability an infinite amount of times, the Janitor only has a maximum of three uses, and a Forger has two uses. These roles, partnered with a Consigliere, Blackmailer or possibly a Witch, can be extremely effective. 
+
+The Mafia Deception roles all have an effect on information which can be used to protect members of the Mafia (while occasionally protecting some Neutrals as well) or drawing suspicion on other Town members. The Janitor can obtain and reveal information only to the Mafia, while also opening claim-space for the Mafia by the role they Cleaned; the Disguiser can directly protect a Mafia member or themselves from a suspicious Town Investigative by disguising as a Town member. The Forger can draw suspicion on other Townies like the Veteran by forging someone as a Veteran, close claim-space for the Town, or just generally mislead the Town with their forgeries. The Framer can cause up to 3 Townies to die by their Frames (eg. one by hanging, the other by a Vigilante) since they can draw suspicion on both the accused and the accuser if played correctly. The Hypnotist has a wide variety of messages that can help them blend the Mafia into the Town very easily, deny claim-space for Town roles, or even draw suspicion away from a jailed Mafia Killing role by sending a fake attack message. 
+
+Almost all of these roles have an overall better advantage if their presence isn't discovered, as when their presence is revealed to the Town, they cannot do much since the info they change has a higher chance of being discredited. However, their presence is harder to discover than most Coven roles, since their actions are not immediately noticeable ( Janitor is the only exception). The information the Mafia Deception roles conceal/change can also be beneficial in leading the Town into hanging rival evil roles like a Neutral Killing. 
+
+ Mafia Deception[]
+
+ | Role Name
+
+ | Role Description
+
+ | Disguiser 
+
+ | Choose to Disguise any Mafia member as another non- Mafia member each night. Sheriffs and Investigators will see the disguised player as the role they were disguised as, Spies will not see the disguised Mafia member visit their target, and Lookouts will see the disguised player visit their target instead of the Mafia member.
+
+ | Forger 
+
+ | Choose a target to forge each Night, in which you can rewrite their Last Will and Role. If they are killed, the forged Last Will and role will appear instead. You can forge up to 2 times.
+
+ | Framer 
+
+ | Choose a target to frame each Night. Framed targets will show up as "suspicious" to the Sheriff and to an Investigator as " Framer, Vampire, Jester, or Hex Master" ( Hex Master is exclusive to the Coven Expansion only) until investigated.
+
+ | Hypnotist 
+
+ | Choose a target to plant a memory each Night, making the person think something happened without it actually happening. The memory will range from the player seeing that they were healed by a Doctor to being Poisoned by a Poisoner.
+
+ | Janitor 
+
+ | 
+
+Choose a target to clean each Night. If they are killed, their role and Last Will are hidden from the Town. However, you can read their Last Will at any time and know their role. You can clean up to 3 times.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

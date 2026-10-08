@@ -1,0 +1,162 @@
+# Mafia Killing
+
+Fuente: https://town-of-salem.fandom.com/wiki/Mafia_Killing
+
+The Mafia Killing (MK) alignment is the group of people that, as their name suggests, kill for the Mafia. The included roles are all Unique Roles. Thus, the category itself can never be explicitly chosen in the role list. 
+
+Unlike the Coven, all Mafia Killing roles are able to Attack every Night and are also less susceptible to being discovered by role blockers, especially the Jailor who overrides Role Block Immunity. However this only applies for the Mafioso + Godfather combo and Ambusher. Thus, it is imperative for the Mafia to keep both the Mafioso and Godfather alive until all the Escorts and Jailor are dead, as those roles can paralyze the Mafia if they find the Godfather when the Mafioso is dead. The Ambusher, meanwhile cannot be discovered by role blockers, but they can be discovered by Mediums or multiple visitors if they attack someone.
+
+The Godfather, a role able to consistently kill and withstand attacks from many roles, while avoiding the notice of the Town Investigatives (especially with a Mafioso), can be a major threat for all other factions and has the ability to eliminate any Town or Coven member they desire. However they, like all other Mafia Killing roles, have a mere Basic Attack, meaning they must use the gallows and the support of the Town to lynch night immune roles.
+
+Special to this group are the promotion mechanics – Should the Godfather be killed, the current Mafioso (if there is one) will be promoted to the Godfather. If there are no more kill-capable Mafia roles left, a remaining member of the Mafia will be promoted to a Mafioso, but won't be promoted to the Godfather unless an Amnesiac remembers themselves as the Godfather and dies. The Ambusher can also be promoted to a Mafioso. This seems to be a bug, however Bootlegger has the highest priority of becoming Mafioso over the rest of the Mafia.
+
+The message a player receives when they are attacked by the Godfather or a Mafioso is: "You were attacked by a member of the Mafia!". The death message will be "They were killed by a member of the Mafia." 
+
+The message a player receives when they are attacked by an Ambusher is, "You were attacked by a member of the Mafia!". However, the death message will be "They were killed by an Ambusher."
+
+ | Godfather and Mafioso nightly kill interactions 
+
+ | 
+
+ | Godfather picks a target
+
+ | Godfather does not pick target
+
+ | Godfather is controlled
+
+ | Godfather was roleblocked / No Godfather
+
+ | Mafioso picks a target
+
+ | Mafioso attacks Godfather's target
+
+ | Mafioso attacks their own target
+
+ | Mafioso attacks Godfather's controller's target
+
+ | Mafioso attacks their own target
+
+ | Mafioso does not pick target
+
+ | Mafioso attacks Godfather's target
+
+ | No attack
+
+ | Mafioso attacks Godfather's controller's target
+
+ | No attack
+
+ | Mafioso is controlled
+
+ | Mafioso attacks Godfather's target
+
+ | Mafioso attacks controller's target
+
+ | Mafioso attacks Godfather's controller's target
+
+ | Mafioso attacks controller's target
+
+ | Mafioso was roleblocked / No Mafioso
+
+ | Godfather attacks their own target
+
+ | No attack
+
+ | Godfather attacks controller's target
+
+ | No attack
+
+ Mafia Killing[]
+
+ | Role Name
+
+ | Role Description
+
+ | Godfather 
+
+ | Choose to kill someone each night. If there is a Mafioso, they will attack the target for you. You have Basic Defense and will appear innocent to a Sheriff. Your attack holds a Basic Attack value.
+
+ | Mafioso 
+
+ | Choose a target to kill at night. If the Godfather selects a target, your choice will be overridden and you will attack the Godfather's target. If the Godfather dies, you will become the new Godfather. You cannot be controlled whilst attacking the Godfather's target. Your attack holds a Basic Attack Value.
+
+ | Ambusher 
+
+ | Choose a target to wait outside their house. You will kill one visitor to your target at random. All visitors will know your name. You cannot attack other Mafia visitors. Your attack holds a Basic Attack Value.
+
+Trivia[]
+
+ Ambusher is the first Mafia Killing added since the release of the game.
+
+As of Version 3.3.0, the Ambusher was added to the Classic game modes.
+
+The Mafia Killing alignment cannot be added in Custom.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire

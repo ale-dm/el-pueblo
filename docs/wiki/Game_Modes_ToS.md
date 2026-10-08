@@ -1,0 +1,868 @@
+# Game Modes (ToS)
+
+Fuente: https://town-of-salem.fandom.com/wiki/Game_Modes_(ToS)
+
+| 
+
+ | Looking for Coven Expansion Game Modes?
+
+For more information on Coven Expansion game mode setups and strategies, visit Game Modes/Coven Expansion.
+
+The Classic "Normal" Game Modes.
+
+In the base content of Town of Salem, there are nine different game modes to play: Classic Mode, Ranked Practice, Ranked, Custom Mode, Rapid Mode, All Any, Rainbow Mode, Dracula's Palace and Town Traitor.
+
+In every game mode except Custom Mode and Rapid Mode, the game will start automatically when the lobby reaches 15 players.
+
+There are also Coven equivalents to all modes (except Rainbow Mode, Dracula's Palace, and Rapid Mode), plus three Coven Exclusive game modes ( Mafia Returns, Lovers Mode, and VIP).
+
+ Classic Mode
+
+Classic Mode is the simplest game mode as almost all of the roles are predetermined and somewhat balanced. This mode is geared towards newer players so they can learn roles without them changing every other game; the only alternating slots are Random Town and Town Killing. This game mode will probably be the very first game a player will ever play, however, this means that if experienced players do decide to play classic, there will be little claim space if they get an Evil role, but they can trick the new players into thinking they're Townies.
+
+The Town should press everyone for claims. If two people claim the same role, one is either the Random Town or an evil role. If 2 groups of two people claim the same role (for example, two people claim Sheriff, and two other people claim Doctor) one of them is definitely evil. The same goes if 3 people claim the same role, or if 2 people claim the same role when the Random Town slot is dead or taken. Once the Random Town is known, it is easy to narrow down who is evil by process of elimination. If you are evil, you should claim a role that fits in your investigation result that is hard to disprove and provide a will to back your claim up. If the Investigator dies and didn't put your investigation result in their Last Will, you can claim any role; though it's possible the Random Town is another Investigator. Be careful of counterclaims though, normally, the one with a better Last Will is the one who stays alive. If you are a Jester, you should try and claim what a confirmed Town claims. Most people will likely believe them over you. If you are an Executioner, claim Sheriff or Investigator and accuse your target late game or counter claim your target's claim.
+
+Since members Town may be new to the game, and don't usually have any clue what to do, they might ignore people's evidence and info, and randomly vote/accuse players of wrongdoing. This can be somewhat useful to the Town as stated above.
+
+ | Role Name
+
+ | Sheriff
+
+ | Lookout
+
+ | Investigator
+
+ | Jailor
+
+ | Doctor
+
+ | Tavern Keeper
+
+ | Medium
+
+ | Town Killing
+
+ | Random Town
+
+ | Godfather
+
+ | Mafioso
+
+ | Framer
+
+ | Serial Killer
+
+ | Executioner
+
+ | Jester
+
+ Ranked Practice
+
+This mode may be found under the 'Normal' tab and it features the same role list which Ranked has.
+
+10 games of this mode are required to play Ranked.
+
+Players may play this mode with friends in a Party.
+
+This mode is often played by players that need to warm up before a Ranked match.
+
+ | Role Name
+
+ | Jailor
+
+ | Town Investigative
+
+ | Town Investigative
+
+ | Town Protective
+
+ | Random Town
+
+ | Random Town
+
+ | Random Town
+
+ | Random Town
+
+ | Random Town
+
+ | Godfather
+
+ | Mafioso
+
+ | Mafia Support
+
+ | Random Mafia
+
+ | Neutral Evil
+
+ | Neutral Killing
+
+Differences
+
+With there being 5 Random Town slots, Evils have way more space to freely claim a role without getting counterclaimed. In order to win, the Town and Mafia must both coordinate very well, as the Neutral Killing is a force to be reckoned with. It can decline the Town's and Mafia's numbers very swiftly. The Jailor also should not claim publicly as long as the Neutral Killing has not been confirmed, as it could be an Arsonist or Werewolf meaning other Townies have to take the lead. The Neutral Evil is a nice addition, as it can intercept both main forces.
+
+ Ranked
+
+Competitive? Experienced? Ranked may be found under the 'Normal' tab.
+
+This game mode may not be played within a party.
+
+You will not know any other player in the Queue's REAL username until the end of the game.
+
+ Scrolls will not work.
+
+ | Role Name
+
+ | Jailor
+
+ | Town Investigative
+
+ | Town Investigative
+
+ | Town Protective
+
+ | Random Town
+
+ | Random Town
+
+ | Random Town
+
+ | Random Town
+
+ | Random Town
+
+ | Godfather
+
+ | Mafioso
+
+ | Mafia Support
+
+ | Random Mafia
+
+ | Neutral Evil
+
+ | Neutral Killing
+
+Differences
+
+In order to participate in Ranked matches, you must have played and have completed 50 games in other Game Modes. You must also have completed 10 Ranked Practice matches, which counts towards playing 50 games.
+
+You will be competing to win and earn Elo.
+
+Rather than being placed into a lobby, you are placed into a queue that redirects you to a ranked match with fourteen other people. You will see a timer instead of the 'Play' button on the top of the screen, with the words 'Ranked Queue'. When the timer runs to 0, you will be shown a small picture with 2 options ('Accept' or 'Decline') as well as a 10-second timer. Choose 'Accept' to join the game. If you join when the timer is near 0, you might get a message telling you that the queue is already full, but you will be the first player in the next queue. If you do not select a button, you will be out of the queue.
+
+The roles are predetermined (see below for list of player roles).
+
+ Scrolls are not allowed in this game mode,https://twitter.com/townofsalemgame/status/626196408777834496 because the developers wanted Scrolls to have no effect on Ranked games and have a fair environment to play without them. https://twitter.com/townofsalemgame/status/626197689546313728
+
+Parties are not allowed in this game mode, as you are sent right into the queue.
+
+Since there is more claim-space in Ranked than Classic Mode, it becomes slightly easier for the evils to claim freely; but unlike [ All Any, there's still a reasonably strict role list, allowing the game to be solved by process of elimination. Therefore, if you are Town, it is usually best to have a confirmed Townie that directs the Town on what to do. They should ask for claims and narrow it down that way. However, this has a downside: it forces Jailor and other important Town roles to claim. If a Townie is confirmed, make sure you have a Transporter, Lookout, Bodyguard, Doctor, or even a Jailor protecting them. The Town should communicate with each other during the Day to gain information. If you are evil, try and lay low and attack semi-confirmed Townies, or ones that might be important and have no protection.
+
+Custom Mode
+
+Custom Mode gives the Host more freedom to choose what they want to put into their game. All players will earn the same number of Merit Points, which is dependent on the duration of the match.
+
+The Host
+
+The host is the first player who joins the lobby. If there are at least 7 players in the lobby, players are able to type /repick to pick a new host which will be one of the players in the lobby. You need to be in the lobby for at least 10 seconds before voting to repick the host.
+
+The host can create the role list from 15 choices of any specific or random role. Random roles may be of a certain alignment (e.g. Neutral Killing), a certain team (e.g. Random Town) or Any.
+
+The host has a few restrictions while picking roles:
+
+There needs to be at least one role that is opposing another role.
+
+There cannot be more than one of a Unique role.
+
+There cannot be more than four members of the Mafia or Vampires.
+
+There cannot be a Vampire Hunter without at least one Vampire.
+
+There cannot be an Executioner without at least one Townie that isn't Mayor or Jailor.
+
+There cannot be Mafia without at least one Mafioso or Godfather.
+
+There cannot be more than four Any roles.
+
+There cannot be more than six of a particular role or Alignment.
+
+If the host leaves, a random player in the lobby will become the new host.
+
+The host may select an option to allow Anonymous Voting. This means players will not specifically know who has voted against another player or their judgement when on trial.
+
+When hosting, be sure to choose what roles you AND the other players want into the game, so everyone can come on an agreement easily.
+
+For common setups to host, see Custom Setups (Classic).
+
+ Rapid Mode
+
+ Rapid Mode is a Game Mode where everything is fast-paced. The timer for several aspects of the game is cut in half, leaving you with much less time. If you need a quick game or a fast-progressing game, then this is where you'll find it. All players will earn the same number of Merit Points, which is dependent on the duration of the match.
+
+Differences
+
+Time given to complete actions is cut in half.
+
+Overall duration of the game is decreased.
+
+Certain roles drop in usefulness (see Disadvantages)
+
+Advantages
+
+Great for people who want to play a game but don't have enough time.
+
+Great for people who like fast progression.
+
+Great for win farming.
+
+Disadvantages
+
+ Night and Defense phases progress very fast.
+
+Less time to write your Last Will.
+
+Difficult to find a match; Rapid Mode is not as popular as other game modes.
+
+Some role abilities are put at a disadvantage with the shortened time frame (i.e. Medium using their seance, Jailor Jailing, Forger writing a forgery, and Mafia members getting confused with orders at Night).
+
+Difficult to discuss with each other.
+
+Shorter time to choose what you are going to do at Night.
+
+Strategy
+
+ Rapid Mode forces players to summarize their findings as fast and as succinct as possible. Interrogations are also forced to speed up. Players who are able to summarize accusations quickly can effectively carry the game and steamroll over the rest of the Town. However, just like Custom, the strategy depends on the role list.
+
+ All Any
+
+All Any is completely random and consists of 15 Any slots, which can be any of the 35 roles in Classic. As with other modes, there can only be one of each Unique role if one is selected. Games can start with as many as 4 members of the Mafia and, although very rare, as few as 0 members of the Mafia. Games can also start with up to 4 Vampires.
+
+Normally, the Mafia has a big advantage over the rest of the Factions. They are usually the only faction that knows their identities instantly, while the Town may need many Days to figure out who is who. If you are accused of any role, call them an Executioner. If you are evil, you should refrain from claiming Jester because that is a common claim for evils in this game mode. The Town has to converse and figure out the role list very quickly before the evil roles kill them all off or the Vampires convert them all.
+
+ | Role Name
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+ | Any
+
+Advantages
+
+It is significantly easier for Neutral roles to win games, as chances are that there aren't as many Town roles compared to other game modes.
+
+Members of the Mafia and Vampires may also find it easier to win as they instantly recognize their teammates.
+
+Games generally take a short time to start as it is the popular game mode among Town of Salem players.
+
+Strategy
+
+All Any requires players to only rely on the findings of their own and other people. As such, people who rely on the role list to make accusations may be at a disadvantage.
+
+ Rainbow Mode
+
+ Rainbow Mode is a chaotic game mode where the role list looks like a Rainbow. Arsonists, Serial Killers, and the Godfather are all night immune, as well as any potential vesting Survivors, Veterans on alert and Witches before being attacked, and even the Mafioso if the Godfather dies.
+
+ | Role Name
+
+ | Godfather
+
+ | Arsonist
+
+ | Survivor
+
+ | Jailor
+
+ | Amnesiac
+
+ | Serial Killer
+
+ | Witch
+
+ | Any
+
+ | Witch
+
+ | Serial Killer
+
+ | Amnesiac
+
+ | Veteran
+
+ | Survivor
+
+ | Arsonist
+
+ | Mafioso
+
+Strategy
+
+ Mafia
+
+Main Ally: Witch - Witches can stop the evil Serial Killers from killing your Mafioso, Arsonists from killing you, and only have a 50% chance to affect you.
+
+ Night Kill Target: Amnesiac - Amnesiacs likely will join the Arsonists or Serial Killers. They can become you, but the odds are lower as Neutral Killing has a better chance to get allies and kill you.
+
+Hang Target: Arsonists - Sure, the Serial Killers can kill your Mafioso, but you can try to trick them later in the game. Arsonists can kill both of you and are the ultimate threat to the game, able to kill everyone.
+
+ Arsonists
+
+Main Ally: Other Arsonists - The best team you have is your own. You can kill anyone, and as soon as someone is doused, you can ignite them later or even in the same Night for quick deaths. Arsonists can collaborate through Death Notes on when to ignite, who to douse, etc.
+
+ Night Kill Target: Town - They're your bane. If either of them still can use their ability in an endgame, they win. The Jailor can kill you early, and the Veteran just wants to save themselves from attacks, not mass-kill.
+
+Hang Target: Mafia - If you're not killing members of the Mafia at Night, hang one of them. An informed group can be very powerful towards the endgame, and if it's 2 versus 1 or 3 versus 2, you're doomed. Also, Survivors and Witches will likely side with them.
+
+ Survivors
+
+Get your name out there. The longer you wait, the less believable your claim is. Keep reminding people, and they won't want to hurt an ally.
+
+Even if you claim Survivor, there still might be threats to your safety, so keep a lookout for Jailor, Werewolf, and Arsonist, because all of them have the ability to break through your defenses.
+
+Note: if you claim to be a Survivor on the first Day, someone may try to kill you on the first Night, but you can use a bulletproof vest to keep yourself safe. In practice, especially against inexperienced players, claiming Survivor can be dismissed as "an easy claim" and can actually get you hanged faster. As with most roles, claim when you have to.
+
+ Town
+
+Main Ally: Survivors - Survivors will probably go to the side that wins the least in the endgame, so team up with them. The Mafia could work too, as you can easily win in a 1 versus 1, and an Arsonist if you aren't doused. Remember that because the Town doesn't have the majority, you will need any ally you can get to compensate for your lack of Defense.
+
+ Night Kill Target: Serial Killers - They make the most nightly kills of any faction, and the longer they live, the more likely you are to die. Also, Serial Killers in jail will most likely choose to kill the Jailor if said Jailor doesn't execute them.
+
+Hang Target: Mafia - You need one hanged in order to win in the endgame with them, so think long-term.
+
+For Veterans, it's best to start using alerts after Night 1, constantly or on most of the Nights, since Rainbow Mode is full of evil roles. Once you're out of Alerts, you can ask Jailor to Jail you. Also, the if you are the Jailor, be wary of Town and Neutral Benign claims, as they can either actually be what they are claiming, or an evil role trying to weasel out of an execution.
+
+ Amnesiacs
+
+You have 2 tactics:
+
+Be peaceful - Remember that you were a Witch or Survivor, claim you're that person, be helpful to everyone you can.
+
+Steal the win - If an Arsonist dies Night 2 or 3 with something from 10 or less people alive, become an Arsonist. The other Amnesiac will likely do too, and you will have a power group. If they aren't dying, remember that you were a Serial Killer. You still have an effective faction that can take the majority and kill the Town and a Mafioso.
+
+ Serial Killers
+
+Main Ally: Survivors - They have bulletproof vests, they won't be that afraid of you, especially if you vow you won't attack them. Witches will likely mess up your killing flow to protect themselves, but they work when it comes to voting.
+
+ Night Kill Target: Town - You have a Veteran, trying to save himself from being shot, and can be in a 1 versus 1 with you in the endgame, which is a gamble. You also have a Jailor that can kill you, and you will likely be hanged because only Survivors and Witches win with you. Kill them off as fast as you can, but be careful of Alerts.
+
+Hang Target: Arsonists - They're the only faction bigger than you. They can kill everyone, including you, they have the same numbers as you, are in your case in the endgame, are basically you but stronger in this setup. You can get an easy hang out of them as they're prime targets to kill. It's a long-term plan that will help in the endgame.
+
+ Witches
+
+Claim and confirm yourself as a Survivor, and pretend to do what Survivors do, remind people constantly. You can convince Jailors not to execute you because you aren't the primary kill. People can have good games because since the Jailor might already die, so you can tell them not to execute you as you are the least priority target. In order to win the game, it's best to claim Witch once the Jailor dies and team up with the evil roles; you can easily "confirm" yourself through your Night ability.
+
+ Any
+
+ Jester/ Executioner
+
+What people hang on varies between games, so it might be a good idea to be patient. Most players will not factor in the possibility of a Jester or Executioner, since these roles are very rare. Executioners will have the Veteran as their target every single time, due to not being able to have a Jailor as their target, and the fact that they're taking up the Any slot. In some games, if people are hanging erratically, you may want to just silently place a vote on your target and hope others follow suit. Another good strategy is to claim Executioner immediately and reveal your target. Because almost every role in the game is evil, people will almost always hang them. For Jesters, become an annoyance that people just dislike and want out of the game. Don't spam, as that's breaking the rules, but being annoying in any other way (spoiling a new movie, sharing an unpopular opinion, etc.) will most certainly help. You may also want to place a vote on someone who seems to be leading the Town in hopes that they vote for you back.
+
+ Werewolf
+
+Main Ally: Witches - If you communicate, you won't be threats to each other, and to be safe they can control you every other Night. Survivors will probably fear you because of your killing ability.
+
+ Night Kill Target: Town - Veterans tend to attract attention, and if you attack them when they aren't Alerting, you can get a bunch of kills in, but you have to read when they're Alerting correctly. Also, them Alerting in endgame is incredibly bad. Jailors can out you in their Last Will if you are Jailed on a Full Moon, and they can kill you in endgame. Also, you probably want to avoid attention unless you want to stay home for some reason.
+
+Hang Target: Arsonists - They can douse you, ending your Defense and devastate your life if they ignite. In a 1 versus 1, a draw will come out as they will ignite you and you will maul them, creating a draw.
+
+ Vampire
+
+Try to bite the Town for less threats and Amnesiacs so you don't have a big role against you. You can even try to persuade the Jailor to get bitten if you want. Survivors and Witches will probably side with you for this rare occurrence. Everyone who you can't bite though, except for Witches, are hang targets, as they're in a factions that can kill you.
+
+Bite target: Amnesiacs - If you ever see an Amnesiac that is claiming, or in a even better case, a confirmed Amnesiac, bite them. The Town will usualy think their still just waiting to remember to win easier, and they will be one of the last targets to hang or kill.
+
+ Dracula's Palace
+
+ | Role Name
+
+ | Doctor
+
+ | Lookout
+
+ | Lookout
+
+ | Jailor
+
+ | Vigilante
+
+ | Town Protective
+
+ | Town Support
+
+ | Town Support
+
+ | Vampire Hunter
+
+ | Jester
+
+ | Witch
+
+ | Vampire
+
+ | Vampire
+
+ | Vampire
+
+ | Vampire
+
+Strategy
+
+As a Townie, you want to find the Vampires as soon as possible to stop them from spreading.
+
+You'll want to keep the Vampire Hunter alive at all costs. If a Jester is suspected, they should vote innocent to avoid being haunted. Meanwhile, Town Protectives shouldn't have to worry about protecting the Vampire Hunter, considering they're immune to Vampire bites, unless a Vigilante has been revealed with the Witch still alive.
+
+The Jailor is still a top priority to keep alive with their ability to force claims from people. As usual, Town Protectives should be on them over anyone else, with some exceptions.
+
+If you are the Jailor, take your claims very seriously. Remember that anyone who was confirmed could have been converted. Even if a role is confirmed, try to get new information out of them.
+
+If someone claims Jester, they're most likely a Vampire trying to make you want to save your execution. Do the opposite, and execute that person.
+
+An interesting strategy as Transporter is to keep yourself, or any confirmed Town you want to keep safe, is to transport them with the Vampire Hunter. Remember to whisper to the Vampire Hunter to not claim transported, otherwise smart Vampires may attempt to bite the Vampire Hunter and end up successfully biting a confirmed Townie.
+
+If you're a Lookout and someone suspicious is claiming a role that isn't Vigilante, Mayor, or Medium, watch the people they claim to visit two Nights in a row. If they visit them twice, that person is confirmed to be Town for the time being. However, because of how long it takes for this strategy to work, it is only recommended to be used with people who you suspect of being evil.
+
+As for a Retributionist, simply have them use a harmless corpse. If you see the corpse visit, the Retributionist claim should be confirmed.
+
+As a Bodyguard, ironically, the Vampire Hunter is your biggest weakness, as if you protect a Vampire who is visited by a Vampire Hunter, you both will die, dealing a huge blow to the Town.
+
+If the Vampire Hunter is claiming publicly, coordinate with them to ensure you do not protect targets they are checking. If they are remaining hidden, you should only guard players you are absolutely certain will not get checked.
+
+As Vampire, your biggest threat is obviously the Vampire Hunter. You should try to get them eliminated at any costs. There are a few ways to do this:
+
+You could claim Vampire Hunter yourself and hope to get them hang if they claim.
+
+However, if this doesn't end up happening, you will probably get staked the next Night.
+
+You could try and find the Witch.
+
+Usually, the Witch would find you first. However, any whispers may look suspicious. Discuss with caution.
+
+When they are found, try to figure out who the Vigilante is. Hopefully, the Vampire Hunter will have claimed by now (such as if someone pressures them) and you can hopefully get the Witch to control the Vigilante into the Vampire Hunter.
+
+You can try to hang the Jester.
+
+Normally, with smart hunters, this will not work, as they will most likely vote innocent if they suspect a Jester.
+
+However, it's important to remember that getting the Vampire Hunter killed is just a mere assistance to your victory; if your team is exposed, it may be too late, even with the Vampire Hunter dead. Therefore, you should try to kill any role that could threaten your victory.
+
+The Jailor, as usual for evils, is the 2nd biggest threat to your team, given that they can roleblock your youngest and kill your team beyond the control of any Town Protective roles you've tricked into doing your bidding. Try to get them eliminated before they eliminate your team.
+
+Other roles are still dangerous to you, but not as much as a Jailor is.
+
+ Vigilantes are able to kill you, but they don't roleblock you, and you can be saved from their attacks by a Town Protective. This doesn't mean they're not a threat, however. You should eliminate them when possible.
+
+The Retributionist is dangerous with their ability to delay your bites with an Tavern Keeper, stop them with a Town Protective, and take you out with a Vigilante or Vampire Hunter. Try to either convert them or get them killed as soon as possible before they use a corpse to end your game.
+
+Other roles aren't as much as a threat, but they should still be dealt with, depending on the role. Competent Lookouts can get 2 Vampires killed in one Night, Tavern Keepers can stop you from biting, and Town Protectives can stop your bites, and in the case of a Bodyguard, take down your youngest.
+
+ Town Traitor
+
+ Town Traitor is a chaotic game mode that revolves around one Townie siding with the Mafia. The traitor will know and will be able to speak with the other Mafia roles. They cannot be told apart from any other normal Townies and must be killed using scum reading. The traitor will retain all of their normal abilities as a Town role, with some exceptions such as Vigilante and Jailor no longer facing consequences after killing a Townie.
+
+ | Role Name
+
+ | Sheriff
+
+ | Jailor
+
+ | Doctor
+
+ | Lookout
+
+ | Town Investigative
+
+ | Town Protective
+
+ | Town Killing
+
+ | Town Support
+
+ | Random Town
+
+ | Random Town
+
+ | Random Town
+
+ | Godfather
+
+ | Mafioso
+
+ | Random Mafia
+
+ | Witch
+
+Strategy
+
+Town Traitor Vigilantes and Town Traitor Jailors receive no consequences after killing a Townie, and can do so multiple times.
+
+Once all Mafia members and the Witch have been killed, leaving only the Town Traitor alive, the Town is given a 3- Day countdown to find and kill the Town Traitor. If the timer runs out, the Town loses and the Mafia wins. 
+ Jailor Town Traitor Role Card
+
+In a 1 v 1 stalemate between the Town and the Town Traitor, the win will be given to the Town Traitor and thus to the Mafia. The Town Traitor will automatically win in 1 v 1 against all Town roles except Vigilantes with bullets left, Jailors with executions, or a Retributionist with an unused Vigilante in the graveyard. Town Traitor Tavern Keepers and Town Traitor Transporters will automatically win against Vigilantes with bullets left, and a Town Traitor Transporter will automatically win against a Retributionist.
+
+One important thing to note is that the Town Traitor is NOT a Mafia member, but rather a Townie with Mafia's win conditions. This means that the Town Traitor cannot be detected by a Spy or Sheriff (unless Framed), the Retributionist can use them, all Mafia roles can visit the Town Traitor, and the Ambusher can kill and give the Town Traitor their name, just like normal. The Witch is also unaware if the Townie they controlled is the Town Traitor or not.
+
+If the Town Traitor is forged by a Forger, their role will always be shown in red text.
+
+As a Town Traitor, try to use your abilities to help your team while being seen as a helpful Townie.
+
+If you are the Town Traitor Jailor, you have two options:
+
+One is to avoid revealing as the Jailor, claiming a different role, and executing all Townies who might pose a threat to the Mafia, effectively giving the Mafia two kills a night - at the cost of making it obvious which role is the Town Traitor.
+
+Your other option is to play as normal and Execute a Townie that may pose a threat to the Mafia or yourself, claim you thought they were evil, and pretend to not have any Executions left. Only Execute again when Mafia are about to gain majority. It's a good idea to wait till the last second of the Night to execute a Townie, to prevent them from writing down anything in their Last Will; you could also make it seem like you are genuinely suspicious of the Townie you are executing, or were told they were evil by someone else, in order to avoid being exposed by a Medium.
+
+If you are a Town Traitor Vigilante, either coordinate with a Forger to shoot " Mafia" to confirm yourself, or do nothing. A good idea is to shoot a Townie when Mafia is approaching majority, then shoot again to help Mafia gain majority quickly.
+
+If you are the Town Traitor Mayor, do not reveal until it is impossible not to do so as the Town is very willing to hang a Mayor whether or not they are suspicious.
+
+If you are a Town Traitor Tavern Keeper, you may be considered as just a Bootlegger, but this is not true at all. You have the benefit of seeming innocent to Sheriff checks, and you aren't tracked by Spies. Use this to your advantage.
+
+If you are a Town Traitor Medium, consider trying to confirm yourself and a Mafia member as soon as possible, remember dead cannot see who types, only that there is a Medium.
+
+If you are a Town Traitor Town Protective, it may seem tempting to protect your fellow Mafia members, but for your own sake, don't. If providing a correct Last Will, some smart Townies may ask why you protected players such as Mafia members under suspicion, and not on players such as the Jailor or a revealed Mayor. It's better to protect confirmed Townies, and hope that the Town doesn't random hang you in the pursuit of the Town Traitor.
+
+This is especially true as a Town Traitor Bodyguard, as if you save a Mafia member from a Vigilante, not only will you sacrifice your life to kill a single Townie, but if the Vigilante kept a proper Last Will, the Mafia member you guarded will almost certainly be hung.
+
+If you are a Town Traitor Town Investigative role, it may be a viable idea to sell out your fellow Mafia members to gain the support of the Town, then to hold out until the countdown ends. Don't make it too obvious however, as a smart Townie may call you out as being the Town Traitor, considering you may know information about the Mafia a little too early. 
+
+If you are a member of the Town:
+
+Always try to scum read other players to determine who is voting up Townies, especially the Mayor. Remember, a Town Traitor cannot be found by Town Investigative roles.
+
+Keeping powerful Town roles at bay may keep good Townies safe, if a Mayor reveals it is advised to get rid of them as they can quickly spell doom for the Town if they are the Traitor. If a Jailor is known and starts to execute innocent townies, it is likely they are the Traitor.
+
+Retired Game Modes
+
+Vigilantics
+
+Vigilantics was first introduced in Version B.0.6.0 which was released on August 16th of 2014. In Version 2.0.0.6501, the Witch was given a barrier which protects the Witch from the first harmful attack. This buff unfortunately made it difficult for Vigilantes to win. Ultimately, due to the game mode hardly being played, it was removed on November 13th of 2018 and it was immediately replaced with Dracula's Palace. (reference)
+
+ | Role Name
+
+ | Vigilante
+
+ | Witch
+
+ | Vigilante
+
+ | Vigilante
+
+ | Witch
+
+ | Vigilante
+
+ | Vigilante
+
+ | Witch
+
+ | Vigilante
+
+ | Vigilante
+
+ | Vigilante
+
+ | Witch
+
+ | Vigilante
+
+ | Vigilante
+
+ | Witch
+
+Upcoming Game Modes
+
+No upcoming game modes have been announced yet.
+
+History
+
+3.3.8
+
+ Ranked/ Ranked Practice role list has changed. Old role list (Season 5) was:
+
+ | Role Name 
+
+ | 1 Jailor
+
+ | 2 Town Investigative
+
+ | 1 Town Protective
+
+ | 1 Town Killing
+
+ | 1 Town Support
+
+ | 3 Random Town
+
+ | 1 Godfather
+
+ | 1 Mafioso
+
+ | 2 Random Mafia
+
+ | 1 Witch
+
+ | 1 Executioner
+
+3.3.4
+
+Fixed a bug in Ranked where end-game player list would only show one username across all players.
+
+3.3.1 (November 18, 2020)
+
+ Ranked/ Ranked Practice role list has changed. Old role list (Season 4) was:
+
+ | Role Name 
+
+ | 1 Jailor
+
+ | 2 Town Investigative
+
+ | 1 Town Protective
+
+ | 1 Town Killing
+
+ | 1 Town Support
+
+ | 3 Random Town
+
+ | 1 Godfather
+
+ | 1 Mafioso
+
+ | 3 Random Mafia
+
+ | 1 Neutral Evil
+
+3.3.1 (November 10, 2020 - November 17, 2020)
+
+ Ranked/ Ranked Practice role list has changed. Old role list (Season 3) was:
+
+ | Role Name 
+
+ | 1 Jailor
+
+ | 2 Town Investigative
+
+ | 1 Town Protective
+
+ | 1 Town Killing
+
+ | 1 Town Support
+
+ | 4 Random Town
+
+ | 1 Godfather
+
+ | 1 Ambusher
+
+ | 2 Random Mafia
+
+ | 1 Neutral Evil
+
+3.3.1 (November 6, 2020 - November 9, 2020)
+
+ Ranked/ Ranked Practice role list has changed. Old role list (Season 2) was:
+
+ | Role Name 
+
+ | 1 Jailor
+
+ | 2 Town Investigative
+
+ | 1 Town Protective
+
+ | 1 Town Killing
+
+ | 1 Town Support
+
+ | 3 Random Town
+
+ | 1 Godfather
+
+ | 1 Mafioso
+
+ | 2 Random Mafia
+
+ | 1 Neutral Evil
+
+ | 1 Neutral Killing
+
+3.3.0
+
+The Custom Lobby role summary for Lookout has been updated to include a reference about the limit of identifying 3 players.
+
+The Custom Lobby role summary for Jester has been updated to indicate abstaining voters are also susceptible to being haunted.
+
+3.2.5
+
+Added Anonymous Voting to Custom and Rapid Mode.
+
+3.2.4
+
+ Retributionist can now be a Town Traitor in Town Traitor.
+
+3.2.0
+
+It is no longer possible to accidentally start a 1 player game by spam-clicking the Start button.
+
+Added Town Traitor.
+
+3.1.14
+
+Fixed issue in Custom lobbies where duplicate or other quantity-limited roles could be improperly added to the role list resulting in an unstartable game.
+
+2.4.0.10404
+
+Removed Vigilantics.
+
+Added Dracula's Palace.
+
+2.2.1.8298
+
+ Rapid Mode now requires 7 players instead of 2 to start the game.
+
+2.1.0.7320
+
+ Ranked/ Ranked Practice role list has changed. Old role list (Season 1) was:
+
+ | Role Name 
+
+ | 1 Jailor
+
+ | 2 Town Investigative
+
+ | 2 Town Support
+
+ | 1 Town Protective
+
+ | 1 Town Killing
+
+ | 1 Random Town
+
+ | 1 Godfather
+
+ | 1 Mafioso
+
+ | 1 Random Mafia
+
+ | 1 Neutral Killing
+
+ | 1 Neutral Evil
+
+ | 1 Neutral Benign
+
+ | 1 Any
+
+1.5.11.5389
+
+The number of Merit Points given in Custom and Rapid matches are now dependent on the length of a match.
+
+1.5.10.4747
+
+ Ranked timer brought back down to a maximum of 3 minutes.
+
+The host can no longer add more than 6 of one role or Alignment.
+
+The host can no longer add more than 3 Any slots.
+
+1.5.1.3467
+
+Added Ranked Practice to mobile.
+
+1.4.2.151
+
+ Ranked requirements changed.
+
+1.4.2.150
+
+Added Ranked Practice.
+
+1.2.02
+
+Added a sound effect for when a Ranked game was ready.
+
+1.2.0
+
+Added Rainbow Mode.
+
+1.1.1
+
+No more double Mafioso in Ranked.
+
+ Ranked role list has changed. Old role list was:
+
+ | Role Name 
+
+ | 1 Jailor
+
+ | 2 Town Investigative
+
+ | 2 Town Protective
+
+ | 2 Town Support
+
+ | 1 Town Killing
+
+ | 1 Godfather
+
+ | 1 Mafia Support
+
+ | 1 Random Mafia
+
+ | 1 Neutral Benign
+
+ | 1 Neutral Killing
+
+ | 1 Neutral Evil
+
+ | 1 Any
+
+1.1.0
+
+The host now cannot visually add roles after start timer kicks off.
+
+1.0.2
+
+Added Ranked.
+
+Beta 0.8.1
+
+ Classic Mode, All Any, and Vigilantics now automatically start when lobby is full.
+
+Beta 0.6.0
+
+Added All Any, Rapid Mode, and Vigilantics.
+
+Town of Salem Release
+
+Introduced.
+
+References
+
+↑ Strategies taken from forum post: https://www.blankmediagames.com/phpbb/viewtopic.php?f=3&t=37586&p=1168297&hilit=Rainbow+Mode+Strategy&sid=990356e5e8923c0305d87b8b71477a2b#p1168297

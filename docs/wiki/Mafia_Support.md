@@ -1,0 +1,99 @@
+# Mafia Support
+
+Fuente: https://town-of-salem.fandom.com/wiki/Mafia_Support
+
+The Mafia Support (MS) alignment coincides with the Mafia. Their job is to collect information, hinder others, or simply (as their name suggests) support the Mafia. When all the kill-capable Mafia roles have died, the player that joined the lobby first will be promoted to a Mafioso, with the same applying to all Random Mafia members. 
+
+The Consigliere gains information for the Mafia, the Blackmailer gains information and silences people for the Mafia, and the Bootlegger distracts people for the Mafia, paralleling the Tavern Keeper. Their existence in the game can potentially help the Mafia win many trials by being an extra vote and/or using their skills for assistance, making them a real headache for the Town; especially if the Blackmailer and Bootlegger try and annoy other important Town members. The Mafia Support roles are also paired very well with the other Mafia roles, like an Ambusher- Bootlegger combo or the classic Consigliere- Disguiser combo.
+
+Much like the Town Support sub-alignment, the Mafia Support roles are able to have an impact in the game (a Bootlegger can prevent an Arsonist from igniting, a Consigliere could discover the identity of a Serial Killer, or a Blackmailer can prevent a Town Investigative from revealing important info). However, unlike Town Support, the Mafia Support roles are useful at any time within the game, does not require much information to be effective (can even gather information themselves if needed), and does not hinder their own team since they cannot normally target their own team (the Bootlegger and Tavern Keeper are prime examples).
+
+These roles all share features (and investigative results) with Town roles, so they can blend in with claims that are reliable, such as a Bootlegger claiming to be an Tavern Keeper, or a Consigliere claiming Town Investigative roles such as Investigator or Tracker. A Blackmailer, similar to the Spy, can see who the Mafia visit through the chat, making it a reliable claim if they choose to claim it.
+
+ Mafia Support[]
+
+ | Role Name
+
+ | Role Description
+
+ | 
+ Blackmailer 
+
+ | Choose a person each Night to Blackmail. They are prevented from speaking or whispering during the day, and can only say "I am blackmailed." once when on trial. You can read whispers that others send during the daytime. If your blackmailed target attempts to speak during the daytime, they will be met with white text that reads, "You are blackmailed.".
+
+ | Consigliere 
+
+ | Check a person each Night for their exact role. If you check someone who is Doused or Hexed, they will show up as an Arsonist or a Hex Master, respectively ( Hex Master is exclusive to the Coven Expansion).
+
+ | Bootlegger 
+
+ | Distract somebody each Night. You prevent them from using their Night ability. If you distract a Serial Killer that isn't Cautious or the Werewolf on a Full Moon, they are forced to attack you. You cannot be roleblocked.
+
+ | 
+
+ | 
+Roles
+
+ | 
+
+ | 
+
+ | 
+ Town
+
+ | 
+
+ | Town Investigative | | Investigator • Lookout • Psychic • Sheriff • Spy • Tracker | | 
+
+ | 
+
+ | Town Killing | | Jailor • Vampire Hunter • Veteran • Vigilante
+
+ | 
+
+ | Town Protective | | Bodyguard • Crusader • Doctor • Trapper
+
+ | 
+
+ | Town Support | | Mayor • Medium • Retributionist • Tavern Keeper • Transporter
+
+ | 
+ Mafia
+
+ | 
+
+ | Mafia Deception | | Disguiser • Forger • Framer • Hypnotist • Janitor | | 
+
+ | 
+
+ | Mafia Killing | | Ambusher • Godfather • Mafioso
+
+ | 
+
+ | Mafia Support | | Blackmailer • Bootlegger • Consigliere
+
+ | 
+ Coven
+
+ | 
+
+ | Coven Evil | | Coven Leader • Hex Master • Medusa • Necromancer • Poisoner • Potion Master | | 
+
+ | 
+ Neutral
+
+ | 
+
+ | Neutral Benign | | Amnesiac • Guardian Angel • Survivor | | 
+
+ | 
+
+ | Neutral Evil | | Executioner • Jester • Witch
+
+ | 
+
+ | Neutral Killing | | Arsonist • Juggernaut • Serial Killer • Werewolf
+
+ | 
+
+ | Neutral Chaos | | Pirate • Plaguebearer/ Pestilence • Vampire
