@@ -51,6 +51,40 @@ export interface EventLog {
 /** Entrega eventos a los clientes de una partida. El adaptador aplica la proyección por jugador. */
 export interface Broadcaster {
   publish(matchId: string, events: GameEventEnvelope[]): Promise<void>;
+  /** Narración pública: la reciben todos los jugadores de la partida. */
+  publishNarration(matchId: string, narration: { seq: number; text: string; source: "gemini" | "template" }): Promise<void>;
+}
+
+/** Hechos públicos de la noche o del día, a partir de los que se narra. Nunca contienen información privada. */
+export type NarrationFact =
+  | { kind: "day"; dayNumber: number }
+  | { kind: "night"; dayNumber: number; deaths: Array<{ nick: string; cause: string; role: string | null }> }
+  | { kind: "trial"; defendant: string }
+  | { kind: "verdict"; defendant: string; verdict: "guilty" | "innocent" }
+  | { kind: "hanged"; nick: string; role: string | null }
+  | { kind: "ended"; winner: "town" | "mafia" };
+
+export interface Narration {
+  text: string;
+  source: "gemini" | "template";
+  model: string | null;
+  inputTokens: number | null;
+  outputTokens: number | null;
+}
+
+export interface Narrator {
+  narrate(facts: NarrationFact[]): Promise<Narration>;
+}
+
+export interface NarrationRecord extends Narration {
+  matchId: string;
+  eventSeq: number;
+  createdAt: Date;
+}
+
+export interface NarrationStore {
+  insert(record: NarrationRecord): Promise<void>;
+  listByMatch(matchId: string): Promise<NarrationRecord[]>;
 }
 
 export interface CatalogSource {

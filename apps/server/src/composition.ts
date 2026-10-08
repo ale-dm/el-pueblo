@@ -6,25 +6,42 @@ import { reconnect } from "./application/use-cases/reconnect.js";
 import { setConnection } from "./application/use-cases/setConnection.js";
 import { recoverTimers } from "./application/use-cases/recoverTimers.js";
 import { getView } from "./application/use-cases/getView.js";
+import { narrate } from "./application/use-cases/narrate.js";
 import { startMatch } from "./application/use-cases/startMatch.js";
 import { submitCommand, type SubmitCommandDeps } from "./application/use-cases/submitCommand.js";
-import type { Scheduler } from "./application/ports.js";
+import type { NarrationStore, Narrator, Scheduler } from "./application/ports.js";
+import type { GameEventEnvelope } from "@el-pueblo/engine";
 
 /**
  * Dependencias de infraestructura: la unión de los puertos que usan los casos de uso.
  * El resto de la aplicación solo ve los puertos, nunca los adaptadores.
  */
-export type Deps = Omit<SubmitCommandDeps, "queue" | "advance"> & CreateRoomDeps & { scheduler: Scheduler };
+export type Deps = Omit<SubmitCommandDeps, "queue" | "advance" | "afterEvents"> & CreateRoomDeps & {
+  scheduler: Scheduler;
+  narrations: NarrationStore;
+  narrator: Narrator;
+};
 
 /** Ensambla los casos de uso. Es el único sitio que conoce a los adaptadores concretos. */
 export function createServices(deps: Deps) {
   const queue = new KeyedQueue();
-  const advance = advanceOnTimeout({ ...deps, queue });
+  const narrateEvents = narrate({ ...deps, queue });
+  const afterEvents = (matchId: string, events: GameEventEnvelope[]) => {
+    const pending = narrateEvents(matchId, events).catch(() => undefined);
+    pendingNarrations.add(pending);
+    void pending.finally(() => pendingNarrations.delete(pending));
+  };
+  const pendingNarrations = new Set<Promise<void>>();
+  const advance = advanceOnTimeout({ ...deps, queue, afterEvents });
   return {
     createRoom: createRoom(deps),
     joinRoom: joinRoom(deps),
-    startMatch: startMatch({ ...deps, queue, advance }),
-    submitCommand: submitCommand({ ...deps, queue, advance }),
+    startMatch: startMatch({ ...deps, queue, advance, afterEvents }),
+    submitCommand: submitCommand({ ...deps, queue, advance, afterEvents }),
+    /** Espera a que terminen las narraciones pendientes (para tests y para apagar el servidor). */
+    drainNarrations: async () => {
+      while (pendingNarrations.size > 0) await Promise.all([...pendingNarrations]);
+    },
     reconnect: reconnect(deps),
     getView: getView(deps),
     setConnection: setConnection(deps),

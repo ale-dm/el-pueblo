@@ -31,6 +31,12 @@ export class SocketIoBroadcaster implements Broadcaster {
     private readonly viewers: ViewerRegistry,
   ) {}
 
+  async publishNarration(matchId: string, narration: { seq: number; text: string; source: "gemini" | "template" }) {
+    for (const { socketId } of this.viewers.of(matchId)) {
+      this.io.to(socketId).emit("match:narration", { matchId, ...narration });
+    }
+  }
+
   async publish(matchId: string, events: GameEventEnvelope[]) {
     const roster = await this.players.listByMatch(matchId);
     for (const { socketId, playerId } of this.viewers.of(matchId)) {

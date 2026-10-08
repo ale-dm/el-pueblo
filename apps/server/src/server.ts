@@ -12,6 +12,10 @@ import { PgEventLog, PgMatchStore, PgPlayerStore } from "./adapters/outbound/pos
 import { SocketIoBroadcaster, ViewerRegistry } from "./adapters/outbound/socket-io/broadcaster.js";
 import { CryptoIds, CryptoSecurity } from "./adapters/outbound/node/crypto.js";
 import { NodeScheduler } from "./adapters/outbound/node/scheduler.js";
+import { PgNarrationStore } from "./adapters/outbound/postgres/repositories.js";
+import { GeminiNarrator } from "./adapters/outbound/narrator/gemini.js";
+import { googleTextModel } from "./adapters/outbound/narrator/googleModel.js";
+import { TemplateNarrator } from "./adapters/outbound/narrator/template.js";
 
 export interface ServerConfig {
   databaseUrl: string;
@@ -22,6 +26,10 @@ export interface ServerConfig {
   catalogDir: string;
   /** Carpeta con la PWA compilada (apps/web/dist). Si existe, el servidor la sirve en el mismo origen. */
   webDist?: string;
+  /** Clave de Gemini. Sin ella, la narración usa plantillas. */
+  googleApiKey?: string;
+  geminiModel: string;
+  narratorTimeoutMs: number;
   engineVersion: string;
   chatMessagesPerTenSeconds: number;
 }
@@ -59,6 +67,10 @@ export async function startServer(config: ServerConfig) {
     ids: new CryptoIds(),
     security: new CryptoSecurity(),
     scheduler,
+    narrations: new PgNarrationStore(db),
+    narrator: config.googleApiKey
+      ? new GeminiNarrator(googleTextModel(config.googleApiKey), config.geminiModel, config.narratorTimeoutMs, (m) => console.error(`[server] ${m}`))
+      : new TemplateNarrator(),
     engineVersion: config.engineVersion,
   });
 
@@ -76,6 +88,7 @@ export async function startServer(config: ServerConfig) {
   return {
     recovered,
     close: async () => {
+      await services.drainNarrations();
       io.close();
       await app.close();
       await sql.end();

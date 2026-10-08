@@ -1,3 +1,4 @@
+import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { createRng, decide, replay, type Catalog, type Command } from "@el-pueblo/engine";
 import { AppError, ConcurrencyError } from "../errors.js";
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
@@ -16,6 +17,8 @@ export interface SubmitCommandDeps {
   queue: KeyedQueue;
   scheduler: Scheduler;
   advance: (matchId: string) => Promise<void>;
+  /** Narración asíncrona de los eventos publicados. No se espera. */
+  afterEvents?: (matchId: string, events: GameEventEnvelope[]) => void;
 }
 
 export interface SubmitCommandInput {
@@ -64,6 +67,7 @@ export function submitCommand(deps: SubmitCommandDeps) {
         deps.scheduler.cancel(match.id);
       }
       await deps.broadcaster.publish(match.id, decision.value);
+      deps.afterEvents?.(match.id, decision.value);
       const phaseStart = decision.value.filter((e) => e.type === "phase.started").at(-1);
       if (phaseStart?.type === "phase.started" && !ended) {
         const delay = phaseDelayMs(await loadCatalog(), modeOf(match.config), phaseStart.payload.phase);

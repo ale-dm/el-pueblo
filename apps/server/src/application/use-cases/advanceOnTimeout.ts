@@ -1,3 +1,4 @@
+import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { createRng, decide, replay, type Catalog } from "@el-pueblo/engine";
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
 import { initialState } from "../state/initialState.js";
@@ -13,6 +14,8 @@ export interface AdvanceDeps {
   clock: Clock;
   queue: KeyedQueue;
   scheduler: Scheduler;
+  /** Narración asíncrona de los eventos publicados. No se espera. */
+  afterEvents?: (matchId: string, events: GameEventEnvelope[]) => void;
 }
 
 /**
@@ -47,6 +50,7 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
         deps.scheduler.cancel(matchId);
       }
       await deps.broadcaster.publish(matchId, decision.value);
+      deps.afterEvents?.(matchId, decision.value);
 
       const next = decision.value.filter((e) => e.type === "phase.started").at(-1);
       if (next?.type === "phase.started" && !ended) {

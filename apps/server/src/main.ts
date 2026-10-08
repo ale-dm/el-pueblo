@@ -15,6 +15,9 @@ const server = await startServer({
   corsOrigins: (env.PUBLIC_URL ?? "http://localhost:5173").split(",").map((o) => o.trim()),
   catalogDir: fileURLToPath(new URL("../../../data/catalog", import.meta.url)),
   webDist: env.WEB_DIST ?? fileURLToPath(new URL("../../web/dist", import.meta.url)),
+  googleApiKey: env.GOOGLE_API_KEY || undefined,
+  geminiModel: env.GEMINI_MODEL ?? "gemini-2.5-flash",
+  narratorTimeoutMs: Number(env.NARRATOR_TIMEOUT_MS ?? 8000),
   engineVersion: env.ENGINE_VERSION ?? "0.1.0",
   chatMessagesPerTenSeconds: Number(env.CHAT_MESSAGES_PER_10S ?? 5),
 });

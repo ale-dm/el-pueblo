@@ -1,6 +1,6 @@
 import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { ConcurrencyError } from "../../../application/errors.js";
-import type { EventLog, MatchRecord, MatchStore, PlayerRecord, PlayerStore } from "../../../application/ports.js";
+import type { EventLog, MatchRecord, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore } from "../../../application/ports.js";
 
 export class InMemoryMatchStore implements MatchStore {
   private readonly byId = new Map<string, MatchRecord>();
@@ -73,5 +73,17 @@ export class InMemoryEventLog implements EventLog {
     const last = log.at(-1)?.seq ?? 0;
     if (last !== expectedLastSeq) throw new ConcurrencyError();
     this.logs.set(matchId, [...log, ...events]);
+  }
+}
+
+export class InMemoryNarrationStore implements NarrationStore {
+  private readonly records: NarrationRecord[] = [];
+
+  async insert(record: NarrationRecord) {
+    this.records.push({ ...record });
+  }
+
+  async listByMatch(matchId: string) {
+    return this.records.filter((r) => r.matchId === matchId).map((r) => ({ ...r }));
   }
 }

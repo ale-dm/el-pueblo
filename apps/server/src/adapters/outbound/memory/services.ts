@@ -4,9 +4,14 @@ import type { Broadcaster, Clock, IdGenerator, Security } from "../../../applica
 /** Registra lo publicado. Los tests comprueban aquí qué llegó a los clientes. */
 export class RecordingBroadcaster implements Broadcaster {
   readonly published: Array<{ matchId: string; events: GameEventEnvelope[] }> = [];
+  readonly narrations: Array<{ matchId: string; seq: number; text: string; source: string }> = [];
 
   async publish(matchId: string, events: GameEventEnvelope[]) {
     this.published.push({ matchId, events: [...events] });
+  }
+
+  async publishNarration(matchId: string, narration: { seq: number; text: string; source: "gemini" | "template" }) {
+    this.narrations.push({ matchId, ...narration });
   }
 }
 

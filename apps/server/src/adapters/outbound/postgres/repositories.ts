@@ -2,7 +2,7 @@ import { and, asc, eq, inArray, max } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
 import type { FactionKey, GameEventEnvelope } from "@el-pueblo/engine";
 import { ConcurrencyError } from "../../../application/errors.js";
-import type { EventLog, MatchRecord, MatchStatus, MatchStore, PlayerRecord, PlayerStore } from "../../../application/ports.js";
+import type { EventLog, MatchRecord, MatchStatus, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore } from "../../../application/ports.js";
 import * as s from "./schema.js";
 
 /** Cualquier driver de drizzle para PostgreSQL (postgres-js en producción, PGlite en tests). */
@@ -183,3 +183,34 @@ export class PgEventLog implements EventLog {
   }
 }
 
+
+export class PgNarrationStore implements NarrationStore {
+  constructor(private readonly db: Db) {}
+
+  async insert(r: NarrationRecord) {
+    await this.db.insert(s.narrations).values({
+      matchId: r.matchId,
+      eventSeq: r.eventSeq,
+      text: r.text,
+      source: r.source,
+      model: r.model,
+      inputTokens: r.inputTokens,
+      outputTokens: r.outputTokens,
+      createdAt: r.createdAt,
+    });
+  }
+
+  async listByMatch(matchId: string) {
+    const rows = await this.db.select().from(s.narrations).where(eq(s.narrations.matchId, matchId)).orderBy(asc(s.narrations.id));
+    return rows.map((row) => ({
+      matchId: row.matchId,
+      eventSeq: row.eventSeq ?? 0,
+      text: row.text,
+      source: row.source,
+      model: row.model,
+      inputTokens: row.inputTokens,
+      outputTokens: row.outputTokens,
+      createdAt: row.createdAt,
+    }));
+  }
+}

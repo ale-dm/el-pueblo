@@ -1,7 +1,8 @@
 import { fileURLToPath } from "node:url";
 import { createServices } from "../../src/composition.js";
 import { JsonCatalogSource } from "../../src/adapters/outbound/catalog-json/loadCatalog.js";
-import { InMemoryEventLog, InMemoryMatchStore, InMemoryPlayerStore } from "../../src/adapters/outbound/memory/stores.js";
+import { InMemoryEventLog, InMemoryMatchStore, InMemoryNarrationStore, InMemoryPlayerStore } from "../../src/adapters/outbound/memory/stores.js";
+import { TemplateNarrator } from "../../src/adapters/outbound/narrator/template.js";
 import { FixedClock, RecordingBroadcaster, SequentialIds, SequentialSecurity } from "../../src/adapters/outbound/memory/services.js";
 import { ManualScheduler } from "../../src/adapters/outbound/memory/scheduler.js";
 
@@ -17,6 +18,7 @@ export function createTestApp() {
   const ids = new SequentialIds();
   const security = new SequentialSecurity();
   const scheduler = new ManualScheduler();
+  const narrations = new InMemoryNarrationStore();
   const services = createServices({
     matches,
     players,
@@ -27,7 +29,9 @@ export function createTestApp() {
     ids,
     security,
     scheduler,
+    narrations,
+    narrator: new TemplateNarrator(),
     engineVersion: "0.1.0",
   });
-  return { services, matches, players, events, broadcaster, clock, ids, security, scheduler };
+  return { services, matches, players, events, broadcaster, clock, ids, security, scheduler, narrations };
 }
