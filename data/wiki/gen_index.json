@@ -293,6 +293,12 @@
    "faction": "Neutral",
    "slug": "Witch",
    "mvp": false
+  },
+  {
+   "name": "Werewolf",
+   "faction": "Sin clasificar",
+   "slug": "Werewolf",
+   "mvp": false
   }
  ],
  "wiki": [

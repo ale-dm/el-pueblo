@@ -114,6 +114,7 @@ Cada archivo tiene su ficha completa, texto de la wiki y lista de implementació
 - [ ] [Survivor](roles/Survivor.md) · Neutral
 - [ ] [Vampire](roles/Vampire.md) · Neutral
 - [ ] [Witch](roles/Witch.md) · Neutral
+- [ ] [Werewolf](roles/Werewolf.md) · Sin clasificar
 
 ## 4. Lectura y reflejo de las páginas de la wiki
 Cada página tiene su texto completo en `docs/wiki/`. Marca cuando el motor, los tests o la app reflejan lo que dice.
