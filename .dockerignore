@@ -10,6 +10,11 @@ stack.env
 .claude
 .vscode
 data
+# Excepciones: catálogo, roles y datos que lee el arranque (migrate.ts)
+!data/catalog
+!data/roles
+!data/wiki/articles_all.ndjson.gz
+!data/wiki/text/index.json
 logs
 backups
 docs

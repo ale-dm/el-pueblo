@@ -1,127 +1,98 @@
 # Esquema de base de datos (PostgreSQL)
 
-Fuente de verdad: `apps/server/src/db/schema.ts` (Drizzle). La migración inicial está en `apps/server/drizzle/0000_brave_vector.sql`.
-Verificado: el esquema compila con TypeScript estricto y `drizzle-kit generate` genera la migración sin errores.
+Fuente de verdad del esquema: `apps/server/src/db/schema.ts` (Drizzle).
+Migraciones: `apps/server/drizzle/` — `0000` (partidas) y `0001` (catálogo y wiki).
+Siembra del catálogo: `apps/server/src/db/seed.ts`, ejecutada al arrancar por `apps/server/src/db/migrate.ts`.
 
-## Tablas
+**Verificado:** esquema y seed compilan con TypeScript estricto, las migraciones se aplican sobre PGlite 0.5.8 (PostgreSQL en WebAssembly), la siembra es idempotente, y 5 restricciones rechazan datos inválidos. **No verificado todavía contra PostgreSQL 17 real.**
+
+## Principio
+
+- **Los datos de juego viven en `data/` (git) y se cargan en la BD al desplegar.** `data/` es la fuente de verdad: la BD es una copia de solo lectura para el runtime.
+- **El motor no consulta la BD en cada acción.** El servidor carga el catálogo una vez al arrancar y lo pasa al motor como parámetro. El motor sigue siendo una función pura.
+- **Partidas y estado sí viven en la BD**, como eventos (ver más abajo).
+
+## Catálogo de juego (sembrado desde `data/`)
+
+| Tabla | Origen | Contenido |
+|---|---|---|
+| `factions` | `data/catalog/factions.json` | Town, Mafia, Coven, Neutral, Werewolf. Condición de victoria |
+| `alignments` | `data/catalog/alignments.json` | Las 12 categorías de rol de la wiki (Mafia Killing, Town Protective...) |
+| `roles` | `data/catalog/roles.json` | 50 roles: prioridad, Attack/Defense, resumen, objetivo, habilidades, resultados de Sheriff/Investigator/Consigliere, iconos, registro completo (`raw`) |
+| `role_attributes` | derivada de `roles` | Una fila por línea de atributos del rol (119 filas) |
+| `role_interactions` | **a rellenar** | Interacciones entre roles, una por caso. Se rellena al implementar cada rol y sus tests |
+| `phase_timings` | `data/catalog/phase_timings.json` | Duración de cada fase por modo (standard, rapid ToS 1, rapid ToS 2, fast mode) |
+| `game_modes` | `data/catalog/game_modes.json` | Modos de Mafia: Classic, Ranked Practice, Ranked, Rapid, All Any, Custom |
+| `host_rules` | `data/catalog/host_rules.json` | Reglas que el host debe cumplir en Custom (9) |
+| `voting_thresholds` | `data/catalog/voting_thresholds.json` | Votos necesarios según vivos, de 3 a 15: `ceil(vivos / 2)` |
+| `modifiers` | `data/catalog/modifiers.json` | 18 modificadores (página Modifiers de la wiki) |
+| `wiki_images` | `data/catalog/wiki_images.json` | 2042 imágenes del alcance ToS 1, con URL, tamaño, páginas que las usan y fichero local si está en git |
+
+Los campos `roles.implemented` y `role_interactions.status` los marca el desarrollo, no el seed. El seed nunca los sobrescribe.
+
+## Wiki de referencia (volcado completo, solo lectura)
+
+| Tabla | Contenido |
+|---|---|
+| `wiki_pages` | 1953 páginas del espacio principal: wikitext, categorías, fechas, redirección, etiqueta de versión y `in_scope` (216 páginas del alcance ToS 1) |
+
+Las 1332 redirecciones quedan en la tabla con `is_redirect = true` y `redirect_target` rellenado.
+
+## Partidas (runtime)
 
 ### `matches`
-Una fila por partida.
-
-| Columna | Tipo | Notas |
-|---|---|---|
-| `id` | uuid, PK | |
-| `room_code` | varchar(8) | Código que comparten los jugadores. Único solo entre partidas activas |
-| `status` | enum `match_status` | `lobby`, `playing`, `finished`, `abandoned` |
-| `config` | jsonb | Roles activos, duración de fases, modo de facción, reglas extra |
-| `engine_version` | text | Versión del motor con la que se jugó. Necesaria para reproducir eventos antiguos |
-| `winner_faction` | text, nullable | `Town` o `Mafia` |
-| `end_reason` | text, nullable | |
-| `created_at`, `started_at`, `ended_at` | timestamptz | |
-
-Índices: único parcial sobre `room_code` donde `status` es `lobby` o `playing`; y `status`.
+Una fila por partida. Código de sala único solo entre partidas activas (índice parcial). Guarda `engine_version`, necesario para reproducir eventos antiguos.
 
 ### `match_players`
-Jugadores de una partida. No hay tabla de usuarios: en la fase 1 los jugadores son nicks por partida.
-
-| Columna | Tipo | Notas |
-|---|---|---|
-| `id` | uuid, PK | |
-| `match_id` | uuid, FK → `matches` | Borrado en cascada |
-| `seat` | integer | 1–15. Único dentro de la partida |
-| `nick` | varchar(24) | Único dentro de la partida |
-| `role_key` | text, nullable | Clave en `data/roles/roles.json`. Nula hasta empezar |
-| `faction` | text, nullable | |
-| `status` | enum `player_status` | `alive`, `dead`, `disconnected` |
-| `death_reason` | text, nullable | |
-| `died_at_seq` | integer, nullable | Secuencia del evento de muerte |
-| `reconnect_token_hash` | text | Hash SHA-256 del token. El token nunca se guarda en claro |
-| `connected` | boolean | |
-| `joined_at`, `left_at` | timestamptz | |
+Jugadores de una partida. Sin tabla de usuarios en la fase 1.
+- `role_key` → `roles.key`, y `faction` → `factions.key`: claves foráneas.
+- `reconnect_token_hash`: solo el hash SHA-256 del token.
+- Asiento entre 1 y 15, único dentro de la partida.
 
 ### `events`
-Registro de todo lo que pasa en la partida, en orden. Es la fuente de verdad del estado.
-
-| Columna | Tipo | Notas |
-|---|---|---|
-| `match_id` | uuid, FK | |
-| `seq` | integer | Número de secuencia dentro de la partida. Clave primaria junto con `match_id` |
-| `type` | text | Tipo de evento (p. ej. `phase.started`, `vote.cast`, `chat.message`). Catálogo en `packages/engine` |
-| `payload` | jsonb | Datos del evento. Esquema por tipo en `packages/shared` (Zod) |
-| `visibility` | enum `visibility` | `public`, `mafia`, `dead`, `private` |
-| `audience_player_id` | uuid, FK, nullable | Obligatorio si `visibility = 'private'` |
-| `created_at` | timestamptz | |
-
-Índice: `(match_id, visibility)`.
-
-**Chat:** los mensajes son eventos de tipo `chat.message` con la visibilidad del canal. No hay tabla `messages` separada: así el filtrado por canal y el historial usan el mismo mecanismo que el resto de la partida.
+Registro en orden de todo lo que pasa. Es la fuente de verdad del estado.
+- Clave primaria `(match_id, seq)`.
+- `visibility`: `public`, `mafia`, `dead` o `private`. Si es `private`, `audience_player_id` es obligatorio (CHECK).
+- Los mensajes de chat son eventos `chat.message`. No hay tabla de mensajes.
+- **Pendiente:** `type` no tiene clave foránea todavía. El catálogo de tipos de evento se define en M1 y se añadirá entonces.
 
 ### `snapshots`
 Estado serializado cada N eventos, para reconectar sin reproducir la partida entera.
 
-| Columna | Tipo | Notas |
-|---|---|---|
-| `match_id`, `seq` | PK compuesta | `seq` es el último evento incluido en el estado |
-| `state` | jsonb | Estado del motor serializado |
-| `created_at` | timestamptz | |
-
 ### `narrations`
-Texto que se muestra en el registro de la partida, generado por Gemini o por plantilla.
+Texto generado por Gemini o plantilla, asociado a un evento.
 
-| Columna | Tipo | Notas |
-|---|---|---|
-| `id` | bigint, PK identidad | |
-| `match_id` | uuid, FK | |
-| `event_seq` | integer, nullable | Evento al que se refiere |
-| `text` | text | |
-| `source` | enum `narration_source` | `gemini` o `template` |
-| `model` | text, nullable | Modelo usado |
-| `input_tokens`, `output_tokens` | integer, nullable | |
-| `created_at` | timestamptz | |
+## Uso e integraciones
 
-### `ai_usage`
-Consumo diario de Gemini, para limitar gasto y avisar a los admins.
+| Tabla | Contenido |
+|---|---|
+| `ai_usage` | Consumo diario de Gemini: llamadas, tokens y errores |
+| `push_subscriptions` | Suscripciones de Web Push por dispositivo (M5) |
+| `catalog_meta` | SHA-256 de cada fuente sembrada (`catalog`, `wiki`). Evita resembrar si nada cambió |
 
-| Columna | Tipo | Notas |
-|---|---|---|
-| `day` | date, PK | |
-| `calls`, `errors` | integer | |
-| `input_tokens`, `output_tokens` | bigint | |
+## Siembra
 
-### `push_subscriptions` (M5)
-Una fila por dispositivo con la PWA instalada.
+1. `migrate.ts` aplica las migraciones pendientes.
+2. `seedCatalog` calcula el SHA-256 de `data/catalog/*.json` y de `data/wiki/articles_all.ndjson.gz` + `text/index.json`.
+3. Si coincide con `catalog_meta`, se salta. Si no, carga todo en una transacción con `upsert`.
+4. Log: `[migrate] catálogo: sembrado catalog, wiki; sin cambios -` (o el equivalente al saltarse).
 
-| Columna | Tipo | Notas |
-|---|---|---|
-| `id` | uuid, PK | |
-| `match_player_id` | uuid, FK | Borrado en cascada |
-| `endpoint` | text, único | |
-| `p256dh`, `auth` | text | Claves de Web Push |
-| `created_at`, `last_used_at` | timestamptz | |
+**Regenerar el catálogo:** `python3 data/catalog/scripts/build_catalog.py` desde la raíz del repo. Reproduce exactamente los mismos ficheros.
 
-## Relaciones
+## Integridad (CHECK y claves)
 
-```
-matches 1 ── * match_players
-matches 1 ── * events 1 ── 0..1 match_players (audience, si es privado)
-matches 1 ── * snapshots
-matches 1 ── * narrations
-match_players 1 ── * push_subscriptions
-ai_usage: independiente (una fila por día)
-```
+- `events_private_needs_audience`: un evento privado siempre tiene destinatario.
+- `match_players_seat_range`: asiento entre 1 y 15.
+- `role_interactions_status_check`: estado válido.
+- Índice único parcial: un código de sala solo puede estar en una partida activa.
+- Claves foráneas de `roles` → `factions` y `alignments`, de `match_players` → `roles` y `factions`, y de `role_attributes` → `roles` con borrado en cascada.
 
-## Reglas de integridad
+## Lo que no está resuelto
 
-- Un jugador solo existe dentro de una partida. Al borrar la partida, se borra todo lo asociado.
-- Un evento privado siempre tiene destinatario (CHECK `events_private_needs_audience`).
-- Solo puede haber una partida activa con el mismo código de sala.
-- El asiento va de 1 a 15 (CHECK `match_players_seat_range`).
-
-## Lo que no está resuelto todavía
-
-- **Catálogo de eventos:** lista de tipos y su payload. Se define al implementar el motor (M1) y se fija en `packages/shared`.
-- **Formato del snapshot:** versionado del estado para poder migrarlo si cambia el motor. Hoy solo se guarda `engine_version` en la partida.
-- **Retención:** cuánto tiempo guardar partidas terminadas y cuándo borrarlas. Hay que decidirlo antes de producción.
-- **Cuentas:** no existen en la fase 1. Cuando lleguen, `match_players` tendrá una referencia opcional a `users`.
-- **Índices adicionales:** se añaden según las consultas reales que haga el servidor en M2.
-- **Vistas de estadísticas:** fuera del MVP.
+- **Catálogo de eventos** (`events.type`): se define en M1 y se fija en `packages/shared`.
+- **Versionado del snapshot**: hoy solo se guarda `engine_version` en la partida.
+- **Retención** de partidas terminadas: pendiente de decidir antes de producción.
+- **Cuentas**: no existen en la fase 1.
+- **Interacciones entre roles**: la tabla existe, pero se rellena al implementar cada rol.
+- **Modificadores**: la página Modifiers mezcla ToS 1 y ToS 2 en los iconos. Hay que revisar cuáles son de ToS 1 antes de activarlos.
+- **Índices adicionales**: se añaden según las consultas reales de M2.

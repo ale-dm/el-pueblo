@@ -220,6 +220,7 @@ El servidor filtra los mensajes por canal. Los susurros quedan para una iteraci�
 
 ## 8. Datos
 
+- `data/catalog/` — catálogo de juego que se carga en PostgreSQL al desplegar (roles, facciones, alineamientos, fases, modos, modificadores, imágenes). Ver `docs/DATABASE.md`.
 - `data/roles/roles.json` — 49 roles, con las clases de la wiki en `alignment`.
 - `data/roles/img/` — iconos y skins de referencia. **No se usan en la app final** por copyright; sirven como guía de composición.
 - `data/game_config.json` — fases, votos y modos.

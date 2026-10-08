@@ -1,0 +1,32 @@
+[
+ {
+  "key": "town",
+  "name": "Town",
+  "win_condition": "Hang every criminal and evildoer",
+  "wiki_title": "Town (ToS)"
+ },
+ {
+  "key": "mafia",
+  "name": "Mafia",
+  "win_condition": "Kill anyone that will not submit to the Mafia",
+  "wiki_title": "Mafia"
+ },
+ {
+  "key": "coven",
+  "name": "Coven",
+  "win_condition": "Kill all who would oppose the Coven",
+  "wiki_title": "Coven (ToS)"
+ },
+ {
+  "key": "neutral",
+  "name": "Neutral",
+  "win_condition": null,
+  "wiki_title": "Neutral (ToS)"
+ },
+ {
+  "key": "werewolf",
+  "name": "Werewolf",
+  "win_condition": null,
+  "wiki_title": "Werewolf (ToS)"
+ }
+]

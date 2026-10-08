@@ -1,0 +1,88 @@
+[
+ {
+  "key": "classic",
+  "name": "Classic",
+  "players": "15",
+  "roles": [
+   "Sheriff",
+   "Lookout",
+   "Investigator",
+   "Jailor",
+   "Doctor",
+   "Tavern Keeper",
+   "Medium",
+   "Town Killing (slot)",
+   "Random Town (slot)",
+   "Godfather",
+   "Mafioso",
+   "Framer",
+   "Serial Killer",
+   "Executioner",
+   "Jester"
+  ],
+  "notes": "Casi todos los roles fijos; solo cambian Random Town y Town Killing.",
+  "source_page": "Game Modes (ToS)"
+ },
+ {
+  "key": "ranked_practice",
+  "name": "Ranked Practice",
+  "players": "15",
+  "roles": [
+   "Jailor",
+   "Town Investigative x2",
+   "Town Protective",
+   "Random Town x5",
+   "Godfather",
+   "Mafioso",
+   "Mafia Support",
+   "Random Mafia",
+   "Neutral Evil",
+   "Neutral Killing"
+  ],
+  "notes": "Misma lista que Ranked. Se puede jugar en grupo.",
+  "source_page": "Game Modes (ToS)"
+ },
+ {
+  "key": "ranked",
+  "name": "Ranked",
+  "players": "15",
+  "roles": [
+   "Jailor",
+   "Town Investigative x2",
+   "Town Protective",
+   "Random Town x5",
+   "Godfather",
+   "Mafioso",
+   "Mafia Support",
+   "Random Mafia",
+   "Neutral Evil",
+   "Neutral Killing"
+  ],
+  "notes": "Cola sin lobby, sin grupos, sin Scrolls, nicks anónimos. Requiere 50 partidas previas.",
+  "source_page": "Game Modes (ToS)"
+ },
+ {
+  "key": "rapid",
+  "name": "Rapid",
+  "players": "15",
+  "roles": null,
+  "notes": "Tiempos de fase a la mitad (ver phases.rapid_tos1 / rapid_tos2).",
+  "source_page": "Game Modes (ToS)"
+ },
+ {
+  "key": "all_any",
+  "name": "All Any",
+  "players": "15",
+  "roles": null,
+  "notes": "Aleatorio. Pueden salir hasta 4 Mafia y 0 es posible.",
+  "source_page": "Game Modes (ToS)"
+ },
+ {
+  "key": "custom",
+  "name": "Custom",
+  "players": "15 slots de rol",
+  "roles": null,
+  "notes": "El host elige hasta 15 roles/bandos aleatorios; se aplican las restricciones de custom_host_rules.",
+  "source_page": "Game Modes (ToS)"
+ }
+]

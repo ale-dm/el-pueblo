@@ -1,0 +1,38 @@
+[
+ {
+  "position": 1,
+  "rule": "Debe haber al menos un rol que se oponga a otro."
+ },
+ {
+  "position": 2,
+  "rule": "No puede haber más de un rol Unique."
+ },
+ {
+  "position": 3,
+  "rule": "No puede haber más de cuatro Mafia o Vampiros."
+ },
+ {
+  "position": 4,
+  "rule": "No puede haber Vampire Hunter sin al menos un Vampiro."
+ },
+ {
+  "position": 5,
+  "rule": "No puede haber Executioner sin al menos un Townie que no sea Mayor o Jailor."
+ },
+ {
+  "position": 6,
+  "rule": "No puede haber Mafia sin Mafioso o Godfather."
+ },
+ {
+  "position": 7,
+  "rule": "No puede haber más de cuatro roles Any."
+ },
+ {
+  "position": 8,
+  "rule": "No puede haber más de seis de un mismo rol o alineamiento."
+ },
+ {
+  "position": 9,
+  "rule": "Si el host sale, un jugador aleatorio pasa a ser host; /repick con 7+ jugadores."
+ }
+]

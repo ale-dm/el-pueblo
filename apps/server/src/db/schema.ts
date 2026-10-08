@@ -25,6 +25,184 @@ export const playerStatus = pgEnum("player_status", ["alive", "dead", "disconnec
 export const visibility = pgEnum("visibility", ["public", "mafia", "dead", "private"]);
 export const narrationSource = pgEnum("narration_source", ["gemini", "template"]);
 
+// ─── Catálogo de juego (solo lectura en runtime, sembrado desde data/) ──────
+
+// Bandos. Las condiciones de victoria vienen de la wiki (Factions, Victory).
+export const factions = pgTable("factions", {
+  key: text("key").primaryKey(),
+  name: text("name").notNull(),
+  winCondition: text("win_condition"),
+  wikiTitle: text("wiki_title"),
+});
+
+// Las 12 categorías de rol de la wiki (Mafia Killing, Town Protective...).
+export const alignments = pgTable("alignments", {
+  key: text("key").primaryKey(),
+  name: text("name").notNull(),
+  factionKey: text("faction_key")
+    .notNull()
+    .references(() => factions.key),
+  wikiTitle: text("wiki_title").notNull().unique(),
+});
+
+export const roles = pgTable(
+  "roles",
+  {
+    key: text("key").primaryKey(),
+    name: text("name").notNull(),
+    wikiTitle: text("wiki_title").notNull().unique(),
+    factionKey: text("faction_key")
+      .notNull()
+      .references(() => factions.key),
+    alignmentKey: text("alignment_key").references(() => alignments.key),
+    roleType: text("role_type"),
+    isUnique: boolean("is_unique").notNull().default(false),
+    priority: integer("priority"),
+    attack: text("attack"),
+    defense: text("defense"),
+    summary: text("summary"),
+    goal: text("goal"),
+    abilities: text("abilities"),
+    attributes: text("attributes"),
+    special: text("special"),
+    actionOther: text("action_other"),
+    actionNone: text("action_none"),
+    winWith: text("win_with"),
+    mustKill: text("must_kill"),
+    restrictions: text("restrictions"),
+    uses: text("uses"),
+    sheriffResult: text("sheriff_result"),
+    investigatorResult: text("investigator_result"),
+    consigliereResult: text("consigliere_result"),
+    // Parte del MVP (Mafia y Town) o fase posterior.
+    mvp: boolean("mvp").notNull().default(false),
+    // Lo marca el desarrollo cuando el motor y sus tests cubren el rol. Nunca lo sobrescribe el seed.
+    implemented: boolean("implemented").notNull().default(false),
+    iconFile: text("icon_file"),
+    skinFile: text("skin_file"),
+    // Registro completo tal cual viene de data/roles/roles.json.
+    raw: jsonb("raw").notNull(),
+  },
+  (t) => [index("roles_faction_idx").on(t.factionKey)],
+);
+
+// Una fila por línea de atributos del rol (inmunidades, Attack/Defense, etc.).
+export const roleAttributes = pgTable(
+  "role_attributes",
+  {
+    roleKey: text("role_key")
+      .notNull()
+      .references(() => roles.key, { onDelete: "cascade" }),
+    position: integer("position").notNull(),
+    attribute: text("attribute").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.roleKey, t.position] })],
+);
+
+// Interacciones entre roles. Se rellenan al implementar cada rol y sus tests (status: pending → verified → implemented).
+export const roleInteractions = pgTable(
+  "role_interactions",
+  {
+    id: bigserial("id", { mode: "bigint" }).primaryKey(),
+    sourceRoleKey: text("source_role_key")
+      .notNull()
+      .references(() => roles.key, { onDelete: "cascade" }),
+    targetRoleKey: text("target_role_key").references(() => roles.key, { onDelete: "cascade" }),
+    kind: text("kind").notNull(),
+    description: text("description").notNull(),
+    sourcePage: text("source_page"),
+    status: text("status").notNull().default("pending"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("role_interactions_source_idx").on(t.sourceRoleKey),
+    check("role_interactions_status_check", sql`${t.status} in ('pending', 'verified', 'implemented')`),
+  ],
+);
+
+// Duración de cada fase por modo (data/game_config.json). seconds null = no aplica (p. ej. Día 1 en Rapid ToS 2).
+export const phaseTimings = pgTable(
+  "phase_timings",
+  {
+    mode: text("mode").notNull(),
+    phase: text("phase").notNull(),
+    seconds: integer("seconds"),
+    sortOrder: integer("sort_order").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.mode, t.phase] })],
+);
+
+// Modos de juego de Mafia (Classic, Ranked, Custom...).
+export const gameModes = pgTable("game_modes", {
+  key: text("key").primaryKey(),
+  name: text("name").notNull(),
+  players: text("players"),
+  roles: jsonb("roles"),
+  notes: text("notes"),
+  sourcePage: text("source_page"),
+});
+
+// Reglas que el host debe cumplir al crear una partida Custom.
+export const hostRules = pgTable("host_rules", {
+  position: integer("position").primaryKey(),
+  rule: text("rule").notNull(),
+});
+
+// Votos necesarios para llevar a juicio, según los vivos.
+export const votingThresholds = pgTable("voting_thresholds", {
+  alive: integer("alive").primaryKey(),
+  votesRequired: integer("votes_required").notNull(),
+});
+
+// Modificadores de partida (página Modifiers de la wiki).
+export const modifiers = pgTable("modifiers", {
+  key: text("key").primaryKey(),
+  name: text("name").notNull(),
+  category: text("category").notNull(),
+  description: text("description").notNull(),
+  gameModes: jsonb("game_modes").notNull(),
+  sourcePage: text("source_page"),
+});
+
+// ─── Wiki de referencia (volcado completo, solo lectura) ─────────────────────
+
+export const wikiPages = pgTable(
+  "wiki_pages",
+  {
+    title: text("title").primaryKey(),
+    pageId: integer("page_id"),
+    isRedirect: boolean("is_redirect").notNull().default(false),
+    redirectTarget: text("redirect_target"),
+    // ToS, ToS 2, TiS, BToS... o null si no lleva etiqueta de versión.
+    versionTag: text("version_tag"),
+    // true si la página está en el alcance ToS 1 (la que se usa para el juego).
+    inScope: boolean("in_scope").notNull().default(false),
+    categories: text("categories").array().notNull(),
+    wikitext: text("wikitext").notNull(),
+    touchedAt: timestamp("touched_at", { withTimezone: true }),
+    lastEditAt: timestamp("last_edit_at", { withTimezone: true }),
+  },
+  (t) => [index("wiki_pages_scope_idx").on(t.inScope), index("wiki_pages_redirect_idx").on(t.isRedirect)],
+);
+
+// Imágenes referenciadas por el alcance ToS 1. Los binarios no van en la BD: ver localFile o url.
+export const wikiImages = pgTable("wiki_images", {
+  name: text("name").primaryKey(),
+  url: text("url"),
+  bytes: bigint("bytes", { mode: "number" }),
+  mime: text("mime"),
+  existsInWiki: boolean("exists_in_wiki").notNull(),
+  localFile: text("local_file"),
+  referencedBy: text("referenced_by").array().notNull(),
+});
+
+// Control de siembra: qué versión de cada fuente está cargada.
+export const catalogMeta = pgTable("catalog_meta", {
+  source: text("source").primaryKey(),
+  sha256: text("sha256").notNull(),
+  seededAt: timestamp("seeded_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 // ─── Partidas ────────────────────────────────────────────────────────────────
 
 export const matches = pgTable(
@@ -37,7 +215,7 @@ export const matches = pgTable(
     config: jsonb("config").notNull(),
     // Versión del motor con la que se jugó: necesaria para reproducir eventos antiguos.
     engineVersion: text("engine_version").notNull(),
-    winnerFaction: text("winner_faction"),
+    winnerFaction: text("winner_faction").references(() => factions.key),
     endReason: text("end_reason"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     startedAt: timestamp("started_at", { withTimezone: true }),
@@ -61,9 +239,9 @@ export const matchPlayers = pgTable(
       .references(() => matches.id, { onDelete: "cascade" }),
     seat: integer("seat").notNull(),
     nick: varchar("nick", { length: 24 }).notNull(),
-    // Clave del rol en data/roles/roles.json (p. ej. "godfather"). Null hasta que empieza la partida.
-    roleKey: text("role_key"),
-    faction: text("faction"),
+    // Clave de roles.key. Nula hasta que empieza la partida.
+    roleKey: text("role_key").references(() => roles.key),
+    faction: text("faction").references(() => factions.key),
     status: playerStatus("status").notNull().default("alive"),
     deathReason: text("death_reason"),
     diedAtSeq: integer("died_at_seq"),

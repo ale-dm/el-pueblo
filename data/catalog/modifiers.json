@@ -1,0 +1,230 @@
+[
+ {
+  "key": "all_outliers",
+  "name": "All Outliers",
+  "category": "pregame",
+  "description": "Allows Outlier roles to spawn in the Random Town, Random Coven, Random Neutral, and Any buckets.",
+  "game_modes": [
+   "True All Any",
+   "Pandemonium"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "anomaly",
+  "name": "Anomaly",
+  "category": "pregame",
+  "description": "Adds random modifiers and bans.",
+  "game_modes": [
+   "Anomaly All Any"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "anon_players",
+  "name": "Anon Players",
+  "category": "pregame",
+  "description": "Randomizes the name and cosmetics of all players.",
+  "game_modes": [
+   "Ranked"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "four_horsemen",
+  "name": "Four Horsemen",
+  "category": "pregame",
+  "description": "Allows for more than one Neutral Apocalypse role to spawn in the game.",
+  "game_modes": [
+   "All Any",
+   "True All Any",
+   "All Any Fools",
+   "Four Horsemen",
+   "Incineration",
+   "Pyrophobia",
+   "Vampocalypse",
+   "Wandering Souls",
+   "Witchcraft and War"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "no_scrolls",
+  "name": "No Scrolls",
+  "category": "pregame",
+  "description": "Prevents the usage of Scrolls and the Tome of Fate.",
+  "game_modes": [
+   "Ranked"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "election",
+  "name": "Election",
+  "category": "gameplay",
+  "description": "Players vote for a Sovereign, who gains additional voting power.",
+  "game_modes": [
+   "Election"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "feelin_lucky",
+  "name": "Feelin' Lucky?",
+  "category": "gameplay",
+  "description": "Players are given Jester Tokens, which they can use to gain a variety of random effects.",
+  "game_modes": [
+   "All Any Fools"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "ghost_town",
+  "name": "Ghost Town",
+  "category": "gameplay",
+  "description": "Dead players can anonymously vote in trials.",
+  "game_modes": [
+   "No Lists"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "grace_period",
+  "name": "Grace Period",
+  "category": "gameplay",
+  "description": "Attacking and protective abilities cannot be used on Night 1.",
+  "game_modes": [
+   "Ranked",
+   "Blood and Belief",
+   "Calamity",
+   "Catastrophe",
+   "Carnival",
+   "Cata-List",
+   "Corrupted Ballot",
+   "Coven of Salem",
+   "Don't Fear The Reaper",
+   "Disinformation",
+   "Dracula's Palace",
+   "Dracula's Souls",
+   "Election",
+   "Four Horsemen",
+   "Hexageddon",
+   "Incineration",
+   "Indoctrination",
+   "Merry-Go-Round",
+   "Pandemonium",
+   "Powerless",
+   "Pyrophobia",
+   "Showdown",
+   "Standard",
+   "Vampocalypse",
+   "VIP",
+   "Wandering Souls",
+   "Watch Your Step",
+   "Witchcraft and War"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "one_trial_per_day",
+  "name": "One Trial Per Day",
+  "category": "gameplay",
+  "description": "Only one player can be voted up to the stand in a Day.",
+  "game_modes": [
+   "No Lists"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "anon_voting",
+  "name": "Anon Voting",
+  "category": "information",
+  "description": "Players are only told the total vote count, not who made what vote.",
+  "game_modes": [
+   "Fog of War"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "fast_mode",
+  "name": "Fast Mode",
+  "category": "information",
+  "description": "Day phases are shortened.",
+  "game_modes": [
+   "No Lists"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "hidden_roles",
+  "name": "Hidden Roles",
+  "category": "information",
+  "description": "The roles of dead players are not revealed.",
+  "game_modes": [
+   "Fog of War"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "secret_killers",
+  "name": "Secret Killers",
+  "category": "information",
+  "description": "The roles of killers are not revealed.",
+  "game_modes": [
+   "Ranked",
+   "Calamity",
+   "Catastrophe",
+   "Cata-List",
+   "Disinformation",
+   "Fog of War",
+   "Pandemonium",
+   "Powerless",
+   "Showdown",
+   "Standard",
+   "Watch Your Step"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "slow_mode",
+  "name": "Slow Mode",
+  "category": "information",
+  "description": "Day phases are lengthened.",
+  "game_modes": [
+   "No Lists"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "perfect_town",
+  "name": "Perfect Town",
+  "category": "victory",
+  "description": "All Townies die after a Town member is hanged.",
+  "game_modes": [
+   "No Lists"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "town_traitor",
+  "name": "Town Traitor",
+  "category": "victory",
+  "description": "One Town|Coven member gains the Coven's win condition and Night Chat",
+  "game_modes": [
+   "False Town",
+   "Town Traitor",
+   "Unholy Alliance"
+  ],
+  "source_page": "Modifiers"
+ },
+ {
+  "key": "vip",
+  "name": "VIP",
+  "category": "victory",
+  "description": "If a randomly selected Town member dies, the Town loses.",
+  "game_modes": [
+   "VIP"
+  ],
+  "source_page": "Modifiers"
+ }
+]

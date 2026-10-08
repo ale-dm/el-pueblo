@@ -1,0 +1,74 @@
+[
+ {
+  "key": "coven_evil",
+  "name": "Coven Evil",
+  "faction_key": "coven",
+  "wiki_title": "Coven Evil"
+ },
+ {
+  "key": "mafia_deception",
+  "name": "Mafia Deception",
+  "faction_key": "mafia",
+  "wiki_title": "Mafia Deception"
+ },
+ {
+  "key": "mafia_killing",
+  "name": "Mafia Killing",
+  "faction_key": "mafia",
+  "wiki_title": "Mafia Killing"
+ },
+ {
+  "key": "mafia_support",
+  "name": "Mafia Support",
+  "faction_key": "mafia",
+  "wiki_title": "Mafia Support"
+ },
+ {
+  "key": "neutral_benign",
+  "name": "Neutral Benign",
+  "faction_key": "neutral",
+  "wiki_title": "Neutral Benign"
+ },
+ {
+  "key": "neutral_chaos",
+  "name": "Neutral Chaos",
+  "faction_key": "neutral",
+  "wiki_title": "Neutral Chaos"
+ },
+ {
+  "key": "neutral_evil",
+  "name": "Neutral Evil",
+  "faction_key": "neutral",
+  "wiki_title": "Neutral Evil (ToS)"
+ },
+ {
+  "key": "neutral_killing",
+  "name": "Neutral Killing",
+  "faction_key": "neutral",
+  "wiki_title": "Neutral Killing (ToS)"
+ },
+ {
+  "key": "town_investigative",
+  "name": "Town Investigative",
+  "faction_key": "town",
+  "wiki_title": "Town Investigative (ToS)"
+ },
+ {
+  "key": "town_killing",
+  "name": "Town Killing",
+  "faction_key": "town",
+  "wiki_title": "Town Killing (ToS)"
+ },
+ {
+  "key": "town_protective",
+  "name": "Town Protective",
+  "faction_key": "town",
+  "wiki_title": "Town Protective (ToS)"
+ },
+ {
+  "key": "town_support",
+  "name": "Town Support",
+  "faction_key": "town",
+  "wiki_title": "Town Support (ToS)"
+ }
+]

@@ -1,0 +1,170 @@
+[
+ {
+  "mode": "standard",
+  "phase": "day_d1",
+  "seconds": 15,
+  "sort_order": 0
+ },
+ {
+  "mode": "standard",
+  "phase": "discussion",
+  "seconds": 45,
+  "sort_order": 1
+ },
+ {
+  "mode": "standard",
+  "phase": "voting",
+  "seconds": 30,
+  "sort_order": 2
+ },
+ {
+  "mode": "standard",
+  "phase": "defense",
+  "seconds": 20,
+  "sort_order": 3
+ },
+ {
+  "mode": "standard",
+  "phase": "judgement",
+  "seconds": 20,
+  "sort_order": 4
+ },
+ {
+  "mode": "standard",
+  "phase": "last_words",
+  "seconds": 7,
+  "sort_order": 5
+ },
+ {
+  "mode": "standard",
+  "phase": "night",
+  "seconds": 37,
+  "sort_order": 6
+ },
+ {
+  "mode": "rapid_tos1",
+  "phase": "day_d1",
+  "seconds": 15,
+  "sort_order": 0
+ },
+ {
+  "mode": "rapid_tos1",
+  "phase": "discussion",
+  "seconds": 15,
+  "sort_order": 1
+ },
+ {
+  "mode": "rapid_tos1",
+  "phase": "voting",
+  "seconds": 30,
+  "sort_order": 2
+ },
+ {
+  "mode": "rapid_tos1",
+  "phase": "defense",
+  "seconds": 20,
+  "sort_order": 3
+ },
+ {
+  "mode": "rapid_tos1",
+  "phase": "judgement",
+  "seconds": 20,
+  "sort_order": 4
+ },
+ {
+  "mode": "rapid_tos1",
+  "phase": "last_words",
+  "seconds": 7,
+  "sort_order": 5
+ },
+ {
+  "mode": "rapid_tos1",
+  "phase": "night",
+  "seconds": 10,
+  "sort_order": 6
+ },
+ {
+  "mode": "rapid_tos2",
+  "phase": "day_d1",
+  "seconds": null,
+  "sort_order": 0
+ },
+ {
+  "mode": "rapid_tos2",
+  "phase": "discussion",
+  "seconds": 10,
+  "sort_order": 1
+ },
+ {
+  "mode": "rapid_tos2",
+  "phase": "voting",
+  "seconds": 10,
+  "sort_order": 2
+ },
+ {
+  "mode": "rapid_tos2",
+  "phase": "defense",
+  "seconds": 20,
+  "sort_order": 3
+ },
+ {
+  "mode": "rapid_tos2",
+  "phase": "judgement",
+  "seconds": 20,
+  "sort_order": 4
+ },
+ {
+  "mode": "rapid_tos2",
+  "phase": "last_words",
+  "seconds": 7,
+  "sort_order": 5
+ },
+ {
+  "mode": "rapid_tos2",
+  "phase": "night",
+  "seconds": 15,
+  "sort_order": 6
+ },
+ {
+  "mode": "fast_mode_tos2",
+  "phase": "day_d1",
+  "seconds": 15,
+  "sort_order": 0
+ },
+ {
+  "mode": "fast_mode_tos2",
+  "phase": "discussion",
+  "seconds": 22,
+  "sort_order": 1
+ },
+ {
+  "mode": "fast_mode_tos2",
+  "phase": "voting",
+  "seconds": 15,
+  "sort_order": 2
+ },
+ {
+  "mode": "fast_mode_tos2",
+  "phase": "defense",
+  "seconds": 20,
+  "sort_order": 3
+ },
+ {
+  "mode": "fast_mode_tos2",
+  "phase": "judgement",
+  "seconds": 20,
+  "sort_order": 4
+ },
+ {
+  "mode": "fast_mode_tos2",
+  "phase": "last_words",
+  "seconds": 7,
+  "sort_order": 5
+ },
+ {
+  "mode": "fast_mode_tos2",
+  "phase": "night",
+  "seconds": 40,
+  "sort_order": 6
+ }
+]
