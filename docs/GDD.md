@@ -31,10 +31,10 @@ Juego social tipo Town of Salem para 10–15 jugadores, jugado con amigos desde 
 | Animación | Motion | motion 14.0.0 |
 | Servidor | Node + Fastify + Socket.IO | fastify 5.12.5, socket.io 4.8.4 |
 | Monorepo | pnpm workspaces | pnpm 12.10.1 |
-| Hosting front | Cloudflare Pages | — |
-| Hosting servidor | Fly.io | — |
+| Hosting front | NAS propio, servido por Nginx Proxy Manager | — |
+| Hosting servidor | NAS propio (Intel i3-13100), Docker vía Portainer, 24/7 | — |
 | Base de datos | PostgreSQL con drizzle-orm y postgres.js | drizzle-orm 0.45.4, postgres 3.4.9, drizzle-kit 0.31.11 (dev) |
-| Hosting base de datos | Proveedor gestionado de Postgres, a elegir por coste | — |
+| Hosting base de datos | PostgreSQL en contenedor en el mismo NAS | — |
 
 Estructura del monorepo:
 
