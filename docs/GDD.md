@@ -17,7 +17,7 @@ Juego social tipo Town of Salem para 10–15 jugadores, jugado con amigos desde 
 
 **Fuera de la fase 1**
 - Coven, Vampires, Neutral, Lobos, Rainbow, Town Traitor, Dracula's Palace.
-- Cuentas, historial, progresión y tienda.
+- Cuentas, progresión y tienda.
 - Versión nativa en App Store o Google Play.
 
 ## 2. Stack (decisión)
@@ -33,6 +33,8 @@ Juego social tipo Town of Salem para 10–15 jugadores, jugado con amigos desde 
 | Monorepo | pnpm workspaces | pnpm 12.10.1 |
 | Hosting front | Cloudflare Pages | — |
 | Hosting servidor | Fly.io | — |
+| Base de datos | PostgreSQL con drizzle-orm y postgres.js | drizzle-orm 0.45.4, postgres 3.4.9, drizzle-kit 0.31.11 (dev) |
+| Hosting base de datos | Proveedor gestionado de Postgres, a elegir por coste | — |
 
 Estructura del monorepo:
 
@@ -75,6 +77,8 @@ docs/          Este documento
 | @fastify/helmet | 13.1.2 | Cabeceras de seguridad | Configuración por defecto razonable |
 | @fastify/rate-limit | 11.2.1 | Límite al crear salas y enviar chat | Evita abuso y gasto de Gemini |
 | zod | 4.6.5 | Validar cada evento entrante | Un evento mal formado no llega al motor |
+| drizzle-orm | 0.45.4 | Acceso a Postgres y tipos de tablas | Esquema tipado y migraciones con drizzle-kit |
+| postgres (postgres.js) | 3.4.9 | Driver de Postgres | Driver que usa drizzle-orm en su adaptador |
 | pino | 10.4.0 | Logs | Ya viene con Fastify |
 | web-push | 3.6.7 | Notificaciones Web Push (VAPID) | Único camino para push en PWA |
 | @google/genai | 2.28.0 | Narración con Gemini | Mismo SDK que `bot-discord`; el bot usa `^2.24.0`, conviene alinear |
@@ -119,7 +123,21 @@ docs/          Este documento
 - **Motor puro.** `packages/engine` recibe `(estado, acción) → (nuevo estado, eventos)`. No accede a red ni a reloj: el tiempo entra como parámetro.
 - **Narración asíncrona.** El motor produce eventos resueltos. Gemini los convierte en texto en segundo plano. Si la IA tarda o falla, la fase no se bloquea y se usa una plantilla fija.
 - **Push.** El servidor envía Web Push a los jugadores cuando empieza la noche o el día, si la PWA está instalada.
-- **Persistencia.** En la fase 1, las salas viven en memoria. No hay base de datos hasta que haga falta historial.
+- **Persistencia por eventos.** Cada evento del motor se guarda en `events` (solo escritura). El estado se reconstruye reproduciendo los eventos desde el último snapshot. Así una partida sobrevive a un reinicio del servidor y queda registro completo para estadísticas y depuración.
+- **Snapshots.** Cada N eventos se guarda el estado serializado en `snapshots`, para no reproducir partidas enteras al reconectar.
+
+### 4.1 Tablas de persistencia (fase 1)
+
+| Tabla | Contenido |
+|---|---|
+| `matches` | Código de sala, configuración, fechas de inicio y fin, estado, facción ganadora |
+| `match_players` | Jugador, nick, rol, facción, estado final, token de reconexión |
+| `events` | Partida, secuencia, tipo, carga (JSON), visibilidad (público, Mafia, muertos, privado) |
+| `snapshots` | Partida, secuencia, estado serializado |
+| `messages` | Partida, canal, emisor, texto, fecha |
+| `push_subscriptions` | Suscripción de Web Push por jugador (M5) |
+
+Los datos de roles y configuración estática siguen en `data/`, no en la base de datos.
 
 ## 5. Reglas del modo Mafia
 
@@ -216,7 +234,7 @@ Licencia: el contenido de Fandom suele ser CC-BY-SA; hay que confirmarla en la w
 |---|---|---|
 | M0 | Este documento | Revisado y aprobado |
 | M1 | `packages/engine`: fases, votos, roles MVP, victoria | Tests de partidas simuladas en verde |
-| M2 | `apps/server`: salas por código, Socket.IO, reconexión, timers | Dos clientes juegan una partida completa |
+| M2 | `apps/server`: salas por código, Socket.IO, reconexión, timers, Postgres (esquema, eventos y snapshots) | Dos clientes juegan una partida completa y la partida se recupera tras reiniciar el servidor |
 | M3 | `apps/web`: lobby, noche, día, votación, chat, PWA instalable | Partida completa desde el móvil |
 | M4 | Narración con Gemini y plantillas de respaldo | Narración en vivo sin bloquear fases |
 | M5 | Web Push, más roles, ajustes de sala avanzados | Notificaciones recibidas con la PWA instalada |
