@@ -3,3 +3,4 @@ packages:
   - "packages/*"
 minimumReleaseAgeExclude:
   - drizzle-orm@0.45.4
+  - vite@8.3.4

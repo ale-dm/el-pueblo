@@ -14,6 +14,7 @@ const server = await startServer({
   port: Number(env.PORT ?? 3000),
   corsOrigins: (env.PUBLIC_URL ?? "http://localhost:5173").split(",").map((o) => o.trim()),
   catalogDir: fileURLToPath(new URL("../../../data/catalog", import.meta.url)),
+  webDist: env.WEB_DIST ?? fileURLToPath(new URL("../../web/dist", import.meta.url)),
   engineVersion: env.ENGINE_VERSION ?? "0.1.0",
   chatMessagesPerTenSeconds: Number(env.CHAT_MESSAGES_PER_10S ?? 5),
 });

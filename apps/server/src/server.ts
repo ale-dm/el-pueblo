@@ -1,4 +1,6 @@
+import { existsSync } from "node:fs";
 import Fastify from "fastify";
+import fastifyStatic from "@fastify/static";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { Server } from "socket.io";
@@ -18,6 +20,8 @@ export interface ServerConfig {
   /** Orígenes permitidos para la PWA (CORS de Socket.IO). */
   corsOrigins: string[];
   catalogDir: string;
+  /** Carpeta con la PWA compilada (apps/web/dist). Si existe, el servidor la sirve en el mismo origen. */
+  webDist?: string;
   engineVersion: string;
   chatMessagesPerTenSeconds: number;
 }
@@ -29,6 +33,16 @@ export async function startServer(config: ServerConfig) {
 
   const app = Fastify({ logger: false });
   app.get("/health", async () => ({ ok: true, version: config.engineVersion }));
+  if (config.webDist && existsSync(config.webDist)) {
+    await app.register(fastifyStatic, { root: config.webDist, wildcard: false });
+    // Rutas de la SPA: cualquier ruta que no sea API ni Socket.IO devuelve index.html.
+    app.setNotFoundHandler((request, reply) => {
+      if (request.method === "GET" && !request.url.startsWith("/socket.io") && !request.url.startsWith("/health")) {
+        return reply.type("text/html").sendFile("index.html");
+      }
+      return reply.code(404).send({ error: "not_found" });
+    });
+  }
   await app.ready();
 
   const io = new Server(app.server, { cors: { origin: config.corsOrigins } });
