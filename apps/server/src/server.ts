@@ -16,6 +16,8 @@ import { PgNarrationStore } from "./adapters/outbound/postgres/repositories.js";
 import { GeminiNarrator } from "./adapters/outbound/narrator/gemini.js";
 import { googleTextModel } from "./adapters/outbound/narrator/googleModel.js";
 import { TemplateNarrator } from "./adapters/outbound/narrator/template.js";
+import { PgPushSubscriptionStore } from "./adapters/outbound/postgres/repositories.js";
+import { NoPushSender, WebPushSender } from "./adapters/outbound/webpush/sender.js";
 
 export interface ServerConfig {
   databaseUrl: string;
@@ -30,6 +32,8 @@ export interface ServerConfig {
   googleApiKey?: string;
   geminiModel: string;
   narratorTimeoutMs: number;
+  /** Claves VAPID para Web Push. Sin ellas, no hay avisos. */
+  vapid?: { publicKey: string; privateKey: string; subject: string };
   engineVersion: string;
   chatMessagesPerTenSeconds: number;
 }
@@ -68,6 +72,8 @@ export async function startServer(config: ServerConfig) {
     security: new CryptoSecurity(),
     scheduler,
     narrations: new PgNarrationStore(db),
+    push: new PgPushSubscriptionStore(db),
+    pushSender: config.vapid ? new WebPushSender(config.vapid) : new NoPushSender(),
     narrator: config.googleApiKey
       ? new GeminiNarrator(googleTextModel(config.googleApiKey), config.geminiModel, config.narratorTimeoutMs, (m) => console.error(`[server] ${m}`))
       : new TemplateNarrator(),

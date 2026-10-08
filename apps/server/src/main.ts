@@ -18,6 +18,9 @@ const server = await startServer({
   googleApiKey: env.GOOGLE_API_KEY || undefined,
   geminiModel: env.GEMINI_MODEL ?? "gemini-2.5-flash",
   narratorTimeoutMs: Number(env.NARRATOR_TIMEOUT_MS ?? 8000),
+  vapid: env.VAPID_PUBLIC_KEY && env.VAPID_PRIVATE_KEY
+    ? { publicKey: env.VAPID_PUBLIC_KEY, privateKey: env.VAPID_PRIVATE_KEY, subject: env.VAPID_SUBJECT ?? "mailto:admin@example.com" }
+    : undefined,
   engineVersion: env.ENGINE_VERSION ?? "0.1.0",
   chatMessagesPerTenSeconds: Number(env.CHAT_MESSAGES_PER_10S ?? 5),
 });

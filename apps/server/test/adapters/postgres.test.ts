@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { fileURLToPath } from "node:url";
 import { ConcurrencyError } from "../../src/application/errors.js";
 import { seedCatalog } from "../../src/adapters/outbound/postgres/seed.js";
-import { PgEventLog, PgMatchStore, PgPlayerStore, type Db } from "../../src/adapters/outbound/postgres/repositories.js";
+import { PgEventLog, PgMatchStore, PgNarrationStore, PgPlayerStore, PgPushSubscriptionStore, type Db } from "../../src/adapters/outbound/postgres/repositories.js";
 import type { GameEventEnvelope } from "@el-pueblo/engine";
 
 const MIGRATIONS = fileURLToPath(new URL("../../drizzle", import.meta.url));
@@ -79,5 +79,32 @@ describe("adaptadores PostgreSQL (sobre PGlite)", () => {
     const [last] = (await log.read(matchId)).slice(-1);
     expect(last?.visibility).toBe("private");
     expect(last?.audiencePlayerId).toBe("33333333-3333-3333-3333-333333333333");
+  });
+
+  it("guarda narraciones y suscripciones push; la suscripción se actualiza y se borra", async () => {
+    const matchId = "44444444-4444-4444-4444-444444444444";
+    const playerId = "55555555-5555-5555-5555-555555555555";
+    await new PgMatchStore(db).insert({
+      id: matchId, roomCode: "PUSH01", status: "playing", seed: 7, config: {}, engineVersion: "test", createdAt: new Date(),
+    });
+    await new PgPlayerStore(db).insert({
+      id: playerId, matchId, seat: 1, nick: "Ana", roleKey: null, faction: null, status: "alive", connected: true,
+      deathReason: null, usesLeft: {}, flags: {}, tokenHash: "h(x)",
+    });
+
+    const narrations = new PgNarrationStore(db);
+    await narrations.insert({
+      matchId, eventSeq: 3, text: "Amanece tranquilo.", source: "template", model: null, inputTokens: null, outputTokens: null, createdAt: new Date(),
+    });
+    expect((await narrations.listByMatch(matchId)).map((n) => n.text)).toEqual(["Amanece tranquilo."]);
+
+    const push = new PgPushSubscriptionStore(db);
+    const endpoint = "https://push.example.test/abc";
+    await push.upsert({ matchPlayerId: playerId, matchId, endpoint, p256dh: "clave-1", auth: "auth-1" });
+    await push.upsert({ matchPlayerId: playerId, matchId, endpoint, p256dh: "clave-2", auth: "auth-2" });
+    const [sub] = await push.listByMatch(matchId);
+    expect(sub).toMatchObject({ endpoint, p256dh: "clave-2", auth: "auth-2" });
+    await push.remove(endpoint);
+    expect(await push.listByMatch(matchId)).toHaveLength(0);
   });
 });

@@ -1,6 +1,6 @@
 import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { ConcurrencyError } from "../../../application/errors.js";
-import type { EventLog, MatchRecord, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore } from "../../../application/ports.js";
+import type { EventLog, MatchRecord, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore, PushSubscriptionRecord, PushSubscriptionStore } from "../../../application/ports.js";
 
 export class InMemoryMatchStore implements MatchStore {
   private readonly byId = new Map<string, MatchRecord>();
@@ -85,5 +85,21 @@ export class InMemoryNarrationStore implements NarrationStore {
 
   async listByMatch(matchId: string) {
     return this.records.filter((r) => r.matchId === matchId).map((r) => ({ ...r }));
+  }
+}
+
+export class InMemoryPushStore implements PushSubscriptionStore {
+  private readonly records = new Map<string, PushSubscriptionRecord>();
+
+  async upsert(record: PushSubscriptionRecord) {
+    this.records.set(record.endpoint, { ...record });
+  }
+
+  async remove(endpoint: string) {
+    this.records.delete(endpoint);
+  }
+
+  async listByMatch(matchId: string) {
+    return [...this.records.values()].filter((r) => r.matchId === matchId).map((r) => ({ ...r }));
   }
 }

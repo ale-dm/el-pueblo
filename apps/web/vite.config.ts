@@ -9,6 +9,10 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.ts",
+      injectManifest: { globPatterns: ["**/*.{js,css,html,svg,woff2}"] },
       includeAssets: ["icon.svg"],
       manifest: {
         name: "El Pueblo",
@@ -20,11 +24,6 @@ export default defineConfig({
         start_url: "/",
         lang: "es",
         icons: [{ src: "icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" }],
-      },
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,svg,woff2}"],
-        navigateFallback: "/index.html",
-        navigateFallbackDenylist: [/^\/socket\.io/],
       },
     }),
   ],

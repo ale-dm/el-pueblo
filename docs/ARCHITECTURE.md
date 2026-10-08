@@ -98,8 +98,15 @@ La UI no decide reglas. Solo renderiza los eventos proyectados que llegan del se
 
 ## Estado
 
-- **Motor:** completo para Mafia (MVP): arranque, día, votación, juicio, noche con 30 roles, chat por canal y victoria. 85 tests, incluida una simulación de 300 partidas completas.
-- **Servidor:** casos de uso sobre el motor real. Adaptadores de PostgreSQL (partidas, jugadores, log de eventos con control de concurrencia), Socket.IO (proyección por jugador), temporizadores de fase y recuperación tras reinicio. 38 tests.
-- **Verificado de extremo a extremo** contra PostgreSQL 16 real: arranque de 10 jugadores, rol privado para cada uno, chat público, avance por temporizador real, reconexión, y reprogramación de una partida tras reiniciar el servidor.
-- **Pendiente:** cliente web (M3), narración con Gemini (M4) y Web Push (M5).
-- **Movido:** el código de base de datos vive en `adapters/outbound/postgres/`. El contenedor ejecuta TypeScript con `tsx`, sin compilar.
+| Hito | Estado | Verificado |
+|---|---|---|
+| M1 motor Mafia (30 roles, noche, juicio, victoria) | Hecho | 85 tests, 300 partidas simuladas |
+| M2 servidor (PostgreSQL, Socket.IO, temporizadores) | Hecho | Contra PostgreSQL 16 real: 10 jugadores, roles privados, chat, temporizador real, reconexión, recuperación tras reinicio |
+| M3 web (PWA, pantallas, juego) | Hecho | 10 navegadores reales en una partida; build de PWA con service worker |
+| M4 narración (Gemini con respaldo) | Hecho, Gemini **sin probar contra la API** | Tests con modelo simulado; sin clave real en este entorno |
+| M5 avisos Web Push | Hecho, **sin entrega real** | Tests con envío simulado; falta probar con navegadores reales y VAPID |
+
+**Pendiente en fase 1:** probar Gemini y los avisos con claves reales; probar la instalación en un iPhone (iOS 16.4 o superior, PWA en pantalla de inicio); decidir la política de retención de partidas; el límite diario de Gemini (`ai_usage`) aún no se aplica.
+
+**Movido:** el código de base de datos vive en `adapters/outbound/postgres/`. El contenedor ejecuta TypeScript con `tsx` y compila la web en la imagen.
+

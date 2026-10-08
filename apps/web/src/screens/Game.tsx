@@ -8,6 +8,7 @@ import { PlayerGrid } from "../game/PlayerGrid.js";
 import { ActionPanel } from "../game/ActionPanel.js";
 import { Chat } from "../game/Chat.js";
 import { LogPanel } from "../game/LogPanel.js";
+import { PushButton } from "../game/PushButton.js";
 
 /** Cuántos objetivos pide la fase actual: votación y noche con dos objetivos. */
 function targetsNeeded(view: MatchView): { selectable: boolean; max: number } {
@@ -65,7 +66,10 @@ export function Game({ view }: { view: MatchView }) {
           <p className="font-semibold">Día {view.dayNumber} · sala {view.roomCode}</p>
           <h1 className="font-display text-4xl drop-shadow-[3px_3px_0_var(--color-ink)]">{PHASE_LABEL[view.phase]}</h1>
         </div>
-        <Pill>{night ? "🌙 Noche" : "☀️ Día"}</Pill>
+        <div className="flex items-center gap-3">
+          <Pill>{night ? "🌙 Noche" : "☀️ Día"}</Pill>
+          <PushButton />
+        </div>
       </header>
 
       <div className="grid gap-4 md:grid-cols-[1fr_320px]">

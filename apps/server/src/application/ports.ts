@@ -113,3 +113,33 @@ export interface Scheduler {
   schedule(matchId: string, delayMs: number, onFire: () => void): void;
   cancel(matchId: string): void;
 }
+
+/** Suscripción de un dispositivo (PushSubscription del navegador). */
+export interface PushSubscriptionRecord {
+  matchPlayerId: string;
+  matchId: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+}
+
+export interface PushSubscriptionStore {
+  upsert(record: PushSubscriptionRecord): Promise<void>;
+  remove(endpoint: string): Promise<void>;
+  /** Suscripciones de los jugadores de una partida. */
+  listByMatch(matchId: string): Promise<PushSubscriptionRecord[]>;
+}
+
+/** Aviso sin información privada: título y texto genéricos. */
+export interface PushPayload {
+  title: string;
+  body: string;
+  url: string;
+}
+
+export interface PushSender {
+  /** "sent", "gone" si la suscripción ya no existe en el navegador, o "error". */
+  send(subscription: PushSubscriptionRecord, payload: PushPayload): Promise<"sent" | "gone" | "error">;
+  /** Clave pública VAPID para suscribirse, o null si las notificaciones no están configuradas. */
+  publicKey(): string | null;
+}

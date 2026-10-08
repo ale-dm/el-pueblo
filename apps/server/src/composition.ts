@@ -7,9 +7,10 @@ import { setConnection } from "./application/use-cases/setConnection.js";
 import { recoverTimers } from "./application/use-cases/recoverTimers.js";
 import { getView } from "./application/use-cases/getView.js";
 import { narrate } from "./application/use-cases/narrate.js";
+import { notifyPhases, subscribePush } from "./application/use-cases/push.js";
 import { startMatch } from "./application/use-cases/startMatch.js";
 import { submitCommand, type SubmitCommandDeps } from "./application/use-cases/submitCommand.js";
-import type { NarrationStore, Narrator, Scheduler } from "./application/ports.js";
+import type { NarrationStore, Narrator, PushSender, PushSubscriptionStore, Scheduler } from "./application/ports.js";
 import type { GameEventEnvelope } from "@el-pueblo/engine";
 
 /**
@@ -20,16 +21,21 @@ export type Deps = Omit<SubmitCommandDeps, "queue" | "advance" | "afterEvents"> 
   scheduler: Scheduler;
   narrations: NarrationStore;
   narrator: Narrator;
+  push: PushSubscriptionStore;
+  pushSender: PushSender;
 };
 
 /** Ensambla los casos de uso. Es el único sitio que conoce a los adaptadores concretos. */
 export function createServices(deps: Deps) {
   const queue = new KeyedQueue();
   const narrateEvents = narrate({ ...deps, queue });
+  const notify = notifyPhases({ push: deps.push, sender: deps.pushSender, queue });
   const afterEvents = (matchId: string, events: GameEventEnvelope[]) => {
-    const pending = narrateEvents(matchId, events).catch(() => undefined);
-    pendingNarrations.add(pending);
-    void pending.finally(() => pendingNarrations.delete(pending));
+    for (const job of [notify(matchId, events), narrateEvents(matchId, events)]) {
+      const pending = job.catch(() => undefined);
+      pendingNarrations.add(pending);
+      void pending.finally(() => pendingNarrations.delete(pending));
+    }
   };
   const pendingNarrations = new Set<Promise<void>>();
   const advance = advanceOnTimeout({ ...deps, queue, afterEvents });
@@ -43,6 +49,8 @@ export function createServices(deps: Deps) {
       while (pendingNarrations.size > 0) await Promise.all([...pendingNarrations]);
     },
     reconnect: reconnect(deps),
+    subscribePush: subscribePush(deps),
+    pushPublicKey: () => deps.pushSender.publicKey(),
     getView: getView(deps),
     setConnection: setConnection(deps),
     recoverTimers: recoverTimers(deps),

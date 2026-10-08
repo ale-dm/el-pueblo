@@ -2,7 +2,7 @@ import { and, asc, eq, inArray, max } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
 import type { FactionKey, GameEventEnvelope } from "@el-pueblo/engine";
 import { ConcurrencyError } from "../../../application/errors.js";
-import type { EventLog, MatchRecord, MatchStatus, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore } from "../../../application/ports.js";
+import type { EventLog, MatchRecord, MatchStatus, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore, PushSubscriptionRecord, PushSubscriptionStore } from "../../../application/ports.js";
 import * as s from "./schema.js";
 
 /** Cualquier driver de drizzle para PostgreSQL (postgres-js en producción, PGlite en tests). */
@@ -212,5 +212,37 @@ export class PgNarrationStore implements NarrationStore {
       outputTokens: row.outputTokens,
       createdAt: row.createdAt,
     }));
+  }
+}
+
+export class PgPushSubscriptionStore implements PushSubscriptionStore {
+  constructor(private readonly db: Db) {}
+
+  async upsert(r: PushSubscriptionRecord) {
+    await this.db
+      .insert(s.pushSubscriptions)
+      .values({ matchPlayerId: r.matchPlayerId, endpoint: r.endpoint, p256dh: r.p256dh, auth: r.auth })
+      .onConflictDoUpdate({
+        target: s.pushSubscriptions.endpoint,
+        set: { matchPlayerId: r.matchPlayerId, p256dh: r.p256dh, auth: r.auth, lastUsedAt: new Date() },
+      });
+  }
+
+  async remove(endpoint: string) {
+    await this.db.delete(s.pushSubscriptions).where(eq(s.pushSubscriptions.endpoint, endpoint));
+  }
+
+  async listByMatch(matchId: string) {
+    const rows = await this.db
+      .select({
+        matchPlayerId: s.pushSubscriptions.matchPlayerId,
+        endpoint: s.pushSubscriptions.endpoint,
+        p256dh: s.pushSubscriptions.p256dh,
+        auth: s.pushSubscriptions.auth,
+      })
+      .from(s.pushSubscriptions)
+      .innerJoin(s.matchPlayers, eq(s.matchPlayers.id, s.pushSubscriptions.matchPlayerId))
+      .where(eq(s.matchPlayers.matchId, matchId));
+    return rows.map((row) => ({ ...row, matchId }));
   }
 }

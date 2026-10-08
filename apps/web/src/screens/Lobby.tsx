@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useGame } from "../state/store.js";
 import type { MatchView } from "../types.js";
 import { Button, Card, Pill } from "../ui/primitives.js";
+import { PushButton } from "../game/PushButton.js";
 
 const MIN_PLAYERS = 10;
 
@@ -48,7 +49,10 @@ export function Lobby({ view }: { view: MatchView }) {
       )}
 
       {error && <p role="alert" className="rounded-2xl border-4 border-ink bg-blood p-3 font-semibold text-paper">{error}</p>}
-      <Button tone="danger" className="self-center" onClick={leave}>Salir de la sala</Button>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <PushButton />
+        <Button tone="danger" onClick={leave}>Salir de la sala</Button>
+      </div>
     </main>
   );
 }

@@ -103,6 +103,26 @@ export function attachGateway(io: Server, deps: GatewayDeps) {
       }),
     );
 
+    socket.on("push:key", (_payload: unknown, ack?: Ack) =>
+      respond(ack, deps, async () => ({ publicKey: services.pushPublicKey() })),
+    );
+
+    socket.on("push:subscribe", (payload: unknown, ack?: Ack) =>
+      respond(ack, deps, async () => {
+        const body = isObject(payload) ? payload : {};
+        const sub = isObject(body.subscription) ? body.subscription : {};
+        const keys = isObject(sub.keys) ? sub.keys : {};
+        await services.subscribePush({
+          matchId: str(body.matchId, "partida"),
+          token: str(body.token, "token"),
+          endpoint: str(sub.endpoint, "suscripción"),
+          p256dh: str(keys.p256dh, "clave p256dh"),
+          auth: str(keys.auth, "clave auth"),
+        });
+        return { subscribed: true };
+      }),
+    );
+
     socket.on("disconnect", () => {
       const viewer = viewers.detach(socket.id);
       if (viewer) void services.setConnection(viewer.matchId, viewer.playerId, false);

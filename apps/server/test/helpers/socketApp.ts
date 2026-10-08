@@ -9,6 +9,8 @@ import { FixedClock, SequentialIds, SequentialSecurity } from "../../src/adapter
 import { ManualScheduler } from "../../src/adapters/outbound/memory/scheduler.js";
 import { InMemoryNarrationStore } from "../../src/adapters/outbound/memory/stores.js";
 import { TemplateNarrator } from "../../src/adapters/outbound/narrator/template.js";
+import { InMemoryPushStore } from "../../src/adapters/outbound/memory/stores.js";
+import { FakePushSender } from "./fakePush.js";
 import { SocketIoBroadcaster, ViewerRegistry } from "../../src/adapters/outbound/socket-io/broadcaster.js";
 import { attachGateway } from "../../src/adapters/inbound/socket-io/gateway.js";
 import { RateLimiter } from "../../src/adapters/inbound/socket-io/rateLimit.js";
@@ -33,6 +35,8 @@ export async function startSocketApp(opts: { chatMax?: number } = {}) {
     scheduler,
     narrations: new InMemoryNarrationStore(),
     narrator: new TemplateNarrator(),
+    push: new InMemoryPushStore(),
+    pushSender: new FakePushSender(),
     engineVersion: "test",
   });
   attachGateway(io, {

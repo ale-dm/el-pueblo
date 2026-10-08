@@ -3,6 +3,8 @@ import { createServices } from "../../src/composition.js";
 import { JsonCatalogSource } from "../../src/adapters/outbound/catalog-json/loadCatalog.js";
 import { InMemoryEventLog, InMemoryMatchStore, InMemoryNarrationStore, InMemoryPlayerStore } from "../../src/adapters/outbound/memory/stores.js";
 import { TemplateNarrator } from "../../src/adapters/outbound/narrator/template.js";
+import { InMemoryPushStore } from "../../src/adapters/outbound/memory/stores.js";
+import { FakePushSender } from "./fakePush.js";
 import { FixedClock, RecordingBroadcaster, SequentialIds, SequentialSecurity } from "../../src/adapters/outbound/memory/services.js";
 import { ManualScheduler } from "../../src/adapters/outbound/memory/scheduler.js";
 
@@ -19,6 +21,8 @@ export function createTestApp() {
   const security = new SequentialSecurity();
   const scheduler = new ManualScheduler();
   const narrations = new InMemoryNarrationStore();
+  const push = new InMemoryPushStore();
+  const pushSender = new FakePushSender();
   const services = createServices({
     matches,
     players,
@@ -31,7 +35,9 @@ export function createTestApp() {
     scheduler,
     narrations,
     narrator: new TemplateNarrator(),
+    push,
+    pushSender,
     engineVersion: "0.1.0",
   });
-  return { services, matches, players, events, broadcaster, clock, ids, security, scheduler, narrations };
+  return { services, matches, players, events, broadcaster, clock, ids, security, scheduler, narrations, push, pushSender };
 }
