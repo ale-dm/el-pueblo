@@ -3,7 +3,7 @@ import { checkVictory } from "../src/rules/victory.js";
 import type { PlayerState } from "../src/types/state.js";
 
 const p = (id: string, faction: "town" | "mafia", status: PlayerState["status"] = "alive"): PlayerState => ({
-  id, seat: 1, nick: id, roleKey: null, faction, status, connected: true, deathReason: null,
+  id, seat: 1, nick: id, roleKey: null, faction, status, connected: true, deathReason: null, usesLeft: {}, flags: {},
 });
 
 describe("checkVictory (MVP: Town y Mafia)", () => {

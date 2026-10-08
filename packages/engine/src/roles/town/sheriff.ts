@@ -1,11 +1,18 @@
+import type { Effect } from "../effects.js";
 import type { RoleHandler } from "../types.js";
 
-// Sheriff · town · fuente: docs/roles/Sheriff.md
-// BORRADOR (M1): habilidades e interacciones pendientes. Checklist en docs/CHECKLIST.md §2.
+// Sheriff · Town · prioridad 4 · ficha: docs/roles/Sheriff.md
 export const handler: RoleHandler = {
   key: "sheriff",
   name: "Sheriff",
   faction: "town",
-  nightAbilities: [],
-  interactions: [],
+  priority: 4,
+  nightAbilities: [{ key: "interrogate", target: "player", usesLimit: null }],
+  dayAbilities: [],
+  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
+    switch (ability) {
+      case "interrogate": return targetId ? [{ kind: "investigate", actorId: actor.id, targetId, check: "suspicious" }] : [];
+      default: return [];
+    }
+  },
 };

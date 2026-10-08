@@ -11,12 +11,19 @@ export function votesRequired(aliveCount: number): number {
   return Math.ceil(aliveCount / 2);
 }
 
-/** Recuento de votos por objetivo. Los votos nulos (abstención) no cuentan. */
-export function tallyVotes(votes: ReadonlyMap<PlayerId, PlayerId | null>): Map<PlayerId, number> {
+/** Peso de cada voto. Por defecto 1; el Mayor revelado vale 3. */
+export type VoteWeight = (voterId: PlayerId) => number;
+const UNIT: VoteWeight = () => 1;
+
+/** Recuento de votos por objetivo. Las abstenciones (null) no cuentan. */
+export function tallyVotes(
+  votes: ReadonlyMap<PlayerId, PlayerId | null>,
+  weightOf: VoteWeight = UNIT,
+): Map<PlayerId, number> {
   const counts = new Map<PlayerId, number>();
-  for (const target of votes.values()) {
+  for (const [voter, target] of votes) {
     if (target === null) continue;
-    counts.set(target, (counts.get(target) ?? 0) + 1);
+    counts.set(target, (counts.get(target) ?? 0) + weightOf(voter));
   }
   return counts;
 }
@@ -29,8 +36,9 @@ export function tallyVotes(votes: ReadonlyMap<PlayerId, PlayerId | null>): Map<P
 export function trialCandidate(
   votes: ReadonlyMap<PlayerId, PlayerId | null>,
   aliveCount: number,
+  weightOf: VoteWeight = UNIT,
 ): PlayerId | null {
-  const counts = tallyVotes(votes);
+  const counts = tallyVotes(votes, weightOf);
   const required = votesRequired(aliveCount);
   let best: PlayerId | null = null;
   let bestCount = 0;

@@ -1,32 +1,61 @@
 import type { Catalog } from "../types/catalog.js";
 import type { Command } from "../types/commands.js";
-import type { GameEventEnvelope } from "../types/events.js";
+import type { EventInput, GameEventEnvelope } from "../types/events.js";
 import type { GameState } from "../types/state.js";
 import type { Rng } from "./rng.js";
-import { err, type Result } from "./result.js";
+import { err, ok, type Result } from "./result.js";
+import { emit } from "../events/emit.js";
+import { chatDenied } from "../rules/chat.js";
+import { castVote, dayAction, judgementVote } from "../phases/day.js";
+import { nightAction } from "../phases/night/collect.js";
+import { onTimerExpired } from "../phases/machine.js";
+import { startGame } from "../setup/startGame.js";
 
 export interface EngineContext {
   catalog: Catalog;
   rng: Rng;
-  /** Tiempo de referencia para cálculos de plazos. El motor no lee el reloj. */
+  /** Tiempo de referencia. El motor no lee el reloj. */
   now: Date;
 }
 
+const MAX_CHAT_LENGTH = 500;
+
 /**
- * (estado, comando) → eventos. Función pura: no hace I/O ni lee el reloj.
- * BORRADOR: solo se implementan los comandos que tienen su checklist en docs/CHECKLIST.md.
+ * (estado, comando) → eventos numerados. Función pura: sin I/O, sin reloj, sin azar fuera de `ctx.rng`.
+ * Un comando inválido devuelve un error y no produce eventos.
  */
-export function decide(
-  state: GameState,
-  command: Command,
-  _ctx: EngineContext,
-): Result<GameEventEnvelope[]> {
+export function decide(state: GameState, command: Command, ctx: EngineContext): Result<GameEventEnvelope[]> {
+  const inputs = dispatch(state, command, ctx);
+  if (!inputs.ok) return inputs;
+  return ok(emit(state.seq, inputs.value));
+}
+
+function dispatch(state: GameState, command: Command, ctx: EngineContext): Result<EventInput[]> {
+  if (state.phase === "ended" && command.type !== "chat.send") {
+    return err("wrong_phase", "La partida ha terminado");
+  }
   switch (command.type) {
+    case "game.start":
+      return startGame(state, command, ctx.catalog, ctx.rng);
     case "vote":
+      return castVote(state, command.voterId, command.targetId);
+    case "judgement.vote":
+      return judgementVote(state, command.voterId, command.verdict);
+    case "day.action":
+      return dayAction(state, ctx.catalog, command.actorId, command.ability, command.targetId);
     case "night.action":
-    case "chat.send":
+      return nightAction(state, command.actorId, command.ability, command.targetId, command.secondTargetId ?? null);
+    case "chat.send": {
+      const text = command.text.trim();
+      if (text.length === 0 || text.length > MAX_CHAT_LENGTH) {
+        return err("invalid_command", `El mensaje debe tener entre 1 y ${MAX_CHAT_LENGTH} caracteres`);
+      }
+      const denied = chatDenied(state, command.senderId, command.channel);
+      if (denied) return err("invalid_command", denied);
+      return ok([{ type: "chat.message", payload: { channel: command.channel, senderId: command.senderId, text } }]);
+    }
     case "timer.expired":
-      return err("not_implemented", `Comando "${command.type}" pendiente (M1). Ver docs/CHECKLIST.md §1.2–1.6.`);
+      return onTimerExpired(state, ctx.catalog, ctx.rng);
     default: {
       const never: never = command;
       return err("invalid_command", `Comando desconocido: ${JSON.stringify(never)}`);

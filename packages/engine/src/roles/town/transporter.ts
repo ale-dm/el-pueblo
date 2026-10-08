@@ -1,11 +1,18 @@
+import type { Effect } from "../effects.js";
 import type { RoleHandler } from "../types.js";
 
-// Transporter · town · fuente: docs/roles/Transporter.md
-// BORRADOR (M1): habilidades e interacciones pendientes. Checklist en docs/CHECKLIST.md §2.
+// Transporter · Town · prioridad 1 · ficha: docs/roles/Transporter.md
 export const handler: RoleHandler = {
   key: "transporter",
   name: "Transporter",
   faction: "town",
-  nightAbilities: [],
-  interactions: [],
+  priority: 1,
+  nightAbilities: [{ key: "transport", target: "two", usesLimit: null }],
+  dayAbilities: [],
+  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
+    switch (ability) {
+      case "transport": return targetId && secondTargetId ? [{ kind: "transport", actorId: actor.id, firstId: targetId, secondId: secondTargetId }] : [];
+      default: return [];
+    }
+  },
 };

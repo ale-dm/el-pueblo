@@ -1,11 +1,16 @@
+import type { Effect } from "../effects.js";
 import type { RoleHandler } from "../types.js";
 
-// Medium · town · fuente: docs/roles/Medium.md
-// BORRADOR (M1): habilidades e interacciones pendientes. Checklist en docs/CHECKLIST.md §2.
+// Medium · Town · prioridad 1 · ficha: docs/roles/Medium.md
 export const handler: RoleHandler = {
   key: "medium",
   name: "Medium",
   faction: "town",
-  nightAbilities: [],
-  interactions: [],
+  priority: 1,
+  nightAbilities: [{ key: "seance", target: "none", usesLimit: null }],
+  dayAbilities: [],
+  gaps: "Comunicación con los muertos de noche: no implementado en el MVP.",
+  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
+    return [{ kind: "none", actorId: actor.id }];
+  },
 };

@@ -3,7 +3,7 @@ import { canSee, projectFor } from "../src/projection/visibility.js";
 import type { PlayerState } from "../src/types/state.js";
 
 const player = (id: string, faction: "town" | "mafia", status: PlayerState["status"] = "alive"): PlayerState => ({
-  id, seat: 1, nick: id, roleKey: null, faction, status, connected: true, deathReason: null,
+  id, seat: 1, nick: id, roleKey: null, faction, status, connected: true, deathReason: null, usesLeft: {}, flags: {},
 });
 const town = player("t", "town");
 const mafia = player("m", "mafia");

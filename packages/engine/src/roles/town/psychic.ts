@@ -1,11 +1,15 @@
+import type { Effect } from "../effects.js";
 import type { RoleHandler } from "../types.js";
 
-// Psychic · town · fuente: docs/roles/Psychic.md
-// BORRADOR (M1): habilidades e interacciones pendientes. Checklist en docs/CHECKLIST.md §2.
+// Psychic · Town · prioridad 4 · ficha: docs/roles/Psychic.md
 export const handler: RoleHandler = {
   key: "psychic",
   name: "Psychic",
   faction: "town",
-  nightAbilities: [],
-  interactions: [],
+  priority: 4,
+  nightAbilities: [{ key: "vision", target: "none", usesLimit: null }],
+  dayAbilities: [],
+  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
+    return [{ kind: "investigate", actorId: actor.id, targetId: null, check: "vision" }];
+  },
 };

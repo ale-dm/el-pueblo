@@ -5,7 +5,8 @@ import type { GameState } from "../src/types/state.js";
 
 const initial: GameState = {
   matchId: "m", engineVersion: "0.1.0", phase: "day_1", dayNumber: 1, trialsToday: 0,
-  players: [], seq: 2, winner: null,
+  players: [], seq: 2, winner: null, votes: {}, verdicts: {}, defendantId: null,
+  nightActions: {}, traps: {}, dayActionDay: {},
 };
 const ev = (seq: number): GameEventEnvelope => ({
   seq, type: "phase.started", payload: { phase: "discussion", dayNumber: 1 },

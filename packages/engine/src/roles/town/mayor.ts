@@ -1,11 +1,15 @@
+import type { Effect } from "../effects.js";
 import type { RoleHandler } from "../types.js";
 
-// Mayor · town · fuente: docs/roles/Mayor.md
-// BORRADOR (M1): habilidades e interacciones pendientes. Checklist en docs/CHECKLIST.md §2.
+// Mayor · Town · prioridad null · ficha: docs/roles/Mayor.md
 export const handler: RoleHandler = {
   key: "mayor",
   name: "Mayor",
   faction: "town",
+  priority: null,
   nightAbilities: [],
-  interactions: [],
+  dayAbilities: [{ key: "reveal", target: "none", oncePerDay: false, usesLimit: 1 }],
+  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
+    return [];
+  },
 };

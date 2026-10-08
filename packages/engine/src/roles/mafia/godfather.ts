@@ -1,11 +1,18 @@
+import type { Effect } from "../effects.js";
 import type { RoleHandler } from "../types.js";
 
-// Godfather · mafia · fuente: docs/roles/Godfather.md
-// BORRADOR (M1): habilidades e interacciones pendientes. Checklist en docs/CHECKLIST.md §2.
+// Godfather · Mafia · prioridad 5 · ficha: docs/roles/Godfather.md
 export const handler: RoleHandler = {
   key: "godfather",
   name: "Godfather",
   faction: "mafia",
-  nightAbilities: [],
-  interactions: [],
+  priority: 5,
+  nightAbilities: [{ key: "kill", target: "player", usesLimit: null }],
+  dayAbilities: [],
+  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
+    switch (ability) {
+      case "kill": return targetId ? [{ kind: "mafiaKill", actorId: actor.id, targetId, role: "godfather" }] : [];
+      default: return [];
+    }
+  },
 };

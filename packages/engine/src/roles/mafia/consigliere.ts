@@ -1,11 +1,18 @@
+import type { Effect } from "../effects.js";
 import type { RoleHandler } from "../types.js";
 
-// Consigliere · mafia · fuente: docs/roles/Consigliere.md
-// BORRADOR (M1): habilidades e interacciones pendientes. Checklist en docs/CHECKLIST.md §2.
+// Consigliere · Mafia · prioridad 4 · ficha: docs/roles/Consigliere.md
 export const handler: RoleHandler = {
   key: "consigliere",
   name: "Consigliere",
   faction: "mafia",
-  nightAbilities: [],
-  interactions: [],
+  priority: 4,
+  nightAbilities: [{ key: "check", target: "player", usesLimit: null }],
+  dayAbilities: [],
+  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
+    switch (ability) {
+      case "check": return targetId ? [{ kind: "investigate", actorId: actor.id, targetId, check: "role" }] : [];
+      default: return [];
+    }
+  },
 };

@@ -1,11 +1,18 @@
+import type { Effect } from "../effects.js";
 import type { RoleHandler } from "../types.js";
 
-// Bootlegger · mafia · fuente: docs/roles/Bootlegger.md
-// BORRADOR (M1): habilidades e interacciones pendientes. Checklist en docs/CHECKLIST.md §2.
+// Bootlegger · Mafia · prioridad 2 · ficha: docs/roles/Bootlegger.md
 export const handler: RoleHandler = {
   key: "bootlegger",
   name: "Bootlegger",
   faction: "mafia",
-  nightAbilities: [],
-  interactions: [],
+  priority: 2,
+  nightAbilities: [{ key: "distract", target: "player", usesLimit: null }],
+  dayAbilities: [],
+  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
+    switch (ability) {
+      case "distract": return targetId ? [{ kind: "block", actorId: actor.id, targetId }] : [];
+      default: return [];
+    }
+  },
 };
