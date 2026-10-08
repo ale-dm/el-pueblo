@@ -1,6 +1,6 @@
 # Motor del juego (`packages/engine`)
 
-Arquitectura, estructura de carpetas y reglas de dependencia del motor. La checklist de implementación está en `docs/CHECKLIST.md` §1.
+Arquitectura, estructura de carpetas y reglas de dependencia del motor. La arquitectura de la aplicación (servidor y web) está en `docs/ARCHITECTURE.md`. La checklist de implementación está en `docs/CHECKLIST.md` §1.
 
 ## Arquitectura elegida
 

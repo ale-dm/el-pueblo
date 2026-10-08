@@ -1,8 +1,8 @@
 # Esquema de base de datos (PostgreSQL)
 
-Fuente de verdad del esquema: `apps/server/src/db/schema.ts` (Drizzle).
+Fuente de verdad del esquema: `apps/server/src/adapters/outbound/postgres/schema.ts` (Drizzle).
 Migraciones: `apps/server/drizzle/` — `0000` (partidas) y `0001` (catálogo y wiki).
-Siembra del catálogo: `apps/server/src/db/seed.ts`, ejecutada al arrancar por `apps/server/src/db/migrate.ts`.
+Siembra del catálogo: `apps/server/src/adapters/outbound/postgres/seed.ts`, ejecutada al arrancar por `apps/server/src/adapters/outbound/postgres/migrate.ts`.
 
 **Verificado:** esquema y seed compilan con TypeScript estricto, las migraciones se aplican sobre PGlite 0.5.8 (PostgreSQL en WebAssembly), la siembra es idempotente, y 5 restricciones rechazan datos inválidos. **No verificado todavía contra PostgreSQL 17 real.**
 
