@@ -36,7 +36,7 @@ export type GameEventPayloads = {
    * attack_attempt: lo atacó alguien mientras estaba encarcelado (Jailor.md:252, Vigilante.md:194).
    * medium_talking: un Médium le habla esta noche; un aviso por cada Médium (Medium.md:209, 213).
    */
-  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" };
+  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" };
   /** check: tipo de comprobación (suspicious, alignment, role, visitors, targets, mafiaVisits, vision). */
   /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic).
    * more: el Lookout sabe que hubo más visitantes de los tres que identifica (wiki: Lookout). */

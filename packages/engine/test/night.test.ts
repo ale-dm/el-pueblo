@@ -473,3 +473,38 @@ describe("noche: el Spy espía a su objetivo (wiki: Spy)", () => {
     expect(mafia?.payload.result).toBe("P3, P4");
   });
 });
+
+describe("noche: transportes (wiki: Transporter)", () => {
+  const notices = (events: ReturnType<typeof step>["events"]) =>
+    ofType(events, "night.notice").map((e) => [e.payload.playerId, e.payload.notice]);
+
+  it("con un objetivo encarcelado el intercambio falla: el Transporter y el encarcelado lo saben", () => {
+    // p1 Transporter quiere cambiar p2 (encarcelado por p3) y p5. El Godfather (p4) mata a p5: sin intercambio, muere.
+    const s = game(["transporter", "investigator", "jailor", "godfather", "sheriff"]);
+    s.players[1] = { ...s.players[1]!, flags: { jailed: true } };
+    s.jailedBy = { p2: "p3" };
+    const { events } = resolve(s, [night("p1", "transport", "p2", "p5"), night("p4", "kill", "p5")]);
+    expect(notices(events)).toEqual(expect.arrayContaining([["p1", "transport_jailed"], ["p2", "jailed_transport_attempt"]]));
+    expect(notices(events).some(([, n]) => n === "transported")).toBe(false);
+    expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).toContain("p5");
+  });
+
+  it("al transportar, los dos transportados lo saben al terminar la noche", () => {
+    const s = game(["transporter", "investigator", "godfather", "sheriff"]);
+    const { events } = resolve(s, [night("p1", "transport", "p2", "p4")]);
+    expect(notices(events)).toEqual(expect.arrayContaining([["p2", "transported"], ["p4", "transported"]]));
+    expect(notices(events).filter(([, n]) => n === "transported")).toHaveLength(2);
+  });
+
+  it("un bloqueador también cambia de sitio: si el Transporter lo cambia, bloquea a quien queda en su casa", () => {
+    // p1 Tavern Keeper bloquea a p3, pero p2 Transporter cambia p3 y p4 antes: el bloqueo cae sobre p4.
+    const s = game(["tavern_keeper", "transporter", "investigator", "investigator", "godfather"]);
+    const { events } = resolve(s, [
+      night("p1", "distract", "p3"),
+      night("p2", "transport", "p3", "p4"),
+      night("p3", "investigate", "p1"),
+      night("p4", "investigate", "p1"),
+    ]);
+    expect(ofType(events, "night.action.blocked").map((e) => e.payload.actorId)).toEqual(["p4"]);
+  });
+});

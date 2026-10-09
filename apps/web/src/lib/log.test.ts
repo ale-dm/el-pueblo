@@ -254,3 +254,19 @@ describe("mensajes del Hypnotist", () => {
   });
 });
 
+describe("avisos del Transporter", () => {
+  it("el transporte fallido y el transportado tienen su aviso privado", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 1 }),
+      ev("night.notice", { playerId: "a", notice: "transport_jailed" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "transported" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 2 }),
+    ], ctx({ meId: "a" })));
+    expect(text.slice(text.indexOf("== Día 2") + 1)).toEqual([
+      "Uno de tus objetivos estaba encarcelado: no pudiste transportarles.",
+      "Fuiste transportado a otro lugar.",
+    ]);
+  });
+});
+

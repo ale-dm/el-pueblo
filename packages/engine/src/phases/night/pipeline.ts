@@ -140,12 +140,38 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     });
   }
 
-  // 1. Bloqueos: solo bloqueadores activos, en orden de prioridad.
+  // 1. Transportes primero: intercambian los objetivos de dos jugadores. Wiki (Tavern_Keeper.md:275): el Transporter
+  // (prioridad 1) va antes que los bloqueadores (prioridad 2). Un Transporter encarcelado no transporta.
+  let remap = (id: string) => id;
+  const swaps: Array<[string, string]> = [];
+  for (const act of acts) {
+    if (act.blocked) continue;
+    for (const e of act.effects) {
+      if (e.kind !== "transport") continue;
+      // Wiki (Transporter.md:202, 226): si un objetivo está encarcelado, el intercambio falla y ambos lo saben.
+      const jailed = [e.firstId, e.secondId].find((id) => s.jailedBy[id] !== undefined);
+      if (jailed !== undefined) {
+        out.push({ type: "night.notice", payload: { playerId: act.actor.id, notice: "transport_jailed" } });
+        out.push({ type: "night.notice", payload: { playerId: jailed, notice: "jailed_transport_attempt" } });
+        continue;
+      }
+      const prev = remap;
+      const { firstId, secondId } = e;
+      swaps.push([firstId, secondId]);
+      remap = (id) => {
+        const x = prev(id);
+        return x === firstId ? secondId : x === secondId ? firstId : x;
+      };
+    }
+  }
+
+  // 2. Bloqueos: solo bloqueadores activos, en orden de prioridad. El bloqueo va a la casa del objetivo tras el
+  // transporte: un bloqueador también cambia de sitio (wiki: Transporter.md:184, visitantes).
   for (const blocker of acts) {
     if (blocker.blocked) continue;
     for (const e of blocker.effects) {
       if (e.kind !== "block") continue;
-      const target = acts.find((a) => a.actor.id === e.targetId);
+      const target = acts.find((a) => a.actor.id === remap(e.targetId));
       if (!target || target.handler.roleblockImmune) continue;
       target.blocked = true;
     }
@@ -156,22 +182,6 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     out.push({ type: "night.action.blocked", payload: { actorId: act.actor.id, ability: act.ability } });
   }
   const active = acts.filter((a) => !a.blocked);
-
-  // 2. Transportes: intercambian los objetivos de dos jugadores.
-  let remap = (id: string) => id;
-  const transported = new Set<string>();
-  for (const act of active) {
-    for (const e of act.effects) {
-      if (e.kind !== "transport") continue;
-      const prev = remap;
-      const { firstId, secondId } = e;
-      transported.add(firstId).add(secondId);
-      remap = (id) => {
-        const x = prev(id);
-        return x === firstId ? secondId : x === secondId ? firstId : x;
-      };
-    }
-  }
 
   // 2c. Encarcelados (wiki: Jailor.md:252): "outside visitors ... their ability will fail; however, they still visit".
   // El visitante no produce efectos (paso 3 sigue registrando su visita). El Jailor ejecuta sin visitar a su
@@ -375,6 +385,12 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   for (const trapperId of dismantles) {
     out.push({ type: "trap.removed", payload: { trapperId, reason: "dismantled" } });
   }
+  // Wiki (Transporter.md:208): los dos transportados reciben el aviso al terminar la noche.
+  for (const [firstId, secondId] of swaps) {
+    for (const id of [firstId, secondId]) {
+      if (isAlive(playerOf(s, id))) out.push({ type: "night.notice", payload: { playerId: id, notice: "transported" } });
+    }
+  }
   // Mensajes falsos de la Hypnotist: llegan al terminar la noche, solo a quien sigue vivo.
   for (const h of hypnoses) {
     const target = playerOf(s, h.targetId);
@@ -541,7 +557,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (s.jailedBy[target] !== undefined) {
       tags.push("jail");
     } else {
-      if (transported.has(target)) tags.push("transport");
+      if (swaps.some(([a, b]) => a === target || b === target)) tags.push("transport");
       if (acts.some((a) => a.actor.id === target && a.blocked)) tags.push("block");
       if (attacks.some((a) => a.victimId === target)) tags.push("attack");
       if (prevented.has(target)) tags.push("protect");
