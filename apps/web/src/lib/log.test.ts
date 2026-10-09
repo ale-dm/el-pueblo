@@ -153,6 +153,14 @@ describe("registro estilo Town of Salem", () => {
     expect(text).toContain("Al menos uno es del Pueblo: Ana, Bea.");
   });
 
+  it("el Lookout dice cuando hubo más visitantes de los tres que identifica", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("investigation.result", { investigatorId: "a", targetId: "c", result: "Ana, Bea, Dani", check: "visitors", more: true }, "private"),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Visitaron a Caro: Ana, Bea, Dani. Más gente visitó a Caro, pero no pudiste identificarlos.");
+  });
+
   it("el ascenso a Godfather del Mafioso se cuenta como Godfather", () => {
     seq = 0;
     const text = texts(buildLog([ev("role.promoted", { playerId: "a", roleKey: "godfather", uses: {} }, "mafia")], ctx())).join(" | ");

@@ -330,6 +330,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const isFramed = framed.has(target) || playerOf(s, target)?.flags.framed === true;
     let result = "";
     let side: "mafia" | "town" | undefined;
+    let more = false;
     switch (inv.check) {
       case "suspicious": {
         const sus = isFramed || (shown?.faction === "mafia" && shown.roleKey !== "godfather");
@@ -345,9 +346,14 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         // Wiki (Consigliere): el disfraz no cambia el rol que ve; siempre es el real.
         result = roleName(target);
         break;
-      case "visitors":
-        result = visitsTo(target, inv.actorId).map((v) => nick(v.visitorId)).join(", ") || "nadie";
+      case "visitors": {
+        // Wiki (Lookout.md:178-182): solo identifica a tres visitantes, elegidos al azar; sabe que hubo más.
+        const visitors = visitsTo(target, inv.actorId).map((v) => v.visitorId);
+        more = visitors.length > 3;
+        const shown = more ? rng.shuffle(visitors).slice(0, 3) : visitors;
+        result = shown.map((id) => nick(id)).join(", ") || "nadie";
         break;
+      }
       case "targets":
         // Wiki (Tracker.md:194): si el objetivo no visita a nadie, el Tracker no recibe nada (ver abajo).
         result = visits.filter((v) => v.visitorId === target).map((v) => nick(v.houseId)).join(", ");
@@ -377,7 +383,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (inv.check === "targets" && result === "") continue;
     out.push({
       type: "investigation.result",
-      payload: { investigatorId: inv.actorId, targetId: target, result, check: inv.check, ...(side ? { side } : {}) },
+      payload: { investigatorId: inv.actorId, targetId: target, result, check: inv.check, ...(side ? { side } : {}), ...(more ? { more } : {}) },
     });
   }
 

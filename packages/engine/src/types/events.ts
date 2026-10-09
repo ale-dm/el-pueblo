@@ -30,8 +30,9 @@ export type GameEventPayloads = {
   "will.written": { playerId: PlayerId; text: string };
   "night.action.blocked": { actorId: PlayerId; ability: string };
   /** check: tipo de comprobación (suspicious, alignment, role, visitors, targets, mafiaVisits, vision). */
-  /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic). */
-  "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string; check: string; side?: "mafia" | "town" };
+  /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic).
+   * more: el Lookout sabe que hubo más visitantes de los tres que identifica (wiki: Lookout). */
+  "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string; check: string; side?: "mafia" | "town"; more?: boolean };
   "ability.used": { playerId: PlayerId; ability: string };
   "effect.applied": { actorId: PlayerId; targetId: PlayerId; flag: PlayerFlag };
   "player.blackmailed": { actorId: PlayerId; targetId: PlayerId };

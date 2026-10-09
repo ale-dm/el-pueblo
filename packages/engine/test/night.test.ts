@@ -209,6 +209,22 @@ describe("noche: investigaciones", () => {
     expect(ofType(events, "investigation.result")[0]?.payload.result).toBe("P2");
   });
 
+  it("el Lookout identifica a tres visitantes al azar y sabe que hubo más (wiki: Lookout)", () => {
+    const s = game(["investigator", "lookout", "sheriff", "doctor", "bodyguard", "tracker", "godfather"]);
+    const { events } = resolve(s, [
+      night("p2", "watch", "p1"),
+      night("p3", "interrogate", "p1"),
+      night("p4", "heal", "p1"),
+      night("p5", "protect", "p1"),
+      night("p6", "track", "p1"),
+    ]);
+    const [watch] = ofType(events, "investigation.result").filter((e) => e.payload.investigatorId === "p2");
+    expect(watch?.payload.more).toBe(true);
+    const shown = String(watch?.payload.result).split(", ");
+    expect(shown).toHaveLength(3);
+    for (const nick of shown) expect(["P3", "P4", "P5", "P6"]).toContain(nick);
+  });
+
   it("el Tracker ve a qué casas va su objetivo", () => {
     const s = game(["tracker", "sheriff", "investigator"]);
     const { events } = resolve(s, [night("p1", "track", "p2"), night("p2", "interrogate", "p3")]);

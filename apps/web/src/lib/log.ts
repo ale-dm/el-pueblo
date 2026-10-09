@@ -60,8 +60,12 @@ export function investigationText(p: Record<string, any>, nick: (id: string) => 
       return `${t} pertenece al bando ${alignmentEs(String(p.result))}.`;
     case "role":
       return `${t} es ${p.result}.`;
-    case "visitors":
-      return p.result === "nadie" ? `Nadie visitó a ${t} esta noche.` : `Visitaron a ${t}: ${p.result}.`;
+    case "visitors": {
+      // Wiki (Lookout): solo identifica a tres visitantes; si hubo más, lo dice.
+      if (p.result === "nadie") return `Nadie visitó a ${t} esta noche.`;
+      const more = p.more ? ` Más gente visitó a ${t}, pero no pudiste identificarlos.` : "";
+      return `Visitaron a ${t}: ${p.result}.${more}`;
+    }
     case "targets":
       return p.result === "nadie" ? `${t} no visitó a nadie.` : `${t} visitó a: ${p.result}.`;
     case "mafiaVisits":
