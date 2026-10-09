@@ -106,7 +106,7 @@ export function nightAction(
   return ok([
     {
       type: "night.action.submitted",
-      payload: { actorId, ability, targetId, secondTargetId, choice: choice ?? null, mafiaTeam: actor.faction === "mafia" },
+      payload: { actorId, ability, targetId, secondTargetId, choice: choice ?? null, mafiaTeam: actor.faction === "mafia", roleKey: actor.roleKey },
     },
   ]);
 }

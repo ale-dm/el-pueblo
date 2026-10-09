@@ -158,7 +158,7 @@ describe("registro estilo Town of Salem", () => {
     const text = texts(buildLog([
       ev("investigation.result", { investigatorId: "a", targetId: "c", result: "Ana, Bea, Dani", check: "visitors", more: true }, "private"),
     ], ctx())).join(" | ");
-    expect(text).toContain("Visitaron a Caro: Ana, Bea, Dani. Más gente visitó a Caro, pero no pudiste identificarlos.");
+    expect(text).toContain("Ana visitó a Caro anoche. Bea visitó a Caro anoche. Dani visitó a Caro anoche. Más gente visitó a Caro, pero no pudiste identificarlos.");
   });
 
   it("el ascenso a Godfather del Mafioso se cuenta como Godfather", () => {
@@ -182,6 +182,32 @@ describe("decisiones de la Mafia, cancelaciones y testamentos", () => {
       ev("night.action.submitted", { actorId: "b", ability: "kill", targetId: "c", secondTargetId: null, mafiaTeam: true }, "mafia"),
     ], ctx({ meId: "a" }))).join(" ");
     expect(text).toContain("Bea ha elegido Atacar a Caro.");
+  });
+
+  it("el Mafioso recibe la orden del Godfather al final de la noche; los demás, la elección", () => {
+    seq = 0;
+    const items = buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 1 }),
+      ev("night.action.submitted", { actorId: "b", ability: "kill", targetId: "c", secondTargetId: null, mafiaTeam: true, roleKey: "godfather" }, "mafia"),
+      ev("phase.started", { phase: "discussion", dayNumber: 2 }),
+    ], ctx({ meId: "a", meRoleKey: "mafioso" }));
+    const text = texts(items);
+    expect(text.slice(text.indexOf("== Día 2") + 1)).toEqual(["El Godfather te ha ordenado matar a su objetivo."]);
+    seq = 0;
+    expect(texts(buildLog([ev("night.action.submitted", { actorId: "b", ability: "kill", targetId: "c", secondTargetId: null, mafiaTeam: true, roleKey: "godfather" }, "mafia")], ctx({ meId: "a", meRoleKey: "janitor" }))).join(" ")).toContain("Bea ha elegido Atacar a Caro.");
+  });
+
+  it("un limpiado no revela su rol: aparece como Limpiado", () => {
+    seq = 0;
+    const text = texts(buildLog([ev("player.killed", { playerId: "b", cause: "mafia", roleKey: null, will: null, cleaned: true })], ctx())).join(" | ");
+    expect(text).toContain("Su rol aparece como Limpiado.");
+    expect(text).not.toContain("No pudimos determinar su rol.");
+  });
+
+  it("el Tracker ve una frase por cada visita de su objetivo", () => {
+    seq = 0;
+    const text = texts(buildLog([ev("investigation.result", { investigatorId: "a", targetId: "c", result: "Ana, Bea", check: "targets" }, "private")], ctx())).join(" | ");
+    expect(text).toContain("Tu objetivo visitó a Ana. Tu objetivo visitó a Bea.");
   });
 
   it("cancelar se registra, y tu propia cancelación cuenta como tal", () => {

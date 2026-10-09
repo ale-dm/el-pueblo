@@ -16,6 +16,8 @@ export type LogItem =
 
 export interface LogContext {
   meId: string;
+  /** Rol del jugador que mira: el Mafioso recibe las órdenes del Godfather (wiki: Mafioso.md:225). */
+  meRoleKey?: string | null;
   /** El jugador tiene habilidad nocturna y está vivo: se le avisa si no actúa. */
   hasNightAbility: boolean;
   nick: (id: string) => string;
@@ -84,13 +86,16 @@ export function investigationText(p: Record<string, any>, nick: (id: string) => 
     case "role":
       return `${t} es ${p.result}.`;
     case "visitors": {
-      // Wiki (Lookout): solo identifica a tres visitantes; si hubo más, lo dice.
+      // Wiki (Lookout.md:358, 362): "(Player) visited your target last night!" por cada visitante identificado;
+      // si hubo más de tres, "More people visited your target but you couldn't identify them."
       if (p.result === "nadie") return `Nadie visitó a ${t} esta noche.`;
+      const lines = String(p.result).split(", ").map((n) => `${n} visitó a ${t} anoche.`);
       const more = p.more ? ` Más gente visitó a ${t}, pero no pudiste identificarlos.` : "";
-      return `Visitaron a ${t}: ${p.result}.${more}`;
+      return `${lines.join(" ")}${more}`;
     }
     case "targets":
-      return p.result === "nadie" ? `${t} no visitó a nadie.` : `${t} visitó a: ${p.result}.`;
+      // Wiki (Tracker.md:322): "Your target visited (Player)!", uno por cada persona visitada.
+      return p.result === "nadie" ? `${t} no visitó a nadie.` : String(p.result).split(", ").map((n) => `Tu objetivo visitó a ${n}.`).join(" ");
     case "mafiaVisits":
       return p.result === "nadie" ? "Esta noche la Mafia no visitó a nadie." : `La Mafia visitó: ${p.result}.`;
     case "bug":
@@ -214,7 +219,9 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "player.killed": {
         const role = roleName(p.roleKey);
         const cause = CAUSE_ES[p.cause] ?? "ha muerto";
-        line(e, `${ctx.nick(p.playerId)} murió anoche: ${cause}. ${role ? `Era ${role}.` : "No pudimos determinar su rol."}`, "danger");
+        // Wiki (Janitor.md:212): el rol de un limpiado aparece como "Cleaned".
+        const roleText = role ? `Era ${role}.` : p.cleaned ? "Su rol aparece como Limpiado." : "No pudimos determinar su rol.";
+        line(e, `${ctx.nick(p.playerId)} murió anoche: ${cause}. ${roleText}`, "danger");
         willLine(e, p.will, p.playerId);
         break;
       }
@@ -222,6 +229,11 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         if (p.actorId === ctx.meId) {
           submittedTonight = true;
           line(e, `Has decidido ${abilityLabel(p.ability)}${p.targetId ? ` a ${ctx.nick(p.targetId)}` : ""} esta noche.`, "private");
+        } else if (p.roleKey === "godfather" && p.ability === "kill" && ctx.meRoleKey === "mafioso") {
+          // Wiki (Mafioso.md:225, 479): al final de la noche, el Mafioso recibe la orden del Godfather.
+          const item: LogItem = { kind: "line", key: `l${e.seq}`, seq: e.seq, text: "El Godfather te ha ordenado matar a su objetivo.", tone: "private" };
+          if (phase === "night") morning.push(item);
+          else items.push(item);
         } else {
           // Solo llega a la Mafia viva: decisiones de los compañeros.
           line(e, `${ctx.nick(p.actorId)} ha elegido ${abilityLabel(p.ability)}${p.targetId ? ` a ${ctx.nick(p.targetId)}` : ""}.`, "private");
@@ -287,10 +299,11 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
 }
 
 /** Contexto del registro para una vista: nombres, votantes y si el jugador tiene habilidad nocturna. */
-export function logContext(view: { me: { id: string; status: string; nightAbilities: unknown[] }; players: Array<{ id: string; nick: string; status: string; connected: boolean }> }): LogContext {
+export function logContext(view: { me: { id: string; status: string; nightAbilities: unknown[]; roleKey?: string | null }; players: Array<{ id: string; nick: string; status: string; connected: boolean }> }): LogContext {
   return {
     meId: view.me.id,
     hasNightAbility: view.me.status === "alive" && view.me.nightAbilities.length > 0,
+    meRoleKey: view.me.roleKey,
     nick: (id) => view.players.find((p) => p.id === id)?.nick ?? "?",
     voters: view.players.filter((p) => p.status === "alive" && p.connected).length,
   };

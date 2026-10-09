@@ -20,9 +20,11 @@ export type GameEventPayloads = {
   "trial.verdict": { defendantId: PlayerId; verdict: "guilty" | "innocent"; guiltyWeight?: number; innocentWeight?: number };
   /** will: última voluntad (texto), o null si no escribió ni fue limpiado. Se revela al morir. */
   "player.hanged": { playerId: PlayerId; roleKey: string | null; will: string | null };
-  "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null };
+  /** cleaned: el Janitor lo limpió; el rol no se revela y se muestra como "Limpiado" (wiki: Janitor.md:212). */
+  "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null; cleaned?: boolean };
   /** mafiaTeam: si el actor es de la Mafia, la decisión la ven los demás miembros vivos de la Mafia. */
-  "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; choice: string | null; mafiaTeam: boolean };
+  /** roleKey: el rol de quien actúa (el Mafioso sabe cuándo es una orden del Godfather, Mafioso.md:225). */
+  "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; choice: string | null; mafiaTeam: boolean; roleKey?: string | null };
   /** roleblock_immune: el mensaje de bloqueo para un inmune al bloqueo (wiki: Hypnotist.md:262, 408). */
   "hypnosis.message": { playerId: PlayerId; message: "attacked" | "protected" | "roleblocked" | "roleblock_immune" };
   /** Lo ve solo quien falsificó (forgerId). */

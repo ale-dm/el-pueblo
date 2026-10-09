@@ -542,3 +542,18 @@ describe("Framer: duración del encuadre (SKIPPED: la wiki se contradice)", () =
   });
 });
 
+
+describe("noche: avisos del registro (wiki: Janitor, Mafioso)", () => {
+  it("un limpiado muere sin rol y marcado como limpiado (Janitor.md:212)", () => {
+    const s = game(["janitor", "investigator", "godfather", "doctor"]);
+    const { events } = resolve(s, [night("p1", "clean", "p2"), night("p3", "kill", "p2")]);
+    const killed = ofType(events, "player.killed").find((e) => e.payload.playerId === "p2");
+    expect(killed?.payload).toMatchObject({ roleKey: null, cleaned: true });
+  });
+
+  it("la decisión del Godfather lleva su rol, para que el Mafioso reciba la orden", () => {
+    const s = game(["godfather", "mafioso", "investigator", "sheriff"]);
+    const { events } = step(s, night("p1", "kill", "p3"));
+    expect(ofType(events, "night.action.submitted")[0]?.payload.roleKey).toBe("godfather");
+  });
+});

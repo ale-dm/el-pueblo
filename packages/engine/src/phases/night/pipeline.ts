@@ -505,7 +505,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const roleKey = cleaned.has(playerId) ? null : forged.get(playerId) ?? playerOf(s, playerId)?.roleKey ?? null;
     // Un limpiado no deja testamento visible (wiki: Janitor).
     const will = cleaned.has(playerId) ? null : s.wills[playerId] ?? null;
-    out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will } });
+    out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will, ...(cleaned.has(playerId) ? { cleaned: true } : {}) } });
     return true;
   };
   /** Trampas ya gastadas esta noche: cada una defiende de un solo ataque. */
