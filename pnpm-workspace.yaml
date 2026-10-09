@@ -1,6 +1,10 @@
 packages:
   - "apps/*"
   - "packages/*"
+allowBuilds:
+  '@google/genai': true
+  esbuild: true
+  protobufjs: true
 minimumReleaseAgeExclude:
   - drizzle-orm@0.45.4
   - vite@8.3.4
