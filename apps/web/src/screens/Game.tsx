@@ -216,7 +216,7 @@ export function Game({ view }: { view: MatchView }) {
 
         <LiveList view={view} className="md:col-start-3 md:row-span-3 md:row-start-1 md:min-h-0" />
 
-        <BottomLeft view={view} log={log} className="md:col-start-1 md:row-start-3 md:max-h-[14rem]" />
+        <BottomLeft view={view} log={log} className="md:col-start-1 md:row-start-3 md:max-h-[19rem]" />
       </main>
     </>
   );

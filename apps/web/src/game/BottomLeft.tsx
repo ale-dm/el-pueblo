@@ -22,7 +22,7 @@ export function BottomLeft({ view, log, className = "" }: { view: MatchView; log
           </button>
         ))}
       </div>
-      <div className="short-chat min-h-0 flex-1 overflow-hidden">
+      <div className="short-chat min-h-0 flex-1 overflow-y-auto">
         {tab === "chat" ? <Chat view={view} log={log} compact /> : <LogPanel view={view} log={log} compact />}
       </div>
     </div>
