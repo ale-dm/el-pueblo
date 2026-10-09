@@ -7,7 +7,7 @@ export const handler: RoleHandler = {
   name: "Forger",
   faction: "mafia",
   priority: 3,
-  nightAbilities: [{ key: "forge", target: "player", usesLimit: 2 }],
+  nightAbilities: [], // pendiente: su habilidad aún no tiene efecto (ver gaps); no se ofrece para no engañar al jugador
   dayAbilities: [],
   gaps: "Falsificación de últimas voluntades: no hay últimas voluntades en el MVP.",
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {

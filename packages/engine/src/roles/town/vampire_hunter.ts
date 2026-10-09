@@ -7,7 +7,7 @@ export const handler: RoleHandler = {
   name: "Vampire Hunter",
   faction: "town",
   priority: 5,
-  nightAbilities: [{ key: "check", target: "none", usesLimit: null }],
+  nightAbilities: [], // pendiente: su habilidad aún no tiene efecto (ver gaps); no se ofrece para no engañar al jugador
   dayAbilities: [],
   gaps: "Sin Vampiros en el MVP: la habilidad no tiene efecto.",
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {

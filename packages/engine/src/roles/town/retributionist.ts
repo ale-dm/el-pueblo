@@ -7,7 +7,7 @@ export const handler: RoleHandler = {
   name: "Retributionist",
   faction: "town",
   priority: 1,
-  nightAbilities: [{ key: "raise", target: "player", usesLimit: null }],
+  nightAbilities: [], // pendiente: su habilidad aún no tiene efecto (ver gaps); no se ofrece para no engañar al jugador
   dayAbilities: [],
   gaps: "Zombis que usan la habilidad de un Town muerto: no implementado en el MVP.",
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {

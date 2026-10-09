@@ -7,12 +7,16 @@ export const handler: RoleHandler = {
   name: "Doctor",
   faction: "town",
   priority: 3,
-  nightAbilities: [{ key: "heal", target: "player", usesLimit: null, selfAllowed: true }],
+  // La autocuración es una habilidad aparte: una vez por partida (wiki: Doctor, "You may only Heal yourself once").
+  nightAbilities: [
+    { key: "heal", target: "player", usesLimit: null },
+    { key: "selfHeal", target: "none", usesLimit: 1 },
+  ],
   dayAbilities: [],
-  gaps: "Autocuración limitada a una vez por partida: en el MVP es ilimitada.",
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {
       case "heal": return targetId ? [{ kind: "protect", actorId: actor.id, targetId, power: 2, source: "doctor" }] : [];
+      case "selfHeal": return [{ kind: "protect", actorId: actor.id, targetId: actor.id, power: 2, source: "doctor" }];
       default: return [];
     }
   },

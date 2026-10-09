@@ -7,7 +7,7 @@ export const handler: RoleHandler = {
   name: "Medium",
   faction: "town",
   priority: 1,
-  nightAbilities: [{ key: "seance", target: "none", usesLimit: null }],
+  nightAbilities: [], // pendiente: su habilidad aún no tiene efecto (ver gaps); no se ofrece para no engañar al jugador
   dayAbilities: [],
   gaps: "Comunicación con los muertos de noche: no implementado en el MVP.",
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {

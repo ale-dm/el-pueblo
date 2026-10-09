@@ -160,6 +160,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       const e = remapEffect(raw, remap);
       switch (e.kind) {
         case "protect": {
+          // Wiki: el Mayor revelado no puede ser curado por el Doctor.
+          if (e.source === "doctor" && s.players.find((p) => p.id === e.targetId)?.flags.mayorRevealed) break;
           const list = protections.get(e.targetId) ?? [];
           list.push({ protectorId: e.actorId, power: e.power, source: e.source });
           protections.set(e.targetId, list);

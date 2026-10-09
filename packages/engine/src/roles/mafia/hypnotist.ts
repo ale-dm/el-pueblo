@@ -7,7 +7,7 @@ export const handler: RoleHandler = {
   name: "Hypnotist",
   faction: "mafia",
   priority: 3,
-  nightAbilities: [{ key: "hypnotize", target: "player", usesLimit: null }],
+  nightAbilities: [], // pendiente: su habilidad aún no tiene efecto (ver gaps); no se ofrece para no engañar al jugador
   dayAbilities: [],
   gaps: "Recuerdos plantados que confunden a la víctima: no implementado en el MVP.",
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
