@@ -7,6 +7,9 @@ import { ROLE_NAMES } from "../lib/roles.js";
 
 const DAY_PHASES = ["day_1", "discussion", "voting"];
 
+/** Nota de muerte: hasta 400 caracteres (wiki: Death_Note_ToS.md:15). Debe coincidir con el motor. */
+const MAX_DEATH_NOTE = 400;
+
 /** Texto de un uso restante, como en ToS: "te quedan 2". */
 const usesText = (n: number | null) => (n === null ? "" : ` (te quedan ${n})`);
 
@@ -19,6 +22,8 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
   const busy = useGame((s) => s.busy);
   // Elección de cada habilidad (mensaje del Hypnotist, rol del Forger), por clave de habilidad.
   const [choices, setChoices] = useState<Record<string, string>>({});
+  // Nota de muerte de cada habilidad que mata (wiki: Death_Note_ToS.md:15, hasta 400 caracteres).
+  const [notes, setNotes] = useState<Record<string, string>>({});
   const me = view.me;
   const alive = me.status === "alive";
   const target = targets[0] ?? null;
@@ -100,7 +105,23 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
         </select>
       ) : null;
       if (picker) actions.push(picker);
-      const withChoice = choice ? { choice } : {};
+      // La nota de muerte se escribe antes de matar: la verá la Ciudad al amanecer si la víctima muere (wiki: Death_Note_ToS.md:17).
+      const note = ab.deathNote ? notes[ab.key] ?? "" : "";
+      if (ab.deathNote) {
+        actions.push(
+          <textarea
+            key={`${ab.key}-note`}
+            aria-label="Nota de muerte"
+            maxLength={MAX_DEATH_NOTE}
+            rows={2}
+            placeholder="Nota de muerte (opcional)"
+            className="cartoon-input !w-full"
+            value={note}
+            onChange={(e) => setNotes((n) => ({ ...n, [ab.key]: e.target.value }))}
+          />,
+        );
+      }
+      const withChoice = { ...(choice ? { choice } : {}), ...(note.trim() ? { note } : {}) };
       // La habilidad se usa desde un botón redondo, como el amuleto de Town of Salem.
       if (ab.target === "none") {
         actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || (ab.choices !== null && !choice)} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: null, ...withChoice })}>{label}</Button>);

@@ -310,6 +310,19 @@ describe("decisiones de la Mafia, cancelaciones y testamentos", () => {
     expect(text).toContain("Bea ha cancelado su acción.");
   });
 
+  // Wiki (Death_Note_ToS.md:5, 17): la nota del asesino se lee al amanecer, junto a la víctima.
+  it("la nota de muerte del asesino sale al amanecer con la víctima, y sin nota no sale", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("player.killed", { playerId: "b", cause: "mafia", roleKey: "doctor", will: null, note: "Headshot" }),
+      ev("player.killed", { playerId: "c", cause: "mafia", roleKey: "doctor", will: null }),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain('Nota de muerte: "Headshot"');
+    expect(text.match(/Nota de muerte/g)).toHaveLength(1);
+  });
+
   it("al morir se lee el testamento, o que no había ninguno", () => {
     seq = 0;
     const text = texts(buildLog([

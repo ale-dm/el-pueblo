@@ -29,6 +29,8 @@ export interface NightAction {
   targetId: PlayerId | null;
   secondTargetId: PlayerId | null;
   choice: string | null;
+  /** Nota de muerte del asesino, si la escribió (wiki: Death_Note_ToS.md:5, 15). Ausente si no hay nota. */
+  note?: string;
 }
 
 /**

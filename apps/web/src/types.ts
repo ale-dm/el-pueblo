@@ -51,7 +51,7 @@ export interface MatchView {
     faction: "town" | "mafia" | null;
     roleSummary: string | null;
     flags: Record<string, boolean>;
-    nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null } | null;
+    nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null; note?: string } | null;
     /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
     seance: "medium" | "target" | null;
     /** Tu última voluntad. */
@@ -64,7 +64,7 @@ export interface MatchView {
     attack: string | null;
     defense: string | null;
     /** Habilidades de noche: de vivo, o solo las de muerto (Medium). `choices`: opciones de la habilidad. */
-    nightAbilities: Array<{ key: string; target: "player" | "none" | "two"; usesLeft: number | null; choices: string[] | null; deadOnly: boolean }>;
+    nightAbilities: Array<{ key: string; target: "player" | "none" | "two"; usesLeft: number | null; choices: string[] | null; deadOnly: boolean; deathNote: boolean }>;
     dayAbilities: Array<{ key: string; target: "player" | "none"; oncePerDay: boolean; usesLeft: number | null }>;
   };
 }

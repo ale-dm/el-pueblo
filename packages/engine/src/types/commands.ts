@@ -14,6 +14,8 @@ export type Command =
       secondTargetId?: PlayerId | null;
       /** Elección de la habilidad (mensaje del Hypnotist, rol del Forger). */
       choice?: string | null;
+      /** Nota de muerte del asesino (wiki: Death_Note_ToS.md:15, 400 caracteres). Solo la lleva un kill con deathNote. */
+      note?: string | null;
     }
   | { type: "night.action.cancel"; actorId: PlayerId }
   | { type: "will.write"; playerId: PlayerId; text: string }

@@ -22,6 +22,8 @@ export interface NightAbility {
   multiChoices?: readonly string[];
   /** Bloquea la habilidad de noche del objetivo: solo cabe a quien puede ser bloqueado (ver rules/roleblock.ts). */
   roleblock?: boolean;
+  /** Quien mata puede dejar una nota de muerte, que se muestra al amanecer junto a la víctima (wiki: Godfather.md:235, Mafioso.md:237). */
+  deathNote?: boolean;
 }
 
 /** Habilidad de día (Jailor, Mayor). */

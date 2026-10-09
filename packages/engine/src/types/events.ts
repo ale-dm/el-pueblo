@@ -22,10 +22,11 @@ export type GameEventPayloads = {
   "player.hanged": { playerId: PlayerId; roleKey: string | null; will: string | null };
   /** cleaned: el Janitor lo limpió; el rol no se revela y se muestra como "Limpiado" (wiki: Janitor.md:212). */
   /** reasons: la nota del Jailor al ejecutar (wiki: Death_Note_ToS.md:92); ausente en el resto de muertes. */
-  "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null; cleaned?: boolean; reasons?: string[] };
+  /** note: la nota de muerte del asesino (wiki: Death_Note_ToS.md:5); ausente si no escribió nota o no es un asesino con nota. */
+  "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null; cleaned?: boolean; reasons?: string[]; note?: string };
   /** mafiaTeam: si el actor es de la Mafia, la decisión la ven los demás miembros vivos de la Mafia. */
   /** roleKey: el rol de quien actúa (el Mafioso sabe cuándo es una orden del Godfather, Mafioso.md:225). */
-  "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; choice: string | null; mafiaTeam: boolean; roleKey?: string | null };
+  "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; choice: string | null; mafiaTeam: boolean; roleKey?: string | null; note?: string };
   /** roleblock_immune: el mensaje de bloqueo para un inmune al bloqueo (wiki: Hypnotist.md:262, 408). */
   "hypnosis.message": { playerId: PlayerId; message: "attacked" | "protected" | "roleblocked" | "roleblock_immune" };
   /** Lo ve solo quien falsificó (forgerId). */

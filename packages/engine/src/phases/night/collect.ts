@@ -13,6 +13,7 @@ export function nightAction(
   targetId: string | null,
   secondTargetId: string | null,
   choice: string | null = null,
+  note: string | null = null,
 ): Result<EventInput[]> {
   if (s.phase !== "night") return err("wrong_phase", "Las acciones nocturnas solo se hacen de noche");
   const actor = playerOf(s, actorId);
@@ -120,10 +121,19 @@ export function nightAction(
     return err("invalid_command", "Solo puedes ejecutar a un jugador encarcelado");
   }
 
+  // Nota de muerte (wiki: Death_Note_ToS.md:15: "A Last Will and Death Note may hold up to 400 characters each").
+  // Solo la lleva la habilidad que mata (wiki: Godfather.md:235, Mafioso.md:237). Texto vacío: sin nota.
+  const trimmedNote = note?.trim() ?? "";
+  if (trimmedNote.length > 0 && !def.deathNote) return err("invalid_command", "Esta habilidad no lleva nota de muerte");
+  if (trimmedNote.length > MAX_DEATH_NOTE_LENGTH) return err("invalid_command", `La nota de muerte tiene como máximo ${MAX_DEATH_NOTE_LENGTH} caracteres`);
+
   const events: EventInput[] = [
     {
       type: "night.action.submitted",
-      payload: { actorId, ability, targetId, secondTargetId, choice: choice ?? null, mafiaTeam: actor.faction === "mafia", roleKey: actor.roleKey },
+      payload: {
+        actorId, ability, targetId, secondTargetId, choice: choice ?? null, mafiaTeam: actor.faction === "mafia", roleKey: actor.roleKey,
+        ...(trimmedNote.length > 0 ? { note: trimmedNote } : {}),
+      },
     },
   ];
   // Wiki (Jailor.md:282): el prisionero recibe el aviso cuando el Jailor decide ejecutarle (una sola vez).
@@ -158,3 +168,6 @@ export function writeWill(s: GameState, playerId: string, text: string): Result<
 }
 
 export const MAX_WILL_LENGTH = 300;
+
+/** Nota de muerte: hasta 400 caracteres (wiki: Death_Note_ToS.md:15). */
+export const MAX_DEATH_NOTE_LENGTH = 400;

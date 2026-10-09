@@ -44,7 +44,7 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
     case "day.action":
       return dayAction(state, ctx.catalog, command.actorId, command.ability, command.targetId);
     case "night.action":
-      return nightAction(state, command.actorId, command.ability, command.targetId, command.secondTargetId ?? null, command.choice ?? null);
+      return nightAction(state, command.actorId, command.ability, command.targetId, command.secondTargetId ?? null, command.choice ?? null, command.note ?? null);
     case "night.action.cancel":
       return cancelNightAction(state, command.actorId);
     case "will.write":

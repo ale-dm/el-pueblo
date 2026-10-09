@@ -7,7 +7,8 @@ export const handler: RoleHandler = {
   name: "Godfather",
   faction: "mafia",
   priority: 5,
-  nightAbilities: [{ key: "kill", target: "player", usesLimit: null }],
+  // Nota de muerte: wiki Godfather.md:235 ("Be able to leave a Death Note behind for the Town to see in the morning.").
+  nightAbilities: [{ key: "kill", target: "player", usesLimit: null, deathNote: true }],
   dayAbilities: [],
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {

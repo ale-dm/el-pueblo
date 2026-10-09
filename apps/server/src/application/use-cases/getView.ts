@@ -54,7 +54,7 @@ export interface MatchView {
     faction: string | null;
     roleSummary: string | null;
     flags: Record<string, boolean>;
-    nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null } | null;
+    nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null; note?: string } | null;
     /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
     seance: "medium" | "target" | null;
     /** Tu última voluntad (solo tú la ves mientras vives). */
@@ -67,7 +67,7 @@ export interface MatchView {
     attack: string | null;
     defense: string | null;
     /** Habilidades disponibles ahora mismo (con usos restantes). */
-    nightAbilities: Array<{ key: string; target: string; usesLeft: number | null; choices: string[] | null; deadOnly: boolean }>;
+    nightAbilities: Array<{ key: string; target: string; usesLeft: number | null; choices: string[] | null; deadOnly: boolean; deathNote: boolean }>;
     dayAbilities: Array<{ key: string; target: string; oncePerDay: boolean; usesLeft: number | null }>;
   };
 }
@@ -169,6 +169,7 @@ export function getView(deps: GetViewDeps) {
                 usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0,
                 choices: a.choices === "roles" ? [...ROLE_HANDLERS.keys()] : a.choices ? [...a.choices] : null,
                 deadOnly: a.deadOnly ?? false,
+                deathNote: a.deathNote ?? false,
               }))
           : [],
         // Los vivos tienen sus habilidades de día; los muertos, solo las de muerto (Medium abre su sesión de día).

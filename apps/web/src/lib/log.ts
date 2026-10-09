@@ -299,6 +299,8 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         line(e, `${ctx.nick(p.playerId)} murió anoche: ${cause}. ${roleText}`, "danger");
         // Wiki (Death_Note_ToS.md:92): la nota del Jailor dice a todos por qué ejecutó.
         if (Array.isArray(p.reasons)) line(e, `Nota del Jailor: ${p.reasons.map((r: string) => JAILOR_REASON_ES[r] ?? r).join(" ")}`, "info");
+        // Wiki (Death_Note_ToS.md:5, 17): la nota de muerte del asesino se muestra al amanecer junto a la víctima.
+        if (typeof p.note === "string" && p.note) line(e, `Nota de muerte: "${p.note}"`, "info");
         willLine(e, p.will, p.playerId);
         break;
       }

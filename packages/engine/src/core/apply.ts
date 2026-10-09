@@ -115,6 +115,7 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
             targetId: e.payload.targetId,
             secondTargetId: e.payload.secondTargetId,
             choice: e.payload.choice,
+            ...(e.payload.note !== undefined ? { note: e.payload.note } : {}),
           },
         },
       };
