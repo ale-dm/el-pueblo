@@ -716,3 +716,15 @@ describe("Crusader: avisos en el registro (wiki: Crusader.md:216, 330, 336)", ()
     ]);
   });
 });
+
+describe("Doctor: defensa de su objetivo para el atacante (wiki: Doctor.md:269)", () => {
+  it("el atacante que frena un Doctor lee 'La defensa de tu objetivo fue demasiado fuerte para matarle.'", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "target_defense" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    expect(text).toContain("La defensa de tu objetivo fue demasiado fuerte para matarle.");
+  });
+});

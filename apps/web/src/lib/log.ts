@@ -132,6 +132,8 @@ const NOTICE_TEXT: Record<string, string> = {
   attack_jailed: "No pudiste atacar a tu objetivo porque estaba encarcelado.",
   // Wiki (Messages_ToS.md:1873; Crusader.md:216): "You were attacked but someone protected you!"
   crusader_protected: "Te atacaron, pero alguien te protegió.",
+  // Wiki (Messages_ToS.md:383; Doctor.md:269): "Your target's defense was too strong to kill." (atacante que frena un Doctor)
+  target_defense: "La defensa de tu objetivo fue demasiado fuerte para matarle.",
   // Wiki (Messages_ToS.md:1861; Crusader.md:330): "You were attacked by a Crusader!"
   crusader_attacked_you: "¡Te ha atacado un Cruzado!",
   // Wiki (Messages_ToS.md:1869; Crusader.md:336): "You attacked someone visiting your target!"

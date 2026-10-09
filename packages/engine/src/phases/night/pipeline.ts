@@ -839,6 +839,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       // Wiki (Godfather.md:233): el Godfather que ataca recibe aviso si el objetivo tiene defensa; el texto es el de
       // Messages_ToS.md:383 ("Your target's defense was too strong to kill."), también si el objetivo fue curado.
       if (atk.godfatherDirect) out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "godfather_target_defense" } });
+      // Wiki (Doctor.md:229, 269): "their attacker will receive the message "Your target's defense was too strong to kill."",
+      // cualquier atacante cuyo ataque frena un Doctor (no solo el Godfather que ataca él mismo; Godfather.md:233).
+      else if (strongest?.source === "doctor") out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "target_defense" } });
       // Wiki (Messages_ToS.md:1873; Crusader.md:216): "You were attacked but someone protected you!" al protegido por un Crusader.
       if (strongest?.source === "crusader") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "crusader_protected" } });
       // Wiki (Crusader.md:330): el visitante atacado por el Crusader que sobrevive recibe "You were attacked by a Crusader!".
