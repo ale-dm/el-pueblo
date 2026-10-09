@@ -504,6 +504,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (attack === undefined) return false;
     return attack !== "None" && !(attack?.startsWith("None (") ?? false);
   };
+  // Wiki (Trapper.md:223): "If your target is attacked". Se cuentan los ataques de otros a cada casa antes de las
+  // trampas, aunque luego los prevenga un Doctor, un Bodyguard o un Crusader (decisión: Doctor.md:249 avisa de todo
+  // ataque al objetivo). Un ataque propio (Vigilante culpable) no cuenta.
+  const attackedBeforeTraps = new Set(attacks.filter((a) => a.attackerId !== a.victimId).map((a) => a.victimId));
   for (const [trapperId, trap] of Object.entries(s.traps)) {
     // Una trampa construida y no colocada (targetId null) no se activa.
     if (trap.targetId === null) continue;
@@ -514,7 +518,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Wiki (Trapper.md:219): cualquier visitante activa la trampa (y la gasta), aunque no ataque.
     // Wiki (Keyword_System.md:349): solo daña a los atacantes; si hay varios, a uno solo, elegido al azar, como el
     // visitante del Crusader y del Ambusher (Crusader.md:214, Ambusher.md:216). Trapper.md:223: ataque Powerful.
-    const attackers = visitors.filter((v) => attacksOnVisit(v.visitorId));
+    // Wiki (Trapper.md:223): el Poderoso y la defensa solo si el objetivo es atacado esta noche; si no, el visitante atacante no sufre nada.
+    const attackers = attackedBeforeTraps.has(trap.targetId) ? visitors.filter((v) => attacksOnVisit(v.visitorId)) : [];
     // Wiki (Trapper.md:221): el Trapper ve el rol real de cada visitante (sin nombres), también si está muerto (Trapper.md:362).
     const visitorIds = [...new Set(visitors.map((v) => v.visitorId))].sort((a, b) => (playerOf(s, a)?.seat ?? 0) - (playerOf(s, b)?.seat ?? 0));
     const roles = visitorIds.map((id) => playerOf(s, id)?.roleKey).filter((r): r is string => !!r);
