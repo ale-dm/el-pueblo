@@ -234,3 +234,18 @@ describe("Psíquica: sin visión cuando no hay suficientes jugadores (wiki: Psyc
     expect(notices(events).some(([, n]) => n === "psychic_evil")).toBe(false);
   });
 });
+
+describe("Veteran: avisos de disparo (wiki: Veteran.md:478, 482)", () => {
+  const sent = (events: ReturnType<typeof step>["events"]) => ofType(events, "night.notice").map((e) => [e.payload.playerId, e.payload.notice]);
+
+  it("el visitante muerto por la alerta recibe \"You were shot by the Veteran you visited!\" y el Veteran \"You shot someone who visited you last night!\"", () => {
+    const { events } = resolve(game(["veteran", "investigator", "godfather"]), [night("p1", "alert", null), night("p2", "investigate", "p1")]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p2", "veteran"]]);
+    expect(sent(events)).toEqual(expect.arrayContaining([["p2", "veteran_shot_you"], ["p1", "veteran_shot_visitor"]]));
+  });
+
+  it("sin visitantes no hay aviso de disparo", () => {
+    const { events } = resolve(game(["veteran", "investigator", "godfather"]), [night("p1", "alert", null)]);
+    expect(sent(events).filter(([, n]) => n === "veteran_shot_you" || n === "veteran_shot_visitor")).toEqual([]);
+  });
+});

@@ -392,6 +392,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   for (const vetId of alerted) {
     for (const v of visitsTo(vetId, vetId)) {
       attacks.push({ attackerId: vetId, victimId: v.visitorId, power: 2, cause: "veteran" });
+      // Wiki (Veteran.md:482): "You shot someone who visited you last night!" por cada visitante al que dispara.
+      out.push({ type: "night.notice", payload: { playerId: vetId, notice: "veteran_shot_visitor" } });
     }
   }
   // Trampas activas (colocadas la noche anterior o antes).
@@ -625,6 +627,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       }
       // Wiki (Vigilante.md:370): "You could not get over the guilt of killing a town member. You shot yourself!"
       if (cause === "guilt") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "vigilante_guilt_suicide" } });
+      // Wiki (Veteran.md:478): "You were shot by the Veteran you visited!" al visitante que mata la alerta.
+      if (cause === "veteran") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "veteran_shot_you" } });
     };
     // Jailor: ejecutar a un Town le quita las siguientes ejecuciones.
     if (atk.cause === "execute" && victim?.faction === "town" && !dead.has(atk.attackerId)) {

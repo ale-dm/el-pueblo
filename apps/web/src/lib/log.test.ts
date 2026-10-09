@@ -457,3 +457,14 @@ describe("avisos del Tavern Keeper y del Bootlegger (wiki: Tavern_Keeper.md:347-
     ]);
   });
 });
+
+describe("mensajes del Veteran (wiki: Veteran.md:478, 482)", () => {
+  it("el visitante que muere y el Veteran que dispara tienen su aviso privado", () => {
+    seq = 0;
+    // Cada uno solo recibe sus eventos privados (el servidor ya filtra por jugador).
+    const veteran = texts(buildLog([ev("night.notice", { playerId: "a", notice: "veteran_shot_visitor" }, "private")], ctx({ meId: "a" })));
+    expect(veteran).toEqual(["Disparaste a alguien que te visitó anoche."]);
+    const visitor = texts(buildLog([ev("night.notice", { playerId: "b", notice: "veteran_shot_you" }, "private")], ctx({ meId: "b" })));
+    expect(visitor).toEqual(["¡Te ha disparado el Veterano al que visitaste!"]);
+  });
+});

@@ -86,6 +86,10 @@ const NOTICE_TEXT: Record<string, string> = {
   blocked_jailed: "Alguien intentó bloquearte, pero estabas encarcelado.",
   // Wiki (Tavern_Keeper.md:349): "Someone occupied your night. You were role blocked!" (sin acción que cancelar)
   blocked_occupied: "Alguien ocupó tu noche. ¡Has sido bloqueado!",
+  // Wiki (Veteran.md:478): "You were shot by the Veteran you visited!"
+  veteran_shot_you: "¡Te ha disparado el Veterano al que visitaste!",
+  // Wiki (Veteran.md:482): "You shot someone who visited you last night!"
+  veteran_shot_visitor: "Disparaste a alguien que te visitó anoche.",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */
