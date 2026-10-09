@@ -645,6 +645,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   // 8. Ataques contra protecciones. Un ataque que mata a alguien ya muerto no hace nada.
   const dead = new Set(s.players.filter((p) => p.status !== "alive").map((p) => p.id));
+  /** Payload del `player.killed` de cada muerte de la noche, para añadirle las causas extra (wiki: Messages_ToS.md:151). */
+  const killPayloadOf = new Map<string, { cause: string; causes?: string[] }>();
   const kill = (playerId: string, cause: string, reasons?: string[], note?: string): boolean => {
     if (dead.has(playerId)) return false;
     dead.add(playerId);
@@ -654,7 +656,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Wiki (Forger.md:34, 156): el testamento falsificado reemplaza al real; en blanco, no queda testamento (Forger.md:218).
     const forgedWill = forgedWills.get(playerId);
     const will = cleaned.has(playerId) ? null : forgedWill !== undefined ? forgedWill || null : s.wills[playerId] ?? null;
-    out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will, ...(cleaned.has(playerId) ? { cleaned: true } : {}), ...(reasons ? { reasons } : {}), ...(note ? { note } : {}) } });
+    const killed = { playerId, cause, roleKey, will, ...(cleaned.has(playerId) ? { cleaned: true } : {}), ...(reasons ? { reasons } : {}), ...(note ? { note } : {}) };
+    out.push({ type: "player.killed", payload: killed });
+    killPayloadOf.set(playerId, killed);
     // Wiki (Janitor.md:214): el Janitor que lo limpió sabe su rol real al amanecer.
     const janitorId = marks.find((m) => m.flag === "cleaned" && m.targetId === playerId)?.actorId;
     if (cleaned.has(playerId) && janitorId !== undefined) {
@@ -665,9 +669,35 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   };
   /** Trampas ya gastadas esta noche: cada una defiende de un solo ataque. */
   const trapSpent = new Set<string>();
+  /** Defensa que enfrenta un ataque, sin efectos: guardaespaldas, la mejor protección médica y la defensa Basic. */
+  const defenseOf = (atk: Attack) => {
+    const prots = protections.get(atk.victimId) ?? [];
+    // Wiki (Bodyguard.md:214, 228): el guardaespaldas solo contraataca a la Mafia (Godfather, Mafioso) y al
+    // Vigilante, y a otros roles que matan; no protege de Veteran, Ambusher ni de Town Protectives.
+    const counters = atk.cause === "mafia" || atk.cause === "shot";
+    // Un zombi está muerto, pero su guardaespaldas actúa esta noche (wiki: Retributionist.md:388).
+    const bodyguard = counters ? prots.find((p) => p.source === "bodyguard" && (!dead.has(p.protectorId) || raisedBy.has(p.protectorId))) : undefined;
+    // La defensa de la trampa solo cuenta contra su atacante (Keyword_System.md:349) y una vez por noche.
+    const medical = prots.filter(
+      (p) => p.source !== "bodyguard" && (p.onlyAgainst === undefined || p.onlyAgainst === atk.attackerId) && !(p.source === "trap" && trapSpent.has(atk.victimId)),
+    );
+    const strongest = medical.reduce<Protection | undefined>((best, p) => (!best || p.power > best.power ? p : best), undefined);
+    // Wiki (Godfather): Basic Defense permanente; un ataque Basic no le mata.
+    const baseDefense = playerOf(s, atk.victimId)?.roleKey === "godfather" ? 1 : 0;
+    const defense = Math.max(strongest?.power ?? 0, alerted.has(atk.victimId) ? 1 : 0, baseDefense);
+    return { bodyguard, strongest, baseDefense, defense };
+  };
   for (let i = 0; i < attacks.length; i++) {
     const atk = attacks[i]!;
-    if (dead.has(atk.victimId)) continue;
+    if (dead.has(atk.victimId)) {
+      // Wiki (Messages_ToS.md:151, 154): un segundo asesino que también habría matado añade su causa; no cambia nada más
+      // (la culpa, el chaleco y las protecciones se resuelven igual que antes).
+      const payload = killPayloadOf.get(atk.victimId);
+      if (payload && (atk.unstoppable || (!defenseOf(atk).bodyguard && atk.power > defenseOf(atk).defense))) {
+        payload.causes = [...(payload.causes ?? [payload.cause]), atk.cause];
+      }
+      continue;
+    }
     const victim = playerOf(s, atk.victimId);
     // Vigilante: si su disparo mata a un Town, la culpa le quitará la vida la noche siguiente (wiki: Vigilante).
     const killVictim = (cause: string) => {
@@ -700,12 +730,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       killVictim(atk.cause);
       continue;
     }
-    const prots = protections.get(atk.victimId) ?? [];
-    // Wiki (Bodyguard.md:214, 228): el guardaespaldas solo contraataca a la Mafia (Godfather, Mafioso) y al
-    // Vigilante, y a otros roles que matan; no protege de Veteran, Ambusher ni de Town Protectives.
-    const counters = atk.cause === "mafia" || atk.cause === "shot";
-    // Un zombi está muerto, pero su guardaespaldas actúa esta noche (wiki: Retributionist.md:388).
-    const bodyguard = counters ? prots.find((p) => p.source === "bodyguard" && (!dead.has(p.protectorId) || raisedBy.has(p.protectorId))) : undefined;
+    const { bodyguard, strongest, baseDefense, defense } = defenseOf(atk);
     if (bodyguard) {
       prevented.add(atk.victimId);
       out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(bodyguard.protectorId) } });
@@ -727,14 +752,6 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       }
       continue;
     }
-    // La defensa de la trampa solo cuenta contra su atacante (Keyword_System.md:349) y una vez por noche.
-    const medical = prots.filter(
-      (p) => p.source !== "bodyguard" && (p.onlyAgainst === undefined || p.onlyAgainst === atk.attackerId) && !(p.source === "trap" && trapSpent.has(atk.victimId)),
-    );
-    const strongest = medical.reduce<Protection | undefined>((best, p) => (!best || p.power > best.power ? p : best), undefined);
-    // Wiki (Godfather): Basic Defense permanente; un ataque Basic no le mata.
-    const baseDefense = victim?.roleKey === "godfather" ? 1 : 0;
-    const defense = Math.max(strongest?.power ?? 0, alerted.has(atk.victimId) ? 1 : 0, baseDefense);
     if (atk.power > defense) {
       killVictim(atk.cause);
     } else {

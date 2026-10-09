@@ -23,7 +23,8 @@ export type GameEventPayloads = {
   /** cleaned: el Janitor lo limpió; el rol no se revela y se muestra como "Limpiado" (wiki: Janitor.md:212). */
   /** reasons: la nota del Jailor al ejecutar (wiki: Death_Note_ToS.md:92); ausente en el resto de muertes. */
   /** note: la nota de muerte del asesino (wiki: Death_Note_ToS.md:5); ausente si no escribió nota o no es un asesino con nota. */
-  "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null; cleaned?: boolean; reasons?: string[]; note?: string };
+  /** causes: todas las causas de una muerte con dos o más asesinos, la primera igual que `cause` (wiki: Messages_ToS.md:151, 154). Solo si hay más de una. */
+  "player.killed": { playerId: PlayerId; cause: string; causes?: string[]; roleKey: string | null; will: string | null; cleaned?: boolean; reasons?: string[]; note?: string };
   /** mafiaTeam: si el actor es de la Mafia, la decisión la ven los demás miembros vivos de la Mafia. */
   /** roleKey: el rol de quien actúa (el Mafioso sabe cuándo es una orden del Godfather, Mafioso.md:225). */
   "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; choice: string | null; mafiaTeam: boolean; roleKey?: string | null; note?: string; forgedWill?: string };
