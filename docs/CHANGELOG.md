@@ -5,6 +5,12 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## M2 (servidor): reinicio y recuperación de partidas
+
+- Criterio del GDD §9: "la partida se recupera tras reiniciar el servidor". Verificado con dos tests: `apps/server/test/application/reinicio.test.ts` (almacenes en memoria) y `apps/server/test/adapters/postgres-reinicio.test.ts` (almacenes PostgreSQL sobre PGlite, con procesos nuevos encima de la misma base). En ambos, la vista del jugador tras el reinicio es idéntica a la de antes, el temporizador de fase se vuelve a programar y el avance de fase funciona.
+- Mutación comprobada: quitar la reprogramación de `recoverTimers` hace fallar los dos tests.
+- Pendiente de M2: "dos clientes juegan una partida completa" por sockets reales no está verificado en este hito; el gateway tiene tests (`apps/server/test/adapters/gateway.test.ts`), pero no una partida de dos clientes de extremo a extremo.
+
 ## Posterior al lote 13: checklist y Médium en solo lectura
 
 - `32cc34f` Checklist: marca lo verificado con tests y enlaza el estado por rol — **Decisión:** Sección 2 sin marcar (arte, iconos y narración pendientes); estado por rol en `docs/ROLES_STATUS.md`.
