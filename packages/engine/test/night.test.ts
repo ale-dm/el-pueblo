@@ -434,3 +434,42 @@ describe("noche: visitas de quien tiene dos objetivos (wiki: Tracker, Lookout, R
     expect(results(events, "p5")).toEqual(["P2"]);
   });
 });
+
+describe("noche: el Spy espía a su objetivo (wiki: Spy)", () => {
+  const spyResults = (events: ReturnType<typeof step>["events"]) =>
+    ofType(events, "investigation.result").filter((e) => e.payload.check === "bug").map((e) => [e.payload.investigatorId, e.payload.result]);
+
+  it("ve el ataque y la protección que recibió su objetivo", () => {
+    // p1 Spy espía a p3. p2 Godfather ataca a p3 y p4 Doctor lo cura: el ataque no le alcanza.
+    const s = game(["spy", "godfather", "investigator", "doctor"]);
+    const { events } = resolve(s, [night("p1", "bug", "p3"), night("p2", "kill", "p3"), night("p4", "heal", "p3")]);
+    expect(spyResults(events)).toEqual([["p1", "attack,protect"]]);
+  });
+
+  it("el Transporter cambia el objetivo del Spy: recibe la información de la otra casa", () => {
+    // p1 Spy espía a p3, pero p2 Transporter cambia p3 y p4: el Spy ve a p4, que llega transportado.
+    const s = game(["spy", "transporter", "investigator", "investigator", "godfather"]);
+    const { events } = resolve(s, [night("p1", "bug", "p3"), night("p2", "transport", "p3", "p4")]);
+    expect(spyResults(events)).toEqual([["p1", "transport"]]);
+  });
+
+  it("si el objetivo está encarcelado, el Spy lo sabe y sigue viendo las visitas de la Mafia", () => {
+    // p2 Jailor tiene encarcelado a p3. El Spy lo espía; el Godfather (p4) visita a p5.
+    const s = game(["spy", "jailor", "investigator", "godfather", "sheriff"]);
+    s.players[2] = { ...s.players[2]!, flags: { jailed: true } };
+    s.jailedBy = { p3: "p2" };
+    const { events } = resolve(s, [night("p1", "bug", "p3"), night("p4", "kill", "p5")]);
+    expect(spyResults(events)).toEqual([["p1", "jail"]]);
+    const mafia = ofType(events, "investigation.result").find((e) => e.payload.investigatorId === "p1" && e.payload.check === "mafiaVisits");
+    expect(mafia?.payload.result).toBe("P5");
+  });
+
+  it("no ve las visitas de un Mafioso disfrazado de Town, y cuenta cada visita por casa", () => {
+    // p2 Disguiser disfraza al Godfather (p3) de Investigator (p4) y lo visita con él.
+    const s = game(["spy", "disguiser", "godfather", "investigator", "sheriff", "investigator"]);
+    // Las visitas del Disguiser (p3 y p4) sí se ven; la del Godfather a p5 no.
+    const { events } = resolve(s, [night("p1", "bug", "p6"), night("p2", "disguise", "p3", "p4"), night("p3", "kill", "p5")]);
+    const mafia = ofType(events, "investigation.result").find((e) => e.payload.investigatorId === "p1" && e.payload.check === "mafiaVisits");
+    expect(mafia?.payload.result).toBe("P3, P4");
+  });
+});

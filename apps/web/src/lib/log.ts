@@ -56,6 +56,19 @@ function alignmentEs(key: string): string {
   return alignmentLabel(key) ?? (key === "unknown" ? "desconocido" : key.replace(/_/g, " "));
 }
 
+/** Espionaje del Spy (wiki: Spy.md:189-205): una frase por lo que recibió el objetivo esta noche. */
+export function bugText(result: string, target: string): string {
+  if (result === "nada") return `${target} no recibió nada esta noche.`;
+  const sentence: Record<string, string> = {
+    jail: `${target} estaba encarcelado: no pudiste espiarle.`,
+    transport: `${target} fue transportado a otra casa.`,
+    block: `${target} fue bloqueado: su acción no tuvo efecto.`,
+    attack: `${target} fue atacado.`,
+    protect: `Alguien le protegió del ataque.`,
+  };
+  return result.split(",").map((tag) => sentence[tag]).filter(Boolean).join(" ");
+}
+
 /** Frase de un resultado de investigación (solo lo ve quien investigó). */
 export function investigationText(p: Record<string, any>, nick: (id: string) => string): string {
   const t = p.targetId ? nick(p.targetId) : "";
@@ -76,6 +89,8 @@ export function investigationText(p: Record<string, any>, nick: (id: string) => 
       return p.result === "nadie" ? `${t} no visitó a nadie.` : `${t} visitó a: ${p.result}.`;
     case "mafiaVisits":
       return p.result === "nadie" ? "Esta noche la Mafia no visitó a nadie." : `La Mafia visitó: ${p.result}.`;
+    case "bug":
+      return bugText(String(p.result), t);
     case "vision":
       // Wiki (Psychic): impares, al menos uno de la Mafia; pares, al menos uno del Pueblo.
       if (p.result === "nadie") return "Esta noche no viste a nadie.";

@@ -1,7 +1,8 @@
 import type { PlayerId } from "../types/ids.js";
 
 /** Lo que hace una acción nocturna. El pipeline de la noche decide cuándo y con qué resultado. */
-export type Check = "suspicious" | "role" | "alignment" | "visitors" | "targets" | "mafiaVisits" | "vision";
+/** "bug": lo que recibe el objetivo esta noche (Spy). "mafiaVisits": las visitas de la Mafia (Spy). */
+export type Check = "suspicious" | "role" | "alignment" | "visitors" | "targets" | "mafiaVisits" | "vision" | "bug";
 
 export type Effect =
   /** Bloquea la acción del objetivo (Bootlegger, Tavern Keeper). */

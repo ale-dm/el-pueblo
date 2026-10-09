@@ -7,10 +7,15 @@ export const handler: RoleHandler = {
   name: "Spy",
   faction: "town",
   priority: 6,
-  nightAbilities: [{ key: "bug", target: "none", usesLimit: null }],
+  // Wiki (Spy.md:193): "Bugging a player counts as you visiting them." El espionaje va al objetivo, no a una casa.
+  nightAbilities: [{ key: "bug", target: "player", usesLimit: null }],
   dayAbilities: [],
-  gaps: "Simplificación: el Spy ve las visitas de la Mafia y no una casa concreta.",
-  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
-    return [{ kind: "investigate", actorId: actor.id, targetId: null, check: "mafiaVisits" }];
+  resolveNight: ({ ability, actor, targetId }): Effect[] => {
+    // Wiki (Spy.md:189-205): espía el objetivo (un Transporter puede cambiarlo) y ve las visitas de la Mafia.
+    if (ability !== "bug") return [];
+    return [
+      { kind: "investigate", actorId: actor.id, targetId, check: "bug" },
+      { kind: "investigate", actorId: actor.id, targetId: null, check: "mafiaVisits" },
+    ];
   },
 };

@@ -221,3 +221,20 @@ describe("avisos privados de la noche", () => {
     ]);
   });
 });
+
+describe("espionaje del Spy", () => {
+  it("cuenta lo que recibió el objetivo: ataque y protección, o nada", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack,protect", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "c", result: "nada", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "c", result: "jail", check: "bug" }, "private"),
+    ], ctx({ meId: "a" })));
+    expect(text).toEqual([
+      "Bea fue atacado. Alguien le protegió del ataque.",
+      "Caro no recibió nada esta noche.",
+      "Caro estaba encarcelado: no pudiste espiarle.",
+    ]);
+  });
+});
+

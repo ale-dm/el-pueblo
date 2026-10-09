@@ -159,11 +159,13 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   // 2. Transportes: intercambian los objetivos de dos jugadores.
   let remap = (id: string) => id;
+  const transported = new Set<string>();
   for (const act of active) {
     for (const e of act.effects) {
       if (e.kind !== "transport") continue;
       const prev = remap;
       const { firstId, secondId } = e;
+      transported.add(firstId).add(secondId);
       remap = (id) => {
         const x = prev(id);
         return x === firstId ? secondId : x === secondId ? firstId : x;
@@ -185,8 +187,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       const victim = remap(e.targetId);
       if (s.jailedBy[victim] !== undefined) out.push({ type: "night.notice", payload: { playerId: victim, notice: "attack_attempt" } });
     }
-    out.push({ type: "night.notice", payload: { playerId: act.actor.id, notice: "target_jailed" } });
-    act.effects = [];
+    // Wiki (Spy.md:205): el espionaje dice que el objetivo estaba encarcelado; y las visitas de la Mafia siguen.
+    const reportsJail = act.effects.some((e) => e.kind === "investigate" && e.check === "bug");
+    if (!reportsJail) out.push({ type: "night.notice", payload: { playerId: act.actor.id, notice: "target_jailed" } });
+    act.effects = act.effects.filter((e) => e.kind === "investigate" && (e.check === "bug" || e.check === "mafiaVisits"));
   }
   // 2b. Mafia: quién mata. Wiki (Mafioso, Godfather): si el Godfather ordena y el Mafioso está vivo y no
   // bloqueado, el Mafioso ejecuta la orden; él recibe las visitas y las represalias, y el Godfather no visita.
@@ -249,6 +253,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     .map((p) => ({ attackerId: p.id, victimId: p.id, power: 2 as const, cause: "guilt", unstoppable: true }));
   const marks: Array<{ actorId: string; targetId: string; flag: "framed" | "cleaned" | "blackmailed" | "zombied" }> = [];
   const investigations: Array<{ actorId: string; targetId: string | null; check: string }> = [];
+  const bugs: Array<{ actorId: string; targetId: string }> = [];
+  /** Víctimas cuyo ataque esta noche no les alcanzó (protección o alerta). Lo ve el espionaje. */
+  const prevented = new Set<string>();
   const traps: Array<{ trapperId: string; targetId: string }> = [];
   const dismantles: string[] = [];
   const usesSpent: Array<{ playerId: string; ability: string }> = [];
@@ -290,7 +297,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           // Se resuelve abajo: el Godfather prevalece si actúa.
           break;
         case "investigate":
-          investigations.push({ actorId: e.actorId, targetId: e.targetId, check: e.check });
+          if (e.check === "bug" && e.targetId !== null) bugs.push({ actorId: e.actorId, targetId: e.targetId });
+          else investigations.push({ actorId: e.actorId, targetId: e.targetId, check: e.check });
           break;
         case "mark":
           marks.push({ actorId: e.actorId, targetId: e.targetId, flag: e.flag });
@@ -418,10 +426,15 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         result = visits.filter((v) => v.visitorId === target).map((v) => nick(v.houseId)).join(", ");
         break;
       case "mafiaVisits": {
+        // Wiki (Disguiser.md:217): el Spy no ve las visitas de un Mafioso disfrazado de no-Mafia. Cuenta cada visita.
         const houses = visits
-          .filter((v) => playerOf(s, v.visitorId)?.faction === "mafia")
+          .filter((v) => {
+            if (playerOf(s, v.visitorId)?.faction !== "mafia") return false;
+            const asId = disguises.get(v.visitorId);
+            return asId === undefined || playerOf(s, asId)?.faction === "mafia";
+          })
           .map((v) => nick(v.houseId));
-        result = [...new Set(houses)].join(", ") || "nadie";
+        result = houses.join(", ") || "nadie";
         break;
       }
       case "vision": {
@@ -484,6 +497,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const counters = atk.cause === "mafia" || atk.cause === "shot";
     const bodyguard = counters ? prots.find((p) => p.source === "bodyguard" && !dead.has(p.protectorId)) : undefined;
     if (bodyguard) {
+      prevented.add(atk.victimId);
       out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: bodyguard.protectorId } });
       kill(atk.attackerId, "bodyguard");
       kill(bodyguard.protectorId, "bodyguard");
@@ -496,9 +510,28 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const defense = Math.max(strongest?.power ?? 0, alerted.has(atk.victimId) ? 1 : 0, baseDefense);
     if (atk.power > defense) {
       killVictim(atk.cause);
-    } else if (strongest) {
-      out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: strongest.protectorId } });
+    } else {
+      prevented.add(atk.victimId);
+      if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: strongest.protectorId } });
     }
+  }
+
+  // 9. Espionaje (wiki: Spy.md:189-205): lo que recibió el objetivo esta noche, con el resultado de los ataques.
+  for (const bug of bugs) {
+    const target = bug.targetId;
+    const tags: string[] = [];
+    if (s.jailedBy[target] !== undefined) {
+      tags.push("jail");
+    } else {
+      if (transported.has(target)) tags.push("transport");
+      if (acts.some((a) => a.actor.id === target && a.blocked)) tags.push("block");
+      if (attacks.some((a) => a.victimId === target)) tags.push("attack");
+      if (prevented.has(target)) tags.push("protect");
+    }
+    out.push({
+      type: "investigation.result",
+      payload: { investigatorId: bug.actorId, targetId: target, result: tags.join(",") || "nada", check: "bug" },
+    });
   }
 
   out.push(...promotionEvents(s, dead));
