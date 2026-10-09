@@ -1,12 +1,12 @@
-import { useState } from "react";
 import type { MatchView } from "../types.js";
 import { RoleCard } from "./RoleCard.js";
 import { RolesInGame } from "./RolesInGame.js";
 import { WillCard } from "./WillCard.js";
 
-/** Panel izquierdo: tu rol, la lista de roles y tu testamento, en pestañas. */
-export function SideTabs({ view, className = "" }: { view: MatchView; className?: string }) {
-  const [tab, setTab] = useState<"role" | "roles" | "will">("role");
+export type SideTab = "role" | "roles" | "will";
+
+/** Panel izquierdo: tu rol, la lista de roles y tu testamento, en pestañas. Controlado desde la pantalla. */
+export function SideTabs({ view, tab, onTab, className = "" }: { view: MatchView; tab: SideTab; onTab: (t: SideTab) => void; className?: string }) {
   const tabs = [
     { key: "role", label: "Rol" },
     { key: "roles", label: "Roles" },
@@ -21,7 +21,7 @@ export function SideTabs({ view, className = "" }: { view: MatchView; className?
             role="tab"
             aria-selected={tab === t.key}
             type="button"
-            onClick={() => setTab(t.key)}
+            onClick={() => onTab(t.key)}
             className={`cartoon-btn px-1 py-1 ${tab === t.key ? "" : "opacity-60"}`}
           >
             {/* El tamaño va en el texto: la clase de botón de la marca fija el suyo. */}

@@ -54,6 +54,9 @@ export interface MatchView {
     will: string | null;
     /** Grupo del rol (p. ej. town_support). */
     alignment: string | null;
+    /** Ataque y defensa del catálogo (texto con condiciones). */
+    attack: string | null;
+    defense: string | null;
     nightAbilities: Array<{ key: string; target: "player" | "none" | "two"; usesLeft: number | null }>;
     dayAbilities: Array<{ key: string; target: "player" | "none"; oncePerDay: boolean; usesLeft: number | null }>;
   };

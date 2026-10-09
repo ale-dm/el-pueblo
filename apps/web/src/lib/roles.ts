@@ -94,3 +94,17 @@ export function alignmentLabel(key: string | null | undefined): string | null {
   const a = key ? ALIGNMENT_ES[key] : undefined;
   return a ? `${a.faction} (${a.name})` : null;
 }
+
+/** Niveles de ataque y defensa en español. Se traduce el nivel base; las condiciones se omiten. */
+const LEVEL_ES: Record<string, string> = {
+  None: "Ninguno",
+  Basic: "Básico",
+  Powerful: "Potente",
+  Unstoppable: "Imparable",
+  Invincible: "Invencible",
+};
+export function levelEs(level: string | null | undefined): string | null {
+  if (!level) return null;
+  const base = level.split(" (")[0]!.trim();
+  return LEVEL_ES[base] ?? base;
+}

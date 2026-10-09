@@ -57,6 +57,9 @@ export interface MatchView {
     will: string | null;
     /** Grupo del rol (alineamiento del catálogo, p. ej. town_support). */
     alignment: string | null;
+    /** Ataque y defensa del rol, tal como los da el catálogo (con sus condiciones). */
+    attack: string | null;
+    defense: string | null;
     /** Habilidades disponibles ahora mismo (con usos restantes). */
     nightAbilities: Array<{ key: string; target: string; usesLeft: number | null }>;
     dayAbilities: Array<{ key: string; target: string; oncePerDay: boolean; usesLeft: number | null }>;
@@ -140,6 +143,8 @@ export function getView(deps: GetViewDeps) {
         nightAction: state.nightActions[me.id] ?? null,
         will: state.wills[me.id] ?? null,
         alignment: me.roleKey ? catalog.roles.get(me.roleKey)?.alignmentKey ?? null : null,
+        attack: me.roleKey ? catalog.roles.get(me.roleKey)?.attack ?? null : null,
+        defense: me.roleKey ? catalog.roles.get(me.roleKey)?.defense ?? null : null,
         nightAbilities: alive && handler
           ? handler.nightAbilities.map((a) => ({ key: a.key, target: a.target, usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0 }))
           : [],

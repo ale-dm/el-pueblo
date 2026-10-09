@@ -12,8 +12,9 @@ import { Ring } from "../game/Ring.js";
 import { ActionPanel } from "../game/ActionPanel.js";
 import { PushButton } from "../game/PushButton.js";
 import { TopBar } from "../game/TopBar.js";
-import { LiveList } from "../game/LiveList.js";
-import { SideTabs } from "../game/SideTabs.js";
+import { LiveList, type LiveTab } from "../game/LiveList.js";
+import { SideTabs, type SideTab } from "../game/SideTabs.js";
+import { ActionBar } from "../game/ActionBar.js";
 import { BottomLeft } from "../game/BottomLeft.js";
 import { ScreenBanner, DeathFx } from "../game/Fx.js";
 import { isMuted, playCue, setMuted } from "../lib/sound.js";
@@ -68,6 +69,8 @@ export function Game({ view }: { view: MatchView }) {
   const clearError = useGame((s) => s.clearError);
   const [targets, setTargets] = useState<string[]>([]);
   const [muted, setMutedState] = useState(isMuted);
+  const [sideTab, setSideTab] = useState<SideTab>("role");
+  const [liveTab, setLiveTab] = useState<LiveTab>("live");
   const [banner, setBanner] = useState<{ text: string; tone: "night" | "day" } | null>(null);
   const [death, setDeath] = useState<GameEvent | null>(null);
   const seen = useRef<number | null>(null);
@@ -190,7 +193,7 @@ export function Game({ view }: { view: MatchView }) {
             </div>
             <PushButton />
           </Card>
-          <SideTabs view={view} className="md:min-h-0 md:flex-1" />
+          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="md:min-h-0 md:flex-1" />
         </aside>
 
         <TopBar
@@ -214,7 +217,21 @@ export function Game({ view }: { view: MatchView }) {
 
         <ActionPanel view={view} targets={targets} clearTargets={() => setTargets([])} className="md:col-start-2 md:row-start-3 md:self-start" />
 
-        <LiveList view={view} className="md:col-start-3 md:row-span-3 md:row-start-1 md:min-h-0" />
+        <LiveList
+          view={view}
+          tab={liveTab}
+          onTab={setLiveTab}
+          className="md:col-start-3 md:row-span-3 md:row-start-1 md:min-h-0"
+          footer={
+            <ActionBar
+              onRole={() => setSideTab("role")}
+              onRoles={() => setSideTab("roles")}
+              onWill={() => setSideTab("will")}
+              onLive={() => setLiveTab("live")}
+              onGraveyard={() => setLiveTab("dead")}
+            />
+          }
+        />
 
         <BottomLeft view={view} log={log} className="md:col-start-1 md:row-start-3 md:max-h-[19rem]" />
       </main>

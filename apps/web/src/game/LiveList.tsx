@@ -1,11 +1,12 @@
-import { useState } from "react";
+import type { ReactNode } from "react";
 import type { MatchView } from "../types.js";
 import { ROLE_NAMES, roleNameEs } from "../lib/roles.js";
 import { Card } from "../ui/primitives.js";
 
-/** Lista de vivos (y cementerio), con su número de asiento: "All Live Townies" en Town of Salem. */
-export function LiveList({ view, className = "" }: { view: MatchView; className?: string }) {
-  const [tab, setTab] = useState<"live" | "dead">("live");
+export type LiveTab = "live" | "dead";
+
+/** Lista de vivos (y cementerio), con su número de asiento: "All Live Townies" en Town of Salem. Controlada desde la pantalla. */
+export function LiveList({ view, tab, onTab, footer, className = "" }: { view: MatchView; tab: LiveTab; onTab: (t: LiveTab) => void; footer?: ReactNode; className?: string }) {
   const live = view.players.filter((p) => p.status === "alive");
   const dead = view.players.filter((p) => p.status !== "alive");
   const shown = tab === "live" ? live : dead;
@@ -19,7 +20,7 @@ export function LiveList({ view, className = "" }: { view: MatchView; className?
             role="tab"
             aria-selected={tab === t}
             type="button"
-            onClick={() => setTab(t)}
+            onClick={() => onTab(t)}
             className={`px-2 py-2 font-display text-base uppercase ${tab === t ? "bg-sun" : "bg-paper opacity-70"}`}
           >
             {t === "live" ? `Vivos (${live.length})` : `Muertos (${dead.length})`}
@@ -44,6 +45,7 @@ export function LiveList({ view, className = "" }: { view: MatchView; className?
         })}
         {shown.length === 0 && <li className="text-sm">Nadie por aquí.</li>}
       </ul>
+      {footer}
     </Card>
   );
 }
