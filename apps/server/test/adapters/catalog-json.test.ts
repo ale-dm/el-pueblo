@@ -16,8 +16,9 @@ describe("loadCatalog (data/catalog)", () => {
     expect(catalog.votingThresholds.get(3)).toBe(2);
   });
 
-  it("carga las fases de todos los modos (4 modos × 7 fases)", () => {
-    expect(catalog.phaseTimings).toHaveLength(28);
+  it("carga las fases de los modos de la fase 1 (estándar y Rapid ToS1, 7 fases cada uno)", () => {
+    expect(catalog.phaseTimings).toHaveLength(14);
     expect(catalog.phaseTimings.find((p) => p.mode === "standard" && p.phase === "night")?.seconds).toBe(37);
+    expect(catalog.phaseTimings.find((p) => p.mode === "rapid_tos1" && p.phase === "night")?.seconds).toBe(10);
   });
 });

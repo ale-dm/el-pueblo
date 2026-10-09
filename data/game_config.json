@@ -29,24 +29,6 @@
     "judgement": 20,
     "last_words": 7,
     "night": 10
-   },
-   "rapid_tos2": {
-    "day_d1": null,
-    "discussion": 10,
-    "voting": 10,
-    "defense": 20,
-    "judgement": 20,
-    "last_words": 7,
-    "night": 15
-   },
-   "fast_mode_tos2": {
-    "day_d1": 15,
-    "discussion": 22,
-    "voting": 15,
-    "defense": 20,
-    "judgement": 20,
-    "last_words": 7,
-    "night": 40
    }
   },
   "notes": [
@@ -127,7 +109,7 @@
   {
    "name": "Rapid",
    "players": 15,
-   "notes": "Tiempos de fase a la mitad (ver phases.rapid_tos1 / rapid_tos2)."
+   "notes": "Tiempos de fase a la mitad (ver phases.rapid_tos1)."
   },
   {
    "name": "All Any",

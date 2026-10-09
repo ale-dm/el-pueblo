@@ -9,7 +9,7 @@ Leyenda: **[roles]** cada archivo tiene su propia lista de implementación. **[m
 ### 1.1 Estado y fases
 - [ ] Modelo de partida: jugadores, roles, fase actual, día/noche, registro de eventos — [Phases](wiki/Phases.md)
 - [ ] Fases en orden: Día 1 (charla, sin votación) → Noche 1; después Discusión, Votación, Defensa, Juicio, Últimas palabras, Noche — [Phases](wiki/Phases.md)
-- [ ] Tiempos por fase configurables (estándar, Rapid, Fast) — `data/game_config.json`
+- [ ] Tiempos por fase configurables (estándar y Rapid ToS1) — `data/game_config.json`
 - [ ] Transiciones que saltan Defensa/Juicio/Últimas palabras si nadie va a juicio
 - [ ] Fin del Día al tercer juicio, aunque queden segundos — `data/game_config.json`
 - [ ] Tribunal del Marshal (fuera de MVP si no hay Marshal) — [Trial_System](wiki/Trial_System.md)

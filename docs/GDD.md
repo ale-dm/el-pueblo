@@ -175,16 +175,14 @@ Las prioridades, objetivos y habilidades de cada rol están en `data/roles/roles
 | Últimas palabras | 7 s | Solo si el condenado es ahorcado |
 | Noche | 37 s | Acciones de roles; la Mafia tiene chat privado |
 
-Rapid y Fast Mode están en `data/game_config.json` y se copian a `phase_timings` (ver también `docs/wiki/Phases.md`). Resumen de la tabla de la wiki:
+Modos de la fase 1: **Estándar** y **Rapid (ToS1)**. Los tiempos están en `data/game_config.json` y se copian a `phase_timings` (fuente: `docs/wiki/Phases.md`). Los modos de ToS2 (Rapid ToS2 y Fast Mode) quedan fuera.
 
 | Modo | Día 1 | Discusión | Votación | Noche |
 |---|---|---|---|---|
 | Estándar | 15 s | 45 s | 30 s | 37 s |
 | Rapid (ToS1) | 15 s | 15 s | 30 s | 10 s |
-| Rapid (ToS2) | N/A | 10 s | 10 s | 15 s |
-| Fast (ToS2) | 15 s | 22 s | 15 s | 40 s |
 
-Defensa 20 s, Juicio 20 s y Últimas palabras 7 s en todos los modos. Rapid (ToS2) no tiene Día 1: el motor todavía no lo salta, así que ese modo no se puede elegir hasta implementarlo.
+Defensa 20 s, Juicio 20 s y Últimas palabras 7 s en todos los modos.
 
 ### 5.4 Votación *(verificado)*
 

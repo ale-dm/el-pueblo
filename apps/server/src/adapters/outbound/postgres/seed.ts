@@ -110,6 +110,8 @@ async function seedCatalogTables(tx: any, dir: string) {
     }
   }
 
+  // Catálogo puro: se reemplaza entero para que no sobrevivan modos retirados (p. ej. los de ToS2).
+  await tx.delete(s.phaseTimings);
   await upsertRows(tx, s.phaseTimings, [s.phaseTimings.mode, s.phaseTimings.phase], load<any>("phase_timings").map((p) => ({
     mode: p.mode, phase: p.phase, seconds: p.seconds, sortOrder: p.sort_order,
   })));

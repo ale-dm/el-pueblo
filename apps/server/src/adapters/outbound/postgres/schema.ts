@@ -120,7 +120,7 @@ export const roleInteractions = pgTable(
   ],
 );
 
-// Duración de cada fase por modo (data/game_config.json). seconds null = no aplica (p. ej. Día 1 en Rapid ToS 2).
+// Duración de cada fase por modo (data/game_config.json). seconds null = no aplica.
 export const phaseTimings = pgTable(
   "phase_timings",
   {
