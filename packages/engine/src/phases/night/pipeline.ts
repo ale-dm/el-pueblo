@@ -664,7 +664,14 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         break;
       case "visitors": {
         // Wiki (Lookout.md:178-182): solo identifica a tres visitantes, elegidos al azar; sabe que hubo más.
-        const visitors = visitsTo(target, inv.actorId).map((v) => v.visitorId);
+        // Wiki (Disguiser.md:207, 161): el Lookout recibe resultados incorrectos; su visitante disfrazado "will appear to be the
+        // other person to a Lookout". Excepción del propio Disguiser: si vigila a su disfraz, ve su nombre (Disguiser.md:215, "The latter may be a bug").
+        const shownVisitor = (visitorId: string): string => {
+          const asId = disguises.get(visitorId);
+          if (asId === undefined || (asId === target && playerOf(s, visitorId)?.roleKey === "disguiser")) return visitorId;
+          return asId;
+        };
+        const visitors = visitsTo(target, inv.actorId).map((v) => shownVisitor(v.visitorId));
         more = visitors.length > 3;
         const listed = more ? rng.shuffle(visitors).slice(0, 3) : visitors;
         result = listed.map((id) => nick(id)).join(", ") || "nadie";
