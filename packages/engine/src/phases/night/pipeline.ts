@@ -349,7 +349,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         result = visitsTo(target, inv.actorId).map((v) => nick(v.visitorId)).join(", ") || "nadie";
         break;
       case "targets":
-        result = visits.filter((v) => v.visitorId === target).map((v) => nick(v.houseId)).join(", ") || "nadie";
+        // Wiki (Tracker.md:194): si el objetivo no visita a nadie, el Tracker no recibe nada (ver abajo).
+        result = visits.filter((v) => v.visitorId === target).map((v) => nick(v.houseId)).join(", ");
         break;
       case "mafiaVisits": {
         const houses = visits
@@ -373,6 +374,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       default:
         result = "";
     }
+    if (inv.check === "targets" && result === "") continue;
     out.push({
       type: "investigation.result",
       payload: { investigatorId: inv.actorId, targetId: target, result, check: inv.check, ...(side ? { side } : {}) },

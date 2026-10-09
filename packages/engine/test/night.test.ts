@@ -208,6 +208,24 @@ describe("noche: investigaciones", () => {
     expect(ofType(events, "investigation.result")[0]?.payload.result).toBe("P3");
   });
 
+  it("el Tracker no recibe nada si su objetivo no visita a nadie (wiki: Tracker)", () => {
+    const s = game(["tracker", "sheriff", "investigator"]);
+    const { events } = resolve(s, [night("p1", "track", "p3")]);
+    expect(ofType(events, "investigation.result")).toHaveLength(0);
+  });
+
+  it("el Tracker no ve la visita del Godfather mientras su Mafioso ejecuta la orden (wiki: Tracker)", () => {
+    const s = game(["tracker", "godfather", "mafioso", "investigator", "sheriff"]);
+    const { events } = resolve(s, [night("p1", "track", "p2"), night("p2", "kill", "p4"), night("p3", "kill", "p4")]);
+    expect(ofType(events, "investigation.result")).toHaveLength(0);
+  });
+
+  it("el Tracker sí ve la visita del Godfather cuando actúa solo", () => {
+    const s = game(["tracker", "godfather", "investigator", "sheriff"]);
+    const { events } = resolve(s, [night("p1", "track", "p2"), night("p2", "kill", "p3")]);
+    expect(ofType(events, "investigation.result")[0]?.payload.result).toBe("P3");
+  });
+
   it("el Consigliere ve el rol exacto", () => {
     const s = game(["godfather", "consigliere", "sheriff"]);
     const { events } = resolve(s, [night("p2", "check", "p3")]);
