@@ -667,6 +667,27 @@ describe("Framer: el encuadre dura hasta que un rol investigativo lo investiga (
     expect(night2.players.find((p) => p.id === "p3")?.flags.framed).toBeUndefined();
   });
 
+  it("sin roles que maten, el Framer asciende a Mafioso (Framer.md:43, 150)", () => {
+    const s = game(["framer", "investigator", "sheriff"], { dayNumber: 1 });
+    const { events } = resolve(s, []);
+    expect(ofType(events, "role.promoted")[0]?.payload).toMatchObject({ playerId: "p1", roleKey: "mafioso" });
+  });
+
+  it("al ascender, los encuadres anteriores siguen en el objetivo (Framer.md:202)", () => {
+    const s = game(["framer", "investigator", "sheriff"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p2")]).state;
+    expect(night1.players.find((p) => p.id === "p1")?.roleKey).toBe("mafioso");
+    expect(night1.players.find((p) => p.id === "p2")?.flags.framed).toBe(true);
+  });
+
+  it("el encuadre sobrevive a la muerte del Framer: el Sheriff sigue viendo sospechoso (Framer.md:254)", () => {
+    const s = game(["framer", "sheriff", "investigator", "godfather"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p3")]).state;
+    const night2 = resolve(nextNight(night1, 2), [night("p4", "kill", "p1"), night("p2", "interrogate", "p3")]).events;
+    expect(ofType(night2, "player.killed").map((e) => e.payload.playerId)).toEqual(["p1"]);
+    expect(ofType(night2, "investigation.result")[0]?.payload.result).toBe("suspicious");
+  });
+
   it("el Spy que espía al encuadrado también quita el encuadre (el Spy investiga, Spy.md:193)", () => {
     const s = game(["framer", "spy", "sheriff", "godfather"], { dayNumber: 1 });
     const night1 = resolve(s, [night("p1", "frame", "p3")]).state;
