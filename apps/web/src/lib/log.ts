@@ -163,8 +163,9 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "trial.verdict": {
         for (const v of verdictVotes) line(e, `${ctx.nick(v.voter)} votó ${VERDICT_ES[v.verdict as keyof typeof VERDICT_ES]}.`);
         if (p.verdict === "guilty") {
-          const guilty = verdictVotes.filter((v) => v.verdict === "guilty").length;
-          const innocent = verdictVotes.length - guilty;
+          // Pesos del motor (el Mayor revelado vale 3); sin ellos, se cuentan votos.
+          const guilty = p.guiltyWeight ?? verdictVotes.filter((v) => v.verdict === "guilty").length;
+          const innocent = p.innocentWeight ?? verdictVotes.length - verdictVotes.filter((v) => v.verdict === "guilty").length;
           line(e, `El Pueblo ha decidido ahorcar a ${ctx.nick(p.defendantId)} por ${guilty} votos a ${innocent}.`, "danger");
         } else {
           line(e, `${ctx.nick(p.defendantId)} es declarado inocente.`, "good");

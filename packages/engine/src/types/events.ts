@@ -16,7 +16,8 @@ export type GameEventPayloads = {
   "vote.cast": { voterId: PlayerId; targetId: PlayerId | null };
   "trial.started": { defendantId: PlayerId };
   "judgement.cast": { voterId: PlayerId; verdict: "guilty" | "innocent" };
-  "trial.verdict": { defendantId: PlayerId; verdict: "guilty" | "innocent" };
+  /** guiltyWeight/innocentWeight: votos ponderados (el Mayor revelado vale 3). Ausentes en partidas antiguas. */
+  "trial.verdict": { defendantId: PlayerId; verdict: "guilty" | "innocent"; guiltyWeight?: number; innocentWeight?: number };
   /** will: última voluntad (texto), o null si no escribió ni fue limpiado. Se revela al morir. */
   "player.hanged": { playerId: PlayerId; roleKey: string | null; will: string | null };
   "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null };

@@ -1,7 +1,7 @@
 import { err, ok, type Result } from "../core/result.js";
 import type { Catalog } from "../types/catalog.js";
 import type { EventInput } from "../types/events.js";
-import type { GameState } from "../types/state.js";
+import type { GameState, PlayerState } from "../types/state.js";
 import type { Rng } from "../core/rng.js";
 import { trialCandidate } from "../rules/voting.js";
 import { phaseStarted, playerOf, votingPlayers, withVictory } from "./context.js";
@@ -10,6 +10,9 @@ import { handlerOf } from "./context.js";
 import { promotionEvents } from "./promotion.js";
 
 const MAX_TRIALS_PER_DAY = 3;
+
+/** Peso de un voto: el Mayor revelado vale tres (wiki: Mayor), en votación y en juicio. */
+const weightOf = (p: PlayerState | undefined): number => (p?.flags.mayorRevealed ? 3 : 1);
 
 /** Avance por tiempo: cada fase termina cuando vence su temporizador. Las transiciones están en docs/ENGINE.md. */
 export function onTimerExpired(s: GameState, catalog: Catalog, rng: Rng): Result<EventInput[]> {
@@ -40,8 +43,7 @@ function resolveVoting(s: GameState): EventInput[] {
   for (const v of voters) {
     if (s.votes[v.id] !== undefined) votes.set(v.id, s.votes[v.id]!);
   }
-  const weightOf = (id: string) => (playerOf(s, id)?.flags.mayorRevealed ? 3 : 1);
-  const candidate = trialCandidate(votes, voters.length, weightOf);
+  const candidate = trialCandidate(votes, voters.length, (id) => weightOf(playerOf(s, id)));
   if (candidate !== null && s.trialsToday < MAX_TRIALS_PER_DAY) {
     return [{ type: "trial.started", payload: { defendantId: candidate } }, phaseStarted("defense", s.dayNumber)];
   }
@@ -52,15 +54,15 @@ function resolveJudgement(s: GameState): EventInput[] {
   const defendant = playerOf(s, s.defendantId ?? "");
   if (!defendant) return [phaseStarted("voting", s.dayNumber)];
   const voters = votingPlayers(s).filter((p) => p.id !== defendant.id);
-  let guilty = 0;
-  let innocent = 0;
+  let guiltyWeight = 0;
+  let innocentWeight = 0;
   for (const v of voters) {
     // SUPUESTO: quien no emite veredicto cuenta como inocente.
-    if (s.verdicts[v.id] === "guilty") guilty++;
-    else innocent++;
+    if (s.verdicts[v.id] === "guilty") guiltyWeight += weightOf(v);
+    else innocentWeight += weightOf(v);
   }
-  const verdict = guilty > innocent ? "guilty" : "innocent";
-  const events: EventInput[] = [{ type: "trial.verdict", payload: { defendantId: defendant.id, verdict } }];
+  const verdict = guiltyWeight > innocentWeight ? "guilty" : "innocent";
+  const events: EventInput[] = [{ type: "trial.verdict", payload: { defendantId: defendant.id, verdict, guiltyWeight, innocentWeight } }];
   if (verdict === "guilty") {
     // Un ahorcado muestra su rol real: la falsificación del Forger solo cuenta si muere esa misma noche (wiki: Forger).
     const roleKey = defendant.roleKey;

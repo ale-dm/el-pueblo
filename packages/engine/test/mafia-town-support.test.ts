@@ -5,6 +5,26 @@ import type { GameState } from "../src/types/state.js";
 const kills = (events: ReturnType<typeof step>["events"]) =>
   ofType(events, "player.killed").map((e) => e.payload.playerId);
 
+describe("Mayor: su voto cuenta tres también en el juicio (wiki: Mayor)", () => {
+  it("un Mayor revelado vota culpable frente a dos inocentes y el veredicto es culpable", () => {
+    const s = game(["mayor", "investigator", "sheriff", "godfather"], { phase: "judgement", dayNumber: 2, defendantId: "p4" });
+    s.players[0] = { ...s.players[0]!, flags: { mayorRevealed: true } };
+    let t = step(s, { type: "judgement.vote", voterId: "p1", verdict: "guilty" }).state;
+    t = step(t, { type: "judgement.vote", voterId: "p2", verdict: "innocent" }).state;
+    t = step(t, { type: "judgement.vote", voterId: "p3", verdict: "innocent" }).state;
+    const verdict = ofType(step(t, timer()).events, "trial.verdict")[0]!;
+    expect(verdict.payload).toMatchObject({ defendantId: "p4", verdict: "guilty", guiltyWeight: 3, innocentWeight: 2 });
+  });
+
+  it("sin revelar, el mismo Mayor cuenta uno y el juicio es inocente", () => {
+    const s = game(["mayor", "investigator", "sheriff", "godfather"], { phase: "judgement", dayNumber: 2, defendantId: "p4" });
+    let t = step(s, { type: "judgement.vote", voterId: "p1", verdict: "guilty" }).state;
+    t = step(t, { type: "judgement.vote", voterId: "p2", verdict: "innocent" }).state;
+    t = step(t, { type: "judgement.vote", voterId: "p3", verdict: "innocent" }).state;
+    expect(ofType(step(t, timer()).events, "trial.verdict")[0]?.payload).toMatchObject({ verdict: "innocent", guiltyWeight: 1, innocentWeight: 2 });
+  });
+});
+
 describe("Medium: solo habla desde el más allá", () => {
   const medium = (dead: boolean): GameState => {
     const s = game(["medium", "godfather", "investigator", "sheriff"]);

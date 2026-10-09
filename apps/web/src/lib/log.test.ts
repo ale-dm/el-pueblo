@@ -80,6 +80,14 @@ describe("registro estilo Town of Salem", () => {
     expect(text).toContain("El Pueblo ha decidido ahorcar a Caro por 2 votos a 1.");
   });
 
+  it("el recuento del juicio usa los pesos del motor (Mayor revelado)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("trial.verdict", { defendantId: "c", verdict: "guilty", guiltyWeight: 3, innocentWeight: 2 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("El Pueblo ha decidido ahorcar a Caro por 3 votos a 2.");
+  });
+
   it("un veredicto de inocencia lo dice y no ahorca a nadie", () => {
     seq = 0;
     const text = texts(buildLog([ev("trial.verdict", { defendantId: "c", verdict: "innocent" })], ctx())).join(" ");
