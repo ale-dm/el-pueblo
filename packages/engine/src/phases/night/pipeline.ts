@@ -365,8 +365,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         // Wiki (Lookout.md:178-182): solo identifica a tres visitantes, elegidos al azar; sabe que hubo más.
         const visitors = visitsTo(target, inv.actorId).map((v) => v.visitorId);
         more = visitors.length > 3;
-        const shown = more ? rng.shuffle(visitors).slice(0, 3) : visitors;
-        result = shown.map((id) => nick(id)).join(", ") || "nadie";
+        const listed = more ? rng.shuffle(visitors).slice(0, 3) : visitors;
+        result = listed.map((id) => nick(id)).join(", ") || "nadie";
         break;
       }
       case "targets":
