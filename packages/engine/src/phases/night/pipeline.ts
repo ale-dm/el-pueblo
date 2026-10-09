@@ -362,9 +362,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (!isAlive(playerOf(s, trapperId)) || trap.readyDay > s.dayNumber || dismantles.includes(trapperId)) continue;
     const visitors = visitsTo(trap.targetId, trapperId);
     if (visitors.length === 0) continue;
-    for (const v of visitors) {
-      attacks.push({ attackerId: trapperId, victimId: v.visitorId, power: 2, cause: "trap" });
-    }
+    // Wiki (Trapper.md:223): un ataque Powerful a "one attacker visiting them". La wiki no dice cómo se elige:
+    // se elige al azar, como el visitante del Crusader y del Ambusher (Crusader.md:214, Ambusher.md:216).
+    const attacker = visitors.length === 1 ? visitors[0]! : rng.shuffle(visitors)[0]!;
+    attacks.push({ attackerId: trapperId, victimId: attacker.visitorId, power: 2, cause: "trap" });
     // Wiki (Trapper.md:223, 225): la trampa defiende a su objetivo de un ataque directo esta noche, y solo de uno.
     const list = protections.get(trap.targetId) ?? [];
     list.push({ protectorId: trapperId, power: 2, source: "trap" });

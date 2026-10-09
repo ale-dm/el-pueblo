@@ -1,6 +1,6 @@
 # Estado de los roles MVP frente al checklist
 
-Derivado de las auditorías de solo lectura (ficha, texto completo de la wiki, código y tests) y de los lotes de correcciones 1 y 2 (ver `git log`). No es una re-auditoría completa: Framer no tiene auditoría terminada.
+Derivado de las auditorías de solo lectura (ficha, texto completo de la wiki, código y tests) y de los lotes de correcciones 1, 2 y 3 (ver `git log`). No es una re-auditoría completa: Framer no tiene auditoría terminada.
 
 Leyenda: ✓ hecho y cubierto por test · ◐ parcial · ✗ no hecho · — no aplica en el MVP
 
@@ -24,7 +24,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Tavern Keeper | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a la Mafia (Victory ToS, SKIPPED); Bloqueo de roles de solo día (SKIPPED, contradicción wiki) |
 | Tracker | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Visitas de roles de dos objetivos (hecho en lote 2) |
 | Transporter | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente al Mafioso (Victory ToS, SKIPPED); mensaje de "transportado" (lote 2) |
-| Trapper | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Elegir un visitante (SKIPPED); fase de construcción (SKIPPED, wiki exige noche de construcción) |
+| Trapper | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Visitante al azar (lote 3, D6; la wiki dice "one attacker" pero no cómo se elige); fase de construcción (SKIPPED, wiki exige noche de construcción) |
 | Veteran | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | mensaje de atacante bloqueado por la alerta (pendiente; las alertas están hechas) |
 | Vigilante | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | mensajes de culpa por disparar a un Town y de la primera noche (pendientes; las balas están hechas) |
 | Ambusher | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Ascenso a Mafioso (SKIPPED: wiki contradictoria con su categoría) |
