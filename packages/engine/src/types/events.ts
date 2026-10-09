@@ -52,6 +52,8 @@ export type GameEventPayloads = {
   "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string; check: string; side?: "mafia" | "town"; more?: boolean };
   "ability.used": { playerId: PlayerId; ability: string };
   "effect.applied": { actorId: PlayerId; targetId: PlayerId; flag: PlayerFlag };
+  /** Quita una marca (hoy: el encuadre) cuando un rol investigativo investiga al objetivo (wiki: Framer.md:344). Solo lo ve el servidor. */
+  "effect.cleared": { targetId: PlayerId; flag: PlayerFlag };
   "player.blackmailed": { actorId: PlayerId; targetId: PlayerId };
   "player.jailed": { jailorId: PlayerId; playerId: PlayerId };
   "mayor.revealed": { playerId: PlayerId };

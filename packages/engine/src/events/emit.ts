@@ -36,6 +36,9 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
       return priv(event.payload.playerId);
     case "effect.applied":
       return priv(event.payload.actorId);
+    case "effect.cleared":
+      // Ningún jugador lo ve: que un rol investigativo haya investigado a alguien es información privada del investigador.
+      return { visibility: "private" as Visibility, audiencePlayerId: null };
     case "player.blackmailed":
       return priv(event.payload.targetId);
     case "player.jailed":

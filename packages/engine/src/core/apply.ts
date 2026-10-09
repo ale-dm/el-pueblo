@@ -131,6 +131,9 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
     case "effect.applied":
       return setFlag(s, e.payload.targetId, e.payload.flag, true);
 
+    case "effect.cleared":
+      return setFlag(s, e.payload.targetId, e.payload.flag, false);
+
     case "player.blackmailed":
       return setFlag(s, e.payload.targetId, "blackmailed", true);
 

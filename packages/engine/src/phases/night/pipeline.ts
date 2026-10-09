@@ -7,7 +7,7 @@ import type { RoleHandler } from "../../roles/types.js";
 import { handlerOf, isAlive, playerOf } from "../context.js";
 import { promotionEvents } from "../promotion.js";
 import { zombieAbilityOf } from "../../roles/town/retributionist.js";
-import { investigatorGroupOf } from "../../rules/investigation.js";
+import { INVESTIGATIVE_ROLE_KEYS, investigatorGroupOf } from "../../rules/investigation.js";
 
 /**
  * Resolución de la noche, en este orden fijo:
@@ -437,7 +437,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
   }
 
-  // 7. Investigaciones: calculadas con el estado de la noche.
+  // 7. Investigaciones: calculadas con el estado de la noche. Un encuadre dura hasta que un rol investigativo
+  // apunta al objetivo (wiki: Framer.md:344, versión 3.3.0); se quita después de calcular el resultado.
+  /** Objetivos encuadrados que un rol investigativo ha investigado esta noche. */
+  const unframed = new Set<string>();
   const roleName = (id: string) => {
     const p = playerOf(s, id);
     return p?.roleKey ? catalog.roles.get(p.roleKey)?.name ?? p.roleKey : "desconocido";
@@ -449,6 +452,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const shownId = disguises.get(target) ?? target;
     const shown = playerOf(s, shownId);
     const isFramed = framed.has(target) || playerOf(s, target)?.flags.framed === true;
+    // Solo las investigaciones con objetivo (Psychic y el espionaje de Mafia no apuntan a nadie).
+    if (inv.targetId !== null && isFramed && INVESTIGATIVE_ROLE_KEYS.has(playerOf(s, inv.actorId)?.roleKey ?? "")) {
+      unframed.add(target);
+    }
     let result = "";
     let side: "mafia" | "town" | undefined;
     let more = false;
@@ -620,6 +627,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   // 9. Espionaje (wiki: Spy.md:189-205): lo que recibió el objetivo esta noche, con el resultado de los ataques.
   for (const bug of bugs) {
     const target = bug.targetId;
+    // El espionaje también investiga: si el objetivo está encuadrado, el encuadre termina (wiki: Framer.md:344).
+    if ((framed.has(target) || playerOf(s, target)?.flags.framed === true) && INVESTIGATIVE_ROLE_KEYS.has(playerOf(s, bug.actorId)?.roleKey ?? "")) {
+      unframed.add(target);
+    }
     const tags: string[] = [];
     if (s.jailedBy[target] !== undefined) {
       tags.push("jail");
@@ -634,6 +645,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       payload: { investigatorId: routed(bug.actorId), targetId: target, result: tags.join(",") || "nada", check: "bug" },
     });
   }
+
+  for (const targetId of unframed) out.push({ type: "effect.cleared", payload: { targetId, flag: "framed" } });
 
   out.push(...promotionEvents(s, dead));
   out.push({ type: "night.resolved", payload: { dayNumber: s.dayNumber } });

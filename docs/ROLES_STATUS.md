@@ -33,7 +33,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Consigliere | ✓ | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Rol real aun con disfraz (hecho) |
 | Disguiser | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ✓ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Lookout y Spy (hecho en lote 2) |
 | Forger | ✓ | ◐ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Texto de testamento falsificado (no implementado); validación de Mafia |
-| Framer | ? | ? | ? | ◐ | ◐ | ? | ◐ | ? | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Auditoría no terminada; persistencia del encuadre (SKIPPED) |
+| Framer | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); encuadre hasta que un rol investigativo lo investiga (lote 5, F1, Framer.md:344, 196): hecho, con test en `night.test.ts`. Auditoría de Framer completa en F6 |
 | Godfather | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Transporter (Victory ToS, SKIPPED) y frente a Tavern Keeper o Jailor; Death Note (SKIPPED: texto libre de la Death Note común a los roles asesinos, `docs/wiki/Death_Note_ToS.md:15`); aviso de la orden |
 | Hypnotist | ✓ | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ✓ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Spy (Bug no revela mensajes) |
 | Janitor | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ✓ | Testamento del limpiado: hecho (lote 4, E10, Janitor.md:222-228), solo para el Janitor |
@@ -50,7 +50,7 @@ Notas:
 - **Revisión de las contradicciones de la wiki** (ver `docs/roles/`):
   - *Ambusher (resuelto):* Ambusher.md:228 dice que asciende cuando mueren los demás asesinos. El código lo contaba como asesino y no ascendía; corregido.
   - *Vigilante (resuelto):* la ficha (Especial, Vigilante.md:44 y :98) y el texto completo (:190) dicen "matar a un Town"; el "shoot" de las líneas 39 y 144 es el resumen. Se queda como está (muerte).
-  - *Framer (decisión pendiente):* Framer.md:344 (versión 3.3.0) dice que el encuadre dura hasta que un rol investigador apunta al objetivo; Sheriff.md:275 es consejo antiguo. Implementar la versión 3.3.0 requiere decidir qué roles cuentan como "investigativos".
+  - *Framer (resuelto, lote 5 F1):* Framer.md:344 (versión 3.3.0): "Frames will now last until an investigative role targets the Framed player instead of only the Night the player is Framed." Gana 3.3.0 sobre Sheriff.md:275 (consejo anterior). Roles investigativos: categoría "Investigation" del catálogo (Sheriff, Investigator, Consigliere, Lookout, Tracker, Spy); Psychic ("Information") no apunta a nadie. Código: `INVESTIGATIVE_ROLE_KEYS` en `rules/investigation.ts`.
   - *Tavern Keeper (decisión pendiente):* Tavern_Keeper.md:181 dice que no se pueden bloquear roles con habilidad de día; :277 aconseja bloquear al Mayor la noche 1 en Ranked. La regla es 181; el consejo de :277 contradice la regla.
   - *Medium (lote 4, E2 y E3):* Medium.md:207 dice que varios Mediums se oyen entre sí; hecho. Medium.md:277 es consejo de estrategia, no regla. La sesión se elige de día (:203) y el objetivo recibe el aviso al empezar la noche (:209), no al amanecer: hecho.
   - *Trapper (decisión tomada):* elige al visitante al azar, porque la wiki no dice cómo elegir.

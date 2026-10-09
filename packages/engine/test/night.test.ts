@@ -531,14 +531,77 @@ describe("noche: la trampa defiende de un ataque (wiki: Trapper)", () => {
   });
 });
 
-describe("Framer: duración del encuadre (SKIPPED: la wiki se contradice)", () => {
-  // Framer.md:196, 254, 280, 344: el encuadre dura hasta que el objetivo es investigado.
-  // Sheriff.md:275: si el Framer deja de encuadrar al mismo objetivo, el resultado del Sheriff cambia.
-  it.skip("un encuadre de la noche 1 no sigue la noche 2 si el Framer ya no encuadra (B11)", () => {
+describe("Framer: el encuadre dura hasta que un rol investigativo lo investiga (wiki 3.3.0)", () => {
+  // Framer.md:344 (versión 3.3.0): "Frames will now last until an investigative role targets the Framed player instead of
+  // only the Night the player is Framed." Framer.md:196: "Framing a target will show them as suspicious until they are investigated."
+  // Sheriff.md:275 ("If the Framer does not frame the same target again, your results will change") es consejo anterior a 3.3.0.
+  /** Pasa a la noche siguiente tras resolver la anterior (el estado de prueba no pasa por el día). */
+  const nextNight = (state: ReturnType<typeof game>, dayNumber: number) => ({ ...state, phase: "night" as const, dayNumber });
+
+  it("encuadre la noche 1 sin investigar: la noche 2 el Sheriff sigue viendo sospechoso (Framer.md:344)", () => {
     const s = game(["framer", "sheriff", "investigator", "godfather"], { dayNumber: 1 });
     const night1 = resolve(s, [night("p1", "frame", "p3")]).state;
-    const night2 = resolve({ ...night1, phase: "night", dayNumber: 2 }, [night("p2", "interrogate", "p3")]).events;
-    expect(ofType(night2, "investigation.result")[0]?.payload.result).toBe("innocent");
+    const night2 = resolve(nextNight(night1, 2), [night("p2", "interrogate", "p3")]).events;
+    expect(ofType(night2, "investigation.result")[0]?.payload.result).toBe("suspicious");
+  });
+
+  it("investigado una vez, la noche siguiente el resultado vuelve a ser normal (Framer.md:344)", () => {
+    const s = game(["framer", "sheriff", "investigator", "godfather"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p3")]).state;
+    const night2 = resolve(nextNight(night1, 2), [night("p2", "interrogate", "p3")]);
+    expect(ofType(night2.events, "investigation.result")[0]?.payload.result).toBe("suspicious");
+    expect(night2.state.players.find((p) => p.id === "p3")?.flags.framed).toBeUndefined();
+    const night3 = resolve(nextNight(night2.state, 3), [night("p2", "interrogate", "p3")]).events;
+    expect(ofType(night3, "investigation.result")[0]?.payload.result).toBe("innocent");
+  });
+
+  it("el Sheriff que investiga al encuadrado la misma noche que se encuadra ve sospechoso, y el encuadre termina", () => {
+    const s = game(["framer", "sheriff", "investigator", "godfather"], { dayNumber: 1 });
+    const { state, events } = resolve(s, [night("p1", "frame", "p3"), night("p2", "interrogate", "p3")]);
+    expect(ofType(events, "investigation.result")[0]?.payload.result).toBe("suspicious");
+    expect(state.players.find((p) => p.id === "p3")?.flags.framed).toBeUndefined();
+  });
+
+  it("un rol no investigativo que visita al encuadrado no quita el encuadre (solo los investigativos, Framer.md:344)", () => {
+    const s = game(["framer", "doctor", "sheriff", "investigator"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p4")]).state;
+    const night2 = resolve(nextNight(night1, 2), [night("p2", "heal", "p4")]);
+    expect(night2.state.players.find((p) => p.id === "p4")?.flags.framed).toBe(true);
+    const night3 = resolve(nextNight(night2.state, 3), [night("p3", "interrogate", "p4")]).events;
+    expect(ofType(night3, "investigation.result")[0]?.payload.result).toBe("suspicious");
+  });
+
+  it.each([
+    ["consigliere", "check"],
+    ["lookout", "watch"],
+    ["tracker", "track"],
+  ])("el %s, rol investigativo del catálogo, también quita el encuadre al investigar", (roleKey, ability) => {
+    const s = game(["framer", roleKey, "sheriff", "godfather"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p3")]).state;
+    const night2 = resolve(nextNight(night1, 2), [night("p2", ability, "p3")]).state;
+    expect(night2.players.find((p) => p.id === "p3")?.flags.framed).toBeUndefined();
+  });
+
+  it("el Spy que espía al encuadrado también quita el encuadre (el Spy investiga, Spy.md:193)", () => {
+    const s = game(["framer", "spy", "sheriff", "godfather"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p3")]).state;
+    const night2 = resolve(nextNight(night1, 2), [night("p2", "bug", "p3")]).state;
+    expect(night2.players.find((p) => p.id === "p3")?.flags.framed).toBeUndefined();
+  });
+
+  it("el Consigliere ve el rol real de un encuadrado (Consigliere.md:208) y ese chequeo también termina el encuadre", () => {
+    const s = game(["framer", "consigliere", "sheriff", "godfather"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p4")]).state;
+    const night2 = resolve(nextNight(night1, 2), [night("p2", "check", "p4")]);
+    expect(ofType(night2.events, "investigation.result")[0]?.payload.result).toBe("Godfather");
+    expect(night2.state.players.find((p) => p.id === "p4")?.flags.framed).toBeUndefined();
+  });
+
+  it("el espionaje de un Spy encuadrado (su visita a la Mafia no tiene objetivo) no le quita su propio encuadre", () => {
+    const s = game(["framer", "spy", "sheriff", "godfather"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p2")]).state;
+    const night2 = resolve(nextNight(night1, 2), [night("p2", "bug", "p4")]).state;
+    expect(night2.players.find((p) => p.id === "p2")?.flags.framed).toBe(true);
   });
 });
 

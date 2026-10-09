@@ -24,3 +24,18 @@ export const CLASSIC_INVESTIGATOR_GROUPS: ReadonlyArray<readonly string[]> = [
 export function investigatorGroupOf(roleKey: string): readonly string[] | null {
   return CLASSIC_INVESTIGATOR_GROUPS.find((group) => group.includes(roleKey)) ?? null;
 }
+
+/**
+ * Roles investigativos: los que investigan a su objetivo y, al hacerlo, quitan un encuadre.
+ * Fuente: categoría "Investigation" del catálogo (data/catalog/roles.json, role_type) y la wiki, que dice
+ * "until an investigative role targets the Framed player" (docs/roles/Framer.md:344, versión 3.3.0).
+ * Psychic (categoría Information) no tiene objetivo; Crusader, Trapper y Framer tampoco son investigativos.
+ */
+export const INVESTIGATIVE_ROLE_KEYS: ReadonlySet<string> = new Set([
+  "sheriff",
+  "investigator",
+  "consigliere",
+  "lookout",
+  "tracker",
+  "spy",
+]);
