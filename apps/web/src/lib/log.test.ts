@@ -212,12 +212,14 @@ describe("avisos privados de la noche", () => {
       ev("phase.started", { phase: "night", dayNumber: 2 }),
       ev("night.notice", { playerId: "a", notice: "target_jailed" }, "private"),
       ev("night.notice", { playerId: "b", notice: "attack_attempt" }, "private"),
+      ev("night.notice", { playerId: "a", notice: "medium_talking" }, "private"),
       ev("phase.started", { phase: "discussion", dayNumber: 3 }),
     ], ctx({ meId: "a" })));
     const day = text.indexOf("== Día 3");
     expect(text.slice(day + 1)).toEqual([
       "Tu objetivo estaba encarcelado: tu habilidad no tuvo efecto.",
       "Alguien intentó atacarte mientras estabas encarcelado.",
+      "Un médium te está hablando.",
     ]);
   });
 });

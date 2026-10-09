@@ -33,8 +33,9 @@ export type GameEventPayloads = {
    * Aviso privado de la noche (wiki): solo lo recibe `playerId`.
    * target_jailed: su objetivo estaba encarcelado y su acción falla (Jailor.md:252).
    * attack_attempt: lo atacó alguien mientras estaba encarcelado (Jailor.md:252, Vigilante.md:194).
+   * medium_talking: un Médium le habla esta noche; un aviso por cada Médium (Medium.md:209, 213).
    */
-  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" };
+  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" };
   /** check: tipo de comprobación (suspicious, alignment, role, visitors, targets, mafiaVisits, vision). */
   /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic).
    * more: el Lookout sabe que hubo más visitantes de los tres que identifica (wiki: Lookout). */
@@ -53,7 +54,8 @@ export type GameEventPayloads = {
    * whisper: un susurro se registra dos veces, una para quien lo envía y otra para quien lo recibe
    * (audienceId cambia). Así cada uno lo ve como un mensaje privado suyo.
    */
-  "chat.message": { channel: "public" | "mafia" | "dead" | "whisper" | "jail" | "seance"; senderId: PlayerId; text: string; recipientId?: PlayerId; audienceId?: PlayerId };
+  /** anonymous: el Médium vivo habla con los muertos y los muertos lo ven como "Medium" (wiki: Medium). */
+  "chat.message": { channel: "public" | "mafia" | "dead" | "whisper" | "jail" | "seance"; senderId: PlayerId; text: string; recipientId?: PlayerId; audienceId?: PlayerId; anonymous?: boolean };
   "game.ended": { winner: FactionKey };
 };
 

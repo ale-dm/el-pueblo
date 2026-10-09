@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { chatRights } from "./chatRights.js";
+import { chatRights, chatSenderLabel } from "./chatRights.js";
 import type { MatchView } from "../types.js";
 
 /** Vista mínima: solo lo que mira chatRights. */
-const view = (over: { phase?: MatchView["phase"]; status?: string; faction?: "town" | "mafia"; flags?: Record<string, boolean>; defendantId?: string | null }): MatchView =>
+const view = (over: { phase?: MatchView["phase"]; status?: string; faction?: "town" | "mafia"; flags?: Record<string, boolean>; defendantId?: string | null; roleKey?: string | null }): MatchView =>
   ({
     phase: over.phase ?? "discussion",
     players: [{ id: "a", status: over.status ?? "alive" }, { id: "b", status: "alive" }],
     defendantId: over.defendantId ?? null,
-    me: { id: "a", status: over.status ?? "alive", faction: over.faction ?? "town", flags: over.flags ?? {} },
+    me: { id: "a", status: over.status ?? "alive", faction: over.faction ?? "town", flags: over.flags ?? {}, roleKey: over.roleKey ?? null, jail: null },
   }) as unknown as MatchView;
 
 describe("quién puede escribir y por qué", () => {
@@ -33,5 +33,21 @@ describe("quién puede escribir y por qué", () => {
 
   it("los muertos solo tienen Ultratumba", () => {
     expect(chatRights(view({ status: "dead" })).channels).toEqual(["dead"]);
+  });
+
+  it("el Médium vivo habla con los muertos de noche, salvo encarcelado", () => {
+    expect(chatRights(view({ phase: "night", roleKey: "medium" })).channels).toEqual(["dead"]);
+    expect(chatRights(view({ phase: "night", roleKey: "medium", flags: { jailed: true } })).channels).toEqual([]);
+    expect(chatRights(view({ phase: "night", roleKey: "investigator" })).channels).toEqual([]);
+  });
+});
+
+describe("quién aparece como autor", () => {
+  const nick = (id: string) => ({ a: "Ana", b: "Bea" })[id] ?? "?";
+  it("los muertos ven al Médium vivo como Medium, y el Médium se ve a sí mismo con su nick", () => {
+    const dead = view({ status: "dead" });
+    expect(chatSenderLabel(dead, { channel: "dead", senderId: "b", anonymous: true }, nick)).toBe("Medium");
+    expect(chatSenderLabel(view({ roleKey: "medium" }), { channel: "dead", senderId: "a", anonymous: true }, nick)).toBe("Ana");
+    expect(chatSenderLabel(dead, { channel: "dead", senderId: "b" }, nick)).toBe("Bea");
   });
 });

@@ -45,6 +45,8 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
       if (event.payload.channel === "whisper" || event.payload.channel === "jail" || event.payload.channel === "seance") {
         return priv(event.payload.audienceId ?? event.payload.senderId);
       }
+      // Ultratumba: los muertos lo ven; con audiencia, solo esa copia (el Médium vivo que escucha a los muertos).
+      if (event.payload.channel === "dead" && event.payload.audienceId) return priv(event.payload.audienceId);
       return {
         visibility: event.payload.channel === "public" ? "public" : event.payload.channel,
         audiencePlayerId: null,

@@ -80,6 +80,22 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
           { type: "chat.message", payload: { channel: "whisper", senderId: command.senderId, text, recipientId, audienceId: command.senderId } },
         ]);
       }
+      if (command.channel === "dead") {
+        const sender = state.players.find((p) => p.id === command.senderId)!;
+        // Wiki (Medium.md:189): el Médium vivo habla de noche con los muertos; ellos lo ven como "Medium".
+        if (sender.status === "alive") {
+          return ok([
+            { type: "chat.message", payload: { channel: "dead", senderId: command.senderId, text, anonymous: true } },
+            { type: "chat.message", payload: { channel: "dead", senderId: command.senderId, text, anonymous: true, audienceId: command.senderId } },
+          ]);
+        }
+        // Un muerto habla con los muertos; de noche, cada Médium vivo también lo oye (Medium.md:186).
+        const listeners = state.phase === "night" ? state.players.filter((p) => p.status === "alive" && p.roleKey === "medium") : [];
+        return ok([
+          { type: "chat.message", payload: { channel: "dead", senderId: command.senderId, text } },
+          ...listeners.map((m) => ({ type: "chat.message" as const, payload: { channel: "dead" as const, senderId: command.senderId, text, audienceId: m.id } })),
+        ]);
+      }
       return ok([{ type: "chat.message", payload: { channel: command.channel, senderId: command.senderId, text } }]);
     }
     case "timer.expired":

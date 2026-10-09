@@ -57,7 +57,13 @@ export function chatDenied(state: GameState, senderId: string, channel: ChatChan
     if (recipient.id === senderId) return "No puedes susurrarte a ti mismo";
     return null;
   }
-  if (channel === "dead") return sender.status === "dead" ? null : "Solo hablan los muertos en este canal";
+  if (channel === "dead") {
+    if (sender.status === "dead") return null;
+    // Wiki (Medium.md:186, 189): el Médium vivo habla con los muertos cada noche. Encarcelado, los muertos no le oyen (Medium.md:201).
+    if (sender.roleKey === "medium" && state.phase === "night" && !sender.flags.jailed) return null;
+    if (sender.roleKey === "medium" && sender.flags.jailed) return "Encarcelado, los muertos no te oyen";
+    return "Solo hablan los muertos en este canal";
+  }
   if (sender.status !== "alive") return "Los muertos no hablan en este canal";
   if (channel === "mafia") {
     if (state.phase !== "night") return "El chat de la Mafia solo está abierto de noche";

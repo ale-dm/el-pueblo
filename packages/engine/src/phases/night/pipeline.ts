@@ -371,6 +371,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   for (const h of hypnoses) {
     if (isAlive(playerOf(s, h.targetId))) out.push({ type: "hypnosis.message", payload: { playerId: h.targetId, message: h.message } });
   }
+  // Wiki (Medium.md:209, 213): el objetivo de una sesión de Médium empieza la noche con el aviso; uno por Médium.
+  for (const act of active) {
+    if (act.ability !== "seance" || act.targetId === null) continue;
+    if (isAlive(playerOf(s, act.targetId))) out.push({ type: "night.notice", payload: { playerId: act.targetId, notice: "medium_talking" } });
+  }
   for (const f of forges) {
     if (isAlive(playerOf(s, f.targetId))) out.push({ type: "will.forged", payload: { playerId: f.targetId, role: f.role, forgerId: f.forgerId } });
   }

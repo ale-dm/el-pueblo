@@ -49,6 +49,7 @@ const MORNING = new Set([
 const NOTICE_TEXT: Record<string, string> = {
   target_jailed: "Tu objetivo estaba encarcelado: tu habilidad no tuvo efecto.",
   attack_attempt: "Alguien intentó atacarte mientras estabas encarcelado.",
+  medium_talking: "Un médium te está hablando.",
 };
 
 /** Grupo que revela el Investigador: "Pueblo (Apoyo)", "Mafia (Engaño)"… */

@@ -4,6 +4,18 @@ import type { Channel, MatchView } from "../types.js";
 const canWhisper = (view: MatchView) =>
   view.me.status === "alive" && !view.me.flags.blackmailed && view.players.some((p) => p.status === "alive" && p.id !== view.me.id);
 
+/**
+ * Quién aparece como autor de un mensaje. Los muertos ven al Médium vivo como "Medium" (wiki: Medium).
+ * En la prisión el Jailor es anónimo para el prisionero, y al revés. Refleja el motor (core/decide.ts).
+ */
+export function chatSenderLabel(view: MatchView, p: Record<string, any>, nick: (id: string) => string): string {
+  // El vivo que recibe la sesión de Médium no sabe quién es el Médium.
+  if (p.channel === "seance" && p.senderId !== view.me.id && view.me.status === "alive") return "Médium";
+  if (p.anonymous && p.senderId !== view.me.id) return "Medium";
+  if (p.channel !== "jail" || p.senderId === view.me.id) return nick(p.senderId);
+  return view.me.jail === "prisoner" ? "Carcelero" : "Prisionero";
+}
+
 /** Canales donde puede escribir ahora y, si ninguno, por qué. Refleja las reglas del motor (rules/chat.ts). */
 export function chatRights(view: MatchView): { channels: Channel[]; notice: string | null } {
   const me = view.me;
@@ -14,9 +26,10 @@ export function chatRights(view: MatchView): { channels: Channel[]; notice: stri
   }
   if (me.status !== "alive" || view.phase === "ended") return { channels: [], notice: null };
   if (view.phase === "night") {
-    // La Mafia, el canal con el prisionero (o el Jailor) y la sesión de Médium funcionan de noche.
+    // La Mafia, el canal con el prisionero (o el Jailor), la sesión de Médium y el Ultratumba del Médium vivo.
     const open: Channel[] = [
       ...(me.faction === "mafia" ? ["mafia" as const] : []),
+      ...(me.roleKey === "medium" && !me.flags.jailed ? ["dead" as const] : []),
       ...(me.jail ? ["jail" as const] : []),
       ...(me.seance === "target" ? ["seance" as const] : []),
     ];

@@ -47,6 +47,46 @@ describe("Medium: solo habla desde el más allá", () => {
   });
 });
 
+describe("Medium: habla con los muertos y avisa a su objetivo (wiki: Medium)", () => {
+  const night = () => game(["medium", "godfather", "investigator", "sheriff"], { phase: "night", dayNumber: 2 });
+
+  it("el Médium vivo habla con los muertos de noche: lo ven como Medium y él se oye a sí mismo", () => {
+    const events = step(night(), { type: "chat.send", senderId: "p1", channel: "dead", text: "¿Quién me mató?" }).events;
+    expect(events).toHaveLength(2);
+    expect(events[0]).toMatchObject({ visibility: "dead", payload: { anonymous: true } });
+    expect(events[1]).toMatchObject({ visibility: "private", audiencePlayerId: "p1" });
+  });
+
+  it("un vivo que no es Médium no habla con los muertos", () => {
+    expect(rejected(night(), { type: "chat.send", senderId: "p3", channel: "dead", text: "hola" })).toMatch(/Solo hablan los muertos/);
+  });
+
+  it("de noche, el Médium vivo oye a los muertos; de día no", () => {
+    const s = night();
+    s.players[3] = { ...s.players[3]!, status: "dead" };
+    const events = step(s, { type: "chat.send", senderId: "p4", channel: "dead", text: "Fui el Sheriff." }).events;
+    expect(events.find((e) => e.visibility === "private")).toMatchObject({ audiencePlayerId: "p1", payload: { senderId: "p4" } });
+    expect(events.filter((e) => e.visibility === "dead")).toHaveLength(1);
+    const day = { ...s, phase: "discussion" as const };
+    expect(step(day, { type: "chat.send", senderId: "p4", channel: "dead", text: "de día" }).events.every((e) => e.visibility === "dead")).toBe(true);
+  });
+
+  it("encarcelado, el Médium no habla con los muertos", () => {
+    const s = night();
+    s.players[0] = { ...s.players[0]!, flags: { jailed: true } };
+    expect(rejected(s, { type: "chat.send", senderId: "p1", channel: "dead", text: "hola" })).toMatch(/Encarcelado/);
+  });
+
+  it("el objetivo de una sesión de Médium recibe el aviso al empezar la noche", () => {
+    const s = game(["medium", "godfather", "investigator", "sheriff"], { phase: "night", dayNumber: 2 });
+    s.players[0] = { ...s.players[0]!, status: "dead" };
+    const { events } = step(step(s, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null }).state, timer());
+    const notices = ofType(events, "night.notice").filter((e) => e.payload.notice === "medium_talking");
+    expect(notices.map((e) => e.payload.playerId)).toEqual(["p3"]);
+    expect(notices[0]!.audiencePlayerId).toBe("p3");
+  });
+});
+
 describe("Retributionist: zombis", () => {
   // p2 es un Doctor muerto (zombi) que curaría a p4; p3 Godfather ataca a p4.
   const withZombie = (): GameState => {

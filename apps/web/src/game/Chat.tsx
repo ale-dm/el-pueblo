@@ -3,7 +3,7 @@ import { useGame } from "../state/store.js";
 import type { Channel, GameEvent, MatchView } from "../types.js";
 import { Button, Card, TextField } from "../ui/primitives.js";
 import { CHANNEL_LABEL } from "../lib/text.js";
-import { chatRights } from "../lib/chatRights.js";
+import { chatRights, chatSenderLabel } from "../lib/chatRights.js";
 import { buildLog, logContext } from "../lib/log.js";
 
 export function Chat({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
@@ -14,13 +14,7 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
   const send = useGame((s) => s.send);
   const active = channel && channels.includes(channel) ? channel : channels[0] ?? null;
   const nick = (id: string) => view.players.find((p) => p.id === id)?.nick ?? "?";
-  /** En la prisión el Jailor es anónimo para el prisionero, y al revés. */
-  const senderLabel = (p: Record<string, any>) => {
-    // El vivo que recibe la sesión de Médium no sabe quién es el Médium.
-    if (p.channel === "seance" && p.senderId !== view.me.id && view.me.status === "alive") return "Médium";
-    if (p.channel !== "jail" || p.senderId === view.me.id) return nick(p.senderId);
-    return view.me.jail === "prisoner" ? "Carcelero" : "Prisionero";
-  };
+  const senderLabel = (p: Record<string, any>) => chatSenderLabel(view, p, nick);
   const alive = view.players.filter((p) => p.status === "alive" && p.id !== view.me.id);
   const target = alive.some((p) => p.id === recipient) ? recipient : alive[0]?.id ?? "";
   // En la plaza, los avisos del sistema (votos, fases, muertes) van en el mismo flujo que los mensajes.
