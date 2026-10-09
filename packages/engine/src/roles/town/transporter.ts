@@ -9,6 +9,8 @@ export const handler: RoleHandler = {
   priority: 1,
   nightAbilities: [{ key: "transport", target: "two", usesLimit: null }],
   dayAbilities: [],
+  // Wiki (Transporter.md:194): no puede ser bloqueado por Tavern Keeper, Bootlegger o Pirate.
+  roleblockImmune: true,
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {
       case "transport": return targetId && secondTargetId ? [{ kind: "transport", actorId: actor.id, firstId: targetId, secondId: secondTargetId }] : [];

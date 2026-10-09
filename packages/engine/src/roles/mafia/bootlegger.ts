@@ -9,6 +9,8 @@ export const handler: RoleHandler = {
   priority: 2,
   nightAbilities: [{ key: "distract", target: "player", usesLimit: null }],
   dayAbilities: [],
+  // Wiki (Bootlegger.md:202): "You cannot be Roleblocked."
+  roleblockImmune: true,
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {
       case "distract": return targetId ? [{ kind: "block", actorId: actor.id, targetId }] : [];

@@ -56,6 +56,19 @@ describe("noche: protecciones y ataques", () => {
     expect(ofType(events, "night.action.submitted")).toHaveLength(0);
   });
 
+  it("el Tavern Keeper no puede bloquear a un Bootlegger (wiki: Bootlegger)", () => {
+    const s = game(["tavern_keeper", "bootlegger", "investigator", "godfather"]);
+    const { events } = resolve(s, [night("p1", "distract", "p2"), night("p2", "distract", "p3")]);
+    expect(ofType(events, "night.action.blocked")).toEqual([]);
+  });
+
+  it("el Tavern Keeper y el Bootlegger no pueden bloquear a un Transporter (wiki: Transporter)", () => {
+    const tavern = resolve(game(["tavern_keeper", "transporter", "investigator", "godfather"]), [night("p1", "distract", "p2"), night("p2", "transport", "p3", "p4")]);
+    expect(ofType(tavern.events, "night.action.blocked")).toEqual([]);
+    const bootlegger = resolve(game(["bootlegger", "transporter", "investigator", "godfather"]), [night("p1", "distract", "p2"), night("p2", "transport", "p3", "p4")]);
+    expect(ofType(bootlegger.events, "night.action.blocked")).toEqual([]);
+  });
+
   it("el Transporter cambia los objetivos: el ataque cae en el otro jugador", () => {
     const s = game(["godfather", "transporter", "doctor", "investigator", "sheriff"]);
     const { events } = resolve(s, [
