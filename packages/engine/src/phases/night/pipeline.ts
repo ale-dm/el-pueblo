@@ -27,7 +27,7 @@ interface Visit {
 interface Protection {
   protectorId: string;
   power: 1 | 2;
-  source: "doctor" | "bodyguard" | "crusader" | "jail";
+  source: "doctor" | "bodyguard" | "crusader" | "jail" | "trap";
 }
 
 interface Attack {
@@ -364,6 +364,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     for (const v of visitors) {
       attacks.push({ attackerId: trapperId, victimId: v.visitorId, power: 2, cause: "trap" });
     }
+    // Wiki (Trapper.md:223, 225): la trampa defiende a su objetivo de un ataque directo esta noche, y solo de uno.
+    const list = protections.get(trap.targetId) ?? [];
+    list.push({ protectorId: trapperId, power: 2, source: "trap" });
+    protections.set(trap.targetId, list);
     out.push({ type: "trap.removed", payload: { trapperId, reason: "triggered" } });
   }
 
@@ -504,6 +508,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will } });
     return true;
   };
+  /** Trampas ya gastadas esta noche: cada una defiende de un solo ataque. */
+  const trapSpent = new Set<string>();
   for (let i = 0; i < attacks.length; i++) {
     const atk = attacks[i]!;
     if (dead.has(atk.victimId)) continue;
@@ -537,7 +543,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       kill(bodyguard.protectorId, "bodyguard");
       continue;
     }
-    const medical = prots.filter((p) => p.source !== "bodyguard");
+    const medical = prots.filter((p) => p.source !== "bodyguard" && !(p.source === "trap" && trapSpent.has(atk.victimId)));
     const strongest = medical.reduce<Protection | undefined>((best, p) => (!best || p.power > best.power ? p : best), undefined);
     // Wiki (Godfather): Basic Defense permanente; un ataque Basic no le mata.
     const baseDefense = victim?.roleKey === "godfather" ? 1 : 0;
@@ -547,6 +553,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     } else {
       prevented.add(atk.victimId);
       if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(strongest.protectorId) } });
+      if (strongest?.source === "trap") trapSpent.add(atk.victimId);
     }
   }
 

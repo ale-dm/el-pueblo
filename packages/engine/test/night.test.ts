@@ -329,12 +329,11 @@ describe("noche: jailor y trampero", () => {
     expect(state.traps["p1"]).toBeUndefined();
   });
 
-  it("una trampa activada es poderosa (mata al Godfather visitante) y se retira", () => {
+  it("una trampa activada es poderosa (mata al Godfather visitante), defiende a su objetivo y se retira", () => {
     const s = game(["trapper", "godfather", "investigator", "sheriff"], { dayNumber: 2, traps: { p1: { targetId: "p3", readyDay: 2 } } });
     const { events, state } = resolve(s, [night("p2", "kill", "p3")]);
-    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual(
-      expect.arrayContaining([["p2", "trap"], ["p3", "mafia"]]),
-    );
+    // Wiki (Trapper.md:223): la trampa defiende de un ataque directo; el Godfather muere por la trampa.
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p2", "trap"]]);
     expect(ofType(events, "trap.removed").map((e) => e.payload.reason)).toEqual(["triggered"]);
     expect(state.traps["p1"]).toBeUndefined();
     // Retirada la trampa, el Trapper puede poner otra (el Godfather ya murió: sigue la partida).
@@ -506,5 +505,28 @@ describe("noche: transportes (wiki: Transporter)", () => {
       night("p4", "investigate", "p1"),
     ]);
     expect(ofType(events, "night.action.blocked").map((e) => e.payload.actorId)).toEqual(["p4"]);
+  });
+});
+
+describe("noche: la trampa defiende de un ataque (wiki: Trapper)", () => {
+  // p1 Trapper con trampa lista sobre p2. Los atacantes llegan visitando a p2.
+  const trapped = (roles: string[]) => {
+    const s = game(roles, { phase: "night", dayNumber: 2 });
+    s.traps = { p1: { targetId: "p2", readyDay: 1 } };
+    return s;
+  };
+
+  it("un ataque directo no mata a su objetivo: la trampa lo defiende", () => {
+    const { events } = resolve(trapped(["trapper", "investigator", "godfather", "sheriff"]), [night("p3", "kill", "p2")]);
+    expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).not.toContain("p2");
+    expect(ofType(events, "attack.prevented")).toContainEqual(expect.objectContaining({ payload: { victimId: "p2", protectorId: "p1" } }));
+  });
+
+  it("la trampa defiende de un solo ataque: el segundo sí mata", () => {
+    // Godfather (p3) y Vigilante (p4) atacan a p2: uno lo para la trampa, el otro le mata.
+    const { events } = resolve(trapped(["trapper", "investigator", "godfather", "vigilante", "sheriff"]), [night("p3", "kill", "p2"), night("p4", "shoot", "p2")]);
+    const onTarget = ofType(events, "attack.prevented").filter((e) => e.payload.victimId === "p2");
+    expect(onTarget).toHaveLength(1);
+    expect(ofType(events, "player.killed").filter((e) => e.payload.playerId === "p2")).toHaveLength(1);
   });
 });
