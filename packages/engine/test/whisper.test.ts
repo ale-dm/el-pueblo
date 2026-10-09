@@ -69,3 +69,35 @@ describe("Mayor revelado y susurros (wiki: Mayor.md:203)", () => {
     expect(whisper(revealed(s, "p1"), "p1", "p2").ok).toBe(false);
   });
 });
+
+describe("Blackmailer oye los susurros (wiki: Blackmailer.md:207, 227, 375)", () => {
+  it("un Blackmailer vivo oye el susurro entre otros dos, y el resto no", () => {
+    const s = game(["blackmailer", "doctor", "godfather", "investigator"], { phase: "discussion", dayNumber: 2 });
+    const r = whisper(s, "p2", "p3");
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const after = r.value.reduce(apply, s);
+    const seenBy = (id: string) => projectFor(r.value, after.players.find((p) => p.id === id)!);
+    expect(seenBy("p1")).toHaveLength(1);
+    expect(seenBy("p1")[0]).toMatchObject({ type: "chat.message", payload: { channel: "whisper", text: "hola", senderId: "p2", recipientId: "p3" } });
+    expect(seenBy("p4")).toHaveLength(0);
+  });
+
+  it("un Blackmailer muerto sigue oyendo los susurros", () => {
+    const s = game(["blackmailer", "doctor", "godfather"], { phase: "discussion", dayNumber: 2 });
+    s.players[0]!.status = "dead";
+    const r = whisper(s, "p2", "p3");
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(projectFor(r.value, s.players[0]!)).toHaveLength(1);
+  });
+
+  it("el Blackmailer que susurra ve su propio susurro una sola vez", () => {
+    const s = game(["blackmailer", "doctor"], { phase: "discussion", dayNumber: 2 });
+    const r = whisper(s, "p1", "p2");
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.value).toHaveLength(2);
+    expect(projectFor(r.value, s.players[0]!)).toHaveLength(1);
+  });
+});

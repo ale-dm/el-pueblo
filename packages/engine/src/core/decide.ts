@@ -74,9 +74,15 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
       }
       if (command.channel === "whisper") {
         const recipientId = command.recipientId!;
+        // Wiki (Blackmailer.md:207, 227, 375): el Blackmailer, vivo o muerto, oye los susurros del día. No se le
+        // duplica si es quien susurra o quien recibe.
+        const eavesdroppers = state.players
+          .filter((p) => p.roleKey === "blackmailer" && p.id !== command.senderId && p.id !== recipientId)
+          .map((p) => p.id);
         return ok([
           { type: "chat.message", payload: { channel: "whisper", senderId: command.senderId, text, recipientId, audienceId: recipientId } },
           { type: "chat.message", payload: { channel: "whisper", senderId: command.senderId, text, recipientId, audienceId: command.senderId } },
+          ...eavesdroppers.map((audienceId) => ({ type: "chat.message" as const, payload: { channel: "whisper" as const, senderId: command.senderId, text, recipientId, audienceId } })),
         ]);
       }
       if (command.channel === "dead") {
