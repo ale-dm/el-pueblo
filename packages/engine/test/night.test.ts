@@ -530,3 +530,15 @@ describe("noche: la trampa defiende de un ataque (wiki: Trapper)", () => {
     expect(ofType(events, "player.killed").filter((e) => e.payload.playerId === "p2")).toHaveLength(1);
   });
 });
+
+describe("Framer: duración del encuadre (SKIPPED: la wiki se contradice)", () => {
+  // Framer.md:196, 254, 280, 344: el encuadre dura hasta que el objetivo es investigado.
+  // Sheriff.md:275: si el Framer deja de encuadrar al mismo objetivo, el resultado del Sheriff cambia.
+  it.skip("un encuadre de la noche 1 no sigue la noche 2 si el Framer ya no encuadra (B11)", () => {
+    const s = game(["framer", "sheriff", "investigator", "godfather"], { dayNumber: 1 });
+    const night1 = resolve(s, [night("p1", "frame", "p3")]).state;
+    const night2 = resolve({ ...night1, phase: "night", dayNumber: 2 }, [night("p2", "interrogate", "p3")]).events;
+    expect(ofType(night2, "investigation.result")[0]?.payload.result).toBe("innocent");
+  });
+});
+

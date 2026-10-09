@@ -40,7 +40,7 @@ Contrastado con las fichas de `docs/roles/` (wiki de Town of Salem 1). Estados:
 | Consigliere | OK | Revela el rol del objetivo |
 | Disguiser | Parcial | Disfraza a un Mafioso vivo y no encarcelado de alguien que no es de la Mafia. Sheriff e Investigador ven ese rol. Falta: Lookout y Spy no ven el disfraz |
 | Forger | Parcial | Falsifica el rol del testamento de un vivo: al morir se muestra el rol elegido. Usos: 2. Simplificación: el texto del testamento no cambia |
-| Framer | OK | Marca al objetivo como enmarcado |
+| Framer | Sin verificar | Marca al objetivo como enmarcado. La wiki se contradice sobre cuánto dura: Framer.md:196, 254, 280 y 344 (hasta que el objetivo es investigado) frente a Sheriff.md:275 (el resultado cambia si el Framer deja de encuadrar al mismo objetivo). Sin cambios de código. |
 | Godfather | OK | Ordena la muerte; inmune a la detección |
 | Hypnotist | Parcial | Planta un mensaje (ataque, protección o bloqueo) que recibe el objetivo al terminar la noche. Simplificación: el mensaje es el elegido, sin comprobar si es verdad |
 | Janitor | Parcial | Limpia el rol. Usos: 3 en el código; la ficha no confirma el límite (sin verificar) |
