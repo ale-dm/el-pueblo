@@ -3,7 +3,7 @@ import { useGame } from "../state/store.js";
 import type { MatchView } from "../types.js";
 import { Button, Card } from "../ui/primitives.js";
 
-const MAX_WILL = 300;
+const MAX_WILL = 400;
 
 /** Última voluntad: se escribe mientras vives y se revela al morir. */
 export function WillCard({ me }: { me: MatchView["me"] }) {

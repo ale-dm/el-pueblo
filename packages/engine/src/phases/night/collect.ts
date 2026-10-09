@@ -182,7 +182,7 @@ export function writeWill(s: GameState, playerId: string, text: string): Result<
   return ok([{ type: "will.written", payload: { playerId, text: trimmed } }]);
 }
 
-export const MAX_WILL_LENGTH = 300;
+export const MAX_WILL_LENGTH = 400;
 
 /** Nota de muerte: hasta 400 caracteres (wiki: Death_Note_ToS.md:15). */
 export const MAX_DEATH_NOTE_LENGTH = 400;

@@ -87,7 +87,7 @@ describe("últimas voluntades", () => {
   it("los muertos no escriben, y el texto tiene un máximo", () => {
     const dead = apply(game(["doctor", "godfather"]), { seq: 1, type: "player.killed", payload: { playerId: "p1", cause: "x", roleKey: null, will: null }, visibility: "public", audiencePlayerId: null });
     expect(rejected(dead, { type: "will.write", playerId: "p1", text: "hola" })).toMatch(/muertos/);
-    expect(rejected(game(["doctor"]), { type: "will.write", playerId: "p1", text: "x".repeat(301) })).toMatch(/300/);
+    expect(rejected(game(["doctor"]), { type: "will.write", playerId: "p1", text: "x".repeat(401) })).toMatch(/400/);
   });
 
   it("el testamento es privado mientras vives", () => {
