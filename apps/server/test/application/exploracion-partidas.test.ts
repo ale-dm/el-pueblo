@@ -3,6 +3,7 @@ import { createRng, type Rng } from "@el-pueblo/engine";
 import { describe, expect, it } from "vitest";
 import { createTestApp } from "../helpers/testApp.js";
 import { AppError } from "../../src/application/errors.js";
+import { criterioCommands } from "../helpers/criterio.js";
 
 /**
  * Exploración de partidas completas con acciones de todos los tipos (no solo las de un caso).
@@ -14,6 +15,11 @@ import { AppError } from "../../src/application/errors.js";
  * Variables: EXPLORE_GAMES (nº de partidas, 25 por defecto), EXPLORE_REPORT (ruta JSON opcional).
  */
 const GAMES = Number(process.env.EXPLORE_GAMES ?? 25);
+/** "azar": decisiones al azar (como siempre). "criterio": votos, juicios, noche y día según lo que el jugador puede ver (test/helpers/criterio.ts). */
+type Policy = "azar" | "criterio";
+const POLICY = (process.env.EXPLORE_POLICY ?? "azar") as Policy;
+/** "humanos": solo partidas de 10 humanos. "ambas": también 5 humanos y 5 bots. */
+const MIX = process.env.EXPLORE_MIX ?? "ambas";
 const MAX_STEPS = 400;
 /** Códigos de error esperados cuando la acción elegida no es legal en ese momento. */
 const EXPECTED_REJECTIONS = new Set(["engine_rejected", "invalid_state"]);
@@ -27,7 +33,14 @@ const keyOf = (c: Record<string, any>) =>
   c.type === "chat.send" ? `chat.send:${c.channel}` : c.type === "night.action" || c.type === "day.action" ? `${c.type}:${c.ability}` : String(c.type);
 
 interface Anomaly { game: number; step: number; kind: string; detail: string }
+/** Datos de una partida, para comparar políticas. */
+interface GameStat {
+  game: number; ganador: string; dias: number; muertes: number; ejecuciones: number; juicios: number; pasos: number; humanos: number;
+  /** Votos con objetivo por bando, y abstenciones. */
+  votosPueblo: number; votosMafia: number; abstenciones: number;
+}
 interface Report {
+  policy: Policy;
   games: number;
   finished: number;
   steps: number;
@@ -36,9 +49,10 @@ interface Report {
   rejected: Record<string, number>;
   anomalies: Anomaly[];
   observations: Record<string, number>;
+  partidas: GameStat[];
 }
 
-async function playGame(game: number, report: Report, bots = 0) {
+async function playGame(game: number, report: Report, bots = 0, policy: Policy = "azar") {
   const app = createTestApp();
   const rng = createRng(1000 + game);
   const host = await app.services.createRoom({ nick: "P1", bots });
@@ -48,11 +62,15 @@ async function playGame(game: number, report: Report, bots = 0) {
   const matchId = host.matchId;
   const anomaly = (step: number, kind: string, detail: string) => report.anomalies.push({ game, step, kind, detail });
   const count = (map: Record<string, number>, key: string) => (map[key] = (map[key] ?? 0) + 1);
+  /** Quién encarceló cada Jailor (lo recuerda el propio jugador, no está en la vista). */
+  const jailed = new Map<string, string>();
+  let gameSteps = 0;
 
   for (let step = 0; step < MAX_STEPS; step++) {
     const match = await app.matches.findById(matchId);
     if (match?.status === "finished") break;
     report.steps++;
+    gameSteps++;
 
     // Invariantes sobre el registro: secuencia contigua y muertos que no actúan.
     const log = await app.events.read(matchId);
@@ -85,10 +103,11 @@ async function playGame(game: number, report: Report, bots = 0) {
       const actorId = seat.playerId;
       const legal = me.status === "alive";
 
-      if (legal && view.phase === "voting") {
+      if (policy === "criterio") commands.push(...criterioCommands(view, log, jailed, rng));
+      if (policy === "azar" && legal && view.phase === "voting") {
         commands.push({ type: "vote", voterId: actorId, targetId: rng.next() < 0.2 ? null : others.length ? pick(rng, others) : null });
       }
-      if (legal && view.phase === "judgement" && view.defendantId !== actorId) {
+      if (policy === "azar" && legal && view.phase === "judgement" && view.defendantId !== actorId) {
         commands.push({ type: "judgement.vote", voterId: actorId, verdict: rng.next() < 0.5 ? "guilty" : "innocent" });
       }
       if (rng.next() < 0.5) {
@@ -108,7 +127,7 @@ async function playGame(game: number, report: Report, bots = 0) {
         commands.push({ type: "death.note.write", actorId, victimId: note.payload.victimId, note: text(rng) });
       }
       if (me.nightAction && rng.next() < 0.1) commands.push({ type: "night.action.cancel", actorId });
-      if (view.phase === "night") {
+      if (policy === "azar" && view.phase === "night") {
         for (const ab of me.nightAbilities) {
           if (ab.usesLeft === 0) continue;
           if (rng.next() < 0.3) continue;
@@ -124,7 +143,7 @@ async function playGame(game: number, report: Report, bots = 0) {
           }
         }
       }
-      if (view.phase !== "night" && legal) {
+      if (policy === "azar" && view.phase !== "night" && legal) {
         for (const ab of me.dayAbilities) {
           if (ab.usesLeft === 0 || rng.next() < 0.5) continue;
           commands.push({ type: "day.action", actorId, ability: ab.key, targetId: ab.target === "none" ? null : pick(rng, others) });
@@ -137,6 +156,7 @@ async function playGame(game: number, report: Report, bots = 0) {
         try {
           await app.services.submitCommand({ matchId, token: seat.token, command: command as any });
           count(report.accepted, key);
+          if (kind === "day.action" && command.ability === "jail") jailed.set(actorId, String(command.targetId));
           // Un muerto solo actúa con la sesión de Médium; cualquier otra acción aceptada es una anomalía.
           // La Death Note de un asesino muerto no se cambia (decisión del proyecto, ver writeDeathNote): también es anomalía.
           if (dead.has(actorId) && !(kind === "night.action" && command.ability === "seance") && kind !== "chat.send") {
@@ -171,6 +191,28 @@ async function playGame(game: number, report: Report, bots = 0) {
     const endEvent = (await app.events.read(matchId)).find((e) => e.type === "game.ended");
     const winner = String(endEvent?.payload.winner);
     report.winners[winner] = (report.winners[winner] ?? 0) + 1;
+    const dias = Math.max(0, ...logAtEnd.flatMap((e) => (e.type === "phase.started" ? [e.payload.dayNumber] : [])));
+    const factionOf = new Map(roster.map((p) => [p.id, p.faction]));
+    // Traza de una partida para leerla a mano: EXPLORE_TRACE=<ruta> escribe el registro de la primera de diez humanos.
+    if (process.env.EXPLORE_TRACE && game === 1 && bots === 0) {
+      const nick = new Map(roster.map((p) => [p.id, `${p.nick}(${p.roleKey}/${p.faction})`]));
+      const name = (id: unknown) => (typeof id === "string" ? nick.get(id) ?? id : String(id));
+      writeFileSync(process.env.EXPLORE_TRACE, logAtEnd.map((e) => `${e.seq} ${e.type} ${JSON.stringify(e.payload, (k, v) => (k.endsWith("Id") || k === "playerId" || k === "targetId" || k === "voterId" ? name(v) : v))}`).join("\n"));
+    }
+    const muertes = logAtEnd.filter((e) => e.type === "player.killed" || e.type === "player.hanged").length;
+    report.partidas.push({
+      game,
+      ganador: winner,
+      dias,
+      muertes,
+      ejecuciones: logAtEnd.filter((e) => e.type === "player.hanged").length,
+      juicios: logAtEnd.filter((e) => e.type === "trial.started").length,
+      pasos: gameSteps,
+      humanos: 10 - bots,
+      votosPueblo: logAtEnd.filter((e) => e.type === "vote.cast" && e.payload.targetId !== null && factionOf.get(e.payload.voterId) === "town").length,
+      votosMafia: logAtEnd.filter((e) => e.type === "vote.cast" && e.payload.targetId !== null && factionOf.get(e.payload.voterId) === "mafia").length,
+      abstenciones: logAtEnd.filter((e) => e.type === "vote.cast" && e.payload.targetId === null).length,
+    });
     // Sin vivos de una facción, gana la otra. Con vivos de las dos, solo vale el detector de empate
     // (1 contra 1, Victory_ToS.md): exactamente dos jugadores vivos.
     const town = alive.filter((p) => p.faction === "town").length;
@@ -186,13 +228,41 @@ async function playGame(game: number, report: Report, bots = 0) {
   }
 }
 
+/** Resumen legible de un barrido: quién gana, cuánto dura y cuántas muertes hay, por mezcla de jugadores. */
+function resumen(report: Report): string {
+  const media = (xs: number[]) => (xs.length ? (xs.reduce((a, b) => a + b, 0) / xs.length).toFixed(1) : "-");
+  const mediana = (xs: number[]) => {
+    if (xs.length === 0) return "-";
+    const sorted = [...xs].sort((a, b) => a - b);
+    return String(sorted[Math.floor(sorted.length / 2)]);
+  };
+  const lineas = [`política: ${report.policy} · partidas: ${report.partidas.length} · terminadas: ${report.finished} · anomalías: ${report.anomalies.length}`];
+  for (const humanos of [...new Set(report.partidas.map((p) => p.humanos))].sort((a, b) => b - a)) {
+    const grupo = report.partidas.filter((p) => p.humanos === humanos);
+    const ganan = (bando: string) => grupo.filter((p) => p.ganador === bando).length;
+    lineas.push(
+      `  ${humanos} humanos (${grupo.length}): gana Mafia ${ganan("mafia")}, Pueblo ${ganan("town")}, otro ${grupo.length - ganan("mafia") - ganan("town")}` +
+        ` · días media ${media(grupo.map((p) => p.dias))} (mediana ${mediana(grupo.map((p) => p.dias))})` +
+        ` · muertes media ${media(grupo.map((p) => p.muertes))} · ejecuciones media ${media(grupo.map((p) => p.ejecuciones))}` +
+        ` · juicios media ${media(grupo.map((p) => p.juicios))}`,
+    );
+  }
+  const rechazos = Object.entries(report.rejected).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  lineas.push(`  rechazos más frecuentes: ${rechazos.map(([k, n]) => `${k} ×${n}`).join(", ") || "ninguno"}`);
+  return lineas.join("\n");
+}
+
 describe("exploración de partidas completas con todas las acciones", () => {
-  it(`${GAMES} partidas de 10 humanos y ${GAMES} con 5 humanos y 5 bots terminan sin anomalías`, async () => {
-    const report: Report = { games: GAMES * 2, finished: 0, steps: 0, winners: {}, accepted: {}, rejected: {}, anomalies: [], observations: {} };
-    for (let game = 1; game <= GAMES; game++) await playGame(game, report);
-    for (let game = 1; game <= GAMES; game++) await playGame(GAMES + game, report, 5);
+  it(`${GAMES} partidas de 10 humanos${MIX === "humanos" ? "" : ` y ${GAMES} con 5 humanos y 5 bots`} terminan sin anomalías`, async () => {
+    const mezclas = MIX === "humanos" ? [0] : [0, 5];
+    const report: Report = { policy: POLICY, games: GAMES * mezclas.length, finished: 0, steps: 0, winners: {}, accepted: {}, rejected: {}, anomalies: [], observations: {}, partidas: [] };
+    // Las semillas son las mismas que antes (1000 + n): el barrido de azar sigue siendo reproducible.
+    for (const bots of mezclas) {
+      for (let game = 1; game <= GAMES; game++) await playGame(bots === 0 ? game : GAMES + game, report, bots, POLICY);
+    }
     if (process.env.EXPLORE_REPORT) writeFileSync(process.env.EXPLORE_REPORT, JSON.stringify(report, null, 2));
+    console.log(resumen(report));
     expect(report.anomalies.slice(0, 20)).toEqual([]);
-    expect(report.finished).toBe(GAMES * 2);
-  }, 600_000);
+    expect(report.finished).toBe(GAMES * mezclas.length);
+  }, 1_800_000);
 });
