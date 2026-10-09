@@ -20,6 +20,7 @@ import { BottomLeft } from "../game/BottomLeft.js";
 import { ScreenBanner, DeathFx } from "../game/Fx.js";
 import { isMuted, playCue, setMuted } from "../lib/sound.js";
 import { voteStatus } from "../lib/votes.js";
+import { canBeResurrected } from "../lib/resurrect.js";
 import type { GameEvent } from "../types.js";
 
 /** Cuántos objetivos pide la fase actual: votación y noche con dos objetivos. `raise`: el primero es un muerto. */
@@ -136,7 +137,8 @@ export function Game({ view }: { view: MatchView }) {
     if (!need.selectable || p.id === view.me.id) return false;
     if (!need.raise) return p.status === "alive";
     if (p.status === "alive") return targets.length > 0;
-    return targets.length === 0 && p.revealedRoleKey !== null;
+    // Wiki (Retributionist.md:236): no se ofrecen los roles que no se pueden resucitar (lib/resurrect.ts).
+    return targets.length === 0 && canBeResurrected(p);
   };
 
   const pick = (id: string) =>
