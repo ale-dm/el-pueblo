@@ -24,6 +24,8 @@ export interface PublicPlayer {
   ally: boolean;
   /** Rol revelado tras morir (si el registro lo muestra). */
   revealedRoleKey: string | null;
+  /** Mayor que se ha revelado (público: el evento mayor.revealed es para todos). Limita los susurros. */
+  mayorRevealed: boolean;
 }
 
 /** Lo que un jugador puede ver de la partida: lo público, su propio rol y sus acciones. */
@@ -136,6 +138,7 @@ export function getView(deps: GetViewDeps) {
         isBot: roster.find((r) => r.id === p.id)?.isBot ?? false,
         ally: me.faction === "mafia" && p.faction === "mafia" && p.id !== me.id,
         revealedRoleKey: revealed.get(p.id) ?? null,
+        mayorRevealed: p.flags.mayorRevealed === true,
       })),
       votes: state.votes,
       verdicts: state.verdicts,

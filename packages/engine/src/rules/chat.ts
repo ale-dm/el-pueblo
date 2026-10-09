@@ -55,6 +55,9 @@ export function chatDenied(state: GameState, senderId: string, channel: ChatChan
     const recipient = state.players.find((p) => p.id === recipientId);
     if (!recipient || recipient.status !== "alive") return "Solo puedes susurrar a alguien vivo";
     if (recipient.id === senderId) return "No puedes susurrarte a ti mismo";
+    // Wiki (Mayor.md:203): un Mayor revelado no susurra ni recibe susurros; los mensajes son los de la wiki.
+    if (sender.flags.mayorRevealed) return "You can't whisper once you have revealed as the Mayor!";
+    if (recipient.flags.mayorRevealed) return "You can't whisper to a revealed Mayor.";
     return null;
   }
   if (channel === "dead") {

@@ -3,7 +3,7 @@ import { useGame } from "../state/store.js";
 import type { Channel, GameEvent, MatchView } from "../types.js";
 import { Button, Card, TextField } from "../ui/primitives.js";
 import { CHANNEL_LABEL } from "../lib/text.js";
-import { chatRights, chatSenderLabel } from "../lib/chatRights.js";
+import { chatRights, chatSenderLabel, whisperTarget } from "../lib/chatRights.js";
 import { buildLog, logContext } from "../lib/log.js";
 
 export function Chat({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
@@ -15,8 +15,8 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
   const active = channel && channels.includes(channel) ? channel : channels[0] ?? null;
   const nick = (id: string) => view.players.find((p) => p.id === id)?.nick ?? "?";
   const senderLabel = (p: Record<string, any>) => chatSenderLabel(view, p, nick);
-  const alive = view.players.filter((p) => p.status === "alive" && p.id !== view.me.id);
-  const target = alive.some((p) => p.id === recipient) ? recipient : alive[0]?.id ?? "";
+  const whisperable = view.players.filter((p) => whisperTarget(p, view.me.id));
+  const target = whisperable.some((p) => p.id === recipient) ? recipient : whisperable[0]?.id ?? "";
   // En la plaza, los avisos del sistema (votos, fases, muertes) van en el mismo flujo que los mensajes.
   const stream = [
     ...log
@@ -46,7 +46,7 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
         {stream.length === 0 && <p className="text-sm">Aún no hay mensajes.</p>}
         {stream.map((m) => m.node)}
       </div>
-      {active === "whisper" && alive.length > 0 && (
+      {active === "whisper" && whisperable.length > 0 && (
         <label className="mt-2 flex items-center gap-2 text-sm font-semibold">
           Para
           <select
@@ -55,7 +55,7 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
             value={target}
             onChange={(e) => setRecipient(e.target.value)}
           >
-            {alive.map((p) => <option key={p.id} value={p.id}>{p.nick}</option>)}
+            {whisperable.map((p) => <option key={p.id} value={p.id}>{p.nick}</option>)}
           </select>
         </label>
       )}

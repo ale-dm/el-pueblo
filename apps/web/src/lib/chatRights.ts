@@ -1,8 +1,13 @@
 import type { Channel, MatchView } from "../types.js";
 
-/** Susurros: de día, entre vivos, si no estás silenciado. Refleja rules/chat.ts. */
+/** Susurros: de día, entre vivos, si no estás silenciado ni eres un Mayor revelado (wiki: Mayor.md:203). Refleja rules/chat.ts. */
 const canWhisper = (view: MatchView) =>
-  view.me.status === "alive" && !view.me.flags.blackmailed && view.players.some((p) => p.status === "alive" && p.id !== view.me.id);
+  view.me.status === "alive" && !view.me.flags.blackmailed && !view.me.flags.mayorRevealed &&
+  view.players.some((p) => whisperTarget(p, view.me.id));
+
+/** A quién se puede susurrar: vivos, distintos de uno mismo y sin Mayor revelado. */
+export const whisperTarget = (p: { id: string; status: string; mayorRevealed?: boolean }, meId: string) =>
+  p.status === "alive" && p.id !== meId && !p.mayorRevealed;
 
 /**
  * Quién aparece como autor de un mensaje. Los muertos ven al Médium vivo como "Medium" (wiki: Medium).

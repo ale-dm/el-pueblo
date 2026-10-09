@@ -58,4 +58,20 @@ describe("vista por jugador", () => {
     expect(view.players.find((p) => p.id === target.id)?.revealedRoleKey).toBe(target.roleKey);
     expect(view.players.find((p) => p.id === target.id)?.status).toBe("dead");
   });
+  it("el Mayor revelado es público para todos (la vista de cada jugador lo marca)", async () => {
+    const { app, players } = await startedGame();
+    const matchId = players[0]!.matchId;
+    const roster = await app.players.listByMatch(matchId);
+    const mayor = roster.find((p) => p.faction === "town")!;
+    const events = await app.events.read(matchId);
+    await app.events.append(matchId, events.at(-1)!.seq, [
+      { seq: events.at(-1)!.seq + 1, type: "mayor.revealed", payload: { playerId: mayor.id }, visibility: "public", audiencePlayerId: null },
+    ]);
+    const other = players.find((p) => p.playerId !== mayor.id)!;
+    const view = await app.services.getView({ matchId, token: other.token });
+    expect(view.players.find((p) => p.id === mayor.id)?.mayorRevealed).toBe(true);
+    expect(view.players.filter((p) => p.id !== mayor.id).every((p) => p.mayorRevealed === false)).toBe(true);
+    const mayorView = await app.services.getView({ matchId, token: players.find((p) => p.playerId === mayor.id)!.token });
+    expect(mayorView.me.flags.mayorRevealed).toBe(true);
+  });
 });

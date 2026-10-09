@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { chatRights, chatSenderLabel } from "./chatRights.js";
+import { chatRights, chatSenderLabel, whisperTarget } from "./chatRights.js";
 import type { MatchView } from "../types.js";
 
 /** Vista mínima: solo lo que mira chatRights. */
@@ -39,6 +39,25 @@ describe("quién puede escribir y por qué", () => {
     expect(chatRights(view({ phase: "night", roleKey: "medium" })).channels).toEqual(["dead"]);
     expect(chatRights(view({ phase: "night", roleKey: "medium", flags: { jailed: true } })).channels).toEqual([]);
     expect(chatRights(view({ phase: "night", roleKey: "investigator" })).channels).toEqual([]);
+  });
+});
+
+describe("Mayor revelado y susurros (wiki: Mayor.md:203)", () => {
+  it("el Mayor revelado no ofrece susurros, pero sí la plaza", () => {
+    expect(chatRights(view({ phase: "discussion", flags: { mayorRevealed: true } })).channels).toEqual(["public"]);
+  });
+
+  it("no se susurra a un Mayor revelado, y el susurro a otro sigue abierto", () => {
+    const players = [
+      { id: "a", status: "alive", mayorRevealed: false },
+      { id: "b", status: "alive", mayorRevealed: true },
+      { id: "c", status: "alive", mayorRevealed: false },
+    ];
+    expect(whisperTarget(players[1]!, "a")).toBe(false);
+    expect(whisperTarget(players[2]!, "a")).toBe(true);
+    expect(whisperTarget(players[0]!, "a")).toBe(false);
+    const onlyMayor = { ...view({ phase: "discussion" }), players: [{ id: "a", status: "alive" }, { id: "b", status: "alive", mayorRevealed: true }] } as unknown as MatchView;
+    expect(chatRights(onlyMayor).channels).toEqual(["public"]);
   });
 });
 

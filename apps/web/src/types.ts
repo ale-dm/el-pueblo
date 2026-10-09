@@ -22,6 +22,8 @@ export interface PublicPlayer {
   /** Compañero de Mafia visible para quien mira. */
   ally: boolean;
   revealedRoleKey: string | null;
+  /** Mayor revelado: público. Ni él susurra ni le susurran. */
+  mayorRevealed: boolean;
 }
 
 export interface MatchView {

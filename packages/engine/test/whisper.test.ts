@@ -42,3 +42,30 @@ describe("susurros", () => {
     expect(decide(s, { type: "chat.send", senderId: "p1", channel: "whisper", text: "x" }, ctx()).ok).toBe(false);
   });
 });
+
+describe("Mayor revelado y susurros (wiki: Mayor.md:203)", () => {
+  const revealed = (s: GameState, id: string) => {
+    s.players.find((p) => p.id === id)!.flags = { mayorRevealed: true };
+    return s;
+  };
+
+  it("un Mayor revelado no susurra, con el mensaje de la wiki", () => {
+    const s = revealed(game(["mayor", "godfather"], { phase: "discussion", dayNumber: 2 }), "p1");
+    const r = whisper(s, "p1", "p2");
+    expect(r.ok).toBe(false);
+    expect(r.ok ? "" : r.error.message).toBe("You can't whisper once you have revealed as the Mayor!");
+  });
+
+  it("nadie susurra a un Mayor revelado, con el mensaje de la wiki", () => {
+    const s = revealed(game(["doctor", "mayor"], { phase: "discussion", dayNumber: 2 }), "p2");
+    const r = whisper(s, "p1", "p2");
+    expect(r.ok).toBe(false);
+    expect(r.ok ? "" : r.error.message).toBe("You can't whisper to a revealed Mayor.");
+  });
+
+  it("antes de revelarse el Mayor sí susurra, y sigue sin poder hacerlo al revelarse", () => {
+    const s = game(["mayor", "doctor"], { phase: "discussion", dayNumber: 2 });
+    expect(whisper(s, "p1", "p2").ok).toBe(true);
+    expect(whisper(revealed(s, "p1"), "p1", "p2").ok).toBe(false);
+  });
+});
