@@ -10,7 +10,7 @@ const DAY_PHASES = ["day_1", "discussion", "voting"];
 const usesText = (n: number | null) => (n === null ? "" : ` (te quedan ${n})`);
 
 /** Acciones disponibles según la fase, el rol y los usos restantes. Los objetivos llegan desde el tablero. */
-export function ActionPanel({ view, targets, clearTargets }: { view: MatchView; targets: string[]; clearTargets: () => void }) {
+export function ActionPanel({ view, targets, clearTargets, className = "" }: { view: MatchView; targets: string[]; clearTargets: () => void; className?: string }) {
   const send = useGame((s) => s.send);
   const busy = useGame((s) => s.busy);
   const me = view.me;
@@ -93,7 +93,7 @@ export function ActionPanel({ view, targets, clearTargets }: { view: MatchView; 
   }
 
   return (
-    <Card>
+    <Card className={`${className} short-actions`}>
       <h3 className="mb-2 font-display text-xl">Tus acciones</h3>
       {status && <p className="mb-3 font-semibold">{status}</p>}
       {actions.length ? <div className="flex flex-wrap gap-2">{actions}</div> : <p className="text-sm">No tienes nada que hacer ahora.</p>}

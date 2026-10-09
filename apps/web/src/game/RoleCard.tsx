@@ -28,8 +28,8 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
   return (
     <Card className={`w-full transition-colors ${dead ? "bg-red-100" : ""}`}>
       <details open className="group">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-2">
-          <h2 className={`font-display text-2xl ${dead ? "line-through decoration-blood decoration-4" : ""}`}>{name}</h2>
+        <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-2">
+          <h2 className={`min-w-0 font-display text-xl ${dead ? "line-through decoration-blood decoration-4" : ""}`}>{name}</h2>
           <span className="flex items-center gap-2">
             {faction && <Pill className={me.faction === "mafia" ? "bg-mafia text-paper" : "bg-town text-paper"}>{faction}</Pill>}
             <span aria-hidden="true" className="text-sm group-open:rotate-180">▼</span>

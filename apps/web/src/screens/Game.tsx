@@ -4,16 +4,17 @@ import type { MatchView } from "../types.js";
 import { Button, Card, Pill } from "../ui/primitives.js";
 import { PHASE_LABEL } from "../lib/text.js";
 import { ROLE_NAMES } from "../lib/roles.js";
-import { formatClock, secondsLeft } from "../lib/countdown.js";
-import { RoleCard } from "../game/RoleCard.js";
+import { secondsLeft as secondsUntil } from "../lib/countdown.js";
+import { trialsLeftToday } from "../lib/trials.js";
 import { RoleReveal } from "../game/RoleReveal.js";
 import { PlayerGrid } from "../game/PlayerGrid.js";
+import { Ring } from "../game/Ring.js";
 import { ActionPanel } from "../game/ActionPanel.js";
-import { Chat } from "../game/Chat.js";
-import { LogPanel } from "../game/LogPanel.js";
 import { PushButton } from "../game/PushButton.js";
-import { RolesInGame } from "../game/RolesInGame.js";
-import { WillCard } from "../game/WillCard.js";
+import { TopBar } from "../game/TopBar.js";
+import { LiveList } from "../game/LiveList.js";
+import { SideTabs } from "../game/SideTabs.js";
+import { BottomLeft } from "../game/BottomLeft.js";
 
 /** Cuántos objetivos pide la fase actual: votación y noche con dos objetivos. */
 function targetsNeeded(view: MatchView): { selectable: boolean; max: number } {
@@ -61,7 +62,7 @@ export function Game({ view }: { view: MatchView }) {
   const [targets, setTargets] = useState<string[]>([]);
   const need = targetsNeeded(view);
   const now = useNow(view.phaseEndsAt !== null);
-  const left = secondsLeft(view.phaseEndsAt, now);
+  const left = secondsUntil(view.phaseEndsAt, now);
 
   const pick = (id: string) =>
     setTargets((current) => {
@@ -85,47 +86,55 @@ export function Game({ view }: { view: MatchView }) {
             ))}
           </ul>
         </Card>
-        <LogPanel view={view} log={log} />
+        <Card>
+          <h2 className="mb-2 font-display text-2xl">Registro</h2>
+          <BottomLeft view={view} log={log} />
+        </Card>
         <Button onClick={leave}>Volver al inicio</Button>
       </main>
     );
   }
 
-  const night = view.phase === "night";
+  const trialsLeft = trialsLeftToday(log);
+  const me = view.me;
   return (
     <>
       <RoleReveal view={view} />
-      <main className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-3 p-3 md:p-6 landscape:max-w-none landscape:p-2">
-        <header className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="font-semibold">Día {view.dayNumber} · sala {view.roomCode}</p>
-            <h1 className="font-display text-4xl drop-shadow-[3px_3px_0_var(--color-ink)] landscape:text-3xl">{PHASE_LABEL[view.phase]}</h1>
-          </div>
-          <div className="flex items-center gap-3">
-            {left !== null && <Pill className="tabular-nums">⏱ {formatClock(left)}</Pill>}
-            <Pill>{night ? "🌙 Noche" : "☀️ Día"}</Pill>
+      {/* Horizontal en pantallas anchas y apaisado (como el juego original); vertical en móvil. */}
+      <main className="game-grid flex min-h-dvh flex-col gap-3 p-3 md:grid">
+        <aside className="flex min-h-0 flex-col gap-2 md:col-start-1 md:row-span-2 md:row-start-1">
+          <Card className="short-hide flex items-center justify-between gap-2 p-3">
+            <div className="min-w-0">
+              <p className="truncate font-display text-2xl">{me.nick}</p>
+              <p className="text-xs font-semibold">Sala {view.roomCode}</p>
+            </div>
             <PushButton />
-          </div>
-        </header>
+          </Card>
+          <SideTabs view={view} className="md:min-h-0 md:flex-1" />
+        </aside>
 
-        <Card className="landscape:p-3">
-          <p className="font-semibold">{phaseBanner(view)}</p>
-        </Card>
+        <TopBar
+          view={view}
+          trialsLeft={trialsLeft}
+          secondsLeft={left}
+          subtitle={phaseBanner(view)}
+          className="md:col-start-2 md:row-start-1"
+        />
 
-        {/* Vertical en móvil; en apaisado y escritorio, el pueblo a la izquierda y los paneles a la derecha. */}
-        <div className="grid gap-4 md:grid-cols-[1fr_340px] landscape:grid-cols-[1fr_300px] landscape:items-start landscape:gap-3">
-          <div className="min-w-0 space-y-4 landscape:max-h-[calc(100dvh-7rem)] landscape:overflow-y-auto landscape:pr-1">
+        <section className="md:col-start-2 md:row-start-2 md:min-h-0">
+          <div className="md:hidden">
             <PlayerGrid view={view} selected={targets} selectable={need.selectable} onPick={pick} />
-            <ActionPanel view={view} targets={targets} clearTargets={() => setTargets([])} />
           </div>
-          <div className="min-w-0 space-y-4 landscape:max-h-[calc(100dvh-7rem)] landscape:overflow-y-auto landscape:pr-1">
-            <RoleCard me={view.me} />
-            <WillCard me={view.me} />
-            <Chat view={view} log={log} />
-            <LogPanel view={view} log={log} />
-            <RolesInGame roles={view.rolesInGame} />
+          <div className="hidden h-full md:block">
+            <Ring view={view} selected={targets} selectable={need.selectable} onPick={pick} />
           </div>
-        </div>
+        </section>
+
+        <ActionPanel view={view} targets={targets} clearTargets={() => setTargets([])} className="md:col-start-2 md:row-start-3 md:self-start" />
+
+        <LiveList view={view} className="md:col-start-3 md:row-span-3 md:row-start-1 md:min-h-0" />
+
+        <BottomLeft view={view} log={log} className="md:col-start-1 md:row-start-3 md:max-h-[14rem]" />
       </main>
     </>
   );

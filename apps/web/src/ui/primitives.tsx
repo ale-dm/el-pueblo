@@ -7,8 +7,10 @@ export function Button({ tone = "sun", className = "", ...props }: ButtonHTMLAtt
   return <button {...props} className={`cartoon-btn ${toneClass} ${className}`} />;
 }
 
+/** Tarjeta. Si la clase trae su propio padding (p-0, p-3…), sustituye al de por defecto. */
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <section className={`cartoon-card p-4 ${className}`}>{children}</section>;
+  const padding = /(^|\s)p[xytrbl]?-/.test(className) ? "" : "p-4";
+  return <section className={`cartoon-card ${padding} ${className}`}>{children}</section>;
 }
 
 export function Pill({ children, className = "" }: { children: ReactNode; className?: string }) {

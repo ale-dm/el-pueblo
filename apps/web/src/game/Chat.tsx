@@ -5,7 +5,7 @@ import { Button, Card, TextField } from "../ui/primitives.js";
 import { CHANNEL_LABEL } from "../lib/text.js";
 import { chatRights } from "../lib/chatRights.js";
 
-export function Chat({ view, log }: { view: MatchView; log: GameEvent[] }) {
+export function Chat({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
   const { channels, notice } = chatRights(view);
   const [channel, setChannel] = useState<Channel | null>(null);
   const [text, setText] = useState("");
@@ -15,7 +15,7 @@ export function Chat({ view, log }: { view: MatchView; log: GameEvent[] }) {
   const messages = log.filter((e) => e.type === "chat.message" && e.payload.channel === active);
 
   return (
-    <Card>
+    <Card className={compact ? "p-2" : ""}>
       <div className="mb-2 flex flex-wrap gap-2">
         {channels.map((c) => (
           <Button key={c} tone={c === "mafia" ? "mafia" : c === "dead" ? "danger" : "sun"} className={active === c ? "" : "opacity-60"} onClick={() => setChannel(c)}>
@@ -23,7 +23,7 @@ export function Chat({ view, log }: { view: MatchView; log: GameEvent[] }) {
           </Button>
         ))}
       </div>
-      <div className="max-h-56 space-y-1 overflow-y-auto rounded-2xl border-2 border-ink bg-white/60 p-2 text-ink">
+      <div className={`${compact ? "max-h-24" : "max-h-56"} space-y-1 overflow-y-auto rounded-2xl border-2 border-ink bg-white/60 p-2 text-ink`}>
         {messages.length === 0 && <p className="text-sm">Aún no hay mensajes.</p>}
         {messages.map((m) => (
           <p key={m.seq}><strong>{nick(m.payload.senderId)}:</strong> {m.payload.text}</p>

@@ -59,3 +59,26 @@ body.night {
   width: 100%;
 }
 .target-ring { outline: 5px dashed var(--color-blood); outline-offset: 4px; }
+
+/* Pantalla de juego horizontal: tres columnas a toda la altura, sin scroll de página. */
+@media (min-width: 768px) {
+  .game-grid {
+    display: grid;
+    height: 100dvh;
+    overflow: hidden;
+    grid-template-columns: 260px minmax(0, 1fr) 250px;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+}
+
+/* Pantallas bajas en apaisado (móvil de lado): columnas más estrechas, menos texto y el pueblo más pequeño. */
+@media (max-height: 540px) and (min-width: 768px) {
+  .game-grid { grid-template-columns: 210px minmax(0, 1fr) 190px; gap: 0.4rem; padding: 0.4rem; }
+  .short-hide { display: none !important; }
+  .short-title { font-size: 1.5rem; line-height: 1.1; }
+  .short-chat { max-height: 6.5rem; }
+  .short-actions { max-height: 6.5rem; overflow-y: auto; }
+  .ring-compact { min-height: 0 !important; transform: scale(0.7); transform-origin: center; }
+}

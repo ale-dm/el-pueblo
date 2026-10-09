@@ -1,0 +1,49 @@
+import { useState } from "react";
+import type { MatchView } from "../types.js";
+import { ROLE_NAMES, roleNameEs } from "../lib/roles.js";
+import { Card } from "../ui/primitives.js";
+
+/** Lista de vivos (y cementerio), con su número de asiento: "All Live Townies" en Town of Salem. */
+export function LiveList({ view, className = "" }: { view: MatchView; className?: string }) {
+  const [tab, setTab] = useState<"live" | "dead">("live");
+  const live = view.players.filter((p) => p.status === "alive");
+  const dead = view.players.filter((p) => p.status !== "alive");
+  const shown = tab === "live" ? live : dead;
+
+  return (
+    <Card className={`flex min-h-0 flex-col p-0 ${className}`}>
+      <div role="tablist" className="grid grid-cols-2 border-b-4 border-ink">
+        {(["live", "dead"] as const).map((t) => (
+          <button
+            key={t}
+            role="tab"
+            aria-selected={tab === t}
+            type="button"
+            onClick={() => setTab(t)}
+            className={`px-2 py-2 font-display text-base uppercase ${tab === t ? "bg-sun" : "bg-paper opacity-70"}`}
+          >
+            {t === "live" ? `Vivos (${live.length})` : `Muertos (${dead.length})`}
+          </button>
+        ))}
+      </div>
+      <ul className="min-h-0 flex-1 space-y-1 overflow-y-auto p-2">
+        {shown.map((p) => {
+          const role = p.id === view.me.id ? roleNameEs(view.me.roleKey) : p.revealedRoleKey ? ROLE_NAMES[p.revealedRoleKey]?.es ?? p.revealedRoleKey : null;
+          return (
+            <li key={p.id} className="flex items-center gap-2 rounded-xl border-2 border-ink bg-white/70 px-2 py-1">
+              <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-sun font-display text-sm">
+                {p.seat}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate font-semibold">{p.nick}{p.id === view.me.id ? " (tú)" : ""}</span>
+                {role && <span className={`block truncate text-xs ${p.ally ? "text-mafia" : "opacity-80"}`}>{role}</span>}
+              </span>
+              {p.isBot && <span className="text-[10px] font-semibold">BOT</span>}
+            </li>
+          );
+        })}
+        {shown.length === 0 && <li className="text-sm">Nadie por aquí.</li>}
+      </ul>
+    </Card>
+  );
+}
