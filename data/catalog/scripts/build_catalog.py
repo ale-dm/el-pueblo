@@ -34,7 +34,8 @@ for r in src:
         "faction_key": r["faction"].lower(),
         "alignment_key": slug(al) if al else None,
         "role_type": r.get("type"),
-        "is_unique": bool(re.search(r"Unique", r.get("type") or "", re.I)),
+        # "Non-unique" también contiene "unique": la wiki marca así a 23 roles MVP.
+        "is_unique": bool(re.search(r"(?<!Non-)\bUnique\b", r.get("type") or "", re.I)),
         "priority": first_int(r.get("priority")),
         "attack": field(r.get("attributes"), "Attack"),
         "defense": field(r.get("attributes"), "Defense"),
@@ -46,7 +47,8 @@ for r in src:
         "sheriff_result": r.get("sheriff_result"), "investigator_result": r.get("investigator_result"),
         "consigliere_result": r.get("consigliere_result"),
         "attribute_lines": [l.strip() for l in (r.get("attributes_text") or "").split("\n") if l.strip()],
-        "mvp": r["faction"] in ("Mafia", "Town"),
+        # Sin Vampiros en el MVP, el Vampire Hunter no tiene acción: fuera del MVP.
+        "mvp": r["faction"] in ("Mafia", "Town") and key != "vampire_hunter",
         "icon_file": ("roles/img/" + r["images"]["icon"]) if r.get("images", {}).get("icon") else None,
         "skin_file": ("roles/img/" + r["images"]["skin"]) if r.get("images", {}).get("skin") else None,
         "raw": r,
