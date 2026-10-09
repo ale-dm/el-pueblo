@@ -1,5 +1,6 @@
 import type { MatchView } from "../types.js";
 import { ROLE_BLURB, alignmentLabel, levelEs, roleName } from "../lib/roles.js";
+import { roleIconUrl, roleSkinUrl } from "../lib/roleImages.js";
 import { abilityLabel } from "../lib/text.js";
 import { Card, Pill } from "../ui/primitives.js";
 
@@ -30,11 +31,17 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
   const flags = Object.keys(me.flags).filter((f) => FLAG_TEXT[f]);
   const attack = levelEs(me.attack);
   const defense = levelEs(me.defense);
+  const icon = roleIconUrl(me.roleKey);
+  const skin = roleSkinUrl(me.roleKey);
 
   return (
     <Card className={`w-full transition-colors ${dead ? "bg-red-100" : ""}`}>
+      {skin && <img src={skin} alt={`Ilustración de ${name}`} className="mb-3 h-40 w-full rounded-xl border-4 border-ink object-cover" />}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className={`min-w-0 font-display text-xl ${dead ? "line-through decoration-blood decoration-4" : ""}`}>{name}</h2>
+        <div className="flex min-w-0 items-center gap-2">
+          {icon && <img src={icon} alt="" className="size-10 shrink-0" />}
+          <h2 className={`min-w-0 font-display text-xl ${dead ? "line-through decoration-blood decoration-4" : ""}`}>{name}</h2>
+        </div>
         {faction && <Pill className={me.faction === "mafia" ? "bg-mafia text-paper" : "bg-town text-paper"}>{faction}</Pill>}
       </div>
 

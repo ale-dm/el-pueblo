@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import type { MatchView } from "../types.js";
 import { ROLE_BLURB, ROLE_NAMES, roleName } from "../lib/roles.js";
+import { roleIconUrl, roleSkinUrl } from "../lib/roleImages.js";
 import { Button, Card } from "../ui/primitives.js";
 
 /** Clave por partida: la revelación se enseña una sola vez en este navegador. */
@@ -71,6 +72,8 @@ export function RoleReveal({ view }: { view: MatchView }) {
   const target = Math.max(0, unique.indexOf(view.me.roleKey ?? ""));
   const mine = roleName(view.me.roleKey) ?? view.me.roleName ?? "";
   const faction = view.me.faction === "mafia" ? "Mafia" : "Pueblo";
+  const icon = roleIconUrl(view.me.roleKey);
+  const skin = roleSkinUrl(view.me.roleKey);
 
   if (!open) return null;
   const close = () => {
@@ -85,16 +88,20 @@ export function RoleReveal({ view }: { view: MatchView }) {
         {spinning && names.length > 0 ? (
           <RoleWheel names={names} target={target} onDone={() => setSpinning(false)} />
         ) : (
-          <motion.p
-            initial={{ scale: 0.6, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="my-4 font-display text-5xl"
-          >
-            {mine}
-          </motion.p>
+          <>
+            {icon && <img src={icon} alt="" className="mx-auto mt-4 size-20" />}
+            <motion.p
+              initial={{ scale: 0.6, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="my-4 font-display text-5xl"
+            >
+              {mine}
+            </motion.p>
+          </>
         )}
         {!spinning && (
           <>
+            {skin && <img src={skin} alt={`Ilustración de ${mine}`} className="mx-auto mb-3 h-44 w-full rounded-xl border-4 border-ink object-cover" />}
             <p className="font-semibold">Bando: {faction}</p>
             {view.me.roleKey && ROLE_BLURB[view.me.roleKey] && <p className="mt-2 text-sm">{ROLE_BLURB[view.me.roleKey]}</p>}
             <Button className="mt-5 w-full" onClick={close}>Entrar al pueblo</Button>

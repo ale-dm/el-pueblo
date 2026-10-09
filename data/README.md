@@ -10,6 +10,9 @@ Alcance actual: facción **Mafia** y **Town**. Se incluyen también los roles **
   `attributes_text`, `special`, `action_other`, `action_none`, `win_with`, `must_kill`, `restrictions`, `uses`,
   `sheriff_result`, `investigator_result`, `consigliere_result`, `images`.
 - `roles/img/` — iconos `*_icon.png` (49/49) y skins `*_skin.png` (45/49). Ambusher, Blackmailer, Framer y Survivor no tienen skin en la wiki.
+  Son arte de la wiki y la web lo reutiliza **con permiso del equipo**. Solo se copian a `apps/web/public/roles/img/` los 55 archivos de los roles del MVP
+  (`data/roles/img` está excluido de la imagen Docker). El mapa rol → archivo está en `apps/web/src/lib/roleImages.ts`.
+  Aviso: los `.png` son en realidad WebP (`file`); los navegadores los leen por contenido, así que no se han renombrado.
 - `game_config.json` — fases y tiempos por modo, reglas de votación, modos de Mafia y restricciones del modo Custom.
 - `reference/wiki/` — clases de alineamiento (las 12 categorías de rol: Mafia Killing, Town Protective...), `Alignments (ToS)`,
   `Attributes`, `Abilities`, `Factions`, `Unique Role`, `Keywords`, `Outlier`, `Glossary of Abbreviations`, `Death (state)`, etc.
