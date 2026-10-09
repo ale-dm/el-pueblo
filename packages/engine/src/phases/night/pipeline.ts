@@ -7,6 +7,7 @@ import type { RoleHandler } from "../../roles/types.js";
 import { handlerOf, isAlive, playerOf } from "../context.js";
 import { promotionEvents } from "../promotion.js";
 import { zombieAbilityOf } from "../../roles/town/retributionist.js";
+import { investigatorGroupOf } from "../../rules/investigation.js";
 
 /**
  * Resolución de la noche, en este orden fijo:
@@ -441,9 +442,12 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         result = sus ? "suspicious" : "innocent";
         break;
       }
-      case "alignment": {
-        const key = shown?.roleKey ? catalog.roles.get(shown.roleKey)?.alignmentKey : null;
-        result = isFramed ? "mafia_deception" : key ?? "unknown";
+      case "group": {
+        // Wiki (Investigator.md, Mechanics): Frames > Douses > Disguises > resultado normal. Encuadrado: el grupo
+        // "Framer, Vampire, or Jester". Si el rol no está en la tabla Classic, el resultado queda vacío.
+        const groupRole = isFramed ? "framer" : shown?.roleKey ?? null;
+        const group = groupRole ? investigatorGroupOf(groupRole) : null;
+        result = group ? group.join(",") : "";
         break;
       }
       case "role":

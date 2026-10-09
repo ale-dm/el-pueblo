@@ -1,6 +1,6 @@
 import type { GameEvent, Phase } from "../types.js";
 import { HYPNOSIS_TEXT, abilityLabel } from "./text.js";
-import { alignmentLabel, roleName } from "./roles.js";
+import { ROLE_NAMES, roleName } from "./roles.js";
 
 /**
  * Registro de la partida, como en Town of Salem: separadores "Día N" / "Noche N", lo que pasó
@@ -57,9 +57,22 @@ const NOTICE_TEXT: Record<string, string> = {
   transported: "Fuiste transportado a otro lugar.",
 };
 
-/** Grupo que revela el Investigador: "Pueblo (Apoyo)", "Mafia (Engaño)"… */
-function alignmentEs(key: string): string {
-  return alignmentLabel(key) ?? (key === "unknown" ? "desconocido" : key.replace(/_/g, " "));
+/** Nombre en inglés de un rol (como en Town of Salem); si no está en ROLE_NAMES, la clave con mayúsculas. */
+function roleNameEn(key: string): string {
+  return ROLE_NAMES[key] ?? key.split("_").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
+
+/**
+ * Grupo que revela el Investigador (wiki: Investigator.md, "Classic Investigator Results"): "P3 podría ser un
+ * Vigilante, Veteran, Mafioso o Ambusher." Los nombres de rol van en inglés; el resto, en español.
+ * Vacío: el rol no tiene fila en la tabla Classic (Crusader, Psychic, Tracker, Trapper; SKIPPED).
+ */
+export function groupText(result: string, target: string): string {
+  const keys = result ? result.split(",") : [];
+  if (keys.length === 0) return `El resultado de ${target} no está definido en la tabla Classic.`;
+  const names = keys.map(roleNameEn);
+  const list = names.length > 1 ? `${names.slice(0, -1).join(", ")} o ${names[names.length - 1]}` : names[0];
+  return `${target} podría ser un ${list}.`;
 }
 
 /** Espionaje del Spy (wiki: Spy.md:189-205): una frase por lo que recibió el objetivo esta noche. */
@@ -81,8 +94,8 @@ export function investigationText(p: Record<string, any>, nick: (id: string) => 
   switch (p.check) {
     case "suspicious":
       return p.result === "suspicious" ? `${t} parece sospechoso.` : `${t} parece inocente.`;
-    case "alignment":
-      return `${t} pertenece al bando ${alignmentEs(String(p.result))}.`;
+    case "group":
+      return groupText(String(p.result), t);
     case "role":
       return `${t} es ${p.result}.`;
     case "visitors": {

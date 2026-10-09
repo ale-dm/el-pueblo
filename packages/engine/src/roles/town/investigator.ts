@@ -9,10 +9,9 @@ export const handler: RoleHandler = {
   priority: 4,
   nightAbilities: [{ key: "investigate", target: "player", usesLimit: null }],
   dayAbilities: [],
-  gaps: "Muestra la categoría (alineamiento) del objetivo, no dos roles posibles.",
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {
-      case "investigate": return targetId ? [{ kind: "investigate", actorId: actor.id, targetId, check: "alignment" }] : [];
+      case "investigate": return targetId ? [{ kind: "investigate", actorId: actor.id, targetId, check: "group" }] : [];
       default: return [];
     }
   },

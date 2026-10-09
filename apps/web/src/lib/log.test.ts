@@ -128,6 +128,20 @@ describe("registro estilo Town of Salem", () => {
     expect(text).toContain("Caro es Godfather.");
   });
 
+  it("el Investigador ve el grupo de roles de su objetivo, con nombres de rol en inglés (wiki: Investigator)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 1 }),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "doctor,disguiser,serial_killer", check: "group" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "c", result: "framer,vampire,jester", check: "group" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "c", result: "", check: "group" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 2 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Bea podría ser un Doctor, Disguiser o Serial Killer.");
+    expect(text).toContain("Caro podría ser un Framer, Vampire o Jester.");
+    expect(text).toContain("El resultado de Caro no está definido en la tabla Classic.");
+  });
+
   it("la hipnosis llega al amanecer; la falsificación y el ascenso se cuentan al momento", () => {
     seq = 0;
     const text = texts(buildLog([

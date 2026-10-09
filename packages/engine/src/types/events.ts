@@ -39,7 +39,7 @@ export type GameEventPayloads = {
    * medium_talking: un Médium le habla esta noche; un aviso por cada Médium (Medium.md:209, 213).
    */
   "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" };
-  /** check: tipo de comprobación (suspicious, alignment, role, visitors, targets, mafiaVisits, vision). */
+  /** check: tipo de comprobación (suspicious, group, role, visitors, targets, mafiaVisits, vision). group: claves de rol del grupo (wiki: Investigator). */
   /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic).
    * more: el Lookout sabe que hubo más visitantes de los tres que identifica (wiki: Lookout). */
   "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string; check: string; side?: "mafia" | "town"; more?: boolean };
