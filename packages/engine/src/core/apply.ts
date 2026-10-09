@@ -47,7 +47,8 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
         case "night":
           return {
             ...base,
-            nightActions: {},
+            // Se borran las acciones de la noche anterior; la sesión de Médium abierta de día sobrevive al amanecer.
+            nightActions: Object.fromEntries(Object.entries(s.nightActions).filter(([, a]) => a.ability === "seance")),
             defendantId: null,
             players: s.players.map((p) => ({ ...p, flags: without(p.flags, "blackmailed") })),
           };

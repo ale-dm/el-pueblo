@@ -34,7 +34,8 @@ function targetsNeeded(view: MatchView): { selectable: boolean; max: number; rai
       raise: usable.some((a) => a.key === "raise"),
     };
   }
-  if (me.status === "alive" && ["day_1", "discussion"].includes(view.phase) && me.dayAbilities.some((a) => a.target === "player")) {
+  // Vivos y Médiums muertos eligen objetivo de día (las habilidades de día ya salen filtradas por vida).
+  if (["day_1", "discussion"].includes(view.phase) && me.dayAbilities.some((a) => a.target === "player")) {
     return { selectable: true, max: 1, raise: false };
   }
   return { selectable: false, max: 0, raise: false };

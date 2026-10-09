@@ -4,7 +4,7 @@ import type { EventInput } from "../types/events.js";
 import type { GameState, PlayerState } from "../types/state.js";
 import type { Rng } from "../core/rng.js";
 import { trialCandidate } from "../rules/voting.js";
-import { phaseStarted, playerOf, votingPlayers, withVictory } from "./context.js";
+import { isAlive, phaseStarted, playerOf, votingPlayers, withVictory } from "./context.js";
 import { resolveNight } from "./night/pipeline.js";
 import { handlerOf } from "./context.js";
 import { promotionEvents } from "./promotion.js";
@@ -14,12 +14,23 @@ const MAX_TRIALS_PER_DAY = 3;
 /** Peso de un voto: el Mayor revelado vale tres (wiki: Mayor), en votación y en juicio. */
 const weightOf = (p: PlayerState | undefined): number => (p?.flags.mayorRevealed ? 3 : 1);
 
+/**
+ * Empieza la noche. Quien tiene una sesión de Médium abierta de día se entera al empezar (wiki: Medium.md:209,
+ * "Your target will start the Night with the message"), uno por Médium (Medium.md:211).
+ */
+function nightStart(s: GameState): EventInput[] {
+  const notices = Object.entries(s.nightActions)
+    .filter(([, a]) => a.ability === "seance" && a.targetId !== null && isAlive(playerOf(s, a.targetId)))
+    .map(([, a]): EventInput => ({ type: "night.notice", payload: { playerId: a.targetId!, notice: "medium_talking" } }));
+  return [phaseStarted("night", s.dayNumber), ...notices];
+}
+
 /** Avance por tiempo: cada fase termina cuando vence su temporizador. Las transiciones están en docs/ENGINE.md. */
 export function onTimerExpired(s: GameState, catalog: Catalog, rng: Rng): Result<EventInput[]> {
   switch (s.phase) {
     case "day_1":
       // Día 1: solo charla (15 s). No hay votación ni juicios; después, noche 1 (wiki: Phases, "Day (Only on D1)").
-      return ok([phaseStarted("night", s.dayNumber)]);
+      return ok(nightStart(s));
     case "discussion":
       return ok([phaseStarted("voting", s.dayNumber)]);
     case "voting":
@@ -29,7 +40,7 @@ export function onTimerExpired(s: GameState, catalog: Catalog, rng: Rng): Result
     case "judgement":
       return ok(resolveJudgement(s));
     case "last_words":
-      return ok([phaseStarted("night", s.dayNumber)]);
+      return ok(nightStart(s));
     case "night":
       return ok(resolveNightPhase(s, catalog, rng));
     case "ended":
@@ -47,7 +58,7 @@ function resolveVoting(s: GameState): EventInput[] {
   if (candidate !== null && s.trialsToday < MAX_TRIALS_PER_DAY) {
     return [{ type: "trial.started", payload: { defendantId: candidate } }, phaseStarted("defense", s.dayNumber)];
   }
-  return [phaseStarted("night", s.dayNumber)];
+  return nightStart(s);
 }
 
 function resolveJudgement(s: GameState): EventInput[] {
@@ -74,7 +85,7 @@ function resolveJudgement(s: GameState): EventInput[] {
     return [...events, phaseStarted("last_words", s.dayNumber)];
   }
   // Inocente o empate: el día sigue con el tiempo restante, salvo que se agoten los juicios.
-  if (s.trialsToday >= MAX_TRIALS_PER_DAY) return [...events, phaseStarted("night", s.dayNumber)];
+  if (s.trialsToday >= MAX_TRIALS_PER_DAY) return [...events, ...nightStart(s)];
   return [...events, phaseStarted("voting", s.dayNumber)];
 }
 

@@ -27,6 +27,8 @@ export interface DayAbility {
   /** Una vez por día. */
   oncePerDay: boolean;
   usesLimit: number | null;
+  /** Solo la puede usar un jugador muerto (Medium: abre su sesión de día para la noche siguiente). */
+  deadOnly?: boolean;
 }
 
 export interface ResolveContext {

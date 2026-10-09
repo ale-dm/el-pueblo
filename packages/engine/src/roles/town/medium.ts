@@ -7,9 +7,10 @@ export const handler: RoleHandler = {
   name: "Medium",
   faction: "town",
   priority: 1,
-  // Muerto, habla una vez en toda la partida con un vivo durante la noche (wiki: Medium).
-  // La conversación la gestiona el canal "seance" del chat; la habilidad no tiene efecto en la resolución.
-  nightAbilities: [{ key: "seance", target: "player", usesLimit: 1, deadOnly: true }],
-  dayAbilities: [],
+  // Muerto, elige un vivo de día para hablar con él solo esa noche (wiki: Medium.md:203, "during the Day ...
+  // to talk to them for that Night only"), una vez en toda la partida (Medium.md:205). La conversación la
+  // gestiona el canal "seance" del chat; la habilidad no tiene efecto en la resolución.
+  nightAbilities: [],
+  dayAbilities: [{ key: "seance", target: "player", oncePerDay: false, usesLimit: 1, deadOnly: true }],
   resolveNight: (): Effect[] => [],
 };

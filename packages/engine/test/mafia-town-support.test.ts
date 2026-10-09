@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { game, ofType, rejected, step, timer } from "./helpers/game.js";
 import type { GameState } from "../src/types/state.js";
+import { ROLE_HANDLERS } from "../src/roles/registry.js";
 
 const kills = (events: ReturnType<typeof step>["events"]) =>
   ofType(events, "player.killed").map((e) => e.payload.playerId);
@@ -26,24 +27,42 @@ describe("Mayor: su voto cuenta tres también en el juicio (wiki: Mayor)", () =>
 });
 
 describe("Medium: solo habla desde el más allá", () => {
+  it("la sesión es una habilidad de día de muerto, no de noche (wiki: Medium.md:203, 205)", () => {
+    const handler = ROLE_HANDLERS.get("medium")!;
+    expect(handler.nightAbilities).toEqual([]);
+    expect(handler.dayAbilities).toEqual([{ key: "seance", target: "player", oncePerDay: false, usesLimit: 1, deadOnly: true }]);
+  });
+
   const medium = (dead: boolean): GameState => {
     const s = game(["medium", "godfather", "investigator", "sheriff"]);
     if (dead) s.players[0] = { ...s.players[0]!, status: "dead" };
     return s;
   };
 
-  it("un vivo no puede usar la sesión de Médium", () => {
-    expect(rejected(medium(false), { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null })).toMatch(/Solo los muertos/);
+  it("un vivo no puede abrir la sesión de Médium: no es una habilidad de vivo ni de noche", () => {
+    expect(rejected({ ...medium(false), phase: "discussion", dayNumber: 2 }, { type: "day.action", actorId: "p1", ability: "seance", targetId: "p3" })).toMatch(/Solo los muertos/);
+    expect(rejected(medium(false), { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null })).toMatch(/no tiene esa habilidad/);
   });
 
-  it("un muerto puede abrir una sesión con un vivo, y solo una vez", () => {
-    let s = medium(true);
-    s = step(s, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null }).state;
-    expect(step(s, { type: "chat.send", senderId: "p1", channel: "seance", text: "¿Quién me mató?" }).events).toHaveLength(2);
-    s = step(s, timer()).state;
+  it("un muerto elige su sesión de día, para esa noche solo, y una vez en la partida (wiki: Medium.md:203, 205)", () => {
+    const day = { ...medium(true), phase: "discussion" as const, dayNumber: 2 };
+    let s = step(day, { type: "day.action", actorId: "p1", ability: "seance", targetId: "p3" }).state;
     expect(s.players[0]!.usesLeft.seance).toBe(0);
-    s = { ...s, phase: "night", dayNumber: 2 };
-    expect(rejected(s, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null })).toMatch(/usos/);
+    expect(rejected(s, { type: "day.action", actorId: "p1", ability: "seance", targetId: "p2" })).toMatch(/usos/);
+    // De día aún no hay sesión: se abre al empezar la noche siguiente.
+    expect(rejected(s, { type: "chat.send", senderId: "p1", channel: "seance", text: "hola" })).toMatch(/No hay ninguna sesión/);
+    s = step({ ...s, phase: "voting" }, timer()).state;
+    expect(s.phase).toBe("night");
+    expect(step(s, { type: "chat.send", senderId: "p1", channel: "seance", text: "¿Quién me mató?" }).events).toHaveLength(2);
+    // Al amanecer la sesión se cierra.
+    s = step(s, timer()).state;
+    expect(rejected(s, { type: "chat.send", senderId: "p1", channel: "seance", text: "hola" })).toMatch(/No hay ninguna sesión/);
+  });
+
+  it("un vivo que habla con el Médium la noche siguiente no cambia la sesión de día", () => {
+    const day = { ...medium(true), phase: "discussion" as const, dayNumber: 2 };
+    const s = step(day, { type: "day.action", actorId: "p1", ability: "seance", targetId: "p3" }).state;
+    expect(rejected({ ...s, phase: "night" }, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p2", secondTargetId: null })).toMatch(/no tiene esa habilidad/);
   });
 });
 
@@ -77,13 +96,16 @@ describe("Medium: habla con los muertos y avisa a su objetivo (wiki: Medium)", (
     expect(rejected(s, { type: "chat.send", senderId: "p1", channel: "dead", text: "hola" })).toMatch(/Encarcelado/);
   });
 
-  it("el objetivo de una sesión de Médium recibe el aviso al empezar la noche", () => {
-    const s = game(["medium", "godfather", "investigator", "sheriff"], { phase: "night", dayNumber: 2 });
+  it("el objetivo de una sesión de Médium recibe el aviso al empezar la noche, no al amanecer (wiki: Medium.md:209)", () => {
+    const s = game(["medium", "godfather", "investigator", "sheriff"], { phase: "discussion", dayNumber: 2 });
     s.players[0] = { ...s.players[0]!, status: "dead" };
-    const { events } = step(step(s, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null }).state, timer());
-    const notices = ofType(events, "night.notice").filter((e) => e.payload.notice === "medium_talking");
+    const opened = step(s, { type: "day.action", actorId: "p1", ability: "seance", targetId: "p3" }).state;
+    const start = step({ ...opened, phase: "voting" }, timer());
+    const notices = ofType(start.events, "night.notice").filter((e) => e.payload.notice === "medium_talking");
     expect(notices.map((e) => e.payload.playerId)).toEqual(["p3"]);
     expect(notices[0]!.audiencePlayerId).toBe("p3");
+    const dawn = step(start.state, timer());
+    expect(ofType(dawn.events, "night.notice").filter((e) => e.payload.notice === "medium_talking")).toHaveLength(0);
   });
 });
 
@@ -276,36 +298,36 @@ describe("Retributionist: el zombi trabaja para el Retributionist (wiki: Retribu
 });
 
 describe("Varios Médiums (wiki: Medium.md:207, 211)", () => {
-  // p1 y p2 son Médiums muertos que hablan con p3 (vivo).
-  const twoMediums = (): GameState => {
-    let s = game(["medium", "medium", "godfather", "investigator"], { phase: "night", dayNumber: 2 });
-    s.players[0] = { ...s.players[0]!, status: "dead" };
-    s.players[1] = { ...s.players[1]!, status: "dead" };
-    s = step(s, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null }).state;
-    return step(s, { type: "night.action", actorId: "p2", ability: "seance", targetId: "p3", secondTargetId: null }).state;
+  /** Médiums muertos (p1, p2) que abren sesión de día con p3, y se pasa a la noche. */
+  const toNight = (mediums: number) => {
+    const roles = mediums === 2 ? ["medium", "medium", "godfather", "investigator"] : ["medium", "godfather", "investigator"];
+    let s = game(roles, { phase: "discussion", dayNumber: 2 });
+    for (let i = 0; i < mediums; i++) s.players[i] = { ...s.players[i]!, status: "dead" };
+    for (let i = 0; i < mediums; i++) s = step(s, { type: "day.action", actorId: `p${i + 1}`, ability: "seance", targetId: "p3" }).state;
+    return step({ ...s, phase: "voting" }, timer());
   };
 
   it("un Médium habla y lo oyen el vivo y el otro Médium", () => {
-    const events = step(twoMediums(), { type: "chat.send", senderId: "p1", channel: "seance", text: "¿Quién me mató?" }).events;
+    const { state } = toNight(2);
+    const events = step(state, { type: "chat.send", senderId: "p1", channel: "seance", text: "¿Quién me mató?" }).events;
     expect(events.map((e) => e.audiencePlayerId).sort()).toEqual(["p1", "p2", "p3"]);
   });
 
   it("el vivo que recibe a varios Médiums les responde a todos", () => {
-    const events = step(twoMediums(), { type: "chat.send", senderId: "p3", channel: "seance", text: "Sí." }).events;
+    const { state } = toNight(2);
+    const events = step(state, { type: "chat.send", senderId: "p3", channel: "seance", text: "Sí." }).events;
     expect(events.map((e) => e.audiencePlayerId).sort()).toEqual(["p1", "p2", "p3"]);
   });
 
   it("el vivo recibe un aviso por cada Médium que le habla", () => {
-    const { events } = step(twoMediums(), timer());
+    const { events } = toNight(2);
     const notices = ofType(events, "night.notice").filter((e) => e.payload.notice === "medium_talking");
     expect(notices.map((e) => e.payload.playerId)).toEqual(["p3", "p3"]);
   });
 
   it("con un solo Médium no cambia nada: dos copias, para él y para el vivo", () => {
-    const s = game(["medium", "godfather", "investigator"], { phase: "night", dayNumber: 2 });
-    s.players[0] = { ...s.players[0]!, status: "dead" };
-    const open = step(s, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null }).state;
-    const events = step(open, { type: "chat.send", senderId: "p1", channel: "seance", text: "hola" }).events;
+    const { state } = toNight(1);
+    const events = step(state, { type: "chat.send", senderId: "p1", channel: "seance", text: "hola" }).events;
     expect(events.map((e) => e.audiencePlayerId).sort()).toEqual(["p1", "p3"]);
   });
 });

@@ -30,8 +30,8 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
   };
 
   if (view.phase === "ended") return null;
-  // Un muerto solo actúa si tiene habilidades de muerto (Medium) y es de noche.
-  const ghostActions = !alive && view.phase === "night" && me.nightAbilities.length > 0;
+  // Un muerto solo actúa si tiene habilidades de muerto (Medium): de noche, o de día para abrir su sesión (wiki: Medium.md:203).
+  const ghostActions = !alive && (view.phase === "night" ? me.nightAbilities.length > 0 : DAY_PHASES.includes(view.phase) && me.dayAbilities.length > 0);
   if (!alive && !ghostActions) {
     return (
       <Card>
@@ -81,9 +81,7 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
     const chosen = me.nightAction;
     status = chosen
       ? `Has decidido ${abilityLabel(chosen.ability)}${chosen.targetId ? ` a ${nick(chosen.targetId)}` : ""}${chosen.secondTargetId ? ` y a ${nick(chosen.secondTargetId)}` : ""}${chosen.choice ? ` (${choiceText(chosen.choice)})` : ""} esta noche.`
-      : ghostActions
-        ? "Puedes abrir una sesión con un vivo, una sola vez en la partida."
-        : me.nightAbilities.length ? "Aún no has elegido acción esta noche." : "Esta noche no tienes nada que hacer.";
+      : me.nightAbilities.length ? "Aún no has elegido acción esta noche." : "Esta noche no tienes nada que hacer.";
     for (const ab of me.nightAbilities) {
       if (ab.usesLeft === 0) continue;
       const label = `${abilityLabel(ab.key)}${usesText(ab.usesLeft)}`;
@@ -115,7 +113,13 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
     }
   }
 
-  if (alive && DAY_PHASES.includes(view.phase)) {
+  if (ghostActions && view.phase !== "night") {
+    // Un Medium muerto abre su sesión de día para la noche siguiente, una sola vez en la partida.
+    status = me.nightAction?.targetId
+      ? `Tu sesión es para esta noche con ${nick(me.nightAction.targetId)}.`
+      : "Puedes abrir una sesión con un vivo para esta noche, una sola vez en la partida.";
+  }
+  if ((alive || ghostActions) && DAY_PHASES.includes(view.phase)) {
     for (const ab of me.dayAbilities) {
       if (ab.usesLeft === 0) continue;
       const label = `${abilityLabel(ab.key)}${usesText(ab.usesLeft)}`;

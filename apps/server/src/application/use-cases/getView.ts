@@ -171,8 +171,11 @@ export function getView(deps: GetViewDeps) {
                 deadOnly: a.deadOnly ?? false,
               }))
           : [],
-        dayAbilities: alive && handler
-          ? handler.dayAbilities.map((a) => ({ key: a.key, target: a.target, oncePerDay: a.oncePerDay, usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0 }))
+        // Los vivos tienen sus habilidades de día; los muertos, solo las de muerto (Medium abre su sesión de día).
+        dayAbilities: handler
+          ? handler.dayAbilities
+              .filter((a) => (alive ? !a.deadOnly : a.deadOnly))
+              .map((a) => ({ key: a.key, target: a.target, oncePerDay: a.oncePerDay, usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0 }))
           : [],
       },
     };

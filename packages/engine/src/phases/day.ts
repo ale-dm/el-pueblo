@@ -37,10 +37,12 @@ export function dayAction(
     return err("wrong_phase", "Esta acción solo se usa de día");
   }
   const actor = playerOf(s, actorId);
-  if (!isAlive(actor)) return err("invalid_command", "Solo los vivos pueden actuar");
-  const handler = handlerOf(actor);
+  const handler = actor && handlerOf(actor);
   const def = handler?.dayAbilities.find((a) => a.key === ability);
-  if (!handler || !def) return err("invalid_command", "Tu rol no tiene esa habilidad de día");
+  // Los muertos solo usan habilidades de día de muerto (Medium, wiki: Medium.md:203).
+  if (!def?.deadOnly && !isAlive(actor)) return err("invalid_command", "Solo los vivos pueden actuar");
+  if (!actor || !handler || !def) return err("invalid_command", "Tu rol no tiene esa habilidad de día");
+  if (def.deadOnly && isAlive(actor)) return err("invalid_command", "Solo los muertos pueden usar esa habilidad");
   if (def.usesLimit !== null && (actor.usesLeft[ability] ?? 0) <= 0) {
     return err("invalid_command", "Ya no te quedan usos de esa habilidad");
   }
@@ -61,6 +63,13 @@ export function dayAction(
     events.push({ type: "player.jailed", payload: { jailorId: actorId, playerId: targetId } });
   } else if (ability === "reveal") {
     events.push({ type: "mayor.revealed", payload: { playerId: actorId } });
+  } else if (ability === "seance") {
+    // Wiki (Medium.md:203): la sesión es para la noche siguiente. Se guarda como acción de esa noche; la
+    // noche la conserva y el registro la cierra al resolverla.
+    events.push({
+      type: "night.action.submitted",
+      payload: { actorId, ability, targetId: targetId!, secondTargetId: null, choice: null, mafiaTeam: false, roleKey: actor.roleKey },
+    });
   } else {
     return err("not_implemented", `Habilidad de día "${ability}" pendiente`);
   }

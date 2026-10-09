@@ -22,8 +22,9 @@ export interface BotCommand {
 export function planBotCommands(state: GameState, botIds: ReadonlySet<string>, rng: Rng): BotCommand[] {
   const plan: BotCommand[] = [];
   for (const bot of state.players) {
-    // Los muertos solo actúan de noche, y solo con habilidades de muerto (Medium).
-    if (!botIds.has(bot.id) || (bot.status !== "alive" && state.phase !== "night")) continue;
+    // Los muertos solo actúan con habilidades de muerto (Medium): de noche, y de día para abrir la sesión.
+    const deadWindow = state.phase === "night" || state.phase === "day_1" || state.phase === "discussion";
+    if (!botIds.has(bot.id) || (bot.status !== "alive" && !deadWindow)) continue;
     for (const command of commandsFor(state, bot, rng)) plan.push({ botId: bot.id, command });
   }
   return plan;
@@ -148,6 +149,8 @@ function dayCommands(state: GameState, bot: PlayerState, rng: Rng): Command[] {
   if (!handler) return [];
   const commands: Command[] = [];
   for (const ability of handler.dayAbilities) {
+    // Cada uno usa sus habilidades de día: los vivos las suyas, los muertos solo las de muerto.
+    if (Boolean(ability.deadOnly) !== (bot.status !== "alive")) continue;
     if (rng.next() > DAY_ACTION_CHANCE) continue;
     if (ability.usesLimit !== null && (bot.usesLeft[ability.key] ?? 0) <= 0) continue;
     if (ability.oncePerDay && state.dayActionDay[bot.id] === state.dayNumber) continue;
