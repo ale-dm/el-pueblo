@@ -31,9 +31,12 @@ export interface NightAction {
   choice: string | null;
 }
 
-/** Trampa colocada por un Trapper. Se activa a partir de `readyDay`. */
+/**
+ * Trampa de un Trapper. Con `targetId: null` está construida y lista para colocar (wiki: Trapper.md:213, 252: se
+ * construye una noche y se coloca la siguiente). Colocada, se activa a partir de `readyDay`.
+ */
 export interface TrapState {
-  targetId: PlayerId;
+  targetId: PlayerId | null;
   readyDay: number;
 }
 

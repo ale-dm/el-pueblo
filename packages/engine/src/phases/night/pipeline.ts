@@ -292,6 +292,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const vestNotified = new Set<string>();
   const traps: Array<{ trapperId: string; targetId: string }> = [];
   const dismantles: string[] = [];
+  /** Tramperos que construyen esta noche (efecto "build": pasivo o al desmontar). */
+  const builders: string[] = [];
   const usesSpent: Array<{ playerId: string; ability: string }> = [];
   const disguises = new Map<string, string>();
   const hypnoses: Array<{ targetId: string; message: "attacked" | "protected" | "roleblocked" }> = [];
@@ -354,6 +356,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         case "forge":
           forges.push({ forgerId: e.actorId, targetId: e.targetId, role: e.role });
           break;
+        case "build":
+          builders.push(e.actorId);
+          break;
         default:
           break;
       }
@@ -373,7 +378,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   }
   // Trampas activas (colocadas la noche anterior o antes).
   // Wiki (Trapper.md:223): la trampa es poderosa; se activa con una visita y entonces se retira (Trapper.md:227).
+  /** Trampas que se activan esta noche. */
+  const triggered = new Set<string>();
   for (const [trapperId, trap] of Object.entries(s.traps)) {
+    // Una trampa construida y no colocada (targetId null) no se activa.
+    if (trap.targetId === null) continue;
     if (!isAlive(playerOf(s, trapperId)) || trap.readyDay > s.dayNumber || dismantles.includes(trapperId)) continue;
     const visitors = visitsTo(trap.targetId, trapperId);
     if (visitors.length === 0) continue;
@@ -381,6 +390,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // se elige al azar, como el visitante del Crusader y del Ambusher (Crusader.md:214, Ambusher.md:216).
     const attacker = visitors.length === 1 ? visitors[0]! : rng.shuffle(visitors)[0]!;
     attacks.push({ attackerId: trapperId, victimId: attacker.visitorId, power: 2, cause: "trap" });
+    triggered.add(trapperId);
     // Wiki (Trapper.md:223, 225): la trampa defiende a su objetivo de un ataque directo esta noche, y solo de uno.
     const list = protections.get(trap.targetId) ?? [];
     list.push({ protectorId: trapperId, power: 2, source: "trap" });
@@ -405,6 +415,17 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   }
   for (const trapperId of dismantles) {
     out.push({ type: "trap.removed", payload: { trapperId, reason: "dismantled" } });
+  }
+  // Wiki (Trapper.md:213, 227, 229): al final de la noche, el Trapper vivo y no bloqueado sin trampa puesta ni lista
+  // construye una (lista para colocar la noche siguiente). Con una trampa puesta o lista, no construye otra.
+  const standing = new Map<string, { targetId: string | null; readyDay: number }>(Object.entries(s.traps));
+  for (const id of triggered) standing.delete(id);
+  for (const id of dismantles) standing.delete(id);
+  for (const t of traps) standing.set(t.trapperId, { targetId: t.targetId, readyDay: s.dayNumber + 1 });
+  for (const id of new Set(builders)) {
+    if (!isAlive(playerOf(s, id)) || standing.has(id)) continue;
+    standing.set(id, { targetId: null, readyDay: s.dayNumber + 1 });
+    out.push({ type: "trap.built", payload: { trapperId: id, readyDay: s.dayNumber + 1 } });
   }
   // Wiki (Transporter.md:208): los dos transportados reciben el aviso al terminar la noche.
   for (const [firstId, secondId] of swaps) {

@@ -58,6 +58,8 @@ export type GameEventPayloads = {
   "player.jailed": { jailorId: PlayerId; playerId: PlayerId };
   "mayor.revealed": { playerId: PlayerId };
   "trap.placed": { trapperId: PlayerId; targetId: PlayerId; readyDay: number };
+  /** La trampa queda construida y lista para colocar la noche siguiente (wiki: Trapper.md:159, 213). Solo la ve el Trapper. */
+  "trap.built": { trapperId: PlayerId; readyDay: number };
   /** La trampa se desmonta (el Trapper se elige a sí mismo) o se activa por una visita. */
   "trap.removed": { trapperId: PlayerId; reason: "dismantled" | "triggered" };
   "attack.prevented": { victimId: PlayerId; protectorId: PlayerId };

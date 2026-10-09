@@ -59,10 +59,16 @@ describe("bots: reglas de noche (wiki)", () => {
   });
 
   it("el Trapper bot no se elige a sí mismo para poner una trampa", () => {
-    const s = nightState(["trapper", "investigator", "sheriff"]);
+    // Con la trampa construida (lista para colocar, Trapper.md:252).
+    const s = nightState(["trapper", "investigator", "sheriff"], { traps: { p1: { targetId: null, readyDay: 1 } } });
     const traps = nightCommands(s, "p1").filter((c) => c.ability === "trap");
     expect(traps.length).toBeGreaterThan(0);
     expect(traps.map((c) => c.targetId)).not.toContain("p1");
+  });
+
+  it("el Trapper bot sin trampa construida no pone ninguna (Trapper.md:252)", () => {
+    const s = nightState(["trapper", "investigator", "sheriff"]);
+    expect(nightCommands(s, "p1").filter((c) => c.ability === "trap")).toEqual([]);
   });
 
   it("el Trapper bot con una trampa puesta no pone otra", () => {

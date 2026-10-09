@@ -127,8 +127,9 @@ function targetPlan(
     return { targetId: pick(mafia, rng).id, secondTargetId: pick(innocents, rng).id };
   }
   if (key === "trap") {
-    // Una trampa a la vez: si ya tiene una puesta, no actúa; si no, elige a otro (Trapper).
-    if (state.traps[bot.id]) return null;
+    // Una trampa a la vez: si ya tiene una puesta, no actúa; si la tiene construida, la coloca en otro (Trapper.md:217, 227).
+    const trap = state.traps[bot.id];
+    if (!trap || trap.targetId !== null) return null;
     const others = alivePool.filter((p) => p.id !== bot.id);
     return others.length ? { targetId: pick(others, rng).id, secondTargetId: null } : null;
   }

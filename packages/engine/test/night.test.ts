@@ -5,6 +5,9 @@ import { apply } from "../src/core/apply.js";
 const night = (actorId: string, ability: string, targetId: string | null, secondTargetId: string | null = null) =>
   ({ type: "night.action", actorId, ability, targetId, secondTargetId }) as const;
 
+/** Pasa a la noche siguiente tras resolver la anterior (el estado de prueba no pasa por el día). */
+const nextNight = (state: ReturnType<typeof game>, dayNumber: number) => ({ ...state, phase: "night" as const, dayNumber });
+
 /** Envía las acciones y cierra la noche. Devuelve los eventos de la resolución. */
 function resolve(state: ReturnType<typeof game>, actions: Array<ReturnType<typeof night>>) {
   let s = state;
@@ -306,14 +309,23 @@ describe("noche: jailor y trampero", () => {
     expect(rejected(s, night("p1", "execute", "p2"))).toMatch(/encarcelado/);
   });
 
-  it("la trampa se activa la noche siguiente sobre quien visite a su objetivo", () => {
+  it("la trampa se construye una noche, se coloca la siguiente y se activa al visitar a su objetivo (wiki: Trapper.md:213, 252)", () => {
     let s = game(["trapper", "investigator", "sheriff", "godfather"]);
-    s = resolve(s, [night("p1", "trap", "p2")]).state; // noche 1, termina en discusión del día 2
-    expect(s.traps["p1"]).toEqual({ targetId: "p2", readyDay: 2 });
+    s = resolve(s, []).state; // noche 1: se construye, sin colocar (Trapper.md:213)
+    expect(s.traps["p1"]).toEqual({ targetId: null, readyDay: 2 });
     s = step(s, timer()).state; // discusión → votación
     s = step(s, timer()).state; // votación → noche 2
+    const placed = resolve(s, [night("p1", "trap", "p2")]); // noche 2: se coloca (Trapper.md:217)
+    expect(placed.state.traps["p1"]).toEqual({ targetId: "p2", readyDay: 3 });
+    s = step(placed.state, timer()).state; // discusión → votación
+    s = step(s, timer()).state; // votación → noche 3
     const { events } = resolve(s, [night("p3", "interrogate", "p2")]);
     expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p3", "trap"]]);
+  });
+
+  it("no se puede colocar la trampa la noche en que se construye: aún no está lista (wiki: Trapper.md:252)", () => {
+    const s = game(["trapper", "sheriff"]);
+    expect(rejected(s, night("p1", "trap", "p2"))).toMatch(/construyendo/);
   });
 
   it("el Trapper solo tiene una trampa a la vez (wiki: Trapper)", () => {
@@ -326,7 +338,8 @@ describe("noche: jailor y trampero", () => {
     const { events, state } = resolve(s, [night("p1", "trap", "p1"), night("p3", "interrogate", "p2")]);
     expect(ofType(events, "player.killed")).toHaveLength(0);
     expect(ofType(events, "trap.removed").map((e) => e.payload.reason)).toEqual(["dismantled"]);
-    expect(state.traps["p1"]).toBeUndefined();
+    // Wiki (Trapper.md:229): se puede reconstruir al instante, para colocar otra la noche siguiente.
+    expect(state.traps["p1"]).toEqual({ targetId: null, readyDay: 3 });
   });
 
   it("una trampa activada es poderosa (mata al Godfather visitante), defiende a su objetivo y se retira", () => {
@@ -335,15 +348,60 @@ describe("noche: jailor y trampero", () => {
     // Wiki (Trapper.md:223): la trampa defiende de un ataque directo; el Godfather muere por la trampa.
     expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p2", "trap"]]);
     expect(ofType(events, "trap.removed").map((e) => e.payload.reason)).toEqual(["triggered"]);
-    expect(state.traps["p1"]).toBeUndefined();
-    // Retirada la trampa, el Trapper puede poner otra (el Godfather ya murió: sigue la partida).
+    // Retirada la trampa, se construye otra al final de la noche (Trapper.md:213): queda lista para la noche siguiente.
+    expect(state.traps["p1"]).toEqual({ targetId: null, readyDay: 3 });
     expect(rejected({ ...state, phase: "night", dayNumber: 3 }, night("p1", "trap", "p4"))).toBeNull();
   });
 
   it("la trampa colocada esta noche no se activa esta noche", () => {
-    const s = game(["trapper", "sheriff"]);
+    const s = game(["trapper", "sheriff"], { dayNumber: 2, traps: { p1: { targetId: null, readyDay: 2 } } });
     const { events } = resolve(s, [night("p1", "trap", "p2"), night("p2", "interrogate", "p1")]);
     expect(ofType(events, "player.killed")).toHaveLength(0);
+  });
+});
+
+describe("Trapper: construcción de la trampa (wiki: Trapper.md:159, 213, 215, 227, 229)", () => {
+  // Trapper.md:159: "Traps take one day to build." Trapper.md:213: "At Night, you will build a Trap if you do not have one ready to be placed."
+  it("bloqueado la noche de construcción no construye: la trampa se hace la noche siguiente (Trapper.md:215)", () => {
+    const s = game(["trapper", "tavern_keeper", "investigator", "godfather"]);
+    // Noche 1: el Tavern Keeper bloquea al Trapper.
+    const night1 = resolve(s, [night("p2", "distract", "p1")]);
+    expect(ofType(night1.events, "night.action.blocked").map((e) => e.payload.actorId)).toContain("p1");
+    expect(ofType(night1.events, "trap.built")).toHaveLength(0);
+    expect(night1.state.traps["p1"]).toBeUndefined();
+    // Noche 2: sin bloqueo, la construye; queda lista para colocar la noche 3.
+    const night2 = resolve(nextNight(night1.state, 2), []);
+    expect(night2.state.traps["p1"]).toEqual({ targetId: null, readyDay: 3 });
+  });
+
+  it("con la trampa puesta no se construye otra: solo hay una a la vez (Trapper.md:227)", () => {
+    const s = game(["trapper", "investigator", "sheriff", "godfather"], { dayNumber: 2, traps: { p1: { targetId: "p2", readyDay: 2 } } });
+    const { state, events } = resolve(s, []);
+    expect(ofType(events, "trap.built")).toHaveLength(0);
+    expect(state.traps["p1"]).toEqual({ targetId: "p2", readyDay: 2 });
+  });
+
+  it("una trampa lista no se construye dos veces (no hay dos trampas a la vez, Trapper.md:227)", () => {
+    const s = game(["trapper", "investigator", "sheriff", "godfather"], { dayNumber: 2, traps: { p1: { targetId: null, readyDay: 2 } } });
+    const { state, events } = resolve(s, []);
+    expect(ofType(events, "trap.built")).toHaveLength(0);
+    expect(state.traps["p1"]).toEqual({ targetId: null, readyDay: 2 });
+  });
+
+  it("desmontar deja la trampa lista la misma noche, para colocarla la siguiente (Trapper.md:229)", () => {
+    const s = game(["trapper", "investigator", "sheriff", "godfather"], { dayNumber: 2, traps: { p1: { targetId: "p2", readyDay: 2 } } });
+    const { state, events } = resolve(s, [night("p1", "trap", "p1")]);
+    expect(ofType(events, "trap.removed").map((e) => e.payload.reason)).toEqual(["dismantled"]);
+    expect(ofType(events, "trap.built")).toHaveLength(1);
+    expect(state.traps["p1"]).toEqual({ targetId: null, readyDay: 3 });
+    // Y la noche siguiente la coloca en otro.
+    expect(rejected({ ...state, phase: "night", dayNumber: 3 }, night("p1", "trap", "p4"))).toBeNull();
+  });
+
+  it("un Trapper bloqueado no desmonta: la trampa sigue puesta (Trapper.md:229)", () => {
+    const s = game(["trapper", "tavern_keeper", "investigator", "godfather"], { dayNumber: 2, traps: { p1: { targetId: "p3", readyDay: 2 } } });
+    const { state } = resolve(s, [night("p2", "distract", "p1"), night("p1", "trap", "p1")]);
+    expect(state.traps["p1"]).toEqual({ targetId: "p3", readyDay: 2 });
   });
 });
 
@@ -565,9 +623,6 @@ describe("Framer: el encuadre dura hasta que un rol investigativo lo investiga (
   // Framer.md:344 (versión 3.3.0): "Frames will now last until an investigative role targets the Framed player instead of
   // only the Night the player is Framed." Framer.md:196: "Framing a target will show them as suspicious until they are investigated."
   // Sheriff.md:275 ("If the Framer does not frame the same target again, your results will change") es consejo anterior a 3.3.0.
-  /** Pasa a la noche siguiente tras resolver la anterior (el estado de prueba no pasa por el día). */
-  const nextNight = (state: ReturnType<typeof game>, dayNumber: number) => ({ ...state, phase: "night" as const, dayNumber });
-
   it("encuadre la noche 1 sin investigar: la noche 2 el Sheriff sigue viendo sospechoso (Framer.md:344)", () => {
     const s = game(["framer", "sheriff", "investigator", "godfather"], { dayNumber: 1 });
     const night1 = resolve(s, [night("p1", "frame", "p3")]).state;

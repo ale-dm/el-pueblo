@@ -30,6 +30,8 @@ export type Effect =
   | { kind: "forge"; actorId: PlayerId; targetId: PlayerId; role: string }
   /** Coloca una trampa en la casa del objetivo; se activa al día siguiente. */
   | { kind: "trap"; actorId: PlayerId; targetId: PlayerId }
+  /** Construye la trampa al final de la noche si no hay ninguna puesta ni lista (wiki: Trapper.md:213). */
+  | { kind: "build"; actorId: PlayerId }
   /** El Veteran se pone en alerta. */
   | { kind: "alert"; actorId: PlayerId }
   /** Sin efecto en el MVP (habilidades fuera de alcance, ver docs/ENGINE.md). */

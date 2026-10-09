@@ -80,11 +80,15 @@ export function nightAction(
     if (playerOf(s, secondTargetId ?? "")?.faction === "mafia") return err("invalid_command", "El disfraz debe ser de alguien que no es de la Mafia");
   }
 
-  // Trampero: una trampa a la vez; elegirse a sí mismo desmonta la que tiene (wiki: Trapper).
+  // Trampero (wiki: Trapper.md:159, 213, 217, 227, 229): colocar exige una trampa construida y lista; una a la vez;
+  // elegirse a sí mismo desmonta la puesta.
   if (ability === "trap") {
+    const trap = s.traps[actorId];
     if (targetId === actorId) {
-      if (!s.traps[actorId]) return err("invalid_command", "No tienes ninguna trampa que desmontar");
-    } else if (s.traps[actorId]) {
+      if (!trap || trap.targetId === null) return err("invalid_command", "No tienes ninguna trampa puesta que desmontar");
+    } else if (!trap) {
+      return err("invalid_command", "Tu trampa aún se está construyendo: estará lista la noche siguiente");
+    } else if (trap.targetId !== null) {
       return err("invalid_command", "Ya tienes una trampa puesta: desmóntala antes de poner otra");
     }
   }
