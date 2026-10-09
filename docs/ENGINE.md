@@ -149,6 +149,7 @@ Estado de cada supuesto según la wiki de Town of Salem (ToS 1).
 - El Jailor puede encarcelar el día 1 (ficha del Jailor).
 - El Mayor puede revelarse el día 1 (logro "Reveal yourself as Mayor on day 1").
 - El Jailor no puede ejecutar en la primera noche (ficha del Jailor). Corregido: el motor lo rechaza.
+- El Jailor que ejecuta a un Town pierde sus ejecuciones restantes (Jailor.md:45, 184, 294). `phases/night/pipeline.ts` marca `noExecute` al Jailor cuando su ejecución mata a un Town, y `phases/night/collect.ts` rechaza las siguientes. Prueba: `packages/engine/test/jailor.test.ts`, "tras ejecutar a un Town, no puede volver a ejecutar". Corregido en el lote 9 (K7): antes figuraba como pendiente.
 
 **Sin verificar (abiertos)**
 - Empate en la votación de juicio = nadie va a juicio (`rules/voting.ts`).
@@ -157,7 +158,6 @@ Estado de cada supuesto según la wiki de Town of Salem (ToS 1).
 - Chat público abierto para todos durante el juicio (`rules/chat.ts`).
 
 **Pendiente de implementar**
-- El Jailor que ejecuta a un Town pierde sus ejecuciones restantes (ficha del Jailor). `roles/town/jailor.ts` no lo implementa.
 - Victoria 1 contra 1 (fuera del MVP).
 
 ## Comandos y eventos de la fase de la vista de juego
