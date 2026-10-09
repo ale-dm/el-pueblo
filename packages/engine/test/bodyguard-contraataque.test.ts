@@ -88,3 +88,14 @@ describe("Bodyguard: contraataque y quién lo impide (wiki: Bodyguard.md:260, 30
     expect(state.players.find((p) => p.id === "p5")!.status).toBe("dead");
   });
 });
+
+describe("Doctor: aviso al curar a un protegido por el Bodyguard (wiki: Doctor.md:259)", () => {
+  it("el Doctor recibe 'Your target was attacked last night!' y el protegido no recibe 'healed' (Doctor.md:259)", () => {
+    // p1 Bodyguard protege a p4; p2 Doctor cura a p4; p3 Godfather ataca a p4. El Bodyguard salva a p4.
+    const s = game(["bodyguard", "doctor", "godfather", "investigator"]);
+    const { events } = resolve(s, [night("p1", "protect", "p4"), night("p2", "heal", "p4"), night("p3", "kill", "p4")]);
+    expect(notices(events)).toContainEqual(["p2", "target_attacked"]);
+    expect(notices(events)).toContainEqual(["p4", "bodyguard_saved"]);
+    expect(notices(events).some(([, n]) => n === "healed")).toBe(false);
+  });
+});

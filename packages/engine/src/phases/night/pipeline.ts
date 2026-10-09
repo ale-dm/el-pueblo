@@ -780,6 +780,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "bodyguard_saved" } });
       // Wiki (Spy.md:235): "Your target was attacked but someone fought off their attacker!"
       tagSpy(atk.victimId, "attack_fought_off");
+      // Wiki (Doctor.md:259): el Doctor que cura a un protegido por el Bodyguard recibe igualmente "Your target was
+      // attacked last night!". El protegido no recibe "healed" (ver arriba). Doctor.md:263 dice lo contrario y se marca
+      // como bug: errata no replicada (ROLES_STATUS.md).
+      const victimDoctor = (protections.get(atk.victimId) ?? []).find((p) => p.source === "doctor");
+      if (victimDoctor) noteHealer(victimDoctor.protectorId);
       // Wiki (Bodyguard.md:210): el contraataque es un ataque Powerful contra el atacante y contra el Bodyguard.
       // Wiki (Bodyguard.md:304; Doctor.md:221): Doctor, Crusader, Potion Master o Guardian Angel pueden impedir que
       // muera el atacante, o el Bodyguard, cada uno por su lado. Aquí solo Doctor y Crusader (MVP); la defensa de la
