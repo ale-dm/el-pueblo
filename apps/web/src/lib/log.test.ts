@@ -480,3 +480,14 @@ describe("mensajes del Bodyguard (wiki: Bodyguard.md:426-438)", () => {
     expect(text([ev("uses.left", { playerId: "b", ability: "vest", left: 0 }, "private")])).toContain("Te quedan 0 chalecos antibalas.");
   });
 });
+
+describe("mensajes del Vigilante (wiki: Vigilante.md:358, 366)", () => {
+  it("la primera noche y el disparo tienen su frase", () => {
+    seq = 0;
+    const items = texts(buildLog([
+      ev("night.notice", { playerId: "a", notice: "vigilante_wait_day" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "vigilante_shot_you" }, "private"),
+    ], ctx({ meId: "a" })));
+    expect(items).toEqual(["Decides esperar un día antes de usar tu pistola.", "¡Te ha disparado un Vigilante!"]);
+  });
+});

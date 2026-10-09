@@ -269,3 +269,23 @@ describe("Bodyguard: avisos de duelo y de chaleco (wiki: Bodyguard.md:426-438)",
     expect(sent(events)).toContainEqual(["p1", "vest_saved"]);
   });
 });
+
+describe("Vigilante: avisos de primera noche y de disparo (wiki: Vigilante.md:358, 366)", () => {
+  const sent = (events: ReturnType<typeof step>["events"]) => ofType(events, "night.notice").map((e) => [e.payload.playerId, e.payload.notice]);
+
+  it("en la primera noche, el Vigilante recibe \"You decide to wait a day before using your gun.\" (Vigilante.md:358, 360)", () => {
+    const { events } = resolve(game(["vigilante", "godfather"]), []);
+    expect(sent(events)).toContainEqual(["p1", "vigilante_wait_day"]);
+  });
+
+  it("después de la primera noche no hay ese aviso", () => {
+    const { events } = resolve(game(["vigilante", "godfather"], { dayNumber: 2 }), []);
+    expect(sent(events).filter(([, n]) => n === "vigilante_wait_day")).toEqual([]);
+  });
+
+  it("al que mata un disparo le llega \"You were shot by a Vigilante!\" (Vigilante.md:366)", () => {
+    const { events } = resolve(game(["vigilante", "investigator", "godfather"], { dayNumber: 2 }), [night("p1", "shoot", "p2")]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p2", "shot"]]);
+    expect(sent(events)).toContainEqual(["p2", "vigilante_shot_you"]);
+  });
+});

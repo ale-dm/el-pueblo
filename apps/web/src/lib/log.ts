@@ -96,6 +96,10 @@ const NOTICE_TEXT: Record<string, string> = {
   bodyguard_killed_you: "¡Te ha matado un Guardaespaldas!",
   // Wiki (Bodyguard.md:430): "You were killed protecting your target!"
   bodyguard_killed_protecting: "¡Has muerto protegiendo a tu objetivo!",
+  // Wiki (Vigilante.md:358): "You decide to wait a day before using your gun."
+  vigilante_wait_day: "Decides esperar un día antes de usar tu pistola.",
+  // Wiki (Vigilante.md:366): "You were shot by a Vigilante!"
+  vigilante_shot_you: "¡Te ha disparado un Vigilante!",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */

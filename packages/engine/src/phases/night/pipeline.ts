@@ -465,6 +465,12 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     standing.set(id, { targetId: null, readyDay: s.dayNumber + 1 });
     out.push({ type: "trap.built", payload: { trapperId: id, readyDay: s.dayNumber + 1 } });
   }
+  // Wiki (Vigilante.md:358, 360): "You decide to wait a day before using your gun." en la primera noche.
+  if (s.dayNumber === 1) {
+    for (const p of s.players) {
+      if (p.roleKey === "vigilante" && isAlive(p)) out.push({ type: "night.notice", payload: { playerId: p.id, notice: "vigilante_wait_day" } });
+    }
+  }
   // Wiki (Transporter.md:208): los dos transportados reciben el aviso al terminar la noche.
   for (const [firstId, secondId] of swaps) {
     for (const id of [firstId, secondId]) {
@@ -628,6 +634,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       }
       // Wiki (Vigilante.md:370): "You could not get over the guilt of killing a town member. You shot yourself!"
       if (cause === "guilt") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "vigilante_guilt_suicide" } });
+      // Wiki (Vigilante.md:366): "You were shot by a Vigilante!" al que mata un disparo del Vigilante.
+      if (cause === "shot") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "vigilante_shot_you" } });
       // Wiki (Veteran.md:478): "You were shot by the Veteran you visited!" al visitante que mata la alerta.
       if (cause === "veteran") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "veteran_shot_you" } });
     };
