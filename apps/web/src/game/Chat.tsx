@@ -4,6 +4,7 @@ import type { Channel, GameEvent, MatchView } from "../types.js";
 import { Button, Card, TextField } from "../ui/primitives.js";
 import { CHANNEL_LABEL } from "../lib/text.js";
 import { chatRights } from "../lib/chatRights.js";
+import { buildLog, logContext } from "../lib/log.js";
 
 export function Chat({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
   const { channels, notice } = chatRights(view);
@@ -15,7 +16,21 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
   const nick = (id: string) => view.players.find((p) => p.id === id)?.nick ?? "?";
   const alive = view.players.filter((p) => p.status === "alive" && p.id !== view.me.id);
   const target = alive.some((p) => p.id === recipient) ? recipient : alive[0]?.id ?? "";
-  const messages = log.filter((e) => e.type === "chat.message" && e.payload.channel === active);
+  // En la plaza, los avisos del sistema (votos, fases, muertes) van en el mismo flujo que los mensajes.
+  const stream = [
+    ...log
+      .filter((e) => e.type === "chat.message" && e.payload.channel === active)
+      .map((e) => ({ seq: e.seq, key: `c${e.seq}`, node: (
+        <p key={`c${e.seq}`}>
+          <strong>{nick(e.payload.senderId)}{e.payload.channel === "whisper" ? ` → ${nick(e.payload.recipientId)}` : ""}:</strong> {e.payload.text}
+        </p>
+      ) })),
+    ...(active === "public"
+      ? buildLog(log, logContext(view))
+          .filter((i) => i.kind === "line" && i.tone !== "private")
+          .map((i) => ({ seq: i.seq, key: i.key, node: <p key={i.key} className="italic opacity-80">• {i.kind === "line" ? i.text : ""}</p> }))
+      : []),
+  ].sort((a, b) => a.seq - b.seq);
 
   return (
     <Card className={compact ? "p-2" : ""}>
@@ -27,12 +42,8 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
         ))}
       </div>
       <div className={`${compact ? "max-h-24" : "max-h-56"} space-y-1 overflow-y-auto rounded-2xl border-2 border-ink bg-white/60 p-2 text-ink`}>
-        {messages.length === 0 && <p className="text-sm">Aún no hay mensajes.</p>}
-        {messages.map((m) => (
-          <p key={m.seq}>
-            <strong>{nick(m.payload.senderId)}{m.payload.channel === "whisper" ? ` → ${nick(m.payload.recipientId)}` : ""}:</strong> {m.payload.text}
-          </p>
-        ))}
+        {stream.length === 0 && <p className="text-sm">Aún no hay mensajes.</p>}
+        {stream.map((m) => m.node)}
       </div>
       {active === "whisper" && alive.length > 0 && (
         <label className="mt-2 flex items-center gap-2 text-sm font-semibold">

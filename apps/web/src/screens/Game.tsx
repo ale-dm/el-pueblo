@@ -15,6 +15,7 @@ import { TopBar } from "../game/TopBar.js";
 import { LiveList, type LiveTab } from "../game/LiveList.js";
 import { SideTabs, type SideTab } from "../game/SideTabs.js";
 import { ActionBar } from "../game/ActionBar.js";
+import { SettingsMenu } from "../game/SettingsMenu.js";
 import { BottomLeft } from "../game/BottomLeft.js";
 import { ScreenBanner, DeathFx } from "../game/Fx.js";
 import { isMuted, playCue, setMuted } from "../lib/sound.js";
@@ -187,9 +188,12 @@ export function Game({ view }: { view: MatchView }) {
       <main className="game-grid flex min-h-dvh flex-col gap-3 p-3 md:grid">
         <aside className="flex min-h-0 flex-col gap-2 md:col-start-1 md:row-span-2 md:row-start-1">
           <Card className="short-hide flex items-center justify-between gap-2 p-3">
-            <div className="min-w-0">
-              <p className="truncate font-display text-2xl">{me.nick}</p>
-              <p className="text-xs font-semibold">Sala {view.roomCode}</p>
+            <div className="flex min-w-0 items-center gap-2">
+              <SettingsMenu muted={muted} onToggleMute={toggleMute} />
+              <div className="min-w-0">
+                <p className="truncate font-display text-2xl">{me.nick}</p>
+                <p className="text-xs font-semibold">Sala {view.roomCode}</p>
+              </div>
             </div>
             <PushButton />
           </Card>

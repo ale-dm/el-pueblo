@@ -14,9 +14,9 @@ export function ActionBar({ onRole, onRoles, onWill, onLive, onGraveyard }: Prop
   const leave = useGame((s) => s.leave);
   const items: Array<{ label: string; icon: string; onClick: () => void }> = [
     { label: "Vivos", icon: "👥", onClick: onLive },
-    { label: "Cementerio", icon: "🪦", onClick: onGraveyard },
+    { label: "Muertos", icon: "🪦", onClick: onGraveyard },
     { label: "Roles", icon: "📜", onClick: onRoles },
-    { label: "Testamento", icon: "✍️", onClick: onWill },
+    { label: "Testam.", icon: "✍️", onClick: onWill },
     { label: "Mi rol", icon: "🎭", onClick: onRole },
   ];
   return (
@@ -24,7 +24,7 @@ export function ActionBar({ onRole, onRoles, onWill, onLive, onGraveyard }: Prop
       {items.map((item) => (
         <button key={item.label} type="button" onClick={item.onClick} aria-label={item.label} title={item.label} className="cartoon-btn flex flex-col items-center px-1 py-1">
           <span aria-hidden="true" className="text-xl leading-none">{item.icon}</span>
-          <span className="text-[10px] leading-tight">{item.label}</span>
+          <span className="text-[9px] leading-tight">{item.label}</span>
         </button>
       ))}
       <Button

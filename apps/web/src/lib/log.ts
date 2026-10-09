@@ -11,8 +11,8 @@ import { alignmentLabel, roleNameEs, roleNameFromEnglish } from "./roles.js";
 export type LogTone = "info" | "private" | "danger" | "good";
 
 export type LogItem =
-  | { kind: "separator"; key: string; text: string; night: boolean }
-  | { kind: "line"; key: string; text: string; tone: LogTone };
+  | { kind: "separator"; key: string; seq: number; text: string; night: boolean }
+  | { kind: "line"; key: string; seq: number; text: string; tone: LogTone };
 
 export interface LogContext {
   meId: string;
@@ -82,11 +82,11 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
   let submittedTonight = false;
 
   const line = (e: GameEvent, text: string, tone: LogTone = "info") => {
-    const item: LogItem = { kind: "line", key: `l${e.seq}`, text, tone };
+    const item: LogItem = { kind: "line", key: `l${e.seq}`, seq: e.seq, text, tone };
     if (phase === "night" && MORNING.has(e.type)) morning.push(item);
     else items.push(item);
   };
-  const separator = (e: GameEvent, text: string, night: boolean) => items.push({ kind: "separator", key: `s${e.seq}`, text, night });
+  const separator = (e: GameEvent, text: string, night: boolean) => items.push({ kind: "separator", key: `s${e.seq}`, seq: e.seq, text, night });
   /** Testamento al morir: el texto tal cual, o que no había ninguno. */
   const willLine = (e: GameEvent, will: string | null, playerId: string) => {
     line(e, will ? `Testamento de ${ctx.nick(playerId)}: "${will}"` : `No encontramos un testamento de ${ctx.nick(playerId)}.`, will ? "info" : "private");
@@ -112,7 +112,7 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
           line(e, "Cae la noche.");
         } else if (next === "discussion") {
           if (phase === "night" && ctx.hasNightAbility && !submittedTonight) {
-            morning.push({ kind: "line", key: `n${e.seq}`, text: "No realizaste tu habilidad nocturna.", tone: "private" });
+            morning.push({ kind: "line", key: `n${e.seq}`, seq: e.seq, text: "No realizaste tu habilidad nocturna.", tone: "private" });
           }
           trialsToday = 0;
           separator(e, `Día ${p.dayNumber}`, false);
@@ -229,4 +229,14 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
     }
   }
   return items;
+}
+
+/** Contexto del registro para una vista: nombres, votantes y si el jugador tiene habilidad nocturna. */
+export function logContext(view: { me: { id: string; status: string; nightAbilities: unknown[] }; players: Array<{ id: string; nick: string; status: string; connected: boolean }> }): LogContext {
+  return {
+    meId: view.me.id,
+    hasNightAbility: view.me.status === "alive" && view.me.nightAbilities.length > 0,
+    nick: (id) => view.players.find((p) => p.id === id)?.nick ?? "?",
+    voters: view.players.filter((p) => p.status === "alive" && p.connected).length,
+  };
 }

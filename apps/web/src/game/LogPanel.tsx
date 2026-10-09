@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { GameEvent, MatchView } from "../types.js";
 import { Card } from "../ui/primitives.js";
-import { buildLog, type LogTone } from "../lib/log.js";
+import { buildLog, logContext, type LogTone } from "../lib/log.js";
 
 const TONE: Record<LogTone, string> = {
   info: "",
@@ -13,15 +13,7 @@ const TONE: Record<LogTone, string> = {
 /** Registro de la partida en orden, con separadores de día y noche. Se sigue la última línea. */
 export function LogPanel({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
   const end = useRef<HTMLLIElement>(null);
-  const items = useMemo(() => {
-    const alive = view.players.filter((p) => p.status === "alive" && p.connected).length;
-    return buildLog(log, {
-      meId: view.me.id,
-      hasNightAbility: view.me.status === "alive" && view.me.nightAbilities.length > 0,
-      nick: (id) => view.players.find((p) => p.id === id)?.nick ?? "?",
-      voters: alive,
-    });
-  }, [log, view]);
+  const items = useMemo(() => buildLog(log, logContext(view)), [log, view]);
 
   useEffect(() => {
     end.current?.scrollIntoView({ block: "nearest" });

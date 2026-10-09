@@ -74,13 +74,14 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
     for (const ab of me.nightAbilities) {
       if (ab.usesLeft === 0) continue;
       const label = `${abilityLabel(ab.key)}${usesText(ab.usesLeft)}`;
+      // La habilidad se usa desde un botón redondo, como el amuleto de Town of Salem.
       if (ab.target === "none") {
-        actions.push(<Button key={ab.key} disabled={busy} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: null })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: null })}>{label}</Button>);
       } else if (ab.target === "player") {
-        actions.push(<Button key={ab.key} disabled={busy || !target} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target })}>{label}</Button>);
       } else {
         const second = targets[1] ?? null;
-        actions.push(<Button key={ab.key} disabled={busy || !target || !second} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, secondTargetId: second })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || !second} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, secondTargetId: second })}>{label}</Button>);
       }
     }
   }
