@@ -728,3 +728,24 @@ describe("Doctor: defensa de su objetivo para el atacante (wiki: Doctor.md:269)"
     expect(text).toContain("La defensa de tu objetivo fue demasiado fuerte para matarle.");
   });
 });
+
+describe("Contadores de usos de todas las habilidades (wiki: Doctor.md:399; Jailor.md:546; Forger.md:488; Janitor.md:390)", () => {
+  it("cada habilidad con usos muestra su frase, en singular o en plural", () => {
+    seq = 0;
+    // Los usos salen al amanecer: se registran en la noche y se leen en el día siguiente.
+    const t = (ability: string, left: number) =>
+      texts(buildLog([
+        ev("phase.started", { phase: "night", dayNumber: 2 }),
+        ev("uses.left", { playerId: "a", ability, left }, "private"),
+        ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+      ], ctx())).find((x) => x.startsWith("Te "));
+    expect(t("selfHeal", 1)).toBe("Te queda 1 autocuración.");
+    expect(t("selfHeal", 0)).toBe("Te quedan 0 autocuraciones.");
+    expect(t("execute", 2)).toBe("Te quedan 2 ejecuciones.");
+    expect(t("execute", 1)).toBe("Te queda 1 ejecución.");
+    expect(t("forge", 1)).toBe("Te queda 1 falsificación.");
+    expect(t("forge", 0)).toBe("Te quedan 0 falsificaciones.");
+    expect(t("clean", 2)).toBe("Te quedan 2 limpiezas.");
+    expect(t("clean", 1)).toBe("Te queda 1 limpieza.");
+  });
+});

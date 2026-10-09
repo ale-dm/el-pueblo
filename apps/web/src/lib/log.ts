@@ -60,6 +60,21 @@ const JAILOR_REASON_ES: Record<string, string> = {
   discretion: "Lo decido según mi criterio.",
 };
 
+/** Singular y plural del contador de cada habilidad con usos (wiki: "You have (#) X(s) left."). */
+const USES_NOUN_ES: Record<string, [string, string]> = {
+  shoot: ["bala", "balas"],
+  alert: ["alerta", "alertas"],
+  vest: ["chaleco antibalas", "chalecos antibalas"],
+  // Wiki (Doctor.md:399): "You have (#) self heal(s) left."
+  selfHeal: ["autocuración", "autocuraciones"],
+  // Wiki (Jailor.md:546): "You have (#) execution(s) left."
+  execute: ["ejecución", "ejecuciones"],
+  // Wiki (Forger.md:488): "You have (#) forger(y / ies) left."
+  forge: ["falsificación", "falsificaciones"],
+  // Wiki (Janitor.md:390): "You have (#) cleaning(s) left."
+  clean: ["limpieza", "limpiezas"],
+};
+
 /** Eventos de la noche que se cuentan al amanecer, no en el momento. */
 const MORNING = new Set([
   "player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed",
@@ -416,8 +431,10 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "uses.left": {
         // Wiki (Vigilante, Veteran): "You have (#) bullet(s) left" / "You have (#) alert(s) left."
         // Wiki (Bodyguard.md:426): "You have (#) bulletproof vest(s) left."
-        const noun = p.ability === "vest" ? (p.left === 1 ? "chaleco antibalas" : "chalecos antibalas")
-          : p.ability === "shoot" ? (p.left === 1 ? "bala" : "balas") : p.left === 1 ? "alerta" : "alertas";
+        // Wiki (Doctor.md:399), (Jailor.md:546), (Forger.md:488), (Janitor.md:390): ver USES_NOUN_ES.
+        const pair = USES_NOUN_ES[p.ability];
+        if (!pair) break;
+        const noun = p.left === 1 ? pair[0] : pair[1];
         line(e, `${p.left === 1 ? "Te queda" : "Te quedan"} ${p.left} ${noun}.`, "private");
         break;
       }
