@@ -36,6 +36,25 @@ describe("Vigilante y Veteran: cuántos usos les quedan (wiki: Vigilante, Vetera
   });
 });
 
+describe("Vigilante: mensajes de la culpa (wiki: Vigilante.md:362, 370)", () => {
+  it("el Vigilante que mata a un Town recibe 'guardar la pistola' esa noche", () => {
+    const { events } = resolve(game(["vigilante", "godfather", "investigator", "sheriff"], { dayNumber: 2 }), [night("p1", "shoot", "p3")]);
+    expect(notices(events)).toContainEqual(["p1", "vigilante_put_away_gun"]);
+  });
+
+  it("el Vigilante que dispara y no mata no recibe ese aviso", () => {
+    const { events } = resolve(game(["vigilante", "godfather", "doctor", "investigator"], { dayNumber: 2 }), [night("p1", "shoot", "p4"), night("p3", "heal", "p4")]);
+    expect(notices(events).some(([, n]) => n === "vigilante_put_away_gun")).toBe(false);
+  });
+
+  it("la noche siguiente, el Vigilante se quita la vida por culpa y lo sabe", () => {
+    const first = resolve(game(["vigilante", "godfather", "investigator", "sheriff"], { dayNumber: 2 }), [night("p1", "shoot", "p3")]);
+    const second = step({ ...first.state, phase: "night", dayNumber: 3 }, timer());
+    expect(notices(second.events)).toEqual([["p1", "vigilante_guilt_suicide"]]);
+    expect(ofType(second.events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p1", "guilt"]]);
+  });
+});
+
 describe("Janitor: el rol del limpiado (wiki: Janitor.md:214)", () => {
   it("el Janitor sabe al amanecer el rol real de su objetivo si muere esa noche, en privado", () => {
     const { events } = resolve(game(["janitor", "godfather", "investigator"]), [night("p1", "clean", "p3"), night("p2", "kill", "p3")]);

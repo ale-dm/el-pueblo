@@ -59,6 +59,10 @@ const NOTICE_TEXT: Record<string, string> = {
   healed: "Te atacaron, pero alguien te curó.",
   // Wiki (Doctor.md:223): "Your target was attacked last night!"
   target_attacked: "Tu objetivo fue atacado anoche.",
+  // Wiki (Vigilante.md:362): "You have put away your gun for killing a town member."
+  vigilante_put_away_gun: "Has guardado tu pistola por matar a un miembro del pueblo.",
+  // Wiki (Vigilante.md:370): "You could not get over the guilt of killing a town member. You shot yourself!"
+  vigilante_guilt_suicide: "No pudiste superar la culpa de matar a un miembro del pueblo. ¡Te has disparado!",
   // Wiki (Jailor.md:282, 284): "The jailor has decided to Execute you." / "The jailor has changed his mind."
   jailor_execute: "El Jailor ha decidido ejecutarte.",
   jailor_changed_mind: "El Jailor ha cambiado de opinión.",

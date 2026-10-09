@@ -26,7 +26,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Transporter | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente al Mafioso (Victory ToS, SKIPPED); mensaje de "transportado" (lote 2) |
 | Trapper | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Visitante al azar (lote 3, D6; la wiki dice "one attacker" pero no cómo se elige); fase de construcción (SKIPPED, wiki exige noche de construcción) |
 | Veteran | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | mensaje de atacante bloqueado por la alerta (pendiente; las alertas están hechas) |
-| Vigilante | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | mensajes de culpa por disparar a un Town y de la primera noche (pendientes; las balas están hechas) |
+| Vigilante | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Mensajes de culpa (lote 4, E5: Vigilante.md:362, 370) y balas (lote 3) hechos. Pendiente: mensaje de la primera noche "You decide to wait a day before using your gun." (Vigilante.md:358, no está en el alcance de E5) |
 | Ambusher | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); ascenso a Mafioso cuando mueren los demás asesinos (Ambusher.md:228, hecho en la revisión) |
 | Blackmailer | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Susurros que el Blackmailer oye (no implementado); aviso de bloqueo en cárcel |
 | Bootlegger | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); orden de ascenso aplicado |

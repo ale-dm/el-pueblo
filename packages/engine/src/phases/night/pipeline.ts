@@ -542,7 +542,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       if (!kill(atk.victimId, cause)) return;
       if (atk.cause === "shot" && victim?.faction === "town" && !dead.has(atk.attackerId)) {
         out.push({ type: "effect.applied", payload: { actorId: atk.attackerId, targetId: atk.attackerId, flag: "guilty" } });
+        // Wiki (Vigilante.md:362): "You have put away your gun for killing a town member." (al matar a un Town).
+        out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "vigilante_put_away_gun" } });
       }
+      // Wiki (Vigilante.md:370): "You could not get over the guilt of killing a town member. You shot yourself!"
+      if (cause === "guilt") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "vigilante_guilt_suicide" } });
     };
     // Jailor: ejecutar a un Town le quita las siguientes ejecuciones.
     if (atk.cause === "execute" && victim?.faction === "town" && !dead.has(atk.attackerId)) {
