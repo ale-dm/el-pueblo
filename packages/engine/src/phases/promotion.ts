@@ -3,10 +3,11 @@ import type { GameState, PlayerState } from "../types/state.js";
 import { ROLE_HANDLERS } from "../roles/registry.js";
 
 /**
- * Roles que matan por orden de la Mafia. El Ambusher no está aquí: la wiki dice que asciende a Mafioso
- * cuando mueren los demás Mafia Killing (Ambusher.md:228), así que no bloquea el ascenso de otros.
+ * Roles que matan (grupo Mafia Killing, wiki: Mafia_Killing.md): Godfather, Mafioso y Ambusher.
+ * Son los "kill-capable" que bloquean el ascenso de los demás Mafia (Mafia_Support.md, Bootlegger.md:218).
+ * El Serial Killer no es Mafia y no entra aquí.
  */
-const KILLER_ROLES = new Set(["godfather", "mafioso"]);
+const KILL_CAPABLE = new Set(["godfather", "mafioso", "ambusher"]);
 
 /** Usos iniciales de un rol (para el evento role.promoted). */
 const usesOf = (roleKey: string): Record<string, number> => {
@@ -19,10 +20,12 @@ const usesOf = (roleKey: string): Record<string, number> => {
 };
 
 /**
- * Ascensos de la Mafia tras las muertes (`dead` incluye a quien acaba de morir):
- * - Sin Godfather vivo y con Mafioso vivo, el Mafioso pasa a Godfather (wiki: Godfather, Mafioso).
- * - Si no queda ningún Godfather ni Mafioso, asciende a Mafioso el Bootlegger vivo si lo hay ("always the first
- *   Mafia member to be promoted", wiki: Bootlegger); después el Ambusher (Ambusher.md:228); si no, el de menor asiento.
+ * Ascensos de la Mafia tras las muertes (`dead` incluye a quien acaba de morir), según Mafia_Killing.md y Mafia_Support.md:
+ * 1. Sin Godfather vivo y con Mafioso vivo, el Mafioso pasa a Godfather.
+ * 2. Sin Godfather ni Mafioso vivos, y con Ambusher vivo, el Ambusher asciende a Mafioso (Ambusher.md:228).
+ * 3. Mientras quede algún rol Mafia Killing vivo, nadie más asciende.
+ * 4. Si no queda ninguno, asciende a Mafioso el Bootlegger vivo ("the highest priority", Mafia_Killing.md);
+ *    si no hay Bootlegger, el que entró primero al lobby (Mafia_Support.md: menor asiento).
  * Devuelve [] si no hace falta ningún ascenso.
  */
 export function promotionEvents(s: GameState, dead: ReadonlySet<string>): EventInput[] {
@@ -30,14 +33,19 @@ export function promotionEvents(s: GameState, dead: ReadonlySet<string>): EventI
   const bySeat = (a: PlayerState, b: PlayerState) => a.seat - b.seat;
   const withRole = (key: string) => mafiaAlive.filter((p) => p.roleKey === key).sort(bySeat);
 
+  const godfathers = withRole("godfather");
   const mafiosos = withRole("mafioso");
-  if (withRole("godfather").length === 0 && mafiosos.length > 0) {
-    const next = mafiosos[0]!;
-    return [{ type: "role.promoted", payload: { playerId: next.id, roleKey: "godfather", uses: usesOf("godfather") } }];
-  }
+  const ambushers = withRole("ambusher");
 
-  if (mafiaAlive.some((p) => KILLER_ROLES.has(p.roleKey!))) return [];
-  const successor = withRole("bootlegger")[0] ?? withRole("ambusher")[0] ?? [...mafiaAlive].sort(bySeat)[0];
+  if (godfathers.length === 0 && mafiosos.length > 0) {
+    return [{ type: "role.promoted", payload: { playerId: mafiosos[0]!.id, roleKey: "godfather", uses: usesOf("godfather") } }];
+  }
+  if (godfathers.length === 0 && mafiosos.length === 0 && ambushers.length > 0) {
+    return [{ type: "role.promoted", payload: { playerId: ambushers[0]!.id, roleKey: "mafioso", uses: usesOf("mafioso") } }];
+  }
+  if (mafiaAlive.some((p) => KILL_CAPABLE.has(p.roleKey!))) return [];
+
+  const successor = withRole("bootlegger")[0] ?? [...mafiaAlive].sort(bySeat)[0];
   if (!successor) return [];
   return [{ type: "role.promoted", payload: { playerId: successor.id, roleKey: "mafioso", uses: usesOf("mafioso") } }];
 }
