@@ -9,6 +9,7 @@ import { recoverTimers } from "./application/use-cases/recoverTimers.js";
 import { getView } from "./application/use-cases/getView.js";
 import { narrate } from "./application/use-cases/narrate.js";
 import { notifyPhases, subscribePush } from "./application/use-cases/push.js";
+import { purgeExpired, type RetentionPolicy } from "./application/use-cases/retention.js";
 import { startMatch } from "./application/use-cases/startMatch.js";
 import { submitCommand, type SubmitCommandDeps } from "./application/use-cases/submitCommand.js";
 import type { NarrationStore, Narrator, PushSender, PushSubscriptionStore, Scheduler } from "./application/ports.js";
@@ -24,6 +25,7 @@ export type Deps = Omit<SubmitCommandDeps, "queue" | "advance" | "afterEvents"> 
   narrator: Narrator;
   push: PushSubscriptionStore;
   pushSender: PushSender;
+  retention: RetentionPolicy;
 };
 
 /** Retraso de los bots tras cada fase: parecen jugadores pensando, sin tardar en exceso. */
@@ -44,7 +46,11 @@ export function createServices(deps: Deps) {
   };
 
   const afterEvents = (matchId: string, events: GameEventEnvelope[]) => {
-    for (const job of [notify(matchId, events), narrateEvents(matchId, events)]) {
+    const notified = notify(matchId, events);
+    // Al terminar la partida ya no hacen falta sus suscripciones push: se borran después de avisar.
+    const ended = events.some((e) => e.type === "game.ended");
+    const jobs = [ended ? notified.finally(() => deps.push.removeByMatch(matchId)) : notified, narrateEvents(matchId, events)];
+    for (const job of jobs) {
       const pending = job.catch(() => undefined);
       pendingNarrations.add(pending);
       void pending.finally(() => pendingNarrations.delete(pending));
@@ -70,6 +76,8 @@ export function createServices(deps: Deps) {
     getView: getView(deps),
     setConnection: setConnection(deps),
     recoverTimers: recoverTimers({ ...deps, scheduleBots }),
+    /** Borra partidas y salas fuera de plazo (ver RetentionPolicy). Se ejecuta al arrancar y cada hora. */
+    purgeExpired: purgeExpired({ matches: deps.matches, push: deps.push, clock: deps.clock, policy: deps.retention }),
     advance,
     /** Turno de los bots de una partida. Lo usan los temporizadores y los tests. */
     runBots,

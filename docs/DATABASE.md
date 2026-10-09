@@ -87,11 +87,25 @@ Texto generado por Gemini o plantilla, asociado a un evento.
 - Índice único parcial: un código de sala solo puede estar en una partida activa.
 - Claves foráneas de `roles` → `factions` y `alignments`, de `match_players` → `roles` y `factions`, y de `role_attributes` → `roles` con borrado en cascada.
 
+## Retención
+
+Se aplica al arrancar el servidor y cada hora (`application/use-cases/retention.ts`):
+
+| Qué | Cuándo se borra | Variable |
+|---|---|---|
+| Sala en lobby que nunca empezó | 24 horas después de crearla | `LOBBY_TTL_HOURS` |
+| Partida terminada o abandonada | 30 días después de terminar (o de crearse, si no tiene fecha de fin), con sus jugadores, eventos, chat y narraciones | `RETENTION_FINISHED_DAYS` |
+| Suscripciones push | Al terminar la partida | — |
+| Copias de seguridad | 14 copias nocturnas | `BACKUP_KEEP` |
+
+Las copias de seguridad contienen datos borrados de la base de datos: la retención real de un dato es esta más el plazo de las copias.
+
+**Pendiente:** `ai_usage` (consumo de Gemini) no tiene retención ni límite diario todavía.
+
 ## Lo que no está resuelto
 
 - **Catálogo de eventos** (`events.type`): se define en M1 y se fija en `packages/shared`.
 - **Versionado del snapshot**: hoy solo se guarda `engine_version` en la partida.
-- **Retención** de partidas terminadas: pendiente de decidir antes de producción.
 - **Cuentas**: no existen en la fase 1.
 - **Interacciones entre roles**: la tabla existe, pero se rellena al implementar cada rol.
 - **Modificadores**: la página Modifiers del catálogo sigue mezclando modificadores de otras versiones. Hay que revisar cuáles son de ToS 1 antes de activarlos.

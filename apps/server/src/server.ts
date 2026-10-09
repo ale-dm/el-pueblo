@@ -36,6 +36,8 @@ export interface ServerConfig {
   vapid?: { publicKey: string; privateKey: string; subject: string };
   engineVersion: string;
   chatMessagesPerTenSeconds: number;
+  /** Plazos de borrado de salas y partidas (ver docs/DATABASE.md, "Retención"). */
+  retention: { lobbyTtlHours: number; finishedRetentionDays: number };
   /** Secreto para derivar los tokens de los bots. Debe ser estable entre reinicios; si falta, los bots no sobreviven a un reinicio. */
   botSecret?: string;
 }
@@ -72,6 +74,7 @@ export async function startServer(config: ServerConfig) {
     clock: { now: () => new Date() },
     ids: new CryptoIds(),
     security: new CryptoSecurity(config.botSecret),
+    retention: config.retention,
     scheduler,
     narrations: new PgNarrationStore(db),
     push: new PgPushSubscriptionStore(db),
@@ -93,9 +96,14 @@ export async function startServer(config: ServerConfig) {
   const recovered = await services.recoverTimers(services.advance);
   await app.listen({ port: config.port, host: config.host });
 
+  const purge = () => services.purgeExpired().catch((error: unknown) => console.error("[server] retención:", error));
+  void purge();
+  const purgeTimer = setInterval(() => void purge(), 60 * 60 * 1000);
+
   return {
     recovered,
     close: async () => {
+      clearInterval(purgeTimer);
       await services.drainNarrations();
       io.close();
       await app.close();

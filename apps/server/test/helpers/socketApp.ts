@@ -38,6 +38,7 @@ export async function startSocketApp(opts: { chatMax?: number } = {}) {
     push: new InMemoryPushStore(),
     pushSender: new FakePushSender(),
     engineVersion: "test",
+    retention: { lobbyTtlHours: 24, finishedRetentionDays: 30 },
   });
   attachGateway(io, {
     services,

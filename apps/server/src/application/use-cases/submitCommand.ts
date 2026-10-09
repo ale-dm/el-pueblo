@@ -4,7 +4,7 @@ import { AppError, ConcurrencyError } from "../errors.js";
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
 import { initialState } from "../state/initialState.js";
 import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler, Security } from "../ports.js";
-import { modeOf, phaseDelayMs } from "../timing.js";
+import { modeOf, phaseDelayFor } from "../timing.js";
 
 export interface SubmitCommandDeps {
   matches: MatchStore;
@@ -69,9 +69,9 @@ export function submitCommand(deps: SubmitCommandDeps) {
       if (match.status !== "playing") throw new AppError("invalid_state", "La partida no está en curso");
 
       const catalog = await loadCatalog();
-      const history = await deps.events.read(match.id);
+      const timed = await deps.events.readTimed(match.id);
       const roster = await deps.players.listByMatch(match.id);
-      const state = replay(initialState(match, roster), history);
+      const state = replay(initialState(match, roster), timed.map((t) => t.event));
 
       // Determinista: misma semilla y misma posición en el registro, mismo resultado.
       const rng = createRng(match.seed + state.seq);
@@ -86,14 +86,16 @@ export function submitCommand(deps: SubmitCommandDeps) {
       }
       const ended = decision.value.some((e) => e.type === "game.ended");
       if (ended) {
-        await deps.matches.update({ ...match, status: "finished" });
+        await deps.matches.update({ ...match, status: "finished", endedAt: deps.clock.now() });
         deps.scheduler.cancel(match.id);
       }
       await deps.broadcaster.publish(match.id, decision.value);
       deps.afterEvents?.(match.id, decision.value);
       const phaseStart = decision.value.filter((e) => e.type === "phase.started").at(-1);
       if (phaseStart?.type === "phase.started" && !ended) {
-        const delay = phaseDelayMs(await loadCatalog(), modeOf(match.config), phaseStart.payload.phase);
+        const delay = phaseDelayFor(
+          await loadCatalog(), modeOf(match.config), phaseStart.payload.phase, phaseStart.payload.dayNumber, timed,
+        );
         if (delay !== null) deps.scheduler.schedule(match.id, delay, () => void deps.advance(match.id));
       }
       return { events: decision.value };

@@ -42,7 +42,10 @@ export function nightAction(
     if (targetId === secondTargetId) return err("invalid_command", "Los dos objetivos deben ser distintos");
   }
 
-  // Jailor: solo puede ejecutar a un jugador encarcelado.
+  // Jailor: solo puede ejecutar a un jugador encarcelado, y no en la primera noche (wiki: Jailor).
+  if (ability === "execute" && s.dayNumber === 1) {
+    return err("invalid_command", "No puedes ejecutar en la primera noche");
+  }
   if (ability === "execute" && !playerOf(s, targetId ?? "")?.flags.jailed) {
     return err("invalid_command", "Solo puedes ejecutar a un jugador encarcelado");
   }

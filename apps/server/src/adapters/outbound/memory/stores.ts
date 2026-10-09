@@ -1,6 +1,6 @@
 import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { ConcurrencyError } from "../../../application/errors.js";
-import type { EventLog, MatchRecord, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore, PushSubscriptionRecord, PushSubscriptionStore } from "../../../application/ports.js";
+import type { Clock, EventLog, MatchRecord, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore, PushSubscriptionRecord, PushSubscriptionStore, TimedEvent } from "../../../application/ports.js";
 
 export class InMemoryMatchStore implements MatchStore {
   private readonly byId = new Map<string, MatchRecord>();
@@ -31,6 +31,10 @@ export class InMemoryMatchStore implements MatchStore {
     if (!this.byId.has(match.id)) throw new Error(`update: partida ${match.id} no existe`);
     this.byId.set(match.id, { ...match });
   }
+
+  async delete(id: string) {
+    this.byId.delete(id);
+  }
 }
 
 export class InMemoryPlayerStore implements PlayerStore {
@@ -58,6 +62,9 @@ export class InMemoryPlayerStore implements PlayerStore {
 
 export class InMemoryEventLog implements EventLog {
   private readonly logs = new Map<string, GameEventEnvelope[]>();
+  private readonly times = new Map<string, Date[]>();
+
+  constructor(private readonly clock: Clock = { now: () => new Date() }) {}
 
   async lastSeq(matchId: string) {
     const log = this.logs.get(matchId) ?? [];
@@ -68,11 +75,19 @@ export class InMemoryEventLog implements EventLog {
     return [...(this.logs.get(matchId) ?? [])];
   }
 
+  async readTimed(matchId: string): Promise<TimedEvent[]> {
+    const log = this.logs.get(matchId) ?? [];
+    const at = this.times.get(matchId) ?? [];
+    return log.map((event, i) => ({ event, at: at[i]! }));
+  }
+
   async append(matchId: string, expectedLastSeq: number, events: GameEventEnvelope[]) {
     const log = this.logs.get(matchId) ?? [];
     const last = log.at(-1)?.seq ?? 0;
     if (last !== expectedLastSeq) throw new ConcurrencyError();
     this.logs.set(matchId, [...log, ...events]);
+    const now = this.clock.now();
+    this.times.set(matchId, [...(this.times.get(matchId) ?? []), ...events.map(() => now)]);
   }
 }
 
@@ -97,6 +112,12 @@ export class InMemoryPushStore implements PushSubscriptionStore {
 
   async remove(endpoint: string) {
     this.records.delete(endpoint);
+  }
+
+  async removeByMatch(matchId: string) {
+    for (const [endpoint, record] of this.records) {
+      if (record.matchId === matchId) this.records.delete(endpoint);
+    }
   }
 
   async listByMatch(matchId: string) {

@@ -106,7 +106,7 @@ La UI no decide reglas. Solo renderiza los eventos proyectados que llegan del se
 | M4 narración (Gemini con respaldo) | Hecho, Gemini **sin probar contra la API** | Tests con modelo simulado; sin clave real en este entorno |
 | M5 avisos Web Push | Hecho, **sin entrega real** | Tests con envío simulado; falta probar con navegadores reales y VAPID |
 
-**Pendiente en fase 1:** probar Gemini y los avisos con claves reales; probar la instalación en un iPhone (iOS 16.4 o superior, PWA en pantalla de inicio); decidir la política de retención de partidas; el límite diario de Gemini (`ai_usage`) aún no se aplica.
+**Pendiente en fase 1:** probar Gemini y los avisos con claves reales; probar la instalación en un iPhone (iOS 16.4 o superior, PWA en pantalla de inicio); la retención ya está implementada (salas 24 h, partidas 30 días, copias 14) pendiente de confirmar; el límite diario de Gemini (`ai_usage`) aún no se aplica.
 
 **Movido:** el código de base de datos vive en `adapters/outbound/postgres/`. El contenedor ejecuta TypeScript con `tsx` y compila la web en la imagen.
 

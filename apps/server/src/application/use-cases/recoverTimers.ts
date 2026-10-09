@@ -1,7 +1,7 @@
 import { replay, type Catalog } from "@el-pueblo/engine";
 import { initialState } from "../state/initialState.js";
-import type { CatalogSource, EventLog, MatchStore, PlayerStore, Scheduler } from "../ports.js";
-import { modeOf, phaseDelayMs } from "../timing.js";
+import type { CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler } from "../ports.js";
+import { modeOf, phaseDelayFor } from "../timing.js";
 
 export interface RecoverDeps {
   matches: MatchStore;
@@ -9,23 +9,26 @@ export interface RecoverDeps {
   events: EventLog;
   catalog: CatalogSource;
   scheduler: Scheduler;
+  clock: Clock;
   /** Reprograma el turno de los bots de la fase actual, si la partida los tiene. */
   scheduleBots?: (matchId: string) => void;
 }
 
 /**
  * Al arrancar, reprograma el temporizador de cada partida en curso según su fase actual.
- * Así una partida no se queda parada por un reinicio del servidor.
+ * Así una partida no se queda parada por un reinicio del servidor. Una votación recuperada
+ * cuenta el tiempo que ya llevaba gastado.
  */
 export function recoverTimers(deps: RecoverDeps) {
   return async (advance: (matchId: string) => Promise<void>): Promise<number> => {
     const catalog: Catalog = await deps.catalog.load();
+    const now = deps.clock.now();
     const playing = await deps.matches.listByStatus("playing");
     for (const match of playing) {
       const roster = await deps.players.listByMatch(match.id);
-      const history = await deps.events.read(match.id);
-      const state = replay(initialState(match, roster), history);
-      const delay = phaseDelayMs(catalog, modeOf(match.config), state.phase);
+      const timed = await deps.events.readTimed(match.id);
+      const state = replay(initialState(match, roster), timed.map((t) => t.event));
+      const delay = phaseDelayFor(catalog, modeOf(match.config), state.phase, state.dayNumber, timed, now);
       if (delay !== null) deps.scheduler.schedule(match.id, delay, () => void advance(match.id));
       deps.scheduleBots?.(match.id);
     }

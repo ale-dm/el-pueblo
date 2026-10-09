@@ -13,6 +13,8 @@ export interface MatchRecord {
   config: Record<string, unknown>;
   engineVersion: string;
   createdAt: Date;
+  /** Cuándo terminó la partida. Null mientras no termina. */
+  endedAt?: Date | null;
 }
 
 /** Estado del jugador en el motor, más lo que solo necesita la aplicación. */
@@ -30,6 +32,8 @@ export interface MatchStore {
   findActiveByRoomCode(roomCode: string): Promise<MatchRecord | null>;
   listByStatus(status: MatchStatus): Promise<MatchRecord[]>;
   update(match: MatchRecord): Promise<void>;
+  /** Borra la partida con todo lo que cuelga de ella (jugadores, eventos, narraciones, suscripciones). */
+  delete(id: string): Promise<void>;
 }
 
 export interface PlayerStore {
@@ -39,10 +43,18 @@ export interface PlayerStore {
   update(player: PlayerRecord): Promise<void>;
 }
 
+/** Evento con la hora en que se registró. La hora solo la usa el servidor (tiempo de fase), nunca el motor. */
+export interface TimedEvent {
+  event: GameEventEnvelope;
+  at: Date;
+}
+
 export interface EventLog {
   /** Último seq escrito, o 0 si no hay eventos. */
   lastSeq(matchId: string): Promise<number>;
   read(matchId: string): Promise<GameEventEnvelope[]>;
+  /** Igual que read, con la hora en que se guardó cada evento. */
+  readTimed(matchId: string): Promise<TimedEvent[]>;
   /**
    * Añade eventos solo si el último seq sigue siendo `expectedLastSeq`.
    * Si no, lanza ConcurrencyError.
@@ -132,6 +144,8 @@ export interface PushSubscriptionStore {
   remove(endpoint: string): Promise<void>;
   /** Suscripciones de los jugadores de una partida. */
   listByMatch(matchId: string): Promise<PushSubscriptionRecord[]>;
+  /** Borra las suscripciones de una partida (cuando termina). */
+  removeByMatch(matchId: string): Promise<void>;
 }
 
 /** Aviso sin información privada: título y texto genéricos. */

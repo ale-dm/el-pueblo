@@ -138,8 +138,24 @@ Tras cada transición se comprueba la victoria (`rules/victory.ts`). Si la parti
 
 Estado actual: **12 ficheros, 89 tests en verde**, con TypeScript 7.0.2 y Vitest 5.0.3.
 
-## Supuestos pendientes de verificar
+## Supuestos
 
-- Desempate en la votación de juicio: el motor lo trata como "nadie va a juicio". La wiki solo lo menciona para el veredicto de inocente (`Hanging (ToS)`).
-- Orden de resolución nocturna y desempate por asiento (ver arriba).
+Estado de cada supuesto según la wiki de Town of Salem (ToS 1).
+
+**Verificados**
+- Empate en el veredicto de juicio = inocente, el día sigue (`Hanging (ToS)`).
+- Tras un veredicto de inocente, la votación continúa con el tiempo que le quedaba (`Hanging (ToS)`). El servidor lo calcula en `application/timing.ts`; el motor no conoce el tiempo.
+- Día 1: solo charla, sin votación ni juicios; después, noche 1 (`Phases`).
+- El Jailor puede encarcelar el día 1 (ficha del Jailor).
+- El Mayor puede revelarse el día 1 (logro "Reveal yourself as Mayor on day 1").
+- El Jailor no puede ejecutar en la primera noche (ficha del Jailor). Corregido: el motor lo rechaza.
+
+**Sin verificar (abiertos)**
+- Empate en la votación de juicio = nadie va a juicio (`rules/voting.ts`).
+- Quien no emite veredicto cuenta como inocente (`phases/machine.ts`).
+- Desempate por asiento en el orden de las acciones nocturnas (`rules/priority.ts`).
+- Chat público abierto para todos durante el juicio (`rules/chat.ts`).
+
+**Pendiente de implementar**
+- El Jailor que ejecuta a un Town pierde sus ejecuciones restantes (ficha del Jailor). `roles/town/jailor.ts` no lo implementa.
 - Victoria 1 contra 1 (fuera del MVP).

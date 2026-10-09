@@ -2,7 +2,7 @@ import { and, asc, eq, inArray, max } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
 import type { FactionKey, GameEventEnvelope } from "@el-pueblo/engine";
 import { ConcurrencyError } from "../../../application/errors.js";
-import type { EventLog, MatchRecord, MatchStatus, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore, PushSubscriptionRecord, PushSubscriptionStore } from "../../../application/ports.js";
+import type { EventLog, MatchRecord, MatchStatus, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore, PushSubscriptionRecord, PushSubscriptionStore, TimedEvent } from "../../../application/ports.js";
 import * as s from "./schema.js";
 
 /** Cualquier driver de drizzle para PostgreSQL (postgres-js en producción, PGlite en tests). */
@@ -19,6 +19,7 @@ const toMatch = (row: MatchRow): MatchRecord => ({
   config: row.config as Record<string, unknown>,
   engineVersion: row.engineVersion,
   createdAt: row.createdAt,
+  endedAt: row.endedAt ?? null,
 });
 
 /** Los jugadores no guardan usos ni marcas: se reconstruyen desde los eventos. */
@@ -77,6 +78,11 @@ export class PgMatchStore implements MatchStore {
       .update(s.matches)
       .set({ status: match.status, config: match.config, endedAt: match.status === "finished" ? new Date() : null })
       .where(eq(s.matches.id, match.id));
+  }
+
+  async delete(id: string) {
+    // Las tablas hijas (jugadores, eventos, narraciones, suscripciones) se borran en cascada.
+    await this.db.delete(s.matches).where(eq(s.matches.id, id));
   }
 }
 
@@ -161,6 +167,15 @@ export class PgEventLog implements EventLog {
     return rows.map(toEnvelope);
   }
 
+  async readTimed(matchId: string): Promise<TimedEvent[]> {
+    const rows = await this.db
+      .select()
+      .from(s.events)
+      .where(eq(s.events.matchId, matchId))
+      .orderBy(asc(s.events.seq));
+    return rows.map((row) => ({ event: toEnvelope(row), at: row.createdAt }));
+  }
+
   async append(matchId: string, expectedLastSeq: number, events: GameEventEnvelope[]) {
     if (events.length === 0) return;
     await this.db.transaction(async (tx) => {
@@ -232,6 +247,14 @@ export class PgPushSubscriptionStore implements PushSubscriptionStore {
 
   async remove(endpoint: string) {
     await this.db.delete(s.pushSubscriptions).where(eq(s.pushSubscriptions.endpoint, endpoint));
+  }
+
+  async removeByMatch(matchId: string) {
+    const players = this.db
+      .select({ id: s.matchPlayers.id })
+      .from(s.matchPlayers)
+      .where(eq(s.matchPlayers.matchId, matchId));
+    await this.db.delete(s.pushSubscriptions).where(inArray(s.pushSubscriptions.matchPlayerId, players));
   }
 
   async listByMatch(matchId: string) {

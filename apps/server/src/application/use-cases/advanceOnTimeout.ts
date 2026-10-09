@@ -3,7 +3,7 @@ import { createRng, decide, replay, type Catalog } from "@el-pueblo/engine";
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
 import { initialState } from "../state/initialState.js";
 import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler } from "../ports.js";
-import { modeOf, phaseDelayMs } from "../timing.js";
+import { modeOf, phaseDelayFor } from "../timing.js";
 
 export interface AdvanceDeps {
   matches: MatchStore;
@@ -32,9 +32,9 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
       if (!match || match.status !== "playing") return;
 
       const roster = await deps.players.listByMatch(matchId);
-      const history = await deps.events.read(matchId);
+      const timed = await deps.events.readTimed(matchId);
       const catalog = await loadCatalog();
-      const state = replay(initialState(match, roster), history);
+      const state = replay(initialState(match, roster), timed.map((t) => t.event));
 
       const decision = decide(state, { type: "timer.expired" }, {
         catalog,
@@ -46,7 +46,7 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
       await deps.events.append(matchId, state.seq, decision.value);
       const ended = decision.value.some((e) => e.type === "game.ended");
       if (ended) {
-        await deps.matches.update({ ...match, status: "finished" });
+        await deps.matches.update({ ...match, status: "finished", endedAt: deps.clock.now() });
         deps.scheduler.cancel(matchId);
       }
       await deps.broadcaster.publish(matchId, decision.value);
@@ -54,7 +54,7 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
 
       const next = decision.value.filter((e) => e.type === "phase.started").at(-1);
       if (next?.type === "phase.started" && !ended) {
-        const delay = phaseDelayMs(catalog, modeOf(match.config), next.payload.phase);
+        const delay = phaseDelayFor(catalog, modeOf(match.config), next.payload.phase, next.payload.dayNumber, timed);
         if (delay !== null) deps.scheduler.schedule(matchId, delay, () => void advance(matchId));
       }
     });

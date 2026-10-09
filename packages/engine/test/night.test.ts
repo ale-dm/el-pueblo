@@ -149,7 +149,8 @@ describe("noche: investigaciones", () => {
 
 describe("noche: jailor y trampero", () => {
   it("el Jailor encarcela de día y ejecuta de noche", () => {
-    let s = game(["jailor", "investigator", "godfather"], { phase: "discussion", dayNumber: 1 });
+    // Día 2: en la noche 1 el Jailor no puede ejecutar (ver jailor.test.ts).
+    let s = game(["jailor", "investigator", "godfather"], { phase: "discussion", dayNumber: 2 });
     s = step(s, { type: "day.action", actorId: "p1", ability: "jail", targetId: "p2" }).state;
     expect(s.players.find((p) => p.id === "p2")?.flags.jailed).toBe(true);
     s = step(s, timer()).state; // voting
@@ -162,7 +163,7 @@ describe("noche: jailor y trampero", () => {
   });
 
   it("no se puede ejecutar a quien no está encarcelado", () => {
-    const s = game(["jailor", "investigator"]);
+    const s = game(["jailor", "investigator"], { phase: "night", dayNumber: 2 });
     expect(rejected(s, night("p1", "execute", "p2"))).toMatch(/encarcelado/);
   });
 

@@ -12,11 +12,11 @@ export const CATALOG_DIR = fileURLToPath(new URL("../../../../data/catalog", imp
 
 /** Aplicación completa con adaptadores en memoria. Ningún test necesita base de datos ni red. */
 export function createTestApp() {
+  const clock = new FixedClock();
   const matches = new InMemoryMatchStore();
   const players = new InMemoryPlayerStore();
-  const events = new InMemoryEventLog();
+  const events = new InMemoryEventLog(clock);
   const broadcaster = new RecordingBroadcaster();
-  const clock = new FixedClock();
   const ids = new SequentialIds();
   const security = new SequentialSecurity();
   const scheduler = new ManualScheduler();
@@ -38,6 +38,7 @@ export function createTestApp() {
     push,
     pushSender,
     engineVersion: "0.1.0",
+    retention: { lobbyTtlHours: 24, finishedRetentionDays: 30 },
   });
   return { services, matches, players, events, broadcaster, clock, ids, security, scheduler, narrations, push, pushSender };
 }

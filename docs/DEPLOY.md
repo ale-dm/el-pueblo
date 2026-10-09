@@ -25,7 +25,7 @@ La configuración (`.env`) se guarda en el propio stack de Portainer.
 | `Dockerfile` | Imagen del servidor (Node 22, pnpm workspaces) |
 | `deploy/portainer-stack.yml` | Stack: `postgres`, `server` y `backup` |
 | `deploy/docker-entrypoint.sh` | Aplica migraciones y arranca el servidor |
-| `deploy/backup.sh` | Copia diaria a las 04:30 (Madrid), retención `BACKUP_KEEP` (7 por defecto) |
+| `deploy/backup.sh` | Copia diaria a las 04:30 (Madrid), retención `BACKUP_KEEP` (14 por defecto) |
 | `deploy/docker-compose.local.yml` | Probar el stack en local |
 | `.dockerignore` | Deja fuera datos, backups, docs y tests |
 
@@ -71,6 +71,8 @@ La configuración (`.env`) se guarda en el propio stack de Portainer.
 | `NARRATOR_TIMEOUT_MS` | Límite de la llamada a Gemini (8000 por defecto) |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Avisos Web Push. Sin ellas, no hay avisos |
 | `CHAT_MESSAGES_PER_10S` | Límite de mensajes de chat por jugador (5 por defecto) |
+| `LOBBY_TTL_HOURS` | Horas tras las que se borra una sala que nunca empezó (24 por defecto) |
+| `RETENTION_FINISHED_DAYS` | Días tras los que se borra una partida terminada, con sus eventos y chat (30 por defecto) |
 | `BOT_SECRET` | Secreto fijo para los tokens de los bots (`openssl rand -hex 32`). Sin él, los bots de las partidas en curso dejan de responder tras un reinicio |
 
 Generar las claves VAPID una vez: `npx web-push generate-vapid-keys`.
@@ -83,7 +85,7 @@ Generar las claves VAPID una vez: `npx web-push generate-vapid-keys`.
 | `GOOGLE_API_KEY`, `GEMINI_MODEL` | Narración |
 | `PUBLIC_URL` | `https://pueblo.xelements.es`. Enlaces y CORS |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Web Push (M5). `VAPID_SUBJECT` = `mailto:` de contacto |
-| `BACKUP_KEEP` | Número de copias nocturnas que se conservan |
+| `BACKUP_KEEP` | Número de copias nocturnas que se conservan (14 por defecto). Las copias también contienen datos ya borrados de la base de datos |
 | `LOG_LEVEL` | `info` por defecto |
 
 `DATABASE_URL` la monta el propio stack a partir de estas variables. No hace falta ponerla a mano.

@@ -76,6 +76,8 @@ function nightCommand(state: GameState, bot: PlayerState, rng: Rng): Command | n
   if (!handler) return null;
   for (const ability of handler.nightAbilities) {
     if (ability.usesLimit !== null && (bot.usesLeft[ability.key] ?? 0) <= 0) continue;
+    // Jailor no ejecuta en la primera noche (el motor lo rechazaría).
+    if (ability.key === "execute" && state.dayNumber === 1) continue;
     const base = { type: "night.action" as const, actorId: bot.id, ability: ability.key };
     if (ability.target === "none") return { ...base, targetId: null, secondTargetId: null };
     const pool = targetsFor(state, bot, ability.selfAllowed ?? false)
