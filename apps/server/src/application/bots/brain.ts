@@ -1,4 +1,4 @@
-import { ROLE_HANDLERS, type Command, type GameState, type PlayerState, type Rng } from "@el-pueblo/engine";
+import { ROLE_HANDLERS, canBeRoleblocked, type Command, type GameState, type PlayerState, type Rng } from "@el-pueblo/engine";
 
 /**
  * Cerebro de los bots: elige comandos legales según la fase. Es deliberadamente simple:
@@ -85,7 +85,7 @@ function nightCommand(state: GameState, bot: PlayerState, rng: Rng): Command | n
     const choice = ability.choices === undefined ? null : chooseOption(ability.choices, rng);
     const base = { type: "night.action" as const, actorId: bot.id, ability: ability.key, ...(choice === null ? {} : { choice }) };
     if (ability.target === "none") return { ...base, targetId: null, secondTargetId: null };
-    const plan = targetPlan(state, bot, ability.key, ability.target, ability.selfAllowed ?? false, rng);
+    const plan = targetPlan(state, bot, ability.key, ability.target, ability.selfAllowed ?? false, rng, ability.roleblock === true);
     if (plan) return { ...base, ...plan };
   }
   return null;
@@ -104,8 +104,10 @@ function targetPlan(
   target: "player" | "none" | "two",
   selfAllowed: boolean,
   rng: Rng,
+  roleblock = false,
 ): { targetId: string; secondTargetId: string | null } | null {
-  const alivePool = targetsFor(state, bot, selfAllowed);
+  // Wiki (Tavern_Keeper.md:181): el bloqueo no apunta a roles con habilidad de día (el motor lo rechazaría).
+  const alivePool = targetsFor(state, bot, selfAllowed).filter((p) => !roleblock || canBeRoleblocked(p.roleKey ? ROLE_HANDLERS.get(p.roleKey) : undefined));
   if (key === "execute") {
     const jailed = alivePool.filter((p) => p.flags.jailed);
     return jailed.length ? { targetId: pick(jailed, rng).id, secondTargetId: null } : null;

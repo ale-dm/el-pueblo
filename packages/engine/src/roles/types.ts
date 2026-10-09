@@ -18,6 +18,8 @@ export interface NightAbility {
   deadOnly?: boolean;
   /** Elección extra: una lista de opciones, o "roles" para cualquier rol del juego. */
   choices?: readonly string[] | "roles";
+  /** Bloquea la habilidad de noche del objetivo: solo cabe a quien puede ser bloqueado (ver rules/roleblock.ts). */
+  roleblock?: boolean;
 }
 
 /** Habilidad de día (Jailor, Mayor). */

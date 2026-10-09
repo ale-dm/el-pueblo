@@ -51,6 +51,13 @@ describe("bots: reglas de noche (wiki)", () => {
     expect(ambush.map((c) => c.targetId)).not.toContain("p2");
   });
 
+  it("el Tavern Keeper bot nunca bloquea al Mayor, cuya habilidad es de día (wiki: Tavern_Keeper.md:181)", () => {
+    const s = nightState(["tavern_keeper", "mayor", "investigator", "godfather"]);
+    const distracts = nightCommands(s, "p1").filter((c) => c.ability === "distract");
+    expect(distracts.length).toBeGreaterThan(0);
+    expect(distracts.map((c) => c.targetId)).not.toContain("p2");
+  });
+
   it("el Trapper bot no se elige a sí mismo para poner una trampa", () => {
     const s = nightState(["trapper", "investigator", "sheriff"]);
     const traps = nightCommands(s, "p1").filter((c) => c.ability === "trap");

@@ -3,6 +3,7 @@ import type { GameState } from "../../types/state.js";
 import { err, ok, type Result } from "../../core/result.js";
 import { handlerOf, isAlive, playerOf } from "../context.js";
 import { ROLE_HANDLERS } from "../../roles/registry.js";
+import { canBeRoleblocked } from "../../rules/roleblock.js";
 
 /** Valida una acción nocturna y, si es correcta, la registra. Un jugador puede cambiarla hasta el final de la noche. */
 export function nightAction(
@@ -50,6 +51,10 @@ export function nightAction(
   } else if (def.target === "player") {
     const problem = check(targetId, "Objetivo");
     if (problem) return err("invalid_command", problem);
+    // Wiki (Tavern_Keeper.md:181): no se bloquean roles con habilidad de día; el bloqueo no tiene a qué aplicarse.
+    if (def.roleblock && targetId !== null && !canBeRoleblocked(handlerOf(playerOf(s, targetId)!))) {
+      return err("invalid_command", "Objetivo: no se puede bloquear a un rol con habilidad de día");
+    }
   } else {
     const first = check(targetId, "Primer objetivo");
     if (first) return err("invalid_command", first);

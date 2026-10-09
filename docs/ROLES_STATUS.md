@@ -21,7 +21,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Retributionist | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Zombi limitado a una habilidad de un objetivo; exclusiones de roles |
 | Sheriff | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Investigador hecho; Framer: persistencia del encuadre (SKIPPED, contradicción wiki) |
 | Spy | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Bug simplificado (5 etiquetas, no la lista completa de Spy.md) |
-| Tavern Keeper | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a la Mafia (Victory ToS, SKIPPED); Bloqueo de roles de solo día (SKIPPED, contradicción wiki) |
+| Tavern Keeper | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a la Mafia (Victory ToS, SKIPPED); bloqueo de roles con habilidad de día: hecho (lote 5, F2, Tavern_Keeper.md:181; el Mayor no se bloquea, el Jailor y el Psychic sí, ver `rules/roleblock.ts`) |
 | Tracker | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Visitas de roles de dos objetivos (hecho en lote 2) |
 | Transporter | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente al Mafioso (Victory ToS, SKIPPED); mensaje de "transportado" (lote 2) |
 | Trapper | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Visitante al azar (lote 3, D6; la wiki dice "one attacker" pero no cómo se elige); fase de construcción (SKIPPED, wiki exige noche de construcción) |
@@ -51,6 +51,6 @@ Notas:
   - *Ambusher (resuelto):* Ambusher.md:228 dice que asciende cuando mueren los demás asesinos. El código lo contaba como asesino y no ascendía; corregido.
   - *Vigilante (resuelto):* la ficha (Especial, Vigilante.md:44 y :98) y el texto completo (:190) dicen "matar a un Town"; el "shoot" de las líneas 39 y 144 es el resumen. Se queda como está (muerte).
   - *Framer (resuelto, lote 5 F1):* Framer.md:344 (versión 3.3.0): "Frames will now last until an investigative role targets the Framed player instead of only the Night the player is Framed." Gana 3.3.0 sobre Sheriff.md:275 (consejo anterior). Roles investigativos: categoría "Investigation" del catálogo (Sheriff, Investigator, Consigliere, Lookout, Tracker, Spy); Psychic ("Information") no apunta a nadie. Código: `INVESTIGATIVE_ROLE_KEYS` en `rules/investigation.ts`.
-  - *Tavern Keeper (decisión pendiente):* Tavern_Keeper.md:181 dice que no se pueden bloquear roles con habilidad de día; :277 aconseja bloquear al Mayor la noche 1 en Ranked. La regla es 181; el consejo de :277 contradice la regla.
+  - *Tavern Keeper (resuelto, lote 5 F2):* Tavern_Keeper.md:181 ("You cannot Roleblock roles with Day abilties, because you have a Night ability.") gana sobre el consejo de :277 (bloquear al Mayor la noche 1 en Ranked), que es estrategia. Se aplica también al Bootlegger, que usa el mismo bloqueo (Bootlegger.md:198).
   - *Medium (lote 4, E2 y E3):* Medium.md:207 dice que varios Mediums se oyen entre sí; hecho. Medium.md:277 es consejo de estrategia, no regla. La sesión se elige de día (:203) y el objetivo recibe el aviso al empezar la noche (:209), no al amanecer: hecho.
   - *Trapper (decisión tomada):* elige al visitante al azar, porque la wiki no dice cómo elegir.

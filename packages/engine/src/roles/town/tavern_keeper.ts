@@ -7,7 +7,7 @@ export const handler: RoleHandler = {
   name: "Tavern Keeper",
   faction: "town",
   priority: 2,
-  nightAbilities: [{ key: "distract", target: "player", usesLimit: null }],
+  nightAbilities: [{ key: "distract", target: "player", usesLimit: null, roleblock: true }],
   dayAbilities: [],
   roleblockImmune: true,
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {

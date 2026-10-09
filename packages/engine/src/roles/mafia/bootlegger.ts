@@ -7,7 +7,7 @@ export const handler: RoleHandler = {
   name: "Bootlegger",
   faction: "mafia",
   priority: 2,
-  nightAbilities: [{ key: "distract", target: "player", usesLimit: null }],
+  nightAbilities: [{ key: "distract", target: "player", usesLimit: null, roleblock: true }],
   dayAbilities: [],
   // Wiki (Bootlegger.md:202): "You cannot be Roleblocked."
   roleblockImmune: true,

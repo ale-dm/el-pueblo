@@ -531,6 +531,36 @@ describe("noche: la trampa defiende de un ataque (wiki: Trapper)", () => {
   });
 });
 
+describe("bloqueo: no se bloquea a un rol con habilidad de día (wiki: Tavern_Keeper.md:181)", () => {
+  // Tavern_Keeper.md:181: "You cannot Roleblock roles with Day abilties, because you have a Night ability."
+  // Jailor.md:286 (el TK sí bloquea al Jailor, que tiene habilidad de noche) y Psychic.md:188 (el bloqueo le quita la visión).
+  it("el Tavern Keeper no puede elegir al Mayor, cuya habilidad es de día", () => {
+    const s = game(["tavern_keeper", "mayor", "investigator", "godfather"]);
+    expect(rejected(s, night("p1", "distract", "p2"))).toMatch(/habilidad de día/);
+  });
+
+  it("el Bootlegger tampoco puede bloquear al Mayor (misma mecánica de bloqueo, Bootlegger.md:198)", () => {
+    const s = game(["bootlegger", "mayor", "investigator", "godfather"]);
+    expect(rejected(s, night("p1", "distract", "p2"))).toMatch(/habilidad de día/);
+  });
+
+  it("el Tavern Keeper sí puede bloquear al Jailor, que tiene habilidad de noche (Jailor.md:286)", () => {
+    const s = game(["tavern_keeper", "jailor", "investigator", "godfather"], { dayNumber: 2 });
+    expect(rejected(s, night("p1", "distract", "p2"))).toBeNull();
+  });
+
+  it("el Tavern Keeper sí puede bloquear al Psychic, que es pasivo (Psychic.md:188)", () => {
+    const s = game(["tavern_keeper", "psychic", "investigator", "godfather"]);
+    expect(rejected(s, night("p1", "distract", "p2"))).toBeNull();
+  });
+
+  it("el Investigator sí puede ser bloqueado y el Mayor no (mismo Tavern Keeper, dos objetivos)", () => {
+    const s = game(["tavern_keeper", "mayor", "investigator", "godfather"]);
+    expect(rejected(s, night("p1", "distract", "p3"))).toBeNull();
+    expect(rejected(s, night("p1", "distract", "p2"))).not.toBeNull();
+  });
+});
+
 describe("Framer: el encuadre dura hasta que un rol investigativo lo investiga (wiki 3.3.0)", () => {
   // Framer.md:344 (versión 3.3.0): "Frames will now last until an investigative role targets the Framed player instead of
   // only the Night the player is Framed." Framer.md:196: "Framing a target will show them as suspicious until they are investigated."
