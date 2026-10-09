@@ -51,6 +51,8 @@ export interface MatchView {
     faction: "town" | "mafia" | null;
     roleSummary: string | null;
     flags: Record<string, boolean>;
+    /** Cuerpos que el Retributionist ya ha usado (wiki: Retributionist.md:204). Vacío para los demás roles. */
+    usedBodies: string[];
     nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null; note?: string; forgedWill?: string } | null;
     /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
     seance: "medium" | "target" | null;

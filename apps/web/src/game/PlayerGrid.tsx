@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import type { MatchView, PublicPlayer } from "../types.js";
 import { Pill } from "../ui/primitives.js";
 import { roleName } from "../lib/roles.js";
+import { usedBodyMark } from "../lib/corpses.js";
 
 interface Props {
   view: MatchView;
@@ -67,6 +68,8 @@ export function PlayerGrid({ view, selected, isPickable, onPick }: Props) {
                 {p.isBot && <Pill>Bot</Pill>}
                 {!p.connected && <Pill>Desconectado</Pill>}
                 {dead && <Pill className="bg-ink text-paper">{roleKey ? `Muerto · ${roleName(roleKey)}` : "Muerto"}</Pill>}
+                {/* Wiki (Retributionist.md:204): icono junto al muerto cuyo cuerpo ya usó el Retributionist. */}
+                {usedBodyMark(view, p) && <Pill className="bg-stone-600 text-paper">Cuerpo usado ⚰</Pill>}
                 {!dead && votesFor(p.id) > 0 && <Pill>{votesFor(p.id)} voto{votesFor(p.id) > 1 ? "s" : ""}</Pill>}
               </div>
             </motion.button>

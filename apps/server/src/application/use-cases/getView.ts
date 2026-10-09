@@ -60,6 +60,8 @@ export interface MatchView {
     faction: string | null;
     roleSummary: string | null;
     flags: Record<string, boolean>;
+    /** Cuerpos que el Retributionist ya usó (solo para él). */
+    usedBodies: string[];
     nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null; note?: string; forgedWill?: string } | null;
     /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
     seance: "medium" | "target" | null;
@@ -79,6 +81,12 @@ export interface MatchView {
 }
 
 /** Vista por jugador. Calcula desde el registro: nada que no pueda ver el jugador sale de aquí. */
+/** Cuerpos ya usados por el Retributionist: solo para quien es Retributionist (wiki: Retributionist.md:204). */
+export function usedBodiesFor(roleKey: string | null, players: ReadonlyArray<{ id: string; status: string; flags: { zombied?: boolean } }>): string[] {
+  if (roleKey !== "retributionist") return [];
+  return players.filter((p) => p.status !== "alive" && p.flags.zombied === true).map((p) => p.id);
+}
+
 export function getView(deps: GetViewDeps) {
   let cachedCatalog: Promise<Catalog> | null = null;
   return async (input: { matchId: string; token: string }): Promise<MatchView> => {
@@ -158,6 +166,8 @@ export function getView(deps: GetViewDeps) {
         faction: me.faction,
         roleSummary: roleDef?.summary ?? null,
         flags: { ...me.flags },
+        // Cuerpos ya usados por el Retributionist (wiki: Retributionist.md:204, el icono junto al muerto). Solo lo ve él.
+        usedBodies: usedBodiesFor(me.roleKey, state.players),
         nightAction: state.nightActions[me.id] ?? null,
         seance,
         will: state.wills[me.id] ?? null,
