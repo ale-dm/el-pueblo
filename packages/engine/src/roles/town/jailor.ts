@@ -11,7 +11,8 @@ export const handler: RoleHandler = {
   dayAbilities: [{ key: "jail", target: "player", oncePerDay: true, usesLimit: null }],
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {
-      case "execute": return targetId ? [{ kind: "attack", actorId: actor.id, targetId, power: 2, cause: "execute" }] : [];
+      // Ejecutar es un ataque imparable (wiki: Jailor, "Executing your target deals them an Unstoppable Attack").
+      case "execute": return targetId ? [{ kind: "attack", actorId: actor.id, targetId, power: 2, cause: "execute", unstoppable: true }] : [];
       default: return [];
     }
   },

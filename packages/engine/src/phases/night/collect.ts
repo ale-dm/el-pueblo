@@ -46,6 +46,10 @@ export function nightAction(
   if (ability === "execute" && s.dayNumber === 1) {
     return err("invalid_command", "No puedes ejecutar en la primera noche");
   }
+  // Tras ejecutar a un Town, el Jailor pierde las ejecuciones que le quedan (wiki: Jailor).
+  if (ability === "execute" && actor.flags.noExecute) {
+    return err("invalid_command", "Ya no puedes ejecutar: mataste a un miembro del pueblo");
+  }
   if (ability === "execute" && !playerOf(s, targetId ?? "")?.flags.jailed) {
     return err("invalid_command", "Solo puedes ejecutar a un jugador encarcelado");
   }

@@ -10,13 +10,19 @@ export function chatRights(view: MatchView): { channels: Channel[]; notice: stri
   if (me.status === "dead") return { channels: ["dead"], notice: null };
   if (me.status !== "alive" || view.phase === "ended") return { channels: [], notice: null };
   if (view.phase === "night") {
-    return me.faction === "mafia"
-      ? { channels: ["mafia"], notice: null }
+    // El canal con el prisionero (o el Jailor) funciona también de noche.
+    const jailChannel: Channel[] = me.jail ? ["jail"] : [];
+    if (me.faction === "mafia") return { channels: ["mafia", ...jailChannel], notice: null };
+    return jailChannel.length
+      ? { channels: jailChannel, notice: null }
       : { channels: [], notice: "De noche solo habla la Mafia." };
   }
   if (me.flags.blackmailed) return { channels: [], notice: "Estás silenciado durante el día." };
   if ((view.phase === "defense" || view.phase === "last_words") && view.defendantId !== me.id) {
     return { channels: [], notice: "Solo habla el acusado." };
   }
-  return { channels: canWhisper(view) ? ["public", "whisper"] : ["public"], notice: null };
+  const channels: Channel[] = ["public"];
+  if (canWhisper(view)) channels.push("whisper");
+  if (view.me.jail) channels.push("jail");
+  return { channels, notice: null };
 }

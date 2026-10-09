@@ -1,6 +1,6 @@
 import type { GameState } from "../types/state.js";
 
-export type ChatChannel = "public" | "mafia" | "dead" | "whisper";
+export type ChatChannel = "public" | "mafia" | "dead" | "whisper" | "jail";
 
 const DAY_PHASES = new Set(["day_1", "discussion", "voting", "defense", "judgement", "last_words"]);
 
@@ -14,6 +14,16 @@ const DAY_PHASES = new Set(["day_1", "discussion", "voting", "defense", "judgeme
 export function chatDenied(state: GameState, senderId: string, channel: ChatChannel, recipientId?: string): string | null {
   const sender = state.players.find((p) => p.id === senderId);
   if (!sender) return "Jugador desconocido";
+  if (channel === "jail") {
+    // Jailor y prisionero hablan en privado (anónimo para el prisionero), mientras dure el encarcelamiento.
+    const jailor = state.jailedBy[senderId];
+    const prisoner = Object.keys(state.jailedBy).find((id) => state.jailedBy[id] === senderId);
+    if (!jailor && !prisoner) return "No tienes a nadie encarcelado ni te han encarcelado";
+    const other = jailor ?? prisoner!;
+    const otherPlayer = state.players.find((p) => p.id === other);
+    if (!otherPlayer || otherPlayer.status !== "alive") return "La otra persona ya no está viva";
+    return null;
+  }
   if (channel === "whisper") {
     // Susurros: de día, entre dos vivos, sin silencio (wiki: Chat).
     if (!recipientId) return "Elige a quién susurrar";

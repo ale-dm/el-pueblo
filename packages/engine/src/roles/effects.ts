@@ -11,7 +11,7 @@ export type Effect =
   /** Protege al objetivo de ataques. power: 1 básico, 2 poderoso. */
   | { kind: "protect"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; source: "doctor" | "bodyguard" | "crusader" }
   /** Ataque directo al objetivo. */
-  | { kind: "attack"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; cause: string }
+  | { kind: "attack"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; cause: string; unstoppable?: boolean }
   /** Ataca a todo el que visite la casa `houseId` esta noche. */
   | { kind: "attackVisitors"; actorId: PlayerId; houseId: PlayerId; power: 1 | 2; cause: string }
   /** Ataque de la Mafia. Solo el Godfather da órdenes: si actúa, su objetivo prevalece. */

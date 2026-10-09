@@ -32,7 +32,7 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
     case "attack.prevented":
       return priv(event.payload.protectorId);
     case "chat.message":
-      if (event.payload.channel === "whisper") return priv(event.payload.audienceId ?? event.payload.senderId);
+      if (event.payload.channel === "whisper" || event.payload.channel === "jail") return priv(event.payload.audienceId ?? event.payload.senderId);
       return {
         visibility: event.payload.channel === "public" ? "public" : event.payload.channel,
         audiencePlayerId: null,

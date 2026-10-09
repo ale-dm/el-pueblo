@@ -110,7 +110,7 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
       return setFlag(s, e.payload.targetId, "blackmailed", true);
 
     case "player.jailed":
-      return setFlag(s, e.payload.playerId, "jailed", true);
+      return { ...setFlag(s, e.payload.playerId, "jailed", true), jailedBy: { ...s.jailedBy, [e.payload.playerId]: e.payload.jailorId } };
 
     case "mayor.revealed":
       return setFlag(s, e.payload.playerId, "mayorRevealed", true);
@@ -123,6 +123,7 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
         ...s,
         nightActions: {},
         players: s.players.map((p) => ({ ...p, flags: without(without(p.flags, "alert"), "jailed") })),
+        jailedBy: {},
       };
 
     case "game.ended":

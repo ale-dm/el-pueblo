@@ -37,7 +37,7 @@ export type GameEventPayloads = {
    * whisper: un susurro se registra dos veces, una para quien lo envía y otra para quien lo recibe
    * (audienceId cambia). Así cada uno lo ve como un mensaje privado suyo.
    */
-  "chat.message": { channel: "public" | "mafia" | "dead" | "whisper"; senderId: PlayerId; text: string; recipientId?: PlayerId; audienceId?: PlayerId };
+  "chat.message": { channel: "public" | "mafia" | "dead" | "whisper" | "jail"; senderId: PlayerId; text: string; recipientId?: PlayerId; audienceId?: PlayerId };
   "game.ended": { winner: FactionKey };
 };
 

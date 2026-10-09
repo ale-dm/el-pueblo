@@ -57,6 +57,8 @@ export interface MatchView {
     will: string | null;
     /** Grupo del rol (alineamiento del catálogo, p. ej. town_support). */
     alignment: string | null;
+    /** Si estás encarcelando a alguien o estás encarcelado esta noche (canal privado del Jailor). */
+    jail: "jailor" | "prisoner" | null;
     /** Ataque y defensa del rol, tal como los da el catálogo (con sus condiciones). */
     attack: string | null;
     defense: string | null;
@@ -143,6 +145,7 @@ export function getView(deps: GetViewDeps) {
         nightAction: state.nightActions[me.id] ?? null,
         will: state.wills[me.id] ?? null,
         alignment: me.roleKey ? catalog.roles.get(me.roleKey)?.alignmentKey ?? null : null,
+        jail: Object.values(state.jailedBy).includes(me.id) ? "jailor" : state.jailedBy[me.id] ? "prisoner" : null,
         attack: me.roleKey ? catalog.roles.get(me.roleKey)?.attack ?? null : null,
         defense: me.roleKey ? catalog.roles.get(me.roleKey)?.defense ?? null : null,
         nightAbilities: alive && handler

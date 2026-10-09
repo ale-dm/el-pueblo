@@ -54,6 +54,8 @@ export interface MatchView {
     will: string | null;
     /** Grupo del rol (p. ej. town_support). */
     alignment: string | null;
+    /** Canal con el prisionero: "jailor" si encarcelas a alguien, "prisoner" si te han encarcelado. */
+    jail: "jailor" | "prisoner" | null;
     /** Ataque y defensa del catálogo (texto con condiciones). */
     attack: string | null;
     defense: string | null;
@@ -62,4 +64,4 @@ export interface MatchView {
   };
 }
 
-export type Channel = "public" | "mafia" | "dead" | "whisper";
+export type Channel = "public" | "mafia" | "dead" | "whisper" | "jail";

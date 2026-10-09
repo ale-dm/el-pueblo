@@ -14,6 +14,11 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
   const send = useGame((s) => s.send);
   const active = channel && channels.includes(channel) ? channel : channels[0] ?? null;
   const nick = (id: string) => view.players.find((p) => p.id === id)?.nick ?? "?";
+  /** En la prisión el Jailor es anónimo para el prisionero, y al revés. */
+  const senderLabel = (p: Record<string, any>) => {
+    if (p.channel !== "jail" || p.senderId === view.me.id) return nick(p.senderId);
+    return view.me.jail === "prisoner" ? "Carcelero" : "Prisionero";
+  };
   const alive = view.players.filter((p) => p.status === "alive" && p.id !== view.me.id);
   const target = alive.some((p) => p.id === recipient) ? recipient : alive[0]?.id ?? "";
   // En la plaza, los avisos del sistema (votos, fases, muertes) van en el mismo flujo que los mensajes.
@@ -22,7 +27,7 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
       .filter((e) => e.type === "chat.message" && e.payload.channel === active)
       .map((e) => ({ seq: e.seq, key: `c${e.seq}`, node: (
         <p key={`c${e.seq}`}>
-          <strong>{nick(e.payload.senderId)}{e.payload.channel === "whisper" ? ` → ${nick(e.payload.recipientId)}` : ""}:</strong> {e.payload.text}
+          <strong>{senderLabel(e.payload)}{e.payload.channel === "whisper" ? ` → ${nick(e.payload.recipientId)}` : ""}:</strong> {e.payload.text}
         </p>
       ) })),
     ...(active === "public"

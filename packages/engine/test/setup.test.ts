@@ -12,7 +12,7 @@ function lobby(n: number): GameState {
   }));
   return {
     matchId: "m", engineVersion: "test", phase: "day_1", dayNumber: 1, seq: 0, winner: null, players,
-    trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {}, wills: {},
+    trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {}, wills: {}, jailedBy: {},
   };
 }
 

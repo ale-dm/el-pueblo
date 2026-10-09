@@ -56,6 +56,14 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
       }
       const denied = chatDenied(state, command.senderId, command.channel, command.recipientId);
       if (denied) return err("invalid_command", denied);
+      if (command.channel === "jail") {
+        // El destinatario sale del estado: el Jailor habla con su prisionero y al revés.
+        const recipientId = state.jailedBy[command.senderId] ?? Object.keys(state.jailedBy).find((id) => state.jailedBy[id] === command.senderId)!;
+        return ok([
+          { type: "chat.message", payload: { channel: "jail", senderId: command.senderId, text, recipientId, audienceId: recipientId } },
+          { type: "chat.message", payload: { channel: "jail", senderId: command.senderId, text, recipientId, audienceId: command.senderId } },
+        ]);
+      }
       if (command.channel === "whisper") {
         const recipientId = command.recipientId!;
         return ok([

@@ -25,7 +25,7 @@ interface Visit {
 interface Protection {
   protectorId: string;
   power: 1 | 2;
-  source: "doctor" | "bodyguard" | "crusader";
+  source: "doctor" | "bodyguard" | "crusader" | "jail";
 }
 
 interface Attack {
@@ -33,6 +33,8 @@ interface Attack {
   victimId: string;
   power: 1 | 2;
   cause: string;
+  /** Ataque imparable: ignora protecciones y guardaespaldas (ejecución del Jailor). */
+  unstoppable?: boolean;
 }
 
 interface Act {
@@ -158,6 +160,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   // 4. Protecciones y alerta.
   const protections = new Map<string, Protection[]>();
+  // Wiki: el encarcelado tiene defensa poderosa esta noche.
+  for (const [prisonerId, jailorId] of Object.entries(s.jailedBy)) {
+    if (!isAlive(playerOf(s, prisonerId))) continue;
+    protections.set(prisonerId, [{ protectorId: jailorId, power: 2, source: "jail" }]);
+  }
   const alerted = new Set<string>();
   const attacks: Attack[] = [];
   const marks: Array<{ actorId: string; targetId: string; flag: "framed" | "cleaned" | "blackmailed" }> = [];
@@ -182,7 +189,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           break;
         }
         case "attack":
-          attacks.push({ attackerId: e.actorId, victimId: e.targetId, power: e.power, cause: e.cause });
+          attacks.push({ attackerId: e.actorId, victimId: e.targetId, power: e.power, cause: e.cause, unstoppable: e.unstoppable });
           break;
         case "attackVisitors":
           for (const v of visitsTo(e.houseId, e.actorId)) {
@@ -336,6 +343,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       out.push({ type: "effect.applied", payload: { actorId: atk.attackerId, targetId: atk.attackerId, flag: "noExecute" } });
     }
 
+    if (atk.unstoppable) {
+      kill(atk.victimId, atk.cause);
+      continue;
+    }
     const prots = protections.get(atk.victimId) ?? [];
     const bodyguard = prots.find((p) => p.source === "bodyguard" && !dead.has(p.protectorId));
     if (bodyguard) {

@@ -60,4 +60,6 @@ export interface GameState {
   dayActionDay: Record<PlayerId, number>;
   /** Últimas voluntades escritas por jugadores vivos. Se revelan al morir. */
   wills: Record<PlayerId, string>;
+  /** Encarcelados de esta noche: prisionero → Jailor. Se vacía al final de la noche. */
+  jailedBy: Record<PlayerId, PlayerId>;
 }
