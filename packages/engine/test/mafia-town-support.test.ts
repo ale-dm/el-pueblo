@@ -243,3 +243,26 @@ describe("Ascenso a Mafioso (wiki: Hypnotist, Forger, Disguiser)", () => {
     expect(ofType(step(s, timer()).events, "role.promoted")).toHaveLength(0);
   });
 });
+
+describe("Retributionist: el zombi trabaja para el Retributionist (wiki: Retributionist)", () => {
+  // p1 Retributionist resucita a p2 (Sheriff muerto). El zombi interroga a p3.
+  it("los resultados del zombi llegan al Retributionist, no al cadáver", () => {
+    const s = game(["retributionist", "sheriff", "investigator", "godfather"]);
+    s.players[1] = { ...s.players[1]!, status: "dead" };
+    const raised = step(s, { type: "night.action", actorId: "p1", ability: "raise", targetId: "p2", secondTargetId: "p3" }).state;
+    const { events } = step(raised, timer());
+    const results = ofType(events, "investigation.result").filter((e) => e.payload.check === "suspicious");
+    expect(results.map((e) => [e.payload.investigatorId, e.payload.targetId])).toEqual([["p1", "p3"]]);
+    expect(results[0]!.audiencePlayerId).toBe("p1");
+  });
+
+  // p2 es un Bodyguard muerto que el Retributionist resucita para proteger a p4. El Godfather (p3) ataca a p4.
+  it("el guardaespaldas zombi protege y contraataca: el Godfather muere y el objetivo vive", () => {
+    const s = game(["retributionist", "bodyguard", "godfather", "investigator", "doctor"]);
+    s.players[1] = { ...s.players[1]!, status: "dead" };
+    const { events } = step(step(step(s, { type: "night.action", actorId: "p1", ability: "raise", targetId: "p2", secondTargetId: "p4" }).state,
+      { type: "night.action", actorId: "p3", ability: "kill", targetId: "p4", secondTargetId: null }).state, timer());
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p3", "bodyguard"]]);
+    expect(ofType(events, "attack.prevented")[0]?.payload).toEqual({ victimId: "p4", protectorId: "p1" });
+  });
+});

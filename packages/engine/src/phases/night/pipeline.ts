@@ -208,6 +208,14 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   else if (godOrder) mafiaExecutor = { attackerId: godOrder.actorId, victimId: godOrder.targetId };
   else if (ownKill) mafiaExecutor = { attackerId: ownKill.actorId, victimId: ownKill.targetId };
 
+  // Zombis de esta noche (Retributionist): zombi → Retributionist que lo alzó. Wiki (Retributionist.md:203): el
+  // Retributionist recibe los resultados que daría el cadáver; y el zombi protege y contraataca (Retributionist.md:388).
+  const raisedBy = new Map<string, string>();
+  for (const act of active) {
+    for (const e of act.effects) if (e.kind === "mark" && e.flag === "zombied") raisedBy.set(e.targetId, act.actor.id);
+  }
+  const routed = (id: string) => raisedBy.get(id) ?? id;
+
   // 3. Visitas: habilidades que apuntan a un jugador.
   const visits: Visit[] = [];
   for (const act of active) {
@@ -464,7 +472,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (inv.check === "targets" && result === "") continue;
     out.push({
       type: "investigation.result",
-      payload: { investigatorId: inv.actorId, targetId: target, result, check: inv.check, ...(side ? { side } : {}), ...(more ? { more } : {}) },
+      payload: { investigatorId: routed(inv.actorId), targetId: target, result, check: inv.check, ...(side ? { side } : {}), ...(more ? { more } : {}) },
     });
   }
 
@@ -504,10 +512,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Wiki (Bodyguard.md:214, 228): el guardaespaldas solo contraataca a la Mafia (Godfather, Mafioso) y al
     // Vigilante, y a otros roles que matan; no protege de Veteran, Ambusher ni de Town Protectives.
     const counters = atk.cause === "mafia" || atk.cause === "shot";
-    const bodyguard = counters ? prots.find((p) => p.source === "bodyguard" && !dead.has(p.protectorId)) : undefined;
+    // Un zombi está muerto, pero su guardaespaldas actúa esta noche (wiki: Retributionist.md:388).
+    const bodyguard = counters ? prots.find((p) => p.source === "bodyguard" && (!dead.has(p.protectorId) || raisedBy.has(p.protectorId))) : undefined;
     if (bodyguard) {
       prevented.add(atk.victimId);
-      out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: bodyguard.protectorId } });
+      out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(bodyguard.protectorId) } });
       kill(atk.attackerId, "bodyguard");
       kill(bodyguard.protectorId, "bodyguard");
       continue;
@@ -521,7 +530,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       killVictim(atk.cause);
     } else {
       prevented.add(atk.victimId);
-      if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: strongest.protectorId } });
+      if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(strongest.protectorId) } });
     }
   }
 
@@ -539,7 +548,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
     out.push({
       type: "investigation.result",
-      payload: { investigatorId: bug.actorId, targetId: target, result: tags.join(",") || "nada", check: "bug" },
+      payload: { investigatorId: routed(bug.actorId), targetId: target, result: tags.join(",") || "nada", check: "bug" },
     });
   }
 
