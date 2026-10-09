@@ -203,9 +203,8 @@ describe("Forger: testamentos falsificados", () => {
     expect(hanged.map((e) => e.payload.roleKey)).toEqual(["investigator"]);
   });
 
-  it("exige un rol válido", () => {
+  it("un rol que no existe se rechaza (sin rol elegido, ver forger-testamento.test.ts: Forger.md:242)", () => {
     const s = game(["forger", "investigator", "godfather", "sheriff"]);
-    expect(rejected(s, { type: "night.action", actorId: "p1", ability: "forge", targetId: "p2", secondTargetId: null })).toMatch(/Elige una opción/);
     expect(rejected(s, { type: "night.action", actorId: "p1", ability: "forge", targetId: "p2", secondTargetId: null, choice: "nadie" })).toMatch(/Rol desconocido/);
   });
 });

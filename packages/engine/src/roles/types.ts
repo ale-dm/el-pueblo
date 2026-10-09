@@ -24,6 +24,10 @@ export interface NightAbility {
   roleblock?: boolean;
   /** Quien mata puede dejar una nota de muerte, que se muestra al amanecer junto a la víctima (wiki: Godfather.md:235, Mafioso.md:237). */
   deathNote?: boolean;
+  /** Elección por defecto si se guarda sin elegir (wiki: Forger.md:242, "their role will default to Ambusher"). */
+  defaultChoice?: string;
+  /** Escribe un testamento falsificado para la víctima (wiki: Forger.md:34, 204). */
+  writesWill?: boolean;
 }
 
 /** Habilidad de día (Jailor, Mayor). */
@@ -46,6 +50,8 @@ export interface ResolveContext {
   secondTargetId: PlayerId | null;
   /** Elección de la habilidad (mensaje del Hypnotist, rol del Forger). */
   choice: string | null;
+  /** Testamento falsificado (Forger), "" si no escribió nada (wiki: Forger.md:218). */
+  forgedWill: string | null;
   catalog: Catalog;
   rng: Rng;
 }

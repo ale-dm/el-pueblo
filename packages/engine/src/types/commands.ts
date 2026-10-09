@@ -16,6 +16,8 @@ export type Command =
       choice?: string | null;
       /** Nota de muerte del asesino (wiki: Death_Note_ToS.md:15, 400 caracteres). Solo la lleva un kill con deathNote. */
       note?: string | null;
+      /** Testamento falsificado del Forger (wiki: Forger.md:204, 218). Vacío o ausente: el testamento se quita. */
+      forgedWill?: string | null;
     }
   | { type: "night.action.cancel"; actorId: PlayerId }
   | { type: "will.write"; playerId: PlayerId; text: string }

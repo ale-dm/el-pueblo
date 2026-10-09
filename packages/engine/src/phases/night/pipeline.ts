@@ -53,6 +53,8 @@ interface Act {
   targetId: string | null;
   secondTargetId: string | null;
   choice: string | null;
+  /** Testamento falsificado del Forger, si lo escribió (wiki: Forger.md:204). */
+  forgedWill: string | null;
   effects: Effect[];
   blocked: boolean;
   /** Visitó a un encarcelado: su habilidad falla, pero la visita cuenta (wiki: Jailor.md:252). */
@@ -114,6 +116,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       targetId: action.targetId,
       secondTargetId: action.secondTargetId,
       choice: action.choice,
+      forgedWill: action.forgedWill ?? null,
       effects: [],
       blocked: actor.flags.jailed === true,
       jailFailed: false,
@@ -130,6 +133,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       targetId: null,
       secondTargetId: null,
       choice: null,
+      forgedWill: null,
       effects: [],
       blocked: actor.flags.jailed === true,
       jailFailed: false,
@@ -145,6 +149,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       targetId: act.targetId,
       secondTargetId: act.secondTargetId,
       choice: act.choice,
+      forgedWill: act.forgedWill,
       catalog,
       rng,
     });
@@ -319,7 +324,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const usesSpent: Array<{ playerId: string; ability: string }> = [];
   const disguises = new Map<string, string>();
   const hypnoses: Array<{ targetId: string; message: "attacked" | "protected" | "roleblocked" }> = [];
-  const forges: Array<{ forgerId: string; targetId: string; role: string }> = [];
+  const forges: Array<{ forgerId: string; targetId: string; role: string; will: string }> = [];
 
   for (const act of active) {
     const def = act.handler.nightAbilities.find((a) => a.key === act.ability);
@@ -376,7 +381,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           hypnoses.push({ targetId: e.targetId, message: e.message });
           break;
         case "forge":
-          forges.push({ forgerId: e.actorId, targetId: e.targetId, role: e.role });
+          forges.push({ forgerId: e.actorId, targetId: e.targetId, role: e.role, will: e.will });
           break;
         case "build":
           builders.push(e.actorId);
@@ -497,7 +502,15 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (isAlive(playerOf(s, f.targetId))) out.push({ type: "will.forged", payload: { playerId: f.targetId, role: f.role, forgerId: f.forgerId } });
   }
   // Rol que se mostrará al morir: el último que falsificó el Forger (esta noche o antes).
-  const forged = new Map<string, string>(forges.map((f) => [f.targetId, f.role]));
+  // Wiki (Forger.md:226): si varios Forger eligen a la misma víctima, manda el que eligió primero. "Primero" es el
+  // orden en que enviaron su acción nocturna (s.nightActions); el orden de resolución es por asiento y no sirve.
+  const selectionOrder = Object.keys(s.nightActions);
+  const firstForge = new Map<string, (typeof forges)[number]>();
+  for (const f of [...forges].sort((a, b) => selectionOrder.indexOf(a.forgerId) - selectionOrder.indexOf(b.forgerId))) {
+    if (!firstForge.has(f.targetId)) firstForge.set(f.targetId, f);
+  }
+  const forged = new Map<string, string>([...firstForge].map(([id, f]) => [id, f.role]));
+  const forgedWills = new Map<string, string>([...firstForge].map(([id, f]) => [id, f.will]));
   for (const vetId of alerted) {
     out.push({ type: "effect.applied", payload: { actorId: vetId, targetId: vetId, flag: "alert" } });
   }
@@ -616,7 +629,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Wiki (Forger): la falsificación solo vale si la víctima muere esa misma noche.
     const roleKey = cleaned.has(playerId) ? null : forged.get(playerId) ?? playerOf(s, playerId)?.roleKey ?? null;
     // Un limpiado no deja testamento visible (wiki: Janitor).
-    const will = cleaned.has(playerId) ? null : s.wills[playerId] ?? null;
+    // Wiki (Forger.md:34, 156): el testamento falsificado reemplaza al real; en blanco, no queda testamento (Forger.md:218).
+    const forgedWill = forgedWills.get(playerId);
+    const will = cleaned.has(playerId) ? null : forgedWill !== undefined ? forgedWill || null : s.wills[playerId] ?? null;
     out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will, ...(cleaned.has(playerId) ? { cleaned: true } : {}), ...(reasons ? { reasons } : {}), ...(note ? { note } : {}) } });
     // Wiki (Janitor.md:214): el Janitor que lo limpió sabe su rol real al amanecer.
     const janitorId = marks.find((m) => m.flag === "cleaned" && m.targetId === playerId)?.actorId;

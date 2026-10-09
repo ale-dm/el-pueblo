@@ -91,6 +91,8 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
       if (ab.usesLeft === 0) continue;
       const label = `${abilityLabel(ab.key)}${usesText(ab.usesLeft)}`;
       const choice = ab.choices ? choices[ab.key] ?? "" : null;
+      // Sin elegir rol, el Forger guarda como Ambusher (wiki: Forger.md:242): el botón no se bloquea por eso.
+      const needsChoice = ab.choices !== null && !choice && ab.defaultChoice === null;
       // Si la habilidad elige algo (mensaje o rol), el selector va justo antes del botón.
       const picker = ab.choices ? (
         <select
@@ -105,31 +107,36 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
         </select>
       ) : null;
       if (picker) actions.push(picker);
-      // La nota de muerte se escribe antes de matar: la verá la Ciudad al amanecer si la víctima muere (wiki: Death_Note_ToS.md:17).
-      const note = ab.deathNote ? notes[ab.key] ?? "" : "";
-      if (ab.deathNote) {
+      // Texto de la habilidad: nota de muerte (wiki: Death_Note_ToS.md:17, se escribe antes de matar) o testamento
+      // falsificado del Forger (wiki: Forger.md:204). Ambos hasta 400 caracteres.
+      const text = ab.deathNote || ab.writesWill ? notes[ab.key] ?? "" : "";
+      if (ab.deathNote || ab.writesWill) {
         actions.push(
           <textarea
-            key={`${ab.key}-note`}
-            aria-label="Nota de muerte"
+            key={`${ab.key}-text`}
+            aria-label={ab.writesWill ? "Testamento falsificado" : "Nota de muerte"}
             maxLength={MAX_DEATH_NOTE}
             rows={2}
-            placeholder="Nota de muerte (opcional)"
+            placeholder={ab.writesWill ? "Testamento falsificado (vacío: no deja testamento)" : "Nota de muerte (opcional)"}
             className="cartoon-input !w-full"
-            value={note}
+            value={text}
             onChange={(e) => setNotes((n) => ({ ...n, [ab.key]: e.target.value }))}
           />,
         );
       }
-      const withChoice = { ...(choice ? { choice } : {}), ...(note.trim() ? { note } : {}) };
+      const withChoice = {
+        ...(choice ? { choice } : {}),
+        ...(ab.deathNote && text.trim() ? { note: text } : {}),
+        ...(ab.writesWill ? { forgedWill: text } : {}),
+      };
       // La habilidad se usa desde un botón redondo, como el amuleto de Town of Salem.
       if (ab.target === "none") {
-        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || (ab.choices !== null && !choice)} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: null, ...withChoice })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: null, ...withChoice })}>{label}</Button>);
       } else if (ab.target === "player") {
-        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || (ab.choices !== null && !choice)} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, ...withChoice })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, ...withChoice })}>{label}</Button>);
       } else {
         // Dos objetivos: el primero es el que tocaste primero (Retributionist: el Town muerto; Disguiser: el Mafioso).
-        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || !second || (ab.choices !== null && !choice)} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, secondTargetId: second, ...withChoice })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || !second || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, secondTargetId: second, ...withChoice })}>{label}</Button>);
       }
     }
   }

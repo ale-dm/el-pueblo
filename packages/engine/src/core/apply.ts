@@ -116,6 +116,7 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
             secondTargetId: e.payload.secondTargetId,
             choice: e.payload.choice,
             ...(e.payload.note !== undefined ? { note: e.payload.note } : {}),
+            ...(e.payload.forgedWill !== undefined ? { forgedWill: e.payload.forgedWill } : {}),
           },
         },
       };

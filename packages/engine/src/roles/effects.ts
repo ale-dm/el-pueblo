@@ -27,7 +27,7 @@ export type Effect =
   /** Mensaje falso que recibe `targetId` al terminar la noche (Hypnotist). */
   | { kind: "hypnosis"; actorId: PlayerId; targetId: PlayerId; message: "attacked" | "protected" | "roleblocked" }
   /** Falsifica la última voluntad de `targetId`: al morir, se muestra como el rol `role`. */
-  | { kind: "forge"; actorId: PlayerId; targetId: PlayerId; role: string }
+  | { kind: "forge"; actorId: PlayerId; targetId: PlayerId; role: string; will: string }
   /** Coloca una trampa en la casa del objetivo; se activa al día siguiente. */
   | { kind: "trap"; actorId: PlayerId; targetId: PlayerId }
   /** Construye la trampa al final de la noche si no hay ninguna puesta ni lista (wiki: Trapper.md:213). */

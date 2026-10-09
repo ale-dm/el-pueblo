@@ -1,8 +1,14 @@
-import { ROLE_HANDLERS, replay, type Catalog, type GameState } from "@el-pueblo/engine";
+import { ROLE_HANDLERS, replay, type Catalog, type GameState, type NightAbility } from "@el-pueblo/engine";
 import { AppError } from "../errors.js";
 import type { CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Security } from "../ports.js";
 import { initialState } from "../state/initialState.js";
 import { modeOf, phaseDelayFor } from "../timing.js";
+
+
+/** Flags de una habilidad de noche que la app necesita para pintar su entrada: nota de muerte, elección por defecto y testamento falsificado. */
+export function nightAbilityFlags(a: NightAbility): { deathNote: boolean; defaultChoice: string | null; writesWill: boolean } {
+  return { deathNote: a.deathNote ?? false, defaultChoice: a.defaultChoice ?? null, writesWill: a.writesWill ?? false };
+}
 
 export interface GetViewDeps {
   matches: MatchStore;
@@ -54,7 +60,7 @@ export interface MatchView {
     faction: string | null;
     roleSummary: string | null;
     flags: Record<string, boolean>;
-    nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null; note?: string } | null;
+    nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null; note?: string; forgedWill?: string } | null;
     /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
     seance: "medium" | "target" | null;
     /** Tu última voluntad (solo tú la ves mientras vives). */
@@ -67,7 +73,7 @@ export interface MatchView {
     attack: string | null;
     defense: string | null;
     /** Habilidades disponibles ahora mismo (con usos restantes). */
-    nightAbilities: Array<{ key: string; target: string; usesLeft: number | null; choices: string[] | null; deadOnly: boolean; deathNote: boolean }>;
+    nightAbilities: Array<{ key: string; target: string; usesLeft: number | null; choices: string[] | null; deadOnly: boolean; deathNote: boolean; defaultChoice: string | null; writesWill: boolean }>;
     dayAbilities: Array<{ key: string; target: string; oncePerDay: boolean; usesLeft: number | null }>;
   };
 }
@@ -169,7 +175,7 @@ export function getView(deps: GetViewDeps) {
                 usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0,
                 choices: a.choices === "roles" ? [...ROLE_HANDLERS.keys()] : a.choices ? [...a.choices] : null,
                 deadOnly: a.deadOnly ?? false,
-                deathNote: a.deathNote ?? false,
+                ...nightAbilityFlags(a),
               }))
           : [],
         // Los vivos tienen sus habilidades de día; los muertos, solo las de muerto (Medium abre su sesión de día).

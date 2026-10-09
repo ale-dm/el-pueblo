@@ -14,12 +14,15 @@ export function nightAction(
   secondTargetId: string | null,
   choice: string | null = null,
   note: string | null = null,
+  forgedWill: string | null = null,
 ): Result<EventInput[]> {
   if (s.phase !== "night") return err("wrong_phase", "Las acciones nocturnas solo se hacen de noche");
   const actor = playerOf(s, actorId);
   const handler = actor ? handlerOf(actor) : undefined;
   const def = handler?.nightAbilities.find((a) => a.key === ability);
   if (!actor || !handler || !def) return err("invalid_command", "Tu rol no tiene esa habilidad");
+  // Sin rol elegido, la habilidad usa su opción por defecto (wiki: Forger.md:242: "their role will default to Ambusher").
+  if (!choice && def.defaultChoice) choice = def.defaultChoice;
   if (def.deadOnly ? isAlive(actor) : !isAlive(actor)) {
     return err("invalid_command", def.deadOnly ? "Solo los muertos usan esa habilidad" : "Solo los vivos actúan de noche");
   }
@@ -82,6 +85,17 @@ export function nightAction(
     }
   }
 
+  // Forger (wiki: Forger.md:204, "You may choose a non- Mafia target to forge each Night"). El testamento falsificado
+  // es un testamento: hasta 400 caracteres (wiki: Last_Will_ToS.md:7); en blanco, la víctima no deja testamento (Forger.md:218).
+  if (ability === "forge" && playerOf(s, targetId ?? "")?.faction === "mafia") {
+    return err("invalid_command", "Solo puedes falsificar el testamento de alguien que no es de la Mafia");
+  }
+  let forgedText: string | null = null;
+  if (def.writesWill) {
+    forgedText = (forgedWill ?? "").trim();
+    if (forgedText.length > MAX_FORGED_WILL_LENGTH) return err("invalid_command", `El testamento falsificado tiene como máximo ${MAX_FORGED_WILL_LENGTH} caracteres`);
+  }
+
   // Disfraz del Disguiser: un Mafioso vivo y no encarcelado, disfrazado de alguien que no es de la Mafia.
   if (ability === "disguise") {
     if (playerOf(s, targetId ?? "")?.faction !== "mafia") return err("invalid_command", "Solo puedes disfrazar a alguien de la Mafia");
@@ -133,6 +147,7 @@ export function nightAction(
       payload: {
         actorId, ability, targetId, secondTargetId, choice: choice ?? null, mafiaTeam: actor.faction === "mafia", roleKey: actor.roleKey,
         ...(trimmedNote.length > 0 ? { note: trimmedNote } : {}),
+        ...(forgedText !== null ? { forgedWill: forgedText } : {}),
       },
     },
   ];
@@ -171,3 +186,6 @@ export const MAX_WILL_LENGTH = 300;
 
 /** Nota de muerte: hasta 400 caracteres (wiki: Death_Note_ToS.md:15). */
 export const MAX_DEATH_NOTE_LENGTH = 400;
+
+/** Testamento falsificado: hasta 400 caracteres, como cualquier testamento (wiki: Last_Will_ToS.md:7). */
+export const MAX_FORGED_WILL_LENGTH = 400;

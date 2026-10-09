@@ -31,6 +31,8 @@ export interface NightAction {
   choice: string | null;
   /** Nota de muerte del asesino, si la escribió (wiki: Death_Note_ToS.md:5, 15). Ausente si no hay nota. */
   note?: string;
+  /** Testamento falsificado del Forger (wiki: Forger.md:204). "" si no escribió nada. */
+  forgedWill?: string;
 }
 
 /**
