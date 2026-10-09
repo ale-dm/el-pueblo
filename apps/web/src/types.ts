@@ -56,6 +56,8 @@ export interface MatchView {
     nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null; note?: string; forgedWill?: string } | null;
     /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
     seance: "medium" | "target" | null;
+    /** Solo para el Médium con sesión: si su objetivo es de la Mafia y si está encarcelado o es el Jailor (wiki: Medium.md:217-219). */
+    seanceTarget: { mafia: boolean; jail: boolean } | null;
     /** Tu última voluntad. */
     will: string | null;
     /** Grupo del rol (p. ej. town_support). */

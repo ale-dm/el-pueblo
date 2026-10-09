@@ -8,12 +8,13 @@ import { buildLog, logContext } from "../lib/log.js";
 import { copyBlocked } from "../lib/copyRights.js";
 
 export function Chat({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
-  const { channels, notice } = chatRights(view);
+  const { channels, readOnly, notice } = chatRights(view);
   const [channel, setChannel] = useState<Channel | null>(null);
   const [text, setText] = useState("");
   const [recipient, setRecipient] = useState("");
   const send = useGame((s) => s.send);
   const active = channel && channels.includes(channel) ? channel : channels[0] ?? null;
+  const activeReadOnly = active !== null && readOnly.includes(active);
   const nick = (id: string) => view.players.find((p) => p.id === id)?.nick ?? "?";
   const senderLabel = (p: Record<string, any>) => chatSenderLabel(view, p, nick);
   const whisperable = view.players.filter((p) => whisperTarget(p, view.me.id));
@@ -64,7 +65,8 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
           </select>
         </label>
       )}
-      {active && (
+      {active && activeReadOnly && <p className="mt-2 text-sm font-semibold">Solo lectura: no puedes escribir en este canal.</p>}
+      {active && !activeReadOnly && (
         <form
           className="mt-2 flex gap-2"
           onSubmit={(e) => {

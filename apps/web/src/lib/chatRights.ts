@@ -22,15 +22,32 @@ export function chatSenderLabel(view: MatchView, p: Record<string, any>, nick: (
   return view.me.jail === "prisoner" ? "Carcelero" : "Prisionero";
 }
 
-/** Canales donde puede escribir ahora y, si ninguno, por qué. Refleja las reglas del motor (rules/chat.ts). */
-export function chatRights(view: MatchView): { channels: Channel[]; notice: string | null } {
+/**
+ * Canales que el Médium con sesión solo lee: el de la Mafia o el de cárcel de su objetivo. Solo el objetivo habla en ellos
+ * (wiki: Medium.md:217-219, "they will be able to talk with you and the Jailor, the other members of their faction ...").
+ */
+const seanceReadOnly = (target: MatchView["me"]["seanceTarget"]): Channel[] => [
+  ...(target?.mafia ? ["mafia" as const] : []),
+  ...(target?.jail ? ["jail" as const] : []),
+];
+
+/**
+ * Canales donde puede escribir ahora y, si ninguno, por qué. `channels` son todos los que ve (escritura primero);
+ * `readOnly` los que solo lee. Refleja las reglas del motor (rules/chat.ts y core/decide.ts).
+ */
+export function chatRights(view: MatchView): { channels: Channel[]; readOnly: Channel[]; notice: string | null } {
   const me = view.me;
   // Muerto: Ultratumba siempre; la sesión con un vivo solo si el Médium la ha abierto esta noche.
   if (me.status === "dead") {
-    const seance: Channel[] = view.phase === "night" && me.seance === "medium" ? ["seance"] : [];
-    return { channels: ["dead", ...seance], notice: null };
+    if (view.phase === "night" && me.seance === "medium") {
+      // Wiki (Medium.md:223): "While seancing, you are still able to hear the dead, but the dead won't hear you."
+      // Con sesión, el Ultratumba y el canal de la Mafia o de cárcel de su objetivo son de solo lectura (Medium.md:217-219, 223).
+      const watch = seanceReadOnly(me.seanceTarget);
+      return { channels: ["seance", "dead", ...watch], readOnly: ["dead", ...watch], notice: null };
+    }
+    return { channels: ["dead"], readOnly: [], notice: null };
   }
-  if (me.status !== "alive" || view.phase === "ended") return { channels: [], notice: null };
+  if (me.status !== "alive" || view.phase === "ended") return { channels: [], readOnly: [], notice: null };
   if (view.phase === "night") {
     // La Mafia, el canal con el prisionero (o el Jailor), la sesión de Médium y el Ultratumba del Médium vivo.
     const open: Channel[] = [
@@ -39,18 +56,22 @@ export function chatRights(view: MatchView): { channels: Channel[]; notice: stri
       ...(me.jail ? ["jail" as const] : []),
       ...(me.seance === "target" ? ["seance" as const] : []),
     ];
-    return open.length ? { channels: open, notice: null } : { channels: [], notice: "De noche solo habla la Mafia." };
+    // Wiki (Medium.md:201): encarcelado, el Médium oye a los muertos, pero los muertos no le oyen (solo el Jailor le oye).
+    const heard: Channel[] = me.roleKey === "medium" && me.flags.jailed ? ["dead"] : [];
+    return open.length || heard.length
+      ? { channels: [...open, ...heard], readOnly: heard, notice: null }
+      : { channels: [], readOnly: [], notice: "De noche solo habla la Mafia." };
   }
   // Wiki (Blackmailer.md:213): el acusado silenciado solo dice "I am blackmailed." en su defensa, una vez por juicio.
   if (me.flags.blackmailed && view.phase === "defense" && view.defendantId === me.id && !me.flags.blackmailSpoke) {
-    return { channels: ["public"], notice: "Estás silenciado: en tu defensa solo puedes decir «I am blackmailed.»." };
+    return { channels: ["public"], readOnly: [], notice: "Estás silenciado: en tu defensa solo puedes decir «I am blackmailed.»." };
   }
   // Wiki (Blackmailer.md:209, 211): el silenciado intenta hablar o susurrar y recibe el mensaje de la wiki; la UI lo deja intentar.
   if ((view.phase === "defense" || view.phase === "last_words") && view.defendantId !== me.id) {
-    return { channels: [], notice: "Solo habla el acusado." };
+    return { channels: [], readOnly: [], notice: "Solo habla el acusado." };
   }
   const channels: Channel[] = ["public"];
   if (canWhisper(view)) channels.push("whisper");
   if (view.me.jail) channels.push("jail");
-  return { channels, notice: null };
+  return { channels, readOnly: [], notice: null };
 }

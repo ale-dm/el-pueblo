@@ -4,6 +4,19 @@ import type { CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Security 
 import { initialState } from "../state/initialState.js";
 import { modeOf, phaseDelayFor } from "../timing.js";
 
+/**
+ * Lo que el Médium con sesión ve de su objetivo: si es de la Mafia y si está encarcelado o es el Jailor. Con eso el web
+ * muestra en solo lectura el canal de la Mafia o de cárcel (wiki: Medium.md:217-219). Null si no hay sesión abierta.
+ */
+export function seanceTargetOf(state: GameState, mediumId: string): { mafia: boolean; jail: boolean } | null {
+  const action = state.nightActions[mediumId];
+  const target = action?.ability === "seance" && action.targetId ? state.players.find((p) => p.id === action.targetId) : undefined;
+  if (!target) return null;
+  return {
+    mafia: target.faction === "mafia",
+    jail: state.jailedBy[target.id] !== undefined || Object.values(state.jailedBy).includes(target.id),
+  };
+}
 
 /** Flags de una habilidad de noche que la app necesita para pintar su entrada: nota de muerte, elección por defecto y testamento falsificado. */
 export function nightAbilityFlags(a: NightAbility): { deathNote: boolean; defaultChoice: string | null; writesWill: boolean } {
@@ -65,6 +78,8 @@ export interface MatchView {
     nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null; note?: string; forgedWill?: string } | null;
     /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
     seance: "medium" | "target" | null;
+    /** Solo para el Médium con sesión: si su objetivo es de la Mafia y si está encarcelado o es el Jailor (wiki: Medium.md:217-219). */
+    seanceTarget: { mafia: boolean; jail: boolean } | null;
     /** Tu última voluntad (solo tú la ves mientras vives). */
     will: string | null;
     /** Grupo del rol (alineamiento del catálogo, p. ej. town_support). */
@@ -132,6 +147,7 @@ export function getView(deps: GetViewDeps) {
       : state.nightActions[me.id]?.ability === "seance" ? "medium"
       : Object.values(state.nightActions).some((a) => a.ability === "seance" && a.targetId === me.id) ? "target"
       : null;
+    const seanceTarget = seance === "medium" ? seanceTargetOf(state, me.id) : null;
 
     return {
       matchId: match.id,
@@ -170,6 +186,7 @@ export function getView(deps: GetViewDeps) {
         usedBodies: usedBodiesFor(me.roleKey, state.players),
         nightAction: state.nightActions[me.id] ?? null,
         seance,
+        seanceTarget,
         will: state.wills[me.id] ?? null,
         alignment: me.roleKey ? catalog.roles.get(me.roleKey)?.alignmentKey ?? null : null,
         jail: Object.values(state.jailedBy).includes(me.id) ? "jailor" : state.jailedBy[me.id] ? "prisoner" : null,
