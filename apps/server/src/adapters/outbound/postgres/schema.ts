@@ -250,6 +250,8 @@ export const matchPlayers = pgTable(
     // Solo se guarda el hash SHA-256 del token de reconexión; el token nunca se persiste en claro.
     reconnectTokenHash: text("reconnect_token_hash").notNull(),
     connected: boolean("connected").notNull().default(true),
+    // Jugadores controlados por el servidor. Su token no sale nunca del servidor.
+    isBot: boolean("is_bot").notNull().default(false),
     joinedAt: timestamp("joined_at", { withTimezone: true }).notNull().defaultNow(),
     leftAt: timestamp("left_at", { withTimezone: true }),
   },

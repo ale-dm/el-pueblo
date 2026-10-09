@@ -1,0 +1,1 @@
+ALTER TABLE "match_players" ADD COLUMN "is_bot" boolean DEFAULT false NOT NULL;

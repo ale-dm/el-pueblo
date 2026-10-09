@@ -21,6 +21,25 @@ export interface SubmitCommandDeps {
   afterEvents?: (matchId: string, events: GameEventEnvelope[]) => void;
 }
 
+/** Comandos que solo emite el servidor: un cliente no puede iniciar la partida ni forzar el paso de fase. */
+const SERVER_ONLY = new Set<Command["type"]>(["game.start", "timer.expired"]);
+
+/** Jugador que actúa con el comando, si el comando lo indica. */
+function actorOf(command: Command): string | undefined {
+  switch (command.type) {
+    case "vote":
+    case "judgement.vote":
+      return command.voterId;
+    case "day.action":
+    case "night.action":
+      return command.actorId;
+    case "chat.send":
+      return command.senderId;
+    default:
+      return undefined;
+  }
+}
+
 export interface SubmitCommandInput {
   matchId: string;
   token: string;
@@ -42,6 +61,10 @@ export function submitCommand(deps: SubmitCommandDeps) {
 
       const player = await deps.players.findByTokenHash(match.id, deps.security.hashToken(input.token));
       if (!player) throw new AppError("forbidden", "Token no válido para esta partida");
+
+      if (SERVER_ONLY.has(input.command.type)) throw new AppError("forbidden", "Comando reservado al servidor");
+      const actor = actorOf(input.command);
+      if (actor !== undefined && actor !== player.id) throw new AppError("forbidden", "No puedes actuar por otro jugador");
 
       if (match.status !== "playing") throw new AppError("invalid_state", "La partida no está en curso");
 

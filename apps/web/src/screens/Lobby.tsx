@@ -32,6 +32,7 @@ export function Lobby({ view }: { view: MatchView }) {
             <li key={p.id} className="flex items-center justify-between rounded-2xl border-2 border-ink bg-white/60 px-3 py-2">
               <span className="font-semibold">{p.nick}</span>
               <span className="flex gap-2">
+                {p.isBot && <Pill>Bot</Pill>}
                 {p.seat === 1 && <Pill>Anfitrión</Pill>}
                 {p.id === view.me.id && <Pill>Tú</Pill>}
               </span>

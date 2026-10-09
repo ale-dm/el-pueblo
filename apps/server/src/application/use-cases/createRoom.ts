@@ -1,5 +1,5 @@
 import { AppError } from "../errors.js";
-import { isValidNick } from "../limits.js";
+import { LIMITS, isValidNick } from "../limits.js";
 import type { Clock, IdGenerator, MatchStore, PlayerStore, Security } from "../ports.js";
 
 export interface CreateRoomDeps {
@@ -14,6 +14,8 @@ export interface CreateRoomDeps {
 export interface CreateRoomInput {
   nick: string;
   config?: Record<string, unknown>;
+  /** Bots que ocupan asientos desde el inicio (0 a maxPlayers - 1). */
+  bots?: number;
 }
 
 export interface CreateRoomResult {
@@ -30,6 +32,10 @@ const MAX_CODE_ATTEMPTS = 5;
 export function createRoom(deps: CreateRoomDeps) {
   return async (input: CreateRoomInput): Promise<CreateRoomResult> => {
     if (!isValidNick(input.nick)) throw new AppError("invalid_input", "Nick no válido");
+    const bots = input.bots ?? 0;
+    if (!Number.isInteger(bots) || bots < 0 || bots > LIMITS.maxPlayers - 1) {
+      throw new AppError("invalid_input", `Los bots deben ser un número entre 0 y ${LIMITS.maxPlayers - 1}`);
+    }
 
     let roomCode: string | null = null;
     for (let attempt = 0; attempt < MAX_CODE_ATTEMPTS && roomCode === null; attempt++) {
@@ -65,6 +71,26 @@ export function createRoom(deps: CreateRoomDeps) {
       flags: {},
       tokenHash: deps.security.hashToken(token),
     });
+
+    for (let i = 1; i <= bots; i++) {
+      const botId = deps.ids.uuid();
+      await deps.players.insert({
+        id: botId,
+        matchId,
+        seat: i + 1,
+        nick: `Bot ${i}`,
+        roleKey: null,
+        faction: null,
+        status: "alive",
+        connected: true,
+        deathReason: null,
+        usesLeft: {},
+        flags: {},
+        isBot: true,
+        // El token del bot se deriva de la partida y su id: no se guarda, solo su hash, como el de cualquier jugador.
+        tokenHash: deps.security.hashToken(deps.security.botToken(matchId, botId)),
+      });
+    }
 
     return { matchId, roomCode, playerId, seat: 1, token };
   };

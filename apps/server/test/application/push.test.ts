@@ -32,7 +32,7 @@ describe("avisos Web Push", () => {
     for (let i = 0; i < 3; i++) {
       await app.services.subscribePush({ matchId: players[i]!.matchId, token: players[i]!.token, ...subscription(i) });
     }
-    await app.services.submitCommand({ matchId: players[0]!.matchId, token: players[0]!.token, command: { type: "timer.expired" } });
+    await app.services.advance(players[0]!.matchId);
     await app.services.drainNarrations();
     expect(app.pushSender.sent).toHaveLength(3);
     const text = JSON.stringify(app.pushSender.sent.map((s) => s.payload));
@@ -46,7 +46,7 @@ describe("avisos Web Push", () => {
     const matchId = players[0]!.matchId;
     await app.services.subscribePush({ matchId, token: players[0]!.token, ...subscription(9) });
     app.pushSender.gone.add(subscription(9).endpoint);
-    await app.services.submitCommand({ matchId, token: players[0]!.token, command: { type: "timer.expired" } });
+    await app.services.advance(matchId);
     await app.services.drainNarrations();
     expect(await app.push.listByMatch(matchId)).toHaveLength(0);
   });

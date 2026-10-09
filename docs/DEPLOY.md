@@ -71,6 +71,7 @@ La configuración (`.env`) se guarda en el propio stack de Portainer.
 | `NARRATOR_TIMEOUT_MS` | Límite de la llamada a Gemini (8000 por defecto) |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Avisos Web Push. Sin ellas, no hay avisos |
 | `CHAT_MESSAGES_PER_10S` | Límite de mensajes de chat por jugador (5 por defecto) |
+| `BOT_SECRET` | Secreto fijo para los tokens de los bots (`openssl rand -hex 32`). Sin él, los bots de las partidas en curso dejan de responder tras un reinicio |
 
 Generar las claves VAPID una vez: `npx web-push generate-vapid-keys`.
 

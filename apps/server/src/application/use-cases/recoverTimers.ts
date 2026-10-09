@@ -9,6 +9,8 @@ export interface RecoverDeps {
   events: EventLog;
   catalog: CatalogSource;
   scheduler: Scheduler;
+  /** Reprograma el turno de los bots de la fase actual, si la partida los tiene. */
+  scheduleBots?: (matchId: string) => void;
 }
 
 /**
@@ -25,6 +27,7 @@ export function recoverTimers(deps: RecoverDeps) {
       const state = replay(initialState(match, roster), history);
       const delay = phaseDelayMs(catalog, modeOf(match.config), state.phase);
       if (delay !== null) deps.scheduler.schedule(match.id, delay, () => void advance(match.id));
+      deps.scheduleBots?.(match.id);
     }
     return playing.length;
   };

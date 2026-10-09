@@ -36,6 +36,8 @@ export interface ServerConfig {
   vapid?: { publicKey: string; privateKey: string; subject: string };
   engineVersion: string;
   chatMessagesPerTenSeconds: number;
+  /** Secreto para derivar los tokens de los bots. Debe ser estable entre reinicios; si falta, los bots no sobreviven a un reinicio. */
+  botSecret?: string;
 }
 
 /** Arranca HTTP (salud), Socket.IO y los casos de uso sobre PostgreSQL. Reprograma las partidas en curso. */
@@ -69,7 +71,7 @@ export async function startServer(config: ServerConfig) {
     catalog: new JsonCatalogSource(config.catalogDir),
     clock: { now: () => new Date() },
     ids: new CryptoIds(),
-    security: new CryptoSecurity(),
+    security: new CryptoSecurity(config.botSecret),
     scheduler,
     narrations: new PgNarrationStore(db),
     push: new PgPushSubscriptionStore(db),

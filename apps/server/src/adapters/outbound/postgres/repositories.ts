@@ -35,6 +35,7 @@ const toPlayer = (row: PlayerRow): PlayerRecord => ({
   usesLeft: {},
   flags: {},
   tokenHash: row.reconnectTokenHash,
+  isBot: row.isBot,
 });
 
 export class PgMatchStore implements MatchStore {
@@ -94,6 +95,7 @@ export class PgPlayerStore implements PlayerStore {
       deathReason: player.deathReason,
       reconnectTokenHash: player.tokenHash,
       connected: player.connected,
+      isBot: player.isBot ?? false,
     });
   }
 

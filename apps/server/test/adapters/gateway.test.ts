@@ -136,3 +136,21 @@ describe("gateway Socket.IO con clientes reales", () => {
     expect(await send()).toMatchObject({ ok: false, error: { code: "invalid_state" } });
   });
 });
+
+describe("gateway: bots al crear la sala", () => {
+  it("room:create acepta bots, los devuelve en la vista y rechaza valores no válidos", async () => {
+    const app = await startSocketApp();
+    closeAll = app.close;
+    const client = await app.connect();
+
+    const bad = await emitAck(client, "room:create", { nick: "P1", bots: 15 });
+    expect(bad.ok).toBe(false);
+    if (!bad.ok) expect(bad.error.code).toBe("invalid_input");
+
+    const created = await emitAck(client, "room:create", { nick: "P1", bots: 9 });
+    if (!created.ok) throw new Error(created.error.message);
+    const view = await emitAck(client, "match:view", { matchId: created.data.matchId, token: created.data.token });
+    if (!view.ok) throw new Error(view.error.message);
+    expect(view.data.players.filter((p: { isBot: boolean }) => p.isBot)).toHaveLength(9);
+  });
+});

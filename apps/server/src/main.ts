@@ -23,7 +23,9 @@ const server = await startServer({
     : undefined,
   engineVersion: env.ENGINE_VERSION ?? "0.1.0",
   chatMessagesPerTenSeconds: Number(env.CHAT_MESSAGES_PER_10S ?? 5),
+  botSecret: env.BOT_SECRET || undefined,
 });
+if (!env.BOT_SECRET) console.error("[server] BOT_SECRET no definido: los bots dejarán de responder tras un reinicio.");
 console.log(`[server] escuchando en ${env.PORT ?? 3000}; partidas en curso reprogramadas: ${server.recovered}`);
 
 const stop = async () => {

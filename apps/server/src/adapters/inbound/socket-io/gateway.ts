@@ -21,6 +21,13 @@ const str = (v: unknown, field: string): string => {
   return v;
 };
 
+/** Número entero opcional: ausente equivale a 0. El rango lo valida el caso de uso. */
+const count = (v: unknown, field: string): number => {
+  if (v === undefined) return 0;
+  if (typeof v !== "number" || !Number.isInteger(v)) throw new AppError("invalid_input", `${field} debe ser un número entero`);
+  return v;
+};
+
 /** Traduce un error a respuesta para el cliente. Los errores inesperados no revelan detalles. */
 function respond(ack: Ack | undefined, deps: GatewayDeps, fn: () => Promise<unknown>) {
   fn()
@@ -44,7 +51,7 @@ export function attachGateway(io: Server, deps: GatewayDeps) {
       respond(ack, deps, async () => {
         if (!deps.createLimiter.hit(socket.id)) throw new AppError("invalid_state", "Demasiadas salas seguidas");
         const body = isObject(payload) ? payload : {};
-        const room = await services.createRoom({ nick: str(body.nick, "nick") });
+        const room = await services.createRoom({ nick: str(body.nick, "nick"), bots: count(body.bots, "bots") });
         viewers.attach(socket.id, room.matchId, room.playerId);
         return room;
       }),

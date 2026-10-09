@@ -18,6 +18,8 @@ export interface MatchRecord {
 /** Estado del jugador en el motor, más lo que solo necesita la aplicación. */
 export interface PlayerRecord extends PlayerState {
   matchId: string;
+  /** Jugador controlado por el servidor. */
+  isBot?: boolean;
   /** Hash del token de reconexión. El token nunca se guarda. */
   tokenHash: string;
 }
@@ -106,6 +108,8 @@ export interface Security {
   hashToken(token: string): string;
   /** Semilla para una partida nueva. */
   newSeed(): number;
+  /** Token interno de un bot. Se deriva de la partida y el jugador: no se guarda en ningún sitio. */
+  botToken(matchId: string, playerId: string): string;
 }
 
 /** Temporizadores de fase: uno por partida. Programar otro cancela el anterior. */

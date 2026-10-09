@@ -13,7 +13,7 @@ interface GameState {
   busy: boolean;
   error: string | null;
   init: () => void;
-  createRoom: (nick: string) => Promise<void>;
+  createRoom: (nick: string, bots?: number) => Promise<void>;
   joinRoom: (roomCode: string, nick: string) => Promise<void>;
   startMatch: () => Promise<void>;
   send: (command: Record<string, unknown>) => Promise<void>;
@@ -95,9 +95,9 @@ export const useGame = create<GameState>((set, get) => {
       if (socket.connected) void resume();
     },
 
-    createRoom: (nick) =>
+    createRoom: (nick, bots = 0) =>
       run(async () => {
-        const room = await call<{ matchId: string; playerId: string; token: string; roomCode: string }>("room:create", { nick });
+        const room = await call<{ matchId: string; playerId: string; token: string; roomCode: string }>("room:create", { nick, bots });
         remember({ matchId: room.matchId, playerId: room.playerId, token: room.token, roomCode: room.roomCode, nick });
         await refresh();
       }),

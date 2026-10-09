@@ -58,4 +58,8 @@ export class SequentialSecurity implements Security {
   newSeed() {
     return 1000 + this.n;
   }
+
+  botToken(matchId: string, playerId: string) {
+    return `bot-${matchId}-${playerId}`;
+  }
 }

@@ -17,6 +17,7 @@ export interface PublicPlayer {
   nick: string;
   status: string;
   connected: boolean;
+  isBot: boolean;
   /** Rol revelado tras morir (si el registro lo muestra). */
   revealedRoleKey: string | null;
 }
@@ -92,6 +93,7 @@ export function getView(deps: GetViewDeps) {
         nick: p.nick,
         status: p.status,
         connected: p.connected,
+        isBot: roster.find((r) => r.id === p.id)?.isBot ?? false,
         revealedRoleKey: revealed.get(p.id) ?? null,
       })),
       votes: state.votes,

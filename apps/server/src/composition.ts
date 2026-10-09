@@ -1,5 +1,6 @@
 import { KeyedQueue } from "./application/concurrency/keyedQueue.js";
 import { advanceOnTimeout } from "./application/use-cases/advanceOnTimeout.js";
+import { botTurn } from "./application/use-cases/botTurn.js";
 import { createRoom, type CreateRoomDeps } from "./application/use-cases/createRoom.js";
 import { joinRoom } from "./application/use-cases/joinRoom.js";
 import { reconnect } from "./application/use-cases/reconnect.js";
@@ -25,25 +26,40 @@ export type Deps = Omit<SubmitCommandDeps, "queue" | "advance" | "afterEvents"> 
   pushSender: PushSender;
 };
 
+/** Retraso de los bots tras cada fase: parecen jugadores pensando, sin tardar en exceso. */
+const BOT_DELAY_MS = { min: 1500, spread: 5500 };
+
 /** Ensambla los casos de uso. Es el único sitio que conoce a los adaptadores concretos. */
 export function createServices(deps: Deps) {
   const queue = new KeyedQueue();
   const narrateEvents = narrate({ ...deps, queue });
   const notify = notifyPhases({ push: deps.push, sender: deps.pushSender, queue });
+  const pendingNarrations = new Set<Promise<void>>();
+  const botKey = (matchId: string) => `${matchId}:bots`;
+
+  // Los bots tienen su propio temporizador (otra clave del planificador) para no pisar el de la fase.
+  const scheduleBots = (matchId: string) => {
+    const delay = BOT_DELAY_MS.min + Math.floor(Math.random() * BOT_DELAY_MS.spread);
+    deps.scheduler.schedule(botKey(matchId), delay, () => void runBots(matchId).catch(() => undefined));
+  };
+
   const afterEvents = (matchId: string, events: GameEventEnvelope[]) => {
     for (const job of [notify(matchId, events), narrateEvents(matchId, events)]) {
       const pending = job.catch(() => undefined);
       pendingNarrations.add(pending);
       void pending.finally(() => pendingNarrations.delete(pending));
     }
+    if (events.some((e) => e.type === "game.ended")) deps.scheduler.cancel(botKey(matchId));
+    else if (events.some((e) => e.type === "phase.started")) scheduleBots(matchId);
   };
-  const pendingNarrations = new Set<Promise<void>>();
   const advance = advanceOnTimeout({ ...deps, queue, afterEvents });
+  const submit = submitCommand({ ...deps, queue, advance, afterEvents });
+  const runBots = botTurn({ ...deps, submit });
   return {
     createRoom: createRoom(deps),
     joinRoom: joinRoom(deps),
     startMatch: startMatch({ ...deps, queue, advance, afterEvents }),
-    submitCommand: submitCommand({ ...deps, queue, advance, afterEvents }),
+    submitCommand: submit,
     /** Espera a que terminen las narraciones pendientes (para tests y para apagar el servidor). */
     drainNarrations: async () => {
       while (pendingNarrations.size > 0) await Promise.all([...pendingNarrations]);
@@ -53,8 +69,11 @@ export function createServices(deps: Deps) {
     pushPublicKey: () => deps.pushSender.publicKey(),
     getView: getView(deps),
     setConnection: setConnection(deps),
-    recoverTimers: recoverTimers(deps),
+    recoverTimers: recoverTimers({ ...deps, scheduleBots }),
     advance,
+    /** Turno de los bots de una partida. Lo usan los temporizadores y los tests. */
+    runBots,
+    botKey,
   };
 }
 

@@ -72,7 +72,7 @@ describe("narración durante una partida", () => {
     const godfather = roster.find((p) => p.roleKey === "godfather")!;
     const godToken = players.find((p) => p.playerId === godfather.id)!.token;
     const victim = roster.find((p) => p.faction === "town")!;
-    const tick = () => app.services.submitCommand({ matchId: host.matchId, token: host.token, command: { type: "timer.expired" } });
+    const tick = () => app.services.advance(host.matchId);
 
     await tick(); // día 1 → discusión
     await tick(); // discusión → votación

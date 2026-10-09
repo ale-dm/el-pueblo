@@ -29,9 +29,9 @@ describe("vista por jugador", () => {
     const roster = await app.players.listByMatch(matchId);
     const mafia = roster.find((p) => p.faction === "mafia")!;
     const mafiaToken = players.find((p) => p.playerId === mafia.id)!.token;
-    await app.services.submitCommand({ matchId, token: players[0]!.token, command: { type: "timer.expired" } });
-    await app.services.submitCommand({ matchId, token: players[0]!.token, command: { type: "timer.expired" } });
-    await app.services.submitCommand({ matchId, token: players[0]!.token, command: { type: "timer.expired" } });
+    await app.services.advance(matchId);
+    await app.services.advance(matchId);
+    await app.services.advance(matchId);
     const other = roster.find((p) => p.id !== mafia.id)!;
     const otherToken = players.find((p) => p.playerId === other.id)!.token;
     const view = await app.services.getView({ matchId, token: otherToken });

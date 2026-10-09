@@ -17,6 +17,8 @@ export interface PublicPlayer {
   nick: string;
   status: "alive" | "dead" | "disconnected";
   connected: boolean;
+  /** Lo controla el servidor: juega solo. */
+  isBot: boolean;
   revealedRoleKey: string | null;
 }
 
