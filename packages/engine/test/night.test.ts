@@ -137,6 +137,13 @@ describe("noche: protecciones y ataques", () => {
     expect(ofType(events, "attack.prevented")).toHaveLength(0);
   });
 
+  it("el Bodyguard no protege de un Veteran en alerta: el visitante protegido muere (wiki: Bodyguard)", () => {
+    const s = game(["veteran", "bodyguard", "lookout", "godfather"]);
+    const { events, state } = resolve(s, [night("p1", "alert", null), night("p2", "protect", "p3"), night("p3", "watch", "p1")]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p3", "veteran"]]);
+    expect(state.players[1]!.status).toBe("alive");
+  });
+
   it("el Veteran en alerta mata a quien le visita", () => {
     const s = game(["veteran", "godfather", "investigator"]);
     const { events } = resolve(s, [night("p1", "alert", null), night("p2", "kill", "p1")]);

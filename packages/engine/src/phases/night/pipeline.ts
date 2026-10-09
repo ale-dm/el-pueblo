@@ -414,7 +414,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       continue;
     }
     const prots = protections.get(atk.victimId) ?? [];
-    const bodyguard = prots.find((p) => p.source === "bodyguard" && !dead.has(p.protectorId));
+    // Wiki (Bodyguard.md:214, 228): el guardaespaldas solo contraataca a la Mafia (Godfather, Mafioso) y al
+    // Vigilante, y a otros roles que matan; no protege de Veteran, Ambusher ni de Town Protectives.
+    const counters = atk.cause === "mafia" || atk.cause === "shot";
+    const bodyguard = counters ? prots.find((p) => p.source === "bodyguard" && !dead.has(p.protectorId)) : undefined;
     if (bodyguard) {
       out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: bodyguard.protectorId } });
       kill(atk.attackerId, "bodyguard");
