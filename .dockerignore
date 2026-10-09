@@ -9,12 +9,19 @@ node_modules
 stack.env
 .claude
 .vscode
-data
-# Excepciones: catálogo, roles y datos que lee el arranque (migrate.ts)
-!data/catalog
-!data/roles
-!data/wiki/articles_all.ndjson.gz
-!data/wiki/text/index.json
+# Datos: el arranque necesita data/catalog, data/wiki/articles_all.ndjson.gz y data/wiki/text/index.json.
+# Se excluye explícitamente lo que no se usa en tiempo de ejecución (sin excepciones con !).
+data/roles
+data/reference
+data/source
+data/wiki/img
+data/wiki/scripts
+data/wiki/image_index.json
+data/wiki/image_failures.json
+data/wiki/titles_all.json
+data/wiki/gen_index.json
+data/wiki/README.md
+data/catalog/scripts
 logs
 backups
 docs

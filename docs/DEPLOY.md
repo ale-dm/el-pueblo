@@ -29,6 +29,22 @@ La configuración (`.env`) se guarda en el propio stack de Portainer.
 | `deploy/docker-compose.local.yml` | Probar el stack en local |
 | `.dockerignore` | Deja fuera datos, backups, docs y tests |
 
+## Lista previa (antes del primer despliegue)
+
+- [ ] Red Docker `proxy` existe en el NAS: `docker network ls | grep proxy` (la crea el stack de Nginx Proxy Manager). Si se llama distinto, cambiar `networks.proxy` en `deploy/portainer-stack.yml`.
+- [ ] Nginx Proxy Manager: host `pueblo.xelements.es` → `elpueblo-server:3000`, con **Websockets Support** activado y certificado Let's Encrypt por desafío DNS de Cloudflare.
+- [ ] Cloudflare: registro `pueblo` (tipo A, proxy activado) y SSL/TLS en **Full (strict)**.
+- [ ] Token de GitHub de solo lectura para `ale-dm/el-pueblo` (paso 1 de "Primera vez").
+- [ ] `stack.env` preparado a partir de `deploy/stack.env.example`: contraseña de Postgres generada, claves VAPID si quieres avisos, `GOOGLE_API_KEY` si quieres narración con Gemini.
+- [ ] Carpetas creadas: `/compose/el-pueblo/{postgres,backups,logs}`.
+
+## Comprobaciones tras desplegar
+
+    docker ps --filter name=elpueblo            # tres contenedores: postgres, server, backup, todos "Up"
+    docker logs elpueblo-server | tail          # "[migrate] catálogo: sembrado catalog, wiki" y "escuchando en 3000"
+    curl -s https://pueblo.xelements.es/health  # {"ok":true,...}
+    # Abrir https://pueblo.xelements.es en el móvil: crear sala, unirse desde otro dispositivo, empezar.
+
 ## Primera vez
 
 1. **Token de GitHub** para que Portainer lea el repo privado: GitHub → Settings → Developer settings →
