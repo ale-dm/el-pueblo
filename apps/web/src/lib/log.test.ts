@@ -773,3 +773,15 @@ describe("Mafia: el superviviente de un ataque de la Mafia lo sabe (wiki: Godfat
     expect(text).toContain("¡Te ha atacado un miembro de la Mafia!");
   });
 });
+
+describe("Mafioso: aviso de defensa al ejecutar la orden (wiki: Mafioso.md:235)", () => {
+  it("el Mafioso que ejecuta la orden lee la defensa de su objetivo al amanecer", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "target_defense" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    expect(text).toContain("La defensa de tu objetivo fue demasiado fuerte para matarle.");
+  });
+});

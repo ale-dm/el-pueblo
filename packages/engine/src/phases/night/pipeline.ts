@@ -857,7 +857,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       if (atk.godfatherDirect) out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "godfather_target_defense" } });
       // Wiki (Doctor.md:229, 269): "their attacker will receive the message "Your target's defense was too strong to kill."",
       // cualquier atacante cuyo ataque frena un Doctor (no solo el Godfather que ataca él mismo; Godfather.md:233).
-      else if (strongest?.source === "doctor") out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "target_defense" } });
+      // Wiki (Mafioso.md:235): quien hace la muerte "Receive a message if the target has defense". Si ejecuta el Mafioso,
+      // lo recibe él y no el Godfather (Godfather.md:233). Cause "mafia" sin godfatherDirect = el Mafioso que ejecuta.
+      else if (atk.cause === "mafia" || strongest?.source === "doctor") out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "target_defense" } });
       // Wiki (Messages_ToS.md:1873; Crusader.md:216): "You were attacked but someone protected you!" al protegido por un Crusader.
       if (strongest?.source === "crusader") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "crusader_protected" } });
       survivorNotices(atk);
