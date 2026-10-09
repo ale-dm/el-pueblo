@@ -804,3 +804,14 @@ describe("Ambusher: nombre revelado y avisos en el registro (wiki: Ambusher.md:2
     expect(texts(log)).toContain("¡Emboscaste a alguien que visitó a tu objetivo anoche!");
   });
 });
+
+describe("Medium muerto: el aviso de apertura sale al empezar la noche (wiki: Medium.md:483)", () => {
+  it("se muestra en la noche, sin esperar al amanecer", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "medium_opened" }, "private"),
+    ], ctx()));
+    expect(text).toEqual(["== Noche 2", "Cae la noche.", "¡Has abierto una comunicación con los vivos!"]);
+  });
+});

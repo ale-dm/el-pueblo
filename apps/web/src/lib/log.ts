@@ -429,8 +429,12 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         line(e, p.cause === "jail" ? "Tu acción fue bloqueada esta noche." : "Alguien ocupó tu noche. ¡Has sido bloqueado!", "private");
         break;
       case "night.notice":
+        // Wiki (Medium.md:483; Messages_ToS.md:1957): al empezar la noche, el Médium muerto que abrió la sesión lo lee en ese momento.
+        if (p.notice === "medium_opened") {
+          items.push({ kind: "line", key: `l${e.seq}`, seq: e.seq, text: "¡Has abierto una comunicación con los vivos!", tone: "private" });
+        }
         // Wiki (Jailor.md:566): "(Player) was hauled off to jail"
-        if (p.notice === "team_jailed") line(e, `${ctx.nick(p.subjectId)} fue arrastrado a la cárcel.`, "private");
+        else if (p.notice === "team_jailed") line(e, `${ctx.nick(p.subjectId)} fue arrastrado a la cárcel.`, "private");
         // Wiki (Ambusher.md:222; Messages_ToS.md:2117): "You saw (Player) prepare an ambush while visiting your target."
         else if (p.notice === "ambusher_seen") line(e, `Viste a ${ctx.nick(p.subjectId)} preparar una emboscada mientras visitabas a tu objetivo.`, "private");
         // Wiki (Jailor.md:252): el visitante sabe que su objetivo estaba encarcelado; el prisionero, de los atacantes.

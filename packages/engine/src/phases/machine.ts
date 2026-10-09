@@ -19,10 +19,14 @@ const weightOf = (p: PlayerState | undefined): number => (p?.flags.mayorRevealed
  * "Your target will start the Night with the message"), uno por Médium (Medium.md:211).
  */
 function nightStart(s: GameState): EventInput[] {
-  const notices = Object.entries(s.nightActions)
-    .filter(([, a]) => a.ability === "seance" && a.targetId !== null && isAlive(playerOf(s, a.targetId)))
-    .map(([, a]): EventInput => ({ type: "night.notice", payload: { playerId: a.targetId!, notice: "medium_talking" } }));
-  return [phaseStarted("night", s.dayNumber), ...notices, ...trapStatus(s), ...jailNotices(s)];
+  const sessions = Object.entries(s.nightActions).filter(([, a]) => a.ability === "seance" && a.targetId !== null && isAlive(playerOf(s, a.targetId)));
+  const notices = sessions.map(([, a]): EventInput => ({ type: "night.notice", payload: { playerId: a.targetId!, notice: "medium_talking" } }));
+  // Wiki (Medium.md:483; Messages_ToS.md:1957): "You have opened a communication with the living!" al Médium muerto que
+  // abrió la sesión, al empezar la noche.
+  const opened = sessions
+    .filter(([actorId]) => !isAlive(playerOf(s, actorId)))
+    .map(([actorId]): EventInput => ({ type: "night.notice", payload: { playerId: actorId, notice: "medium_opened" } }));
+  return [phaseStarted("night", s.dayNumber), ...notices, ...opened, ...trapStatus(s), ...jailNotices(s)];
 }
 
 /**
