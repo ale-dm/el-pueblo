@@ -42,8 +42,14 @@ const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const
 /** Eventos de la noche que se cuentan al amanecer, no en el momento. */
 const MORNING = new Set([
   "player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed",
-  "hypnosis.message", "role.promoted",
+  "hypnosis.message", "role.promoted", "night.notice",
 ]);
+
+/** Avisos privados de la noche (evento night.notice). */
+const NOTICE_TEXT: Record<string, string> = {
+  target_jailed: "Tu objetivo estaba encarcelado: tu habilidad no tuvo efecto.",
+  attack_attempt: "Alguien intentó atacarte mientras estabas encarcelado.",
+};
 
 /** Grupo que revela el Investigador: "Pueblo (Apoyo)", "Mafia (Engaño)"… */
 function alignmentEs(key: string): string {
@@ -221,6 +227,10 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         break;
       case "player.jailed":
         line(e, "Has sido encarcelado.", "private");
+        break;
+      case "night.notice":
+        // Wiki (Jailor.md:252): el visitante sabe que su objetivo estaba encarcelado; el prisionero, de los atacantes.
+        line(e, NOTICE_TEXT[p.notice] ?? "Algo ocurrió anoche.", "private");
         break;
       case "player.blackmailed":
         line(e, "Estás silenciado durante el día.", "private");

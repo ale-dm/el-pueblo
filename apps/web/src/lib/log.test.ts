@@ -204,3 +204,20 @@ describe("decisiones de la Mafia, cancelaciones y testamentos", () => {
     expect(text).toContain("No encontramos un testamento de Caro.");
   });
 });
+
+describe("avisos privados de la noche", () => {
+  it("el visitante de un encarcelado lo lee al amanecer, junto a los demás avisos de la noche", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "target_jailed" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "attack_attempt" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx({ meId: "a" })));
+    const day = text.indexOf("== Día 3");
+    expect(text.slice(day + 1)).toEqual([
+      "Tu objetivo estaba encarcelado: tu habilidad no tuvo efecto.",
+      "Alguien intentó atacarte mientras estabas encarcelado.",
+    ]);
+  });
+});

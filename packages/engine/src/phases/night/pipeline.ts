@@ -47,7 +47,18 @@ interface Act {
   choice: string | null;
   effects: Effect[];
   blocked: boolean;
+  /** Visitó a un encarcelado: su habilidad falla, pero la visita cuenta (wiki: Jailor.md:252). */
+  jailFailed: boolean;
 }
+
+/** Casas que visita la acción, sin transportes. El zombi (Retributionist) visita solo su segundo objetivo. */
+const visitedHouses = (act: Act): string[] => {
+  if (act.ability === "raise") return act.secondTargetId ? [act.secondTargetId] : [];
+  const def = act.handler.nightAbilities.find((a) => a.key === act.ability);
+  if (def?.target === "player") return act.targetId ? [act.targetId] : [];
+  if (def?.target === "two") return [act.targetId, act.secondTargetId].filter((x): x is string => x !== null);
+  return [];
+};
 
 const remapEffect = (e: Effect, remap: (id: string) => string): Effect => {
   switch (e.kind) {
@@ -94,6 +105,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       choice: action.choice,
       effects: [],
       blocked: actor.flags.jailed === true,
+      jailFailed: false,
     });
   }
   // Roles pasivos: actúan cada noche aunque no elijan nada.
@@ -109,6 +121,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       choice: null,
       effects: [],
       blocked: actor.flags.jailed === true,
+      jailFailed: false,
     });
   }
   acts.sort((a, b) => (a.handler.priority ?? 99) - (b.handler.priority ?? 99) || a.actor.seat - b.actor.seat);
@@ -157,6 +170,23 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
   }
 
+  // 2c. Encarcelados (wiki: Jailor.md:252): "outside visitors ... their ability will fail; however, they still visit".
+  // El visitante no produce efectos (paso 3 sigue registrando su visita). El Jailor ejecuta sin visitar a su
+  // prisionero (ataque imparable) y el Transporter falla según su propia regla (wiki: Transporter.md:202).
+  const jailedHouse = (id: string) => s.jailedBy[remap(id)] !== undefined;
+  for (const act of active) {
+    if (act.handler.key === "jailor" || act.handler.key === "transporter") continue;
+    if (!visitedHouses(act).some(jailedHouse)) continue;
+    act.jailFailed = true;
+    // Wiki (Jailor.md:252): el encarcelado solo se entera de los atacantes (y de transportes o bloqueos).
+    for (const e of act.effects) {
+      if (e.kind !== "attack" && e.kind !== "mafiaKill") continue;
+      const victim = remap(e.targetId);
+      if (s.jailedBy[victim] !== undefined) out.push({ type: "night.notice", payload: { playerId: victim, notice: "attack_attempt" } });
+    }
+    out.push({ type: "night.notice", payload: { playerId: act.actor.id, notice: "target_jailed" } });
+    act.effects = [];
+  }
   // 2b. Mafia: quién mata. Wiki (Mafioso, Godfather): si el Godfather ordena y el Mafioso está vivo y no
   // bloqueado, el Mafioso ejecuta la orden; él recibe las visitas y las represalias, y el Godfather no visita.
   // Si el Mafioso no puede, el Godfather mata personalmente. Sin orden, mata el Mafioso con su propio objetivo.
@@ -213,9 +243,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   for (const act of active) {
     const def = act.handler.nightAbilities.find((a) => a.key === act.ability);
-    // Wiki (Janitor.md:250): visitar a un encarcelado no gasta una limpieza.
-    const visitsJailed = act.ability === "clean" && act.targetId !== null && playerOf(s, remap(act.targetId))?.flags.jailed === true;
-    if (def?.usesLimit !== null && def?.usesLimit !== undefined && !visitsJailed) {
+    // Wiki: visitar a un encarcelado no gasta usos (Janitor.md:250, Vigilante.md:194).
+    if (def?.usesLimit !== null && def?.usesLimit !== undefined && !act.jailFailed) {
       usesSpent.push({ playerId: act.actor.id, ability: act.ability });
     }
     for (const raw of act.effects) {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { decide } from "../src/core/decide.js";
-import { ctx, game } from "./helpers/game.js";
+import { ctx, game, ofType } from "./helpers/game.js";
 import type { GameState } from "../src/types/state.js";
 
 /** Jailor (p1) con un prisionero (p2) y un Mafioso (p3). */
@@ -84,5 +84,48 @@ describe("Jailor: comportamiento según la wiki", () => {
   it("solo quien está encarcelado o encarcela puede usar ese canal", () => {
     const s = jailed(["jailor", "investigator", "godfather"]);
     expect(rejected(s, { type: "chat.send", senderId: "p3", channel: "jail", text: "hola" })).toMatch(/encarcelado/);
+  });
+});
+
+describe("Encarcelados: el visitante falla, pero su visita cuenta (wiki: Jailor.md:252)", () => {
+  const notices = (events: GameEventEnvelope[]) => events.filter((e) => e.type === "night.notice").map((e) => [e.payload.playerId, e.payload.notice]);
+
+  it("el Sheriff que interroga a un encarcelado no recibe resultado; el Tracker ve su visita", () => {
+    // p1 Jailor, p2 prisionero, p3 Sheriff visita a p2, p4 Tracker sigue al Sheriff.
+    let s = jailed(["jailor", "investigator", "sheriff", "tracker"]);
+    s = play(s, { type: "night.action", actorId: "p3", ability: "interrogate", targetId: "p2", secondTargetId: null }).state;
+    s = play(s, { type: "night.action", actorId: "p4", ability: "track", targetId: "p3", secondTargetId: null }).state;
+    const { events } = play(s, { type: "timer.expired" });
+    expect(events.some((e) => e.type === "investigation.result" && e.payload.investigatorId === "p3")).toBe(false);
+    expect(ofType(events, "investigation.result").find((e) => e.payload.investigatorId === "p4")?.payload.result).toBe("P2");
+    expect(notices(events)).toContainEqual(["p3", "target_jailed"]);
+  });
+
+  it("el Doctor que cura a un encarcelado recibe el aviso y su visita sigue viéndose", () => {
+    let s = jailed(["jailor", "investigator", "doctor", "tracker"]);
+    s = play(s, { type: "night.action", actorId: "p3", ability: "heal", targetId: "p2", secondTargetId: null }).state;
+    s = play(s, { type: "night.action", actorId: "p4", ability: "track", targetId: "p3", secondTargetId: null }).state;
+    const { events } = play(s, { type: "timer.expired" });
+    expect(notices(events)).toContainEqual(["p3", "target_jailed"]);
+    expect(ofType(events, "investigation.result").find((e) => e.payload.investigatorId === "p4")?.payload.result).toBe("P2");
+  });
+
+  it("el Vigilante que dispara a un encarcelado no pierde bala y el prisionero recibe el intento", () => {
+    let s = jailed(["jailor", "investigator", "vigilante"]);
+    s = play(s, { type: "night.action", actorId: "p3", ability: "shoot", targetId: "p2", secondTargetId: null }).state;
+    const { state, events } = play(s, { type: "timer.expired" });
+    expect(state.players[2]!.usesLeft.shoot).toBe(3);
+    expect(notices(events)).toContainEqual(["p2", "attack_attempt"]);
+    expect(events.find((e) => e.type === "night.notice" && e.payload.playerId === "p2")?.audiencePlayerId).toBe("p2");
+    expect(killedIds(events)).not.toContain("p2");
+  });
+
+  it("el Janitor que limpia a un encarcelado no lo limpia", () => {
+    // Con Godfather vivo, el Janitor no se convierte en Mafioso al resolver la noche.
+    let s = jailed(["jailor", "investigator", "janitor", "godfather"]);
+    s = play(s, { type: "night.action", actorId: "p3", ability: "clean", targetId: "p2", secondTargetId: null }).state;
+    const { state, events } = play(s, { type: "timer.expired" });
+    expect(events.some((e) => e.type === "effect.applied" && e.payload.flag === "cleaned")).toBe(false);
+    expect(state.players[2]!.usesLeft.clean).toBe(3);
   });
 });

@@ -29,6 +29,12 @@ export type GameEventPayloads = {
   "night.action.cancelled": { actorId: PlayerId; mafiaTeam: boolean };
   "will.written": { playerId: PlayerId; text: string };
   "night.action.blocked": { actorId: PlayerId; ability: string };
+  /**
+   * Aviso privado de la noche (wiki): solo lo recibe `playerId`.
+   * target_jailed: su objetivo estaba encarcelado y su acción falla (Jailor.md:252).
+   * attack_attempt: lo atacó alguien mientras estaba encarcelado (Jailor.md:252, Vigilante.md:194).
+   */
+  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" };
   /** check: tipo de comprobación (suspicious, alignment, role, visitors, targets, mafiaVisits, vision). */
   /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic).
    * more: el Lookout sabe que hubo más visitantes de los tres que identifica (wiki: Lookout). */
