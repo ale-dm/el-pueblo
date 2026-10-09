@@ -6,6 +6,7 @@ import type { Effect } from "../../roles/effects.js";
 import type { RoleHandler } from "../../roles/types.js";
 import { handlerOf, isAlive, playerOf } from "../context.js";
 import { promotionEvents } from "../promotion.js";
+import { zombieAbilityOf } from "../../roles/town/retributionist.js";
 
 /**
  * Resolución de la noche, en este orden fijo:
@@ -210,9 +211,23 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (!isAlive(act.actor)) continue;
     // Con orden del Godfather, la visita de la Mafia es la del Mafioso que mata (abajo).
     if (mafiosoExecutes && (act.handler.key === "godfather" || act.handler.key === "mafioso")) continue;
+    if (act.ability === "raise") {
+      // Wiki (Retributionist.md:206, 220): visita a su primer objetivo (el muerto, sin transporte); el zombi
+      // visita a su segundo objetivo con su propia habilidad.
+      if (act.targetId && act.secondTargetId) {
+        visits.push({ visitorId: act.actor.id, houseId: act.targetId });
+        const zombie = playerOf(s, act.targetId);
+        if (zombie && zombieAbilityOf(zombie)) visits.push({ visitorId: zombie.id, houseId: remap(act.secondTargetId) });
+      }
+      continue;
+    }
     const def = act.handler.nightAbilities.find((a) => a.key === act.ability);
     if (def?.target === "player" && act.targetId !== null) {
       visits.push({ visitorId: act.actor.id, houseId: remap(act.targetId) });
+    }
+    // Wiki (Tracker.md:208, Disguiser.md:279, Lookout.md:298): quien tiene dos objetivos visita a ambos, en bruto.
+    if (def?.target === "two") {
+      for (const id of [act.targetId, act.secondTargetId]) if (id !== null) visits.push({ visitorId: act.actor.id, houseId: id });
     }
   }
   if (godOrder && mafiosoExecutes && mafiosoPlayer) visits.push({ visitorId: mafiosoPlayer.id, houseId: godOrder.targetId });

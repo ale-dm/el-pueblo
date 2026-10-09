@@ -1,9 +1,16 @@
 import type { Effect } from "../effects.js";
-import type { RoleHandler } from "../types.js";
+import type { NightAbility, RoleHandler } from "../types.js";
+import type { PlayerState } from "../../types/state.js";
 import { ROLE_HANDLERS } from "../registry.js";
 import { handlerOf } from "../../phases/context.js";
 
 // Retributionist · Town · prioridad 1 · ficha: docs/roles/Retributionist.md
+/** Habilidad que usa el zombi (Town muerto) sobre su segundo objetivo: una de objetivo único y sin usos limitados. */
+export const zombieAbilityOf = (zombie: PlayerState | undefined): NightAbility | undefined => {
+  const zombieHandler = zombie ? handlerOf(zombie) : undefined;
+  return zombieHandler?.nightAbilities.find((a) => a.target === "player" && a.usesLimit === null);
+};
+
 export const handler: RoleHandler = {
   key: "retributionist",
   name: "Retributionist",
@@ -18,11 +25,10 @@ export const handler: RoleHandler = {
     const { ability, actor, targetId, secondTargetId, state } = ctx;
     if (ability !== "raise" || !targetId || !secondTargetId) return [];
     const zombie = state.players.find((p) => p.id === targetId);
-    const zombieHandler = zombie ? handlerOf(zombie) : undefined;
-    const zombieAbility = zombieHandler?.nightAbilities.find((a) => a.target === "player" && a.usesLimit === null);
-    if (!zombie || !zombieHandler || !zombieAbility) return [];
+    const zombieAbility = zombieAbilityOf(zombie);
+    if (!zombie || !zombieAbility) return [];
     // El zombi actúa con su propio efecto, dirigido al segundo objetivo; después se marca como usado.
-    const effects = zombieHandler.resolveNight({ ...ctx, actor: zombie, ability: zombieAbility.key, targetId: secondTargetId, secondTargetId: null, choice: null });
+    const effects = handlerOf(zombie)!.resolveNight({ ...ctx, actor: zombie, ability: zombieAbility.key, targetId: secondTargetId, secondTargetId: null, choice: null });
     return [...effects, { kind: "mark", actorId: actor.id, targetId: zombie.id, flag: "zombied" }];
   },
 };

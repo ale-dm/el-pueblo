@@ -398,3 +398,39 @@ describe("noche: victoria y muertos", () => {
     expect(apply(dead, { seq: 2, type: "phase.started", payload: { phase: "night", dayNumber: 1 }, visibility: "public", audiencePlayerId: null }).phase).toBe("night");
   });
 });
+
+describe("noche: visitas de quien tiene dos objetivos (wiki: Tracker, Lookout, Retributionist)", () => {
+  const results = (events: ReturnType<typeof step>["events"], investigatorId: string) =>
+    ofType(events, "investigation.result").filter((e) => e.payload.investigatorId === investigatorId).map((e) => e.payload.result);
+
+  it("un Transporter visita a sus dos objetivos: cada Lookout lo ve y el Tracker dice ambos", () => {
+    // p1 Transporter (cambia p3 y p4). p2 vigila a p3, p5 vigila a p4, p6 sigue al Transporter.
+    const s = game(["transporter", "lookout", "investigator", "investigator", "lookout", "tracker", "godfather"]);
+    const { events } = resolve(s, [
+      night("p1", "transport", "p3", "p4"),
+      night("p2", "watch", "p3"),
+      night("p5", "watch", "p4"),
+      night("p6", "track", "p1"),
+    ]);
+    expect(results(events, "p2")).toEqual(["P1"]);
+    expect(results(events, "p5")).toEqual(["P1"]);
+    expect(results(events, "p6")).toEqual(["P3, P4"]);
+  });
+
+  it("un Veteran en alerta dispara al Transporter que visita su casa", () => {
+    // p1 Transporter cambia p2 y p3 (Veteran). El Transporter visita a p3 aunque le transporte.
+    const s = game(["transporter", "investigator", "veteran", "godfather"]);
+    const { events } = resolve(s, [night("p1", "transport", "p2", "p3"), night("p3", "alert", null), night("p4", "kill", "p2")]);
+    const deaths = ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause]);
+    expect(deaths).toContainEqual(["p1", "veteran"]);
+  });
+
+  it("el Retributionist visita a su muerto; el zombi visita a su segundo objetivo, no el Retributionist", () => {
+    // p1 Retributionist resucita a p2 (Doctor muerto) y lo usa sobre p3. p4 vigila a p3, p5 sigue al Retributionist.
+    const s = game(["retributionist", "doctor", "investigator", "lookout", "tracker", "godfather"]);
+    s.players[1] = { ...s.players[1]!, status: "dead" };
+    const { events } = resolve(s, [night("p1", "raise", "p2", "p3"), night("p4", "watch", "p3"), night("p5", "track", "p1")]);
+    expect(results(events, "p4")).toEqual(["P2"]);
+    expect(results(events, "p5")).toEqual(["P2"]);
+  });
+});
