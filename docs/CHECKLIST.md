@@ -7,91 +7,92 @@ Leyenda: **[roles]** cada archivo tiene su propia lista de implementación. **[m
 ## 1. Motor (`packages/engine`)
 
 ### 1.1 Estado y fases
-- [ ] Modelo de partida: jugadores, roles, fase actual, día/noche, registro de eventos — [Phases](wiki/Phases.md)
-- [ ] Fases en orden: Día 1 (charla, sin votación) → Noche 1; después Discusión, Votación, Defensa, Juicio, Últimas palabras, Noche — [Phases](wiki/Phases.md)
-- [ ] Tiempos por fase configurables (estándar y Rapid ToS1) — `data/game_config.json`
-- [ ] Transiciones que saltan Defensa/Juicio/Últimas palabras si nadie va a juicio
-- [ ] Fin del Día al tercer juicio, aunque queden segundos — `data/game_config.json`
-- [ ] Tribunal del Marshal (fuera de MVP si no hay Marshal) — [Trial_System](wiki/Trial_System.md)
+- [x] Modelo de partida: jugadores, roles, fase actual, día/noche, registro de eventos — [Phases](wiki/Phases.md) · test: `packages/engine/test/replay.test.ts`
+- [x] Fases en orden: Día 1 (charla, sin votación) → Noche 1; después Discusión, Votación, Defensa, Juicio, Últimas palabras, Noche — [Phases](wiki/Phases.md) · test: `packages/engine/test/phaseFlow.test.ts`, `packages/engine/test/day.test.ts`
+- [x] Tiempos por fase configurables (estándar y Rapid ToS1) — `data/game_config.json` · test: `apps/server/test/adapters/catalog-json.test.ts` (carga los dos modos), `apps/server/test/application/votingTime.test.ts`
+- [x] Transiciones que saltan Defensa/Juicio/Últimas palabras si nadie va a juicio · test: `packages/engine/test/day.test.ts` ("sin mayoría no hay juicio")
+- [x] Fin del Día al tercer juicio, aunque queden segundos — `data/game_config.json` · test: `packages/engine/test/day.test.ts` ("tras tres juicios el día termina")
+- [ ] Tribunal del Marshal (fuera de MVP si no hay Marshal) — [Trial_System](wiki/Trial_System.md) · pendiente: no hay Marshal en el código ni en el MVP
 
 ### 1.2 Votación y juicio
-- [ ] Umbral de votos `ceil(vivos / 2)` — [Trial_System](wiki/Trial_System.md)
-- [ ] Votos de desconectados cuentan como muertos en la votación — [Trial_System](wiki/Trial_System.md)
-- [ ] Votación nominal y anónima (modifier Anon) — [Trial_System](wiki/Trial_System.md)
-- [ ] Ejecución (Hanging) y Últimas palabras — [Hanging_ToS](wiki/Hanging_ToS.md)
+- [x] Umbral de votos `ceil(vivos / 2)` — [Trial_System](wiki/Trial_System.md) · test: `packages/engine/test/voting.test.ts` (tabla de la wiki)
+- [ ] Votos de desconectados cuentan como muertos en la votación — [Trial_System](wiki/Trial_System.md) · pendiente: `packages/engine/test/day.test.ts` prueba que no votan, pero ningún test fija que el umbral los excluya
+- [ ] Votación nominal y anónima (modifier Anon) — [Trial_System](wiki/Trial_System.md) · pendiente: el modificador Anon no está implementado
+- [x] Ejecución (Hanging) y Últimas palabras — [Hanging_ToS](wiki/Hanging_ToS.md) · test: `packages/engine/test/day.test.ts` ("culpable por mayoría")
 
 ### 1.3 Orden de acciones nocturnas
-- [ ] Prioridades de acción por rol (campo `priority` en `roles.json`) — [Abilities_ToS](wiki/Abilities_ToS.md)
-- [ ] Bloqueo (Roleblock) antes de cualquier acción — [Attributes_ToS](wiki/Attributes_ToS.md)
-- [ ] Protección vs ataque: el Doctor salva del Mafioso — [Abilities_ToS](wiki/Abilities_ToS.md)
-- [ ] Inmunidades: Control, Roleblock, Detection — [Attributes_ToS](wiki/Attributes_ToS.md)
-- [ ] Acción de la Mafia: el Godfather da la orden, el Mafioso ejecuta si no hay orden
-- [ ] Acción sin objetivo válido = sin efecto y sin error
+- [x] Prioridades de acción por rol (campo `priority` en `roles.json`) — [Abilities_ToS](wiki/Abilities_ToS.md) · test: `packages/engine/test/helpers/catalogSmoke.test.ts` (prioridad del handler = catálogo), `packages/engine/test/night.test.ts` (el Bootlegger, prioridad 2, actúa antes que el Doctor, prioridad 3)
+- [x] Bloqueo (Roleblock) antes de cualquier acción — [Attributes_ToS](wiki/Attributes_ToS.md) · test: `packages/engine/test/night.test.ts` ("el Bootlegger bloquea al Doctor y su protección no cuenta")
+- [x] Protección vs ataque: el Doctor salva del Mafioso — [Abilities_ToS](wiki/Abilities_ToS.md) · test: `packages/engine/test/night.test.ts` ("el Doctor salva a su objetivo del ataque de la Mafia")
+- [ ] Inmunidades: Control, Roleblock, Detection — [Attributes_ToS](wiki/Attributes_ToS.md) · pendiente: solo la inmunidad al bloqueo existe (`packages/engine/test/tavern-keeper-avisos.test.ts`); Control y Detection no están (`packages/engine/src/rules/attributes.ts` es un borrador)
+- [x] Acción de la Mafia: el Godfather da la orden, el Mafioso ejecuta si no hay orden · test: `packages/engine/test/night.test.ts` ("el Godfather da la orden", "el Mafioso mata a su objetivo si no hay Godfather")
+- [ ] Acción sin objetivo válido = sin efecto y sin error · pendiente: ningún test fija este caso
 
 ### 1.4 Muerte y estado
-- [ ] Estados de muerte: vivo, muerto, desconectado — [Death_state](wiki/Death_state.md)
-- [ ] Última voluntad (Last Will) y su revelación al morir — [Last_Will_ToS](wiki/Last_Will_ToS.md)
-- [ ] Muertos pasan a chat de muertos y no pueden votar — [Death_state](wiki/Death_state.md)
-- [ ] Muerte por ataque, ejecución y desconexión registradas en el log
+- [x] Estados de muerte: vivo, muerto, desconectado — [Death_state](wiki/Death_state.md) · test: `packages/engine/test/victory.test.ts` ("un jugador desconectado no cuenta como vivo"); tipo en `packages/engine/src/types/state.ts`
+- [x] Última voluntad (Last Will) y su revelación al morir — [Last_Will_ToS](wiki/Last_Will_ToS.md) · test: `packages/engine/test/wills.test.ts` ("se revela al morir", "un ahorcado revela su testamento")
+- [ ] Muertos pasan a chat de muertos y no pueden votar — [Death_state](wiki/Death_state.md) · pendiente: el chat de muertos está probado (`packages/engine/test/day.test.ts`), pero ningún test fija que un muerto no pueda votar
+- [ ] Muerte por ataque, ejecución y desconexión registradas en el log · pendiente: la desconexión no emite evento (`apps/server/src/application/use-cases/setConnection.ts` solo cambia el jugador); ataque y ejecución sí, en `packages/engine/test/night.test.ts` y `day.test.ts`
 
 ### 1.5 Victoria
-- [ ] Town gana cuando no quedan miembros vivos de Mafia — [Victory_ToS](wiki/Victory_ToS.md)
-- [ ] Mafia gana cuando no queda ningún Town vivo — [Victory_ToS](wiki/Victory_ToS.md)
-- [ ] Empate definido (pendiente en GDD §5.5)
-- [ ] Reglas 1 contra 1 (fase posterior, no MVP) — [Victory_ToS](wiki/Victory_ToS.md)
+- [x] Town gana cuando no quedan miembros vivos de Mafia — [Victory_ToS](wiki/Victory_ToS.md) · test: `packages/engine/test/victory.test.ts` ("gana el pueblo cuando no queda mafia viva")
+- [x] Mafia gana cuando no queda ningún Town vivo — [Victory_ToS](wiki/Victory_ToS.md) · test: `packages/engine/test/victory.test.ts` ("gana la mafia cuando no queda pueblo vivo")
+- [ ] Empate definido (pendiente en GDD §5.5) · pendiente: GDD §5.5 lo deja sin definir
+- [ ] Reglas 1 contra 1 (fase posterior, no MVP) — [Victory_ToS](wiki/Victory_ToS.md) · fase posterior según GDD §5.5, sin marcar
 
 ### 1.6 Chat y visibilidad
-- [ ] Canales público, Mafia, muertos — [Chat_ToS](wiki/Chat_ToS.md)
-- [ ] Filtrado de mensajes por canal en el servidor — [Messages_ToS](wiki/Messages_ToS.md)
-- [ ] Silencio de jugadores bloqueados en el Día (Blackmailer, fase posterior)
+- [x] Canales público, Mafia, muertos — [Chat_ToS](wiki/Chat_ToS.md) · test: `packages/engine/test/visibility.test.ts` (público, Mafia y muertos), `packages/engine/test/day.test.ts` ("los muertos hablan en su canal")
+- [x] Filtrado de mensajes por canal en el servidor — [Messages_ToS](wiki/Messages_ToS.md) · test: `packages/engine/test/visibility.test.ts` ("filtra la lista de eventos según el espectador"); el servidor usa `projectFor` en `apps/server/src/adapters/outbound/socket-io/broadcaster.ts`
+- [x] Silencio de jugadores bloqueados en el Día (Blackmailer, fase posterior) · test: `packages/engine/test/day.test.ts` ("un jugador silenciado por el Blackmailer no habla de día"), `packages/engine/test/whisper.test.ts`. El Blackmailer ya está en el MVP (ver sección 2)
 
 ### 1.7 Configuración de sala
-- [ ] Reglas del host (Custom): al menos un rol opuesto, máximo 4 Mafia, máximo 6 de un rol, etc. — [Game_Modes_ToS](wiki/Game_Modes_ToS.md)
-- [ ] Validación de roles activos al crear sala — [Settings_ToS](wiki/Settings_ToS.md)
-- [ ] Modo Classic (15 jugadores, roles fijos) y All Any (aleatorio) — [Game_Modes_ToS](wiki/Game_Modes_ToS.md)
-- [ ] Reparto de facciones por número de jugadores (GDD §5.1, pendiente de confirmar)
+- [ ] Reglas del host (Custom): al menos un rol opuesto, máximo 4 Mafia, máximo 6 de un rol, etc. — [Game_Modes_ToS](wiki/Game_Modes_ToS.md) · pendiente: `packages/engine/src/setup/validateConfig.ts` es un borrador
+- [ ] Validación de roles activos al crear sala — [Settings_ToS](wiki/Settings_ToS.md) · pendiente: `packages/engine/src/setup/validateConfig.ts` es un borrador
+- [ ] Modo Classic (15 jugadores, roles fijos) y All Any (aleatorio) — [Game_Modes_ToS](wiki/Game_Modes_ToS.md) · pendiente: Classic solo está en `data/catalog/game_modes.json`; el reparto aleatorio sí existe (`packages/engine/src/setup/roleList.ts`)
+- [ ] Reparto de facciones por número de jugadores (GDD §5.1, pendiente de confirmar) · pendiente de confirmar: `packages/engine/src/setup/limits.ts` lo marca como propuesta
 
 ### 1.8 Pruebas del motor
-- [ ] Test: partida de 10 jugadores completa hasta victoria
-- [ ] Test: partida de 15 jugadores con todos los roles MVP
-- [ ] Test: votación con umbrales en distintos tamaños
-- [ ] Test: orden de acciones con bloqueo, protección y ataque
-- [ ] Test: victoria de Town y de Mafia en casos límite
-- [ ] Test: simulación de 1000 partidas aleatorias sin errores
+- [x] Test: partida de 10 jugadores completa hasta victoria · `packages/engine/test/simulation.test.ts` (partidas de 10 jugadores terminan con ganador)
+- [ ] Test: partida de 15 jugadores con todos los roles MVP · pendiente: `apps/server/test/application/bots.test.ts` llega al final con 15 jugadores, pero no con todos los roles MVP
+- [x] Test: votación con umbrales en distintos tamaños · `packages/engine/test/voting.test.ts` (tabla de la wiki)
+- [x] Test: orden de acciones con bloqueo, protección y ataque · `packages/engine/test/night.test.ts`
+- [x] Test: victoria de Town y de Mafia en casos límite · `packages/engine/test/victory.test.ts`, `packages/engine/test/victoria-por-rol.test.ts`
+- [ ] Test: simulación de 1000 partidas aleatorias sin errores · pendiente: `packages/engine/test/simulation.test.ts` ejecuta 300 partidas, no 1000
 
 ## 2. Roles MVP (Mafia y Town)
-Cada archivo tiene su ficha completa, texto de la wiki y lista de implementación. Total: 30.
+Cada archivo tiene su ficha completa, texto de la wiki y lista de implementación. Total: 29 (Vampire Hunter sale del MVP, ver ROLES_STATUS.md).
+Ninguna casilla se marca todavía: el icono y la ilustración (columna g de ROLES_STATUS.md) y la narración (columna h) siguen pendientes en todos los roles.
 
-- [ ] [Ambusher](roles/Ambusher.md) · Mafia
-- [ ] [Blackmailer](roles/Blackmailer.md) · Mafia
-- [ ] [Bodyguard](roles/Bodyguard.md) · Town
-- [ ] [Bootlegger](roles/Bootlegger.md) · Mafia
-- [ ] [Consigliere](roles/Consigliere.md) · Mafia
-- [ ] [Crusader](roles/Crusader.md) · Town
-- [ ] [Disguiser](roles/Disguiser.md) · Mafia
-- [ ] [Doctor](roles/Doctor.md) · Town
-- [ ] [Forger](roles/Forger.md) · Mafia
-- [ ] [Framer](roles/Framer.md) · Mafia
-- [ ] [Godfather](roles/Godfather.md) · Mafia
-- [ ] [Hypnotist](roles/Hypnotist.md) · Mafia
-- [ ] [Investigator](roles/Investigator.md) · Town
-- [ ] [Jailor](roles/Jailor.md) · Town
-- [ ] [Janitor](roles/Janitor.md) · Mafia
-- [ ] [Lookout](roles/Lookout.md) · Town
-- [ ] [Mafioso](roles/Mafioso.md) · Mafia
-- [ ] [Mayor](roles/Mayor.md) · Town
-- [ ] [Medium](roles/Medium.md) · Town
-- [ ] [Psychic](roles/Psychic.md) · Town
-- [ ] [Retributionist](roles/Retributionist.md) · Town
-- [ ] [Sheriff](roles/Sheriff.md) · Town
-- [ ] [Spy](roles/Spy.md) · Town
-- [ ] [Tavern Keeper](roles/Tavern_Keeper.md) · Town
-- [ ] [Tracker](roles/Tracker.md) · Town
-- [ ] [Transporter](roles/Transporter.md) · Town
-- [ ] [Trapper](roles/Trapper.md) · Town
-- [ ] [Vampire Hunter](roles/Vampire_Hunter.md) · Town
-- [ ] [Veteran](roles/Veteran.md) · Town
-- [ ] [Vigilante](roles/Vigilante.md) · Town
+- [ ] [Ambusher](roles/Ambusher.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Blackmailer](roles/Blackmailer.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Bodyguard](roles/Bodyguard.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Bootlegger](roles/Bootlegger.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Consigliere](roles/Consigliere.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Crusader](roles/Crusader.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Disguiser](roles/Disguiser.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Doctor](roles/Doctor.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Forger](roles/Forger.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Framer](roles/Framer.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Godfather](roles/Godfather.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Hypnotist](roles/Hypnotist.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Investigator](roles/Investigator.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Jailor](roles/Jailor.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Janitor](roles/Janitor.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Lookout](roles/Lookout.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Mafioso](roles/Mafioso.md) · Mafia · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Mayor](roles/Mayor.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Medium](roles/Medium.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Psychic](roles/Psychic.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Retributionist](roles/Retributionist.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Sheriff](roles/Sheriff.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Spy](roles/Spy.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Tavern Keeper](roles/Tavern_Keeper.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Tracker](roles/Tracker.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Transporter](roles/Transporter.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Trapper](roles/Trapper.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Vampire Hunter](roles/Vampire_Hunter.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md) (fuera del MVP: sin Vampiros, ver ROLES_STATUS.md)
+- [ ] [Veteran](roles/Veteran.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
+- [ ] [Vigilante](roles/Vigilante.md) · Town · Estado: [ROLES_STATUS.md](ROLES_STATUS.md)
 
 ## 3. Roles de fase posterior (Neutral y Coven, solo referencia)
 
