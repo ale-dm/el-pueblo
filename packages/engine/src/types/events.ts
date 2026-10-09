@@ -43,6 +43,7 @@ export type GameEventPayloads = {
    * Aviso privado de la noche (wiki): solo lo recibe `playerId`.
    * target_jailed: su objetivo estaba encarcelado y su acción falla (Jailor.md:252).
    * attack_attempt: lo atacó alguien mientras estaba encarcelado (Jailor.md:252, Vigilante.md:194).
+   * godfather_target_defense: el Godfather atacó él mismo y el objetivo tenía defensa (Godfather.md:233; Messages_ToS.md:383).
    * medium_talking: un Médium le habla esta noche; un aviso por cada Médium (Medium.md:209, 213).
    * healed: lo atacaron y un Doctor lo curó (Doctor.md:225, 253).
    * jailed: el prisionero se entera al empezar la noche, no al ser encarcelado (wiki: Jailor.md:558, "You were hauled off to jail!").
@@ -50,7 +51,7 @@ export type GameEventPayloads = {
    * psychic_small / psychic_evil: la Psíquica no puede dar visión (Psychic.md:318, 322).
    */
   /** subjectId: el jugador del aviso cuando no es quien lo recibe (wiki: Jailor.md:566, "(Player) was hauled off to jail"). */
-  "night.notice": { playerId: PlayerId; subjectId?: PlayerId; notice: "jailed" | "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" | "healed" | "target_attacked" | "vigilante_put_away_gun" | "vigilante_guilt_suicide" | "alert_blocked" | "vest_saved" | "blackmail_jailed" | "jailor_execute" | "jailor_changed_mind" | "psychic_small" | "psychic_evil" | "trap_triggered" | "trap_saved" | "blocked_jailed" | "blocked_immune" | "blocked_occupied" | "veteran_shot_visitor" | "veteran_shot_you" | "bodyguard_saved" | "bodyguard_killed_you" | "bodyguard_killed_protecting" | "vigilante_wait_day" | "vigilante_shot_you" | "team_jailed" | "jailor_dragged" | "jailor_wait_day" };
+  "night.notice": { playerId: PlayerId; subjectId?: PlayerId; notice: "jailed" | "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" | "healed" | "target_attacked" | "godfather_target_defense" | "vigilante_put_away_gun" | "vigilante_guilt_suicide" | "alert_blocked" | "vest_saved" | "blackmail_jailed" | "jailor_execute" | "jailor_changed_mind" | "psychic_small" | "psychic_evil" | "trap_triggered" | "trap_saved" | "blocked_jailed" | "blocked_immune" | "blocked_occupied" | "veteran_shot_visitor" | "veteran_shot_you" | "bodyguard_saved" | "bodyguard_killed_you" | "bodyguard_killed_protecting" | "vigilante_wait_day" | "vigilante_shot_you" | "team_jailed" | "jailor_dragged" | "jailor_wait_day" };
   /** Usos que le quedan tras disparar o ponerse en alerta (wiki: Vigilante y Veteran, "You have (#) bullet(s) left"). Solo lo ve el jugador. */
   "uses.left": { playerId: PlayerId; ability: string; left: number };
   /** El Janitor limpió a un jugador que murió esta noche: ve su rol real al amanecer (wiki: Janitor.md:214). */

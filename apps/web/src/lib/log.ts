@@ -78,6 +78,8 @@ const NOTICE_TEXT: Record<string, string> = {
   healed: "Te atacaron, pero alguien te curó.",
   // Wiki (Doctor.md:223): "Your target was attacked last night!"
   target_attacked: "Tu objetivo fue atacado anoche.",
+  // Wiki (Messages_ToS.md:383): "Your target's defense was too strong to kill." (Godfather.md:233)
+  godfather_target_defense: "La defensa de tu objetivo fue demasiado fuerte para matarle.",
   // Wiki (Vigilante.md:362): "You have put away your gun for killing a town member."
   vigilante_put_away_gun: "Has guardado tu pistola por matar a un miembro del pueblo.",
   // Wiki (Vigilante.md:370): "You could not get over the guilt of killing a town member. You shot yourself!"

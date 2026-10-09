@@ -168,6 +168,16 @@ describe("registro estilo Town of Salem", () => {
     expect(text).toContain("Te atacaron, pero tu chaleco antibalas te salvó.");
   });
 
+  it("aviso al Godfather por defensa del objetivo (wiki: Godfather.md:233; Messages_ToS.md:383)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "godfather_target_defense" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("La defensa de tu objetivo fue demasiado fuerte para matarle.");
+  });
+
   it("avisos de la noche por rol: curado, Jailor, Psíquica (wiki: Doctor, Jailor, Psychic)", () => {
     seq = 0;
     const text = texts(buildLog([

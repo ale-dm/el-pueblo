@@ -46,6 +46,8 @@ interface Attack {
   note?: string;
   /** Autor de la nota de muerte: quien hace la muerte (wiki: Godfather.md:36, Mafioso.md:23). Solo el ataque de la Mafia lo lleva. */
   noteAuthorId?: string;
+  /** El Godfather ataca él mismo, no por medio del Mafioso: recibe el aviso de defensa (wiki: Godfather.md:233). */
+  godfatherDirect?: boolean;
 }
 
 interface Act {
@@ -398,7 +400,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   if (mafiaExecutor) {
     // Wiki (Godfather.md:235, Mafioso.md:279): quien hace la muerte deja su nota, sea el Mafioso o el Godfather.
     const note = s.nightActions[mafiaExecutor.attackerId]?.note;
-    attacks.push({ attackerId: mafiaExecutor.attackerId, victimId: mafiaExecutor.victimId, power: 1, cause: "mafia", ...(note ? { note } : {}), noteAuthorId: mafiaExecutor.attackerId });
+    // Wiki (Godfather.md:233): si el Mafioso ataca, el Godfather no recibe el aviso de defensa por su orden.
+    const godfatherDirect = playerOf(s, mafiaExecutor.attackerId)?.roleKey === "godfather";
+    attacks.push({ attackerId: mafiaExecutor.attackerId, victimId: mafiaExecutor.victimId, power: 1, cause: "mafia", ...(note ? { note } : {}), noteAuthorId: mafiaExecutor.attackerId, ...(godfatherDirect ? { godfatherDirect } : {}) });
   }
 
   // Alerta del Veteran: ataca a todos los que le visitan.
@@ -707,6 +711,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     } else {
       prevented.add(atk.victimId);
       if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(strongest.protectorId) } });
+      // Wiki (Godfather.md:233): el Godfather que ataca recibe aviso si el objetivo tiene defensa; el texto es el de
+      // Messages_ToS.md:383 ("Your target's defense was too strong to kill."), también si el objetivo fue curado.
+      if (atk.godfatherDirect) out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "godfather_target_defense" } });
       if (strongest?.source === "trap") {
         trapSpent.add(atk.victimId);
         // Wiki (Trapper.md:352): "You were attacked but a trap saved you!" al objetivo que la trampa protegió.
