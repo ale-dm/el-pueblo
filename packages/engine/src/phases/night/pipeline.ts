@@ -347,6 +347,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const bugs: Array<{ actorId: string; targetId: string }> = [];
   /** Víctimas cuyo ataque esta noche no les alcanzó (protección o alerta). Lo ve el espionaje. */
   const prevented = new Set<string>();
+  /** Guardaespaldas que ya contraatacaron esta noche. Aunque una curación les salve, cuentan uno solo:
+   * wiki (Bodyguard.md:306): "Being healed while counterattacking does not allow you to counter more than one attack". */
+  const countered = new Set<string>();
   // Doctor: un solo aviso de "atacado" por Doctor y noche (wiki: Doctor.md:251).
   const healersNotified = new Set<string>();
   // Chaleco: un solo aviso por Bodyguard y noche (supuesto: la wiki no dice cuántas veces).
@@ -690,7 +693,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Vigilante, y a otros roles que matan; no protege de Veteran, Ambusher ni de Town Protectives.
     const counters = atk.cause === "mafia" || atk.cause === "shot";
     // Un zombi está muerto, pero su guardaespaldas actúa esta noche (wiki: Retributionist.md:388).
-    const bodyguard = counters ? prots.find((p) => p.source === "bodyguard" && (!dead.has(p.protectorId) || raisedBy.has(p.protectorId))) : undefined;
+    const bodyguard = counters ? prots.find((p) => p.source === "bodyguard" && !countered.has(p.protectorId) && (!dead.has(p.protectorId) || raisedBy.has(p.protectorId))) : undefined;
     // La defensa de la trampa solo cuenta contra su atacante (Keyword_System.md:349) y una vez por noche.
     const medical = prots.filter(
       (p) => p.source !== "bodyguard" && (p.onlyAgainst === undefined || p.onlyAgainst === atk.attackerId) && !(p.source === "trap" && trapSpent.has(atk.victimId)),
@@ -700,6 +703,19 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const baseDefense = playerOf(s, atk.victimId)?.roleKey === "godfather" ? 1 : 0;
     const defense = Math.max(strongest?.power ?? 0, alerted.has(atk.victimId) ? 1 : 0, baseDefense);
     return { bodyguard, strongest, baseDefense, defense };
+  };
+  /** Defensa que impide morir en un contraataque del Bodyguard: Doctor o Crusader con defensa Powerful (wiki:
+   * Bodyguard.md:260, 304). La de la cárcel y la de la trampa no sirven (Bodyguard.md:230; Jailor.md:362). */
+  const counterproofOf = (id: string): Protection | undefined => {
+    if (dead.has(id)) return undefined;
+    return (protections.get(id) ?? []).find((p) => (p.source === "doctor" || p.source === "crusader") && p.power === 2);
+  };
+  /** Doctor que cura con éxito a un atacado recibe "Your target was attacked last night!", una vez por noche (wiki: Doctor.md:223, 251). */
+  const noteHealer = (protectorId: string) => {
+    const healer = routed(protectorId);
+    if (healersNotified.has(healer)) return;
+    healersNotified.add(healer);
+    out.push({ type: "night.notice", payload: { playerId: healer, notice: "target_attacked" } });
   };
   for (let i = 0; i < attacks.length; i++) {
     const atk = attacks[i]!;
@@ -746,20 +762,42 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
     const { bodyguard, strongest, baseDefense, defense } = defenseOf(atk);
     if (bodyguard) {
+      countered.add(bodyguard.protectorId);
       prevented.add(atk.victimId);
       out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(bodyguard.protectorId) } });
       // Wiki (Bodyguard.md:438): "You were attacked but someone fought off your attacker!" al protegido.
       out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "bodyguard_saved" } });
       // Wiki (Spy.md:235): "Your target was attacked but someone fought off their attacker!"
       tagSpy(atk.victimId, "attack_fought_off");
-      // Wiki (Bodyguard.md:434, 430): avisos de muerte del atacante y del Bodyguard, solo si de verdad mueren.
-      if (kill(atk.attackerId, "bodyguard")) {
+      // Wiki (Bodyguard.md:210): el contraataque es un ataque Powerful contra el atacante y contra el Bodyguard.
+      // Wiki (Bodyguard.md:304; Doctor.md:221): Doctor, Crusader, Potion Master o Guardian Angel pueden impedir que
+      // muera el atacante, o el Bodyguard, cada uno por su lado. Aquí solo Doctor y Crusader (MVP); la defensa de la
+      // cárcel y la de la trampa no cuentan (Bodyguard.md:230; Jailor.md:362).
+      const attackerCure = counterproofOf(atk.attackerId);
+      if (attackerCure) {
+        out.push({ type: "attack.prevented", payload: { victimId: atk.attackerId, protectorId: routed(attackerCure.protectorId) } });
+        if (attackerCure.source === "doctor") {
+          // Wiki (Messages_ToS.md:1893): "You were attacked but someone nursed you back to health!" al atacante curado.
+          out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "healed" } });
+          // Wiki (Spy.md:255): "A Bodyguard attacked your target but someone nursed them back to health!"
+          tagSpy(atk.attackerId, "bodyguard_attack_healed");
+          noteHealer(attackerCure.protectorId);
+        }
+      } else if (kill(atk.attackerId, "bodyguard")) {
+        // Wiki (Bodyguard.md:434, 430): avisos de muerte del atacante y del Bodyguard, solo si de verdad mueren.
         out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "bodyguard_killed_you" } });
         // Wiki (Spy.md:259): "Your target was killed by a Bodyguard!"
         tagSpy(atk.attackerId, "killed_by_bodyguard");
       }
       // Causa distinta de la del atacante: el Bodyguard "died guarding someone" (wiki: Bodyguard.md:450).
-      if (kill(bodyguard.protectorId, "guarding")) {
+      const guardCure = counterproofOf(bodyguard.protectorId);
+      if (guardCure) {
+        out.push({ type: "attack.prevented", payload: { victimId: bodyguard.protectorId, protectorId: routed(guardCure.protectorId) } });
+        if (guardCure.source === "doctor") {
+          out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "healed" } });
+          noteHealer(guardCure.protectorId);
+        }
+      } else if (kill(bodyguard.protectorId, "guarding")) {
         out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "bodyguard_killed_protecting" } });
         // Wiki (Spy.md:249): "Your target was killed protecting someone!"
         tagSpy(bodyguard.protectorId, "killed_guarding");
@@ -799,11 +837,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "healed" } });
         // Wiki (Doctor.md:223, 251): el Doctor que cura con éxito a un atacado recibe "Your target was attacked last night!",
         // una sola vez por noche aunque sean varios ataques. Si el ataque es letal y no se evita, no hay aviso.
-        const healer = routed(strongest.protectorId);
-        if (!healersNotified.has(healer)) {
-          healersNotified.add(healer);
-          out.push({ type: "night.notice", payload: { playerId: healer, notice: "target_attacked" } });
-        }
+        noteHealer(strongest.protectorId);
       }
     }
   }
