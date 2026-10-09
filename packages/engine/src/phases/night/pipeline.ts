@@ -197,7 +197,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     protections.set(prisonerId, [{ protectorId: jailorId, power: 2, source: "jail" }]);
   }
   const alerted = new Set<string>();
-  const attacks: Attack[] = [];
+  // Culpa del Vigilante: quien mató a un Town se quita la vida la noche siguiente, con un ataque imparable
+  // (wiki: Vigilante). Va primero y ocurre aunque esté bloqueado, encarcelado o controlado.
+  const attacks: Attack[] = s.players
+    .filter((p) => isAlive(p) && p.flags.guilty)
+    .map((p) => ({ attackerId: p.id, victimId: p.id, power: 2 as const, cause: "guilt", unstoppable: true }));
   const marks: Array<{ actorId: string; targetId: string; flag: "framed" | "cleaned" | "blackmailed" | "zombied" }> = [];
   const investigations: Array<{ actorId: string; targetId: string | null; check: string }> = [];
   const traps: Array<{ trapperId: string; targetId: string }> = [];
@@ -373,31 +377,34 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   // 8. Ataques contra protecciones. Un ataque que mata a alguien ya muerto no hace nada.
   const dead = new Set(s.players.filter((p) => p.status !== "alive").map((p) => p.id));
-  const kill = (playerId: string, cause: string) => {
-    if (dead.has(playerId)) return;
+  const kill = (playerId: string, cause: string): boolean => {
+    if (dead.has(playerId)) return false;
     dead.add(playerId);
     // Wiki (Forger): la falsificación solo vale si la víctima muere esa misma noche.
     const roleKey = cleaned.has(playerId) ? null : forged.get(playerId) ?? playerOf(s, playerId)?.roleKey ?? null;
     // Un limpiado no deja testamento visible (wiki: Janitor).
     const will = cleaned.has(playerId) ? null : s.wills[playerId] ?? null;
     out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will } });
+    return true;
   };
   for (let i = 0; i < attacks.length; i++) {
     const atk = attacks[i]!;
     if (dead.has(atk.victimId)) continue;
     const victim = playerOf(s, atk.victimId);
-
-    // Vigilante: disparar a un Town le hace quitarse la vida por culpa.
-    if (atk.cause === "shot" && victim?.faction === "town" && !dead.has(atk.attackerId)) {
-      attacks.push({ attackerId: atk.attackerId, victimId: atk.attackerId, power: 2, cause: "guilt" });
-    }
+    // Vigilante: si su disparo mata a un Town, la culpa le quitará la vida la noche siguiente (wiki: Vigilante).
+    const killVictim = (cause: string) => {
+      if (!kill(atk.victimId, cause)) return;
+      if (atk.cause === "shot" && victim?.faction === "town" && !dead.has(atk.attackerId)) {
+        out.push({ type: "effect.applied", payload: { actorId: atk.attackerId, targetId: atk.attackerId, flag: "guilty" } });
+      }
+    };
     // Jailor: ejecutar a un Town le quita las siguientes ejecuciones.
     if (atk.cause === "execute" && victim?.faction === "town" && !dead.has(atk.attackerId)) {
       out.push({ type: "effect.applied", payload: { actorId: atk.attackerId, targetId: atk.attackerId, flag: "noExecute" } });
     }
 
     if (atk.unstoppable) {
-      kill(atk.victimId, atk.cause);
+      killVictim(atk.cause);
       continue;
     }
     const prots = protections.get(atk.victimId) ?? [];
@@ -414,7 +421,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const baseDefense = victim?.roleKey === "godfather" ? 1 : 0;
     const defense = Math.max(strongest?.power ?? 0, alerted.has(atk.victimId) ? 1 : 0, baseDefense);
     if (atk.power > defense) {
-      kill(atk.victimId, atk.cause);
+      killVictim(atk.cause);
     } else if (strongest) {
       out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: strongest.protectorId } });
     }

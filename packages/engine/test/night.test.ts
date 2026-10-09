@@ -78,24 +78,47 @@ describe("noche: protecciones y ataques", () => {
     expect(state.players.find((p) => p.id === "p3")?.status).toBe("alive");
   });
 
-  it("el Vigilante que dispara a un Town muere por culpa", () => {
+  it("el Vigilante no puede disparar la primera noche (wiki: Vigilante)", () => {
     const s = game(["vigilante", "investigator", "godfather"]);
-    const { events } = resolve(s, [night("p1", "shoot", "p2")]);
-    const deaths = ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause]);
-    expect(deaths).toEqual([
-      ["p2", "shot"],
-      ["p1", "guilt"],
-    ]);
+    expect(rejected(s, night("p1", "shoot", "p2"))).toMatch(/primera noche/);
+  });
+
+  it("el Vigilante que mata a un Town muere la noche siguiente, aunque tenga Doctor", () => {
+    let s = game(["vigilante", "investigator", "doctor", "godfather", "sheriff"], { dayNumber: 2 });
+    const first = resolve(s, [night("p1", "shoot", "p2"), night("p3", "heal", "p1")]);
+    expect(ofType(first.events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p2", "shot"]]);
+    expect(first.state.players[0]!.status).toBe("alive");
+    expect(first.state.players[0]!.flags.guilty).toBe(true);
+    // Noche siguiente: la culpa es un ataque imparable; el Doctor no lo evita.
+    s = { ...first.state, phase: "night", dayNumber: 3 };
+    const second = resolve(s, [night("p3", "heal", "p1")]);
+    expect(ofType(second.events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p1", "guilt"]]);
+  });
+
+  it("si un Doctor evita el disparo, el Vigilante no tiene culpa", () => {
+    const s = game(["vigilante", "investigator", "doctor", "godfather", "sheriff"], { dayNumber: 2 });
+    const first = resolve(s, [night("p1", "shoot", "p2"), night("p3", "heal", "p2")]);
+    expect(ofType(first.events, "player.killed")).toHaveLength(0);
+    expect(first.state.players[0]!.flags.guilty).toBeUndefined();
+    const second = resolve({ ...first.state, phase: "night", dayNumber: 3 }, []);
+    expect(ofType(second.events, "player.killed")).toHaveLength(0);
+  });
+
+  it("la culpa del Vigilante es un ataque imparable: un Bodyguard sobre él no muere", () => {
+    let s = game(["vigilante", "investigator", "bodyguard", "godfather", "sheriff"], { dayNumber: 2 });
+    s = resolve(s, [night("p1", "shoot", "p2")]).state;
+    const { events } = resolve({ ...s, phase: "night", dayNumber: 3 }, [night("p3", "protect", "p1")]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p1", "guilt"]]);
   });
 
   it("el Vigilante que dispara a la Mafia sobrevive", () => {
-    const s = game(["vigilante", "mafioso", "investigator"]);
+    const s = game(["vigilante", "mafioso", "investigator"], { dayNumber: 2 });
     const { events } = resolve(s, [night("p1", "shoot", "p2")]);
     expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).toEqual(["p2"]);
   });
 
   it("un disparo Basic no mata al Godfather (Basic Defense, wiki: Godfather)", () => {
-    const s = game(["vigilante", "godfather", "investigator"]);
+    const s = game(["vigilante", "godfather", "investigator"], { dayNumber: 2 });
     const { events } = resolve(s, [night("p1", "shoot", "p2")]);
     expect(ofType(events, "player.killed")).toHaveLength(0);
     expect(ofType(events, "attack.prevented")).toHaveLength(0);
