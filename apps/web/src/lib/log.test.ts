@@ -528,3 +528,26 @@ describe("nota del Jailor (wiki: Death_Note_ToS.md:76-92; Jailor.md:322)", () =>
     expect(text).toContain("Nota del Jailor: Se sabe que es un malvado. Está demasiado callado o no responde a las preguntas.");
   });
 });
+
+// Textos de causa de muerte, uno por causa, con la frase de la wiki citada (H3, lote 7).
+describe("textos de causa de muerte (wiki: Bodyguard.md:446, 450; Vigilante.md:374, 378; Veteran.md:490; Jailor.md:602)", () => {
+  const cases: Array<[string, string, string]> = [
+    // Bodyguard.md:446 "[They were] killed by a Bodyguard."
+    ["bodyguard", "ha sido asesinado por un Guardaespaldas", "Bodyguard.md:446"],
+    // Bodyguard.md:450 "[They] died guarding someone."
+    ["guarding", "ha muerto protegiendo a alguien", "Bodyguard.md:450"],
+    // Vigilante.md:374 "[They were] shot by a Vigilante."
+    ["shot", "ha sido abatido por un Vigilante", "Vigilante.md:374"],
+    // Vigilante.md:378 "[They] died from guilt."
+    ["guilt", "ha muerto por la culpa", "Vigilante.md:378"],
+    // Veteran.md:490 "[They were] killed by a Veteran."
+    ["veteran", "ha sido asesinado por un Veterano", "Veteran.md:490"],
+    // Jailor.md:602 "[They were] executed by the Jailor."
+    ["execute", "ha sido ejecutado por el Jailor", "Jailor.md:602"],
+  ];
+  it.each(cases)("la causa %s dice: %s (%s)", (cause, phrase) => {
+    seq = 0;
+    const text = texts(buildLog([ev("player.killed", { playerId: "b", cause, roleKey: "doctor", will: null })], ctx())).join(" | ");
+    expect(text).toContain(`Bea murió anoche: ${phrase}. Era Doctor.`);
+  });
+});

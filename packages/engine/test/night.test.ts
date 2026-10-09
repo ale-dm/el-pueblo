@@ -89,7 +89,8 @@ describe("noche: protecciones y ataques", () => {
     const { events, state } = resolve(s, [night("p1", "kill", "p3"), night("p2", "protect", "p3")]);
     expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([
       ["p1", "bodyguard"],
-      ["p2", "bodyguard"],
+      // El Bodyguard que muere protegiendo tiene su propia causa (wiki: Bodyguard.md:450).
+      ["p2", "guarding"],
     ]);
     expect(state.players.find((p) => p.id === "p3")?.status).toBe("alive");
   });
@@ -206,7 +207,7 @@ describe("noche: quién mata a la Mafia (wiki: Mafioso, Godfather)", () => {
     const { events, state } = resolve(s, [night("p1", "kill", "p4"), night("p2", "kill", "p4"), night("p3", "protect", "p4")]);
     expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([
       ["p2", "bodyguard"],
-      ["p3", "bodyguard"],
+      ["p3", "guarding"],
     ]);
     expect(state.players.find((p) => p.id === "p1")?.status).toBe("alive");
   });

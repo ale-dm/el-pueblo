@@ -669,7 +669,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "bodyguard_saved" } });
       // Wiki (Bodyguard.md:434, 430): avisos de muerte del atacante y del Bodyguard, solo si de verdad mueren.
       if (kill(atk.attackerId, "bodyguard")) out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "bodyguard_killed_you" } });
-      if (kill(bodyguard.protectorId, "bodyguard")) out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "bodyguard_killed_protecting" } });
+      // Causa distinta de la del atacante: el Bodyguard "died guarding someone" (wiki: Bodyguard.md:450).
+      if (kill(bodyguard.protectorId, "guarding")) out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "bodyguard_killed_protecting" } });
       continue;
     }
     // La defensa de la trampa solo cuenta contra su atacante (Keyword_System.md:349) y una vez por noche.

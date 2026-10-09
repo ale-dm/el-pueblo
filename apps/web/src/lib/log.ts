@@ -29,15 +29,22 @@ const VERDICT_ES = { guilty: "culpable", innocent: "inocente" } as const;
 
 const CAUSE_ES: Record<string, string> = {
   mafia: "ha sido asesinado por la Mafia",
-  shot: "ha sido abatido a tiros",
-  execute: "ha sido ejecutado",
+  // Wiki (Vigilante.md:374): "[They were] shot by a Vigilante."
+  shot: "ha sido abatido por un Vigilante",
+  // Wiki (Jailor.md:602): "[They were] executed by the Jailor."
+  execute: "ha sido ejecutado por el Jailor",
   ambush: "ha sido emboscado",
-  veteran: "ha sido abatido por un Veterano",
+  // Wiki (Veteran.md:490): "[They were] killed by a Veteran."
+  veteran: "ha sido asesinado por un Veterano",
   // Wiki (Trapper.md:364): "[They were] killed by a Trapper."
   trap: "ha sido asesinado por un Trapper",
   crusade: "ha sido abatido por el Cruzado",
-  bodyguard: "ha muerto en un duelo con un Guardaespaldas",
-  guilt: "se ha quitado la vida por culpa",
+  // Wiki (Bodyguard.md:446): "[They were] killed by a Bodyguard." (el atacante que cayó en el duelo).
+  bodyguard: "ha sido asesinado por un Guardaespaldas",
+  // Wiki (Bodyguard.md:450): "[They] died guarding someone." (el Bodyguard que murió protegiendo).
+  guarding: "ha muerto protegiendo a alguien",
+  // Wiki (Vigilante.md:378): "[They] died from guilt." (el Vigilante que mató a un Town la noche anterior).
+  guilt: "ha muerto por la culpa",
 };
 
 const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const;
