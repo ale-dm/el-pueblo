@@ -26,7 +26,7 @@ export function SideTabs({ view, tab, onTab, className = "" }: { view: MatchView
             className={`cartoon-btn px-1 py-1 ${tab === t.key ? "" : "opacity-60"}`}
           >
             {/* El tamaño va en el texto: la clase de botón de la marca fija el suyo. */}
-            <span className="text-[12px] leading-tight">{t.label}</span>
+            <span className="block truncate text-[12px] leading-tight" title={t.label}>{t.label}</span>
           </button>
         ))}
       </div>
