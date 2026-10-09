@@ -117,6 +117,31 @@ describe("noche: protecciones y ataques", () => {
   });
 });
 
+describe("noche: quién mata a la Mafia (wiki: Mafioso, Godfather)", () => {
+  it("con orden del Godfather, el Mafioso ejecuta y es quien visita: el Lookout no ve al Godfather", () => {
+    const s = game(["godfather", "mafioso", "lookout", "investigator"]);
+    const { events } = resolve(s, [night("p1", "kill", "p4"), night("p2", "kill", "p3"), night("p3", "watch", "p4")]);
+    expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).toEqual(["p4"]);
+    expect(ofType(events, "investigation.result")[0]?.payload.result).toBe("P2");
+  });
+
+  it("un Bodyguard en la víctima mata al Mafioso que ejecuta la orden, no al Godfather", () => {
+    const s = game(["godfather", "mafioso", "bodyguard", "investigator"]);
+    const { events, state } = resolve(s, [night("p1", "kill", "p4"), night("p2", "kill", "p4"), night("p3", "protect", "p4")]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([
+      ["p2", "bodyguard"],
+      ["p3", "bodyguard"],
+    ]);
+    expect(state.players.find((p) => p.id === "p1")?.status).toBe("alive");
+  });
+
+  it("si el Mafioso está bloqueado, el Godfather mata personalmente", () => {
+    const s = game(["godfather", "mafioso", "bootlegger", "investigator"]);
+    const { events } = resolve(s, [night("p1", "kill", "p4"), night("p2", "kill", "p3"), night("p3", "distract", "p2")]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p4", "mafia"]]);
+  });
+});
+
 describe("noche: investigaciones", () => {
   it("el Sheriff ve sospechoso a un Mafioso y a un Godfather inocente", () => {
     const s = game(["mafioso", "godfather", "sheriff"]);

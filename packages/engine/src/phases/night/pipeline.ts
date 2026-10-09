@@ -157,16 +157,35 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
   }
 
+  // 2b. Mafia: quién mata. Wiki (Mafioso, Godfather): si el Godfather ordena y el Mafioso está vivo y no
+  // bloqueado, el Mafioso ejecuta la orden; él recibe las visitas y las represalias, y el Godfather no visita.
+  // Si el Mafioso no puede, el Godfather mata personalmente. Sin orden, mata el Mafioso con su propio objetivo.
+  const mafiaEffects = active.flatMap((a) => a.effects.map((e) => remapEffect(e, remap)));
+  const mafiaKill = (role: "godfather" | "mafioso") =>
+    mafiaEffects.find((e): e is Extract<Effect, { kind: "mafiaKill" }> => e.kind === "mafiaKill" && e.role === role);
+  const godOrder = mafiaKill("godfather");
+  const ownKill = mafiaKill("mafioso");
+  const mafiosoPlayer = s.players.find((p) => p.roleKey === "mafioso" && isAlive(p));
+  const blockedIds = new Set(acts.filter((a) => a.blocked).map((a) => a.actor.id));
+  const mafiosoExecutes = !!godOrder && !!mafiosoPlayer && !blockedIds.has(mafiosoPlayer.id);
+  let mafiaExecutor: { attackerId: string; victimId: string } | null = null;
+  if (godOrder && mafiosoExecutes && mafiosoPlayer) mafiaExecutor = { attackerId: mafiosoPlayer.id, victimId: godOrder.targetId };
+  else if (godOrder) mafiaExecutor = { attackerId: godOrder.actorId, victimId: godOrder.targetId };
+  else if (ownKill) mafiaExecutor = { attackerId: ownKill.actorId, victimId: ownKill.targetId };
+
   // 3. Visitas: habilidades que apuntan a un jugador.
   const visits: Visit[] = [];
   for (const act of active) {
     // Un muerto (Medium) no visita casas: sus efectos no llegan a Lookout ni a Sheriff.
     if (!isAlive(act.actor)) continue;
+    // Con orden del Godfather, la visita de la Mafia es la del Mafioso que mata (abajo).
+    if (mafiosoExecutes && (act.handler.key === "godfather" || act.handler.key === "mafioso")) continue;
     const def = act.handler.nightAbilities.find((a) => a.key === act.ability);
     if (def?.target === "player" && act.targetId !== null) {
       visits.push({ visitorId: act.actor.id, houseId: remap(act.targetId) });
     }
   }
+  if (godOrder && mafiosoExecutes && mafiosoPlayer) visits.push({ visitorId: mafiosoPlayer.id, houseId: godOrder.targetId });
   const visitsTo = (houseId: string, except?: string) =>
     visits.filter((v) => v.houseId === houseId && v.visitorId !== except);
 
@@ -241,12 +260,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
   }
 
-  // 5. Mafia: si el Godfather actúa, su objetivo; si no, el del Mafioso.
-  const mafiaEffects = active.flatMap((a) => a.effects.map((e) => remapEffect(e, remap)));
-  const order = mafiaEffects.find((e) => e.kind === "mafiaKill" && e.role === "godfather") ??
-    mafiaEffects.find((e) => e.kind === "mafiaKill" && e.role === "mafioso");
-  if (order?.kind === "mafiaKill") {
-    attacks.push({ attackerId: order.actorId, victimId: order.targetId, power: 1, cause: "mafia" });
+  // 5. Mafia: el ejecutor decidido arriba.
+  if (mafiaExecutor) {
+    attacks.push({ attackerId: mafiaExecutor.attackerId, victimId: mafiaExecutor.victimId, power: 1, cause: "mafia" });
   }
 
   // Alerta del Veteran: ataca a todos los que le visitan.
