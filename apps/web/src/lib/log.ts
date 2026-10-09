@@ -57,6 +57,8 @@ const NOTICE_TEXT: Record<string, string> = {
   transported: "Fuiste transportado a otro lugar.",
   // Wiki (Doctor.md:225): "You were attacked but someone nursed you back to health!"
   healed: "Te atacaron, pero alguien te curó.",
+  // Wiki (Doctor.md:223): "Your target was attacked last night!"
+  target_attacked: "Tu objetivo fue atacado anoche.",
   // Wiki (Jailor.md:282, 284): "The jailor has decided to Execute you." / "The jailor has changed his mind."
   jailor_execute: "El Jailor ha decidido ejecutarte.",
   jailor_changed_mind: "El Jailor ha cambiado de opinión.",

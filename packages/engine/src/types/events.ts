@@ -41,7 +41,7 @@ export type GameEventPayloads = {
    * jailor_execute / jailor_changed_mind: el Jailor decide ejecutarle o cambia de opinión (Jailor.md:282, 284).
    * psychic_small / psychic_evil: la Psíquica no puede dar visión (Psychic.md:318, 322).
    */
-  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" | "healed" | "jailor_execute" | "jailor_changed_mind" | "psychic_small" | "psychic_evil" };
+  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" | "healed" | "target_attacked" | "jailor_execute" | "jailor_changed_mind" | "psychic_small" | "psychic_evil" };
   /** Usos que le quedan tras disparar o ponerse en alerta (wiki: Vigilante y Veteran, "You have (#) bullet(s) left"). Solo lo ve el jugador. */
   "uses.left": { playerId: PlayerId; ability: string; left: number };
   /** El Janitor limpió a un jugador que murió esta noche: ve su rol real al amanecer (wiki: Janitor.md:214). */

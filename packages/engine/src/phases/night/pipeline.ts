@@ -275,6 +275,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const bugs: Array<{ actorId: string; targetId: string }> = [];
   /** Víctimas cuyo ataque esta noche no les alcanzó (protección o alerta). Lo ve el espionaje. */
   const prevented = new Set<string>();
+  // Doctor: un solo aviso de "atacado" por Doctor y noche (wiki: Doctor.md:251).
+  const healersNotified = new Set<string>();
   const traps: Array<{ trapperId: string; targetId: string }> = [];
   const dismantles: string[] = [];
   const usesSpent: Array<{ playerId: string; ability: string }> = [];
@@ -576,7 +578,16 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(strongest.protectorId) } });
       if (strongest?.source === "trap") trapSpent.add(atk.victimId);
       // Wiki (Doctor.md:225, 253): el atacado recibe el aviso de curación, uno por ataque aunque haya varios Doctors.
-      if (strongest?.source === "doctor") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "healed" } });
+      if (strongest?.source === "doctor") {
+        out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "healed" } });
+        // Wiki (Doctor.md:223, 251): el Doctor que cura con éxito a un atacado recibe "Your target was attacked last night!",
+        // una sola vez por noche aunque sean varios ataques. Si el ataque es letal y no se evita, no hay aviso.
+        const healer = routed(strongest.protectorId);
+        if (!healersNotified.has(healer)) {
+          healersNotified.add(healer);
+          out.push({ type: "night.notice", payload: { playerId: healer, notice: "target_attacked" } });
+        }
+      }
     }
   }
 

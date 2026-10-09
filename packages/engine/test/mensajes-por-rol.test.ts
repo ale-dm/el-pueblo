@@ -54,12 +54,31 @@ describe("Janitor: el rol del limpiado (wiki: Janitor.md:214)", () => {
 describe("Doctor: el curado recibe el aviso (wiki: Doctor.md:225, 253)", () => {
   it("el objetivo atacado y curado recibe 'alguien te curó'", () => {
     const { events } = resolve(game(["godfather", "doctor", "investigator"]), [night("p1", "kill", "p3"), night("p2", "heal", "p3")]);
-    expect(notices(events)).toEqual([["p3", "healed"]]);
+    // El Doctor que curó recibe su aviso de atacado (Doctor.md:223).
+    expect(notices(events)).toEqual([["p3", "healed"], ["p2", "target_attacked"]]);
   });
 
   it("sin curación no hay aviso de curado", () => {
     const { events } = resolve(game(["godfather", "doctor", "investigator"]), [night("p1", "kill", "p3")]);
     expect(notices(events).some(([, n]) => n === "healed")).toBe(false);
+  });
+
+  it("el Doctor que cura con éxito a un atacado recibe su aviso, una sola vez", () => {
+    const { events } = resolve(game(["godfather", "doctor", "vigilante", "investigator"], { dayNumber: 2 }), [night("p1", "kill", "p4"), night("p2", "heal", "p4"), night("p3", "shoot", "p4")]);
+    expect(notices(events).filter(([, n]) => n === "target_attacked")).toEqual([["p2", "target_attacked"]]);
+    // Un aviso de curado por ataque (Doctor.md:253, 255): dos ataques, dos avisos al objetivo.
+    expect(notices(events).filter(([, n]) => n === "healed")).toEqual([["p4", "healed"], ["p4", "healed"]]);
+  });
+
+  it("sin ataque no hay aviso de atacado, aunque el Doctor cure a alguien", () => {
+    const { events } = resolve(game(["godfather", "doctor", "investigator"]), [night("p2", "heal", "p3")]);
+    expect(notices(events).some(([, n]) => n === "target_attacked")).toBe(false);
+  });
+
+  it("un ataque letal que el Doctor no evita no le avisa", () => {
+    const { events } = resolve(game(["godfather", "doctor", "investigator", "sheriff"]), [night("p1", "kill", "p3"), night("p2", "heal", "p4")]);
+    expect(notices(events).some(([, n]) => n === "target_attacked")).toBe(false);
+    expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).toEqual(["p3"]);
   });
 
   it("dos Doctors que curan al mismo objetivo dan un solo aviso", () => {

@@ -142,6 +142,16 @@ describe("registro estilo Town of Salem", () => {
     expect(text).toContain("El resultado de Caro no está definido en la tabla Classic.");
   });
 
+  it("el Doctor que curó a un atacado lee su aviso (wiki: Doctor.md:223)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "target_attacked" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Tu objetivo fue atacado anoche.");
+  });
+
   it("avisos de la noche por rol: curado, Jailor, Psíquica (wiki: Doctor, Jailor, Psychic)", () => {
     seq = 0;
     const text = texts(buildLog([
