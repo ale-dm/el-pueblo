@@ -229,7 +229,12 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         line(e, `Has falsificado el testamento de ${ctx.nick(p.playerId)}: parecerá que era ${roleName(p.role)}.`, "private");
         break;
       case "role.promoted":
-        line(e, p.playerId === ctx.meId ? "Eres el nuevo Mafioso: ya no queda nadie de la Mafia que mate." : `${ctx.nick(p.playerId)} se convierte en Mafioso.`, "danger");
+        if (p.roleKey === "godfather") {
+          // Wiki (Mafioso): si muere el Godfather y queda un Mafioso vivo, este pasa a Godfather.
+          line(e, p.playerId === ctx.meId ? "Eres el nuevo Godfather: ahora decides a quién mata la Mafia." : `${ctx.nick(p.playerId)} se convierte en Godfather.`, "danger");
+        } else {
+          line(e, p.playerId === ctx.meId ? "Eres el nuevo Mafioso: ya no queda nadie de la Mafia que mate." : `${ctx.nick(p.playerId)} se convierte en Mafioso.`, "danger");
+        }
         break;
       case "game.ended":
         flushMorning();

@@ -135,6 +135,13 @@ describe("registro estilo Town of Salem", () => {
     expect(text.indexOf("Recuerdas")).toBeGreaterThan(text.indexOf("== Día 2"));
   });
 
+  it("el ascenso a Godfather del Mafioso se cuenta como Godfather", () => {
+    seq = 0;
+    const text = texts(buildLog([ev("role.promoted", { playerId: "a", roleKey: "godfather", uses: {} }, "mafia")], ctx())).join(" | ");
+    expect(text).toContain("Eres el nuevo Godfather");
+    expect(text).not.toContain("Mafioso");
+  });
+
   it("el final de partida muestra el ganador", () => {
     seq = 0;
     const items = buildLog([ev("game.ended", { winner: "town" })], ctx());
