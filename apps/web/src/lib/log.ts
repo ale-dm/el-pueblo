@@ -132,6 +132,10 @@ const NOTICE_TEXT: Record<string, string> = {
   attack_jailed: "No pudiste atacar a tu objetivo porque estaba encarcelado.",
   // Wiki (Messages_ToS.md:1873; Crusader.md:216): "You were attacked but someone protected you!"
   crusader_protected: "Te atacaron, pero alguien te protegió.",
+  // Wiki (Messages_ToS.md:1861; Crusader.md:330): "You were attacked by a Crusader!"
+  crusader_attacked_you: "¡Te ha atacado un Cruzado!",
+  // Wiki (Messages_ToS.md:1869; Crusader.md:336): "You attacked someone visiting your target!"
+  crusader_attacked_visitor: "Atacaste a alguien que visitó a tu objetivo.",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */

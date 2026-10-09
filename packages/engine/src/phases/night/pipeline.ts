@@ -402,6 +402,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           for (const v of chosen) {
             attacks.push({ attackerId: e.actorId, victimId: v.visitorId, power: e.power, cause: e.cause });
           }
+          // Wiki (Crusader.md:336; Messages_ToS.md:1869): el Crusader que ataca a un visitante de su objetivo recibe
+          // "You attacked someone visiting your target!". Solo el Crusader (cause "crusade"); el Ambusher no lo recibe.
+          if (e.cause === "crusade" && chosen.length > 0) out.push({ type: "night.notice", payload: { playerId: routed(e.actorId), notice: "crusader_attacked_visitor" } });
           break;
         }
         case "mafiaKill":
@@ -824,6 +827,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         // Wiki (Spy.md:249): "Your target was killed protecting someone!"
         tagSpy(bodyguard.protectorId, "killed_guarding");
       }
+      // Wiki (Crusader.md:330): el visitante atacado por el Crusader que sobrevive recibe "You were attacked by a Crusader!".
+      if (atk.cause === "crusade") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "crusader_attacked_you" } });
       continue;
     }
     if (atk.power > defense) {
@@ -836,6 +841,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       if (atk.godfatherDirect) out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "godfather_target_defense" } });
       // Wiki (Messages_ToS.md:1873; Crusader.md:216): "You were attacked but someone protected you!" al protegido por un Crusader.
       if (strongest?.source === "crusader") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "crusader_protected" } });
+      // Wiki (Crusader.md:330): el visitante atacado por el Crusader que sobrevive recibe "You were attacked by a Crusader!".
+      if (atk.cause === "crusade") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "crusader_attacked_you" } });
       if (strongest?.source === "trap") {
         trapSpent.add(atk.victimId);
         // Wiki (Trapper.md:352): "You were attacked but a trap saved you!" al objetivo que la trampa protegió.

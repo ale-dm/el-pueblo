@@ -702,12 +702,16 @@ describe("Crusader: avisos en el registro (wiki: Crusader.md:216, 330, 336)", ()
     const text = texts(buildLog([
       ev("phase.started", { phase: "night", dayNumber: 2 }),
       ev("night.notice", { playerId: "a", notice: "crusader_protected" }, "private"),
+      ev("night.notice", { playerId: "a", notice: "crusader_attacked_you" }, "private"),
+      ev("night.notice", { playerId: "a", notice: "crusader_attacked_visitor" }, "private"),
       ev("night.notice", { playerId: "a", notice: "target_attacked" }, "private"),
       ev("phase.started", { phase: "discussion", dayNumber: 3 }),
     ], ctx()));
     const day = text.indexOf("== Día 3");
     expect(text.slice(day + 1)).toEqual([
       "Te atacaron, pero alguien te protegió.",
+      "¡Te ha atacado un Cruzado!",
+      "Atacaste a alguien que visitó a tu objetivo.",
       "Tu objetivo fue atacado anoche.",
     ]);
   });

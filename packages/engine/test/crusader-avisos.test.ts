@@ -64,3 +64,41 @@ describe("Crusader: aviso al protegido atacado (wiki: Crusader.md:216; Messages_
     expect(notices(events).some(([, n]) => n === "crusader_protected")).toBe(false);
   });
 });
+
+describe("Crusader: avisos a los visitantes (wiki: Crusader.md:330, 336; Messages_ToS.md:1861, 1869)", () => {
+  it("el visitante que sobrevive al ataque del Crusader recibe 'You were attacked by a Crusader!'", () => {
+    // p1 Godfather visita a p2 (Basic Defense: sobrevive al ataque Basic del Crusader). p3 Crusader protege a p2.
+    const { events, state } = resolve(game(["godfather", "investigator", "crusader"]), [night("p1", "kill", "p2"), night("p3", "protect", "p2")]);
+    expect(state.players[0]!.status).toBe("alive");
+    expect(notices(events)).toContainEqual(["p1", "crusader_attacked_you"]);
+  });
+
+  it("el visitante que muere a manos del Crusader no recibe el aviso de sobrevivir", () => {
+    // p1 Lookout visita a p2 (sin defensa): el Crusader le ataca y muere.
+    const { events, state } = resolve(game(["lookout", "investigator", "crusader"]), [night("p1", "watch", "p2"), night("p3", "protect", "p2")]);
+    expect(state.players[0]!.status).toBe("dead");
+    expect(notices(events).some(([, n]) => n === "crusader_attacked_you")).toBe(false);
+  });
+
+  it("el Crusader que ataca a un visitante recibe 'You attacked someone visiting your target!'", () => {
+    // p1 Lookout visita a p2; p3 Crusader protege a p2 y ataca a su visitante (p1).
+    const { events } = resolve(game(["lookout", "investigator", "crusader"]), [night("p1", "watch", "p2"), night("p3", "protect", "p2")]);
+    expect(notices(events)).toContainEqual(["p3", "crusader_attacked_visitor"]);
+  });
+
+  it("sin visitantes, el Crusader no recibe el aviso de ataque a visitante", () => {
+    const { events } = resolve(game(["investigator", "crusader", "godfather"]), [night("p2", "protect", "p1")]);
+    expect(notices(events).some(([, n]) => n === "crusader_attacked_visitor")).toBe(false);
+  });
+
+  it("el Ambusher que ataca a un visitante no hace que el Crusader reciba el aviso de visitante", () => {
+    // p1 Ambusher acecha a p3; p4 Lookout visita a p3 y el Ambusher le mata. p2 Crusader protege a p5, sin visitantes.
+    const { events } = resolve(game(["ambusher", "crusader", "investigator", "lookout", "sheriff"]), [
+      night("p1", "ambush", "p3"),
+      night("p4", "watch", "p3"),
+      night("p2", "protect", "p5"),
+    ]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toContainEqual(["p4", "ambush"]);
+    expect(notices(events).some(([, n]) => n === "crusader_attacked_visitor")).toBe(false);
+  });
+});
