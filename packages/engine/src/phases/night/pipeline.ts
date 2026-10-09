@@ -792,6 +792,12 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       if (swaps.some(([a, b]) => a === target || b === target)) tags.push("transport");
       if (marks.some((m) => m.flag === "blackmailed" && m.targetId === target)) tags.push("blackmail");
       tags.push(...(spyTags.get(target) ?? []));
+      // Wiki (Hypnotist.md:226; Spy.md:191): el Spy que espía a un objetivo ve el mensaje falso que le envió la Hypnotist.
+      const planted = hypnoses.find((h) => h.targetId === target && isAlive(playerOf(s, target)));
+      if (planted) {
+        const immune = planted.message === "roleblocked" && handlerOf(playerOf(s, target)!)?.roleblockImmune === true;
+        tags.push(`hypno_${immune ? "roleblock_immune" : planted.message}`);
+      }
     }
     out.push({
       type: "investigation.result",

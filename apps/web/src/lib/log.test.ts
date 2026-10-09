@@ -418,6 +418,16 @@ describe("espionaje del Spy: un mensaje por acción directa (wiki: Spy.md:221-30
     ]);
   });
 
+  it("mensaje falso de la Hypnotist que recibe el objetivo (wiki: Hypnotist.md:226; Spy.md:191)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "hypno_attacked", check: "bug" }, "private"),
+    ], ctx({ meId: "a" })));
+    expect(text).toEqual([
+      "Bea recibió este mensaje de la Hypnotist: «Te atacaron, pero alguien te curó.»",
+    ]);
+  });
+
   it("varias acciones contra el objetivo: una frase por cada una", () => {
     seq = 0;
     const text = texts(buildLog([

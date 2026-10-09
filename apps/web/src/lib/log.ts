@@ -188,7 +188,15 @@ export function bugText(result: string, target: string): string {
     attack: `${target} fue atacado.`,
     protect: `Alguien le protegió del ataque.`,
   };
-  return result.split(",").map((tag) => sentence[tag]).filter(Boolean).join(" ");
+  return result
+    .split(",")
+    .map((tag) => {
+      // Wiki (Hypnotist.md:226; Spy.md:191): el mensaje falso de la Hypnotist, tal como lo recibe el objetivo.
+      if (tag.startsWith("hypno_")) return `${target} recibió este mensaje de la Hypnotist: «${HYPNOSIS_TEXT[tag.slice(6)] ?? ""}»`;
+      return sentence[tag];
+    })
+    .filter(Boolean)
+    .join(" ");
 }
 
 /** Frase de un resultado de investigación (solo lo ve quien investigó). */
