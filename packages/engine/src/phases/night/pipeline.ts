@@ -359,7 +359,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const kill = (playerId: string, cause: string) => {
     if (dead.has(playerId)) return;
     dead.add(playerId);
-    const roleKey = cleaned.has(playerId) ? null : forged.get(playerId) ?? s.forgeries[playerId] ?? playerOf(s, playerId)?.roleKey ?? null;
+    // Wiki (Forger): la falsificación solo vale si la víctima muere esa misma noche.
+    const roleKey = cleaned.has(playerId) ? null : forged.get(playerId) ?? playerOf(s, playerId)?.roleKey ?? null;
     // Un limpiado no deja testamento visible (wiki: Janitor).
     const will = cleaned.has(playerId) ? null : s.wills[playerId] ?? null;
     out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will } });

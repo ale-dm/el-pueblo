@@ -63,6 +63,6 @@ export interface GameState {
   wills: Record<PlayerId, string>;
   /** Encarcelados de esta noche: prisionero → Jailor. Se vacía al final de la noche. */
   jailedBy: Record<PlayerId, PlayerId>;
-  /** Rol falsificado de cada jugador (Forger). Se muestra al morir o ser ahorcado. */
+  /** Rol falsificado de cada jugador esta noche (Forger). Se muestra si muere esta misma noche; se vacía al final de la noche. */
   forgeries: Record<PlayerId, string>;
 }

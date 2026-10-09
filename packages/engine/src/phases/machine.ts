@@ -62,8 +62,8 @@ function resolveJudgement(s: GameState): EventInput[] {
   const verdict = guilty > innocent ? "guilty" : "innocent";
   const events: EventInput[] = [{ type: "trial.verdict", payload: { defendantId: defendant.id, verdict } }];
   if (verdict === "guilty") {
-    // Un testamento falsificado muestra el rol que eligió el Forger.
-    const roleKey = s.forgeries[defendant.id] ?? defendant.roleKey;
+    // Un ahorcado muestra su rol real: la falsificación del Forger solo cuenta si muere esa misma noche (wiki: Forger).
+    const roleKey = defendant.roleKey;
     events.push({ type: "player.hanged", payload: { playerId: defendant.id, roleKey, will: s.wills[defendant.id] ?? null } });
     const deadAfter = new Set([...s.players.filter((p) => p.status !== "alive").map((p) => p.id), defendant.id]);
     events.push(...promotionEvents(s, deadAfter));

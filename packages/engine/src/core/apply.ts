@@ -129,6 +129,8 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
       return {
         ...s,
         nightActions: {},
+        // Las falsificaciones duran una noche (wiki: Forger).
+        forgeries: {},
         players: s.players.map((p) => ({ ...p, flags: without(without(p.flags, "alert"), "jailed") })),
         jailedBy: {},
       };

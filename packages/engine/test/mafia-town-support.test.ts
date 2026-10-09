@@ -83,6 +83,18 @@ describe("Forger: testamentos falsificados", () => {
     expect(state.players[0]!.usesLeft.forge).toBe(1);
   });
 
+  it("si el falsificado no muere esa noche, la falsificación caduca: ahorcado muestra su rol real", () => {
+    let s = game(["forger", "investigator", "godfather", "sheriff"], { phase: "night", dayNumber: 2 });
+    s = step(s, { type: "night.action", actorId: "p1", ability: "forge", targetId: "p2", secondTargetId: null, choice: "jailor" }).state;
+    s = step(s, timer()).state; // nadie ataca a p2: la noche termina sin muertos
+    // Día siguiente: p2 es juzgado y ahorcado.
+    s = { ...s, phase: "judgement", dayNumber: 3, defendantId: "p2" };
+    s = step(s, { type: "judgement.vote", voterId: "p3", verdict: "guilty" }).state;
+    s = step(s, { type: "judgement.vote", voterId: "p4", verdict: "guilty" }).state;
+    const hanged = ofType(step(s, timer()).events, "player.hanged");
+    expect(hanged.map((e) => e.payload.roleKey)).toEqual(["investigator"]);
+  });
+
   it("exige un rol válido", () => {
     const s = game(["forger", "investigator", "godfather", "sheriff"]);
     expect(rejected(s, { type: "night.action", actorId: "p1", ability: "forge", targetId: "p2", secondTargetId: null })).toMatch(/Elige una opción/);
