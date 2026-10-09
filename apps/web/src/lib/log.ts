@@ -128,6 +128,8 @@ const NOTICE_TEXT: Record<string, string> = {
   jailor_wait_day: "Debes esperar un día antes de ejecutar.",
   // Wiki (Jailor.md:294; Messages_ToS.md:1687): "You have slain a town member so you can't attack again."
   jailor_slain_town: "Has matado a un miembro del pueblo, así que no puedes volver a atacar.",
+  // Wiki (Messages_ToS.md:1731): "You could not attack your target because they were in jail." (Godfather.md:233; Mafioso.md:235)
+  attack_jailed: "No pudiste atacar a tu objetivo porque estaba encarcelado.",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */

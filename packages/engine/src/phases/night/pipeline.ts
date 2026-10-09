@@ -238,6 +238,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   // El visitante no produce efectos (paso 3 sigue registrando su visita). El Jailor ejecuta sin visitar a su
   // prisionero (ataque imparable) y el Transporter falla según su propia regla (wiki: Transporter.md:202).
   const jailedHouse = (id: string) => s.jailedBy[remap(id)] !== undefined;
+  // Órdenes de muerte de la Mafia sin filtrar: el filtro de abajo quita el ataque a un encarcelado, y el aviso de
+  // "You could not attack your target because they were in jail." lo necesita (ver después de la Mafia).
+  const mafiaOrdersBeforeJail = active.flatMap((a) => a.effects).filter((e): e is Extract<Effect, { kind: "mafiaKill" }> => e.kind === "mafiaKill");
   for (const act of active) {
     if (act.handler.key === "jailor" || act.handler.key === "transporter") continue;
     if (!visitedHouses(act).some(jailedHouse)) continue;
@@ -247,6 +250,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       if (e.kind !== "attack" && e.kind !== "mafiaKill") continue;
       const victim = remap(e.targetId);
       if (s.jailedBy[victim] !== undefined) out.push({ type: "night.notice", payload: { playerId: victim, notice: "attack_attempt" } });
+      // Wiki (Messages_ToS.md:1733): el asesino que ataca a un encarcelado. Vigilante.md:194 solo dice que el objetivo
+      // lo sabe; la línea 1733 es general ("a killing role"). La Mafia va abajo, con quien hace la muerte.
+      if (e.kind === "attack" && s.jailedBy[victim] !== undefined) out.push({ type: "night.notice", payload: { playerId: act.actor.id, notice: "attack_jailed" } });
     }
     // Wiki (Blackmailer.md:221, 395): no se puede silenciar a quien estuvo encarcelado esa noche; él lo sabe.
     act.effects = act.effects.filter((e) => {
@@ -276,6 +282,14 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   if (godOrder && mafiosoExecutes && mafiosoPlayer) mafiaExecutor = { attackerId: mafiosoPlayer.id, victimId: godOrder.targetId };
   else if (godOrder) mafiaExecutor = { attackerId: godOrder.actorId, victimId: godOrder.targetId };
   else if (ownKill) mafiaExecutor = { attackerId: ownKill.actorId, victimId: ownKill.targetId };
+  // Wiki (Messages_ToS.md:1731, 1733; Godfather.md:233; Mafioso.md:235): quien hace la muerte y ataca a un encarcelado
+  // recibe "You could not attack your target because they were in jail." Si el Mafioso ejecuta la orden, lo recibe él;
+  // el Godfather no (Godfather.md:233). Sin Mafioso que ejecute, lo recibe el Godfather.
+  const mafiaOrder = mafiaOrdersBeforeJail.find((e) => e.role === "godfather") ?? mafiaOrdersBeforeJail.find((e) => e.role === "mafioso");
+  if (mafiaOrder && s.jailedBy[remap(mafiaOrder.targetId)] !== undefined) {
+    const killerId = mafiaOrder.role === "godfather" && mafiosoPlayer && !blockedIds.has(mafiosoPlayer.id) ? mafiosoPlayer.id : mafiaOrder.actorId;
+    out.push({ type: "night.notice", payload: { playerId: killerId, notice: "attack_jailed" } });
+  }
 
   // Zombis de esta noche (Retributionist): zombi → Retributionist que lo alzó. Wiki (Retributionist.md:203): el
   // Retributionist recibe los resultados que daría el cadáver; y el zombi protege y contraataca (Retributionist.md:388).

@@ -606,6 +606,14 @@ describe("mensajes del Jailor (wiki: Jailor.md:550, 558, 562, 566)", () => {
     ], ctx({ meId: "b" })));
     expect(items).toEqual(["Has matado a un miembro del pueblo, así que no puedes volver a atacar."]);
   });
+
+  it("quien ataca a un encarcelado lee \"You could not attack your target because they were in jail.\" (Messages_ToS.md:1731)", () => {
+    seq = 0;
+    const items = texts(buildLog([
+      ev("night.notice", { playerId: "b", notice: "attack_jailed" }, "private"),
+    ], ctx({ meId: "b" })));
+    expect(items).toEqual(["No pudiste atacar a tu objetivo porque estaba encarcelado."]);
+  });
 });
 
 describe("aviso del prisionero (wiki: Jailor.md:558, 560)", () => {
