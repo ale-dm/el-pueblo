@@ -52,9 +52,11 @@ export interface MatchView {
     nightAction: { ability: string; targetId: string | null } | null;
     /** Tu última voluntad. */
     will: string | null;
+    /** Grupo del rol (p. ej. town_support). */
+    alignment: string | null;
     nightAbilities: Array<{ key: string; target: "player" | "none" | "two"; usesLeft: number | null }>;
     dayAbilities: Array<{ key: string; target: "player" | "none"; oncePerDay: boolean; usesLeft: number | null }>;
   };
 }
 
-export type Channel = "public" | "mafia" | "dead";
+export type Channel = "public" | "mafia" | "dead" | "whisper";

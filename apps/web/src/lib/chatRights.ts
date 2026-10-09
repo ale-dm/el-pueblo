@@ -1,5 +1,9 @@
 import type { Channel, MatchView } from "../types.js";
 
+/** Susurros: de día, entre vivos, si no estás silenciado. Refleja rules/chat.ts. */
+const canWhisper = (view: MatchView) =>
+  view.me.status === "alive" && !view.me.flags.blackmailed && view.players.some((p) => p.status === "alive" && p.id !== view.me.id);
+
 /** Canales donde puede escribir ahora y, si ninguno, por qué. Refleja las reglas del motor (rules/chat.ts). */
 export function chatRights(view: MatchView): { channels: Channel[]; notice: string | null } {
   const me = view.me;
@@ -14,5 +18,5 @@ export function chatRights(view: MatchView): { channels: Channel[]; notice: stri
   if ((view.phase === "defense" || view.phase === "last_words") && view.defendantId !== me.id) {
     return { channels: [], notice: "Solo habla el acusado." };
   }
-  return { channels: ["public"], notice: null };
+  return { channels: canWhisper(view) ? ["public", "whisper"] : ["public"], notice: null };
 }

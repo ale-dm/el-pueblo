@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { MatchView } from "../types.js";
-import { ROLE_BLURB, roleNameEs } from "../lib/roles.js";
+import { ROLE_BLURB, alignmentLabel, roleNameEs } from "../lib/roles.js";
 import { Button, Card, Pill } from "../ui/primitives.js";
 
 const FLAG_TEXT: Record<string, string> = {
@@ -41,6 +41,7 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
             ✝ Has muerto
           </p>
         )}
+        {alignmentLabel(me.alignment) && <p className="mt-1 text-sm font-semibold">Alineamiento: {alignmentLabel(me.alignment)}</p>}
         {me.roleKey && ROLE_BLURB[me.roleKey] && <p className="mt-2 text-base">{ROLE_BLURB[me.roleKey]}</p>}
         {Object.keys(me.flags).filter((f) => FLAG_TEXT[f]).map((f) => (
           <p key={f} className="mt-2 font-semibold text-blood">{FLAG_TEXT[f]}</p>

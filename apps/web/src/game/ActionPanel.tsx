@@ -23,7 +23,12 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
 
   if (view.phase === "ended") return null;
   if (me.status !== "alive") {
-    return <Card><p>Estás muerto. Puedes seguir la partida y hablar en Ultratumba.</p></Card>;
+    return (
+      <Card>
+        <h3 className="mb-1 font-display text-xl">Eres un fantasma</h3>
+        <p className="text-sm">Ves la partida y puedes hablar en Ultratumba. Ya no votas ni actúas.</p>
+      </Card>
+    );
   }
 
   const actions: ReactElement[] = [];

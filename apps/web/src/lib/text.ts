@@ -13,7 +13,7 @@ export const PHASE_LABEL: Record<Phase, string> = {
 
 export const isNight = (phase: Phase) => phase === "night";
 
-export const CHANNEL_LABEL = { public: "Plaza", mafia: "Mafia", dead: "Ultratumba" } as const;
+export const CHANNEL_LABEL = { public: "Plaza", mafia: "Mafia", dead: "Ultratumba", whisper: "Susurro" } as const;
 
 const ABILITY_LABEL: Record<string, string> = {
   kill: "Atacar", ambush: "Emboscar", blackmail: "Chantajear", distract: "Distraer", check: "Consultar",

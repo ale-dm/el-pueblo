@@ -55,6 +55,8 @@ export interface MatchView {
     nightAction: { ability: string; targetId: string | null } | null;
     /** Tu última voluntad (solo tú la ves mientras vives). */
     will: string | null;
+    /** Grupo del rol (alineamiento del catálogo, p. ej. town_support). */
+    alignment: string | null;
     /** Habilidades disponibles ahora mismo (con usos restantes). */
     nightAbilities: Array<{ key: string; target: string; usesLeft: number | null }>;
     dayAbilities: Array<{ key: string; target: string; oncePerDay: boolean; usesLeft: number | null }>;
@@ -137,6 +139,7 @@ export function getView(deps: GetViewDeps) {
         flags: { ...me.flags },
         nightAction: state.nightActions[me.id] ?? null,
         will: state.wills[me.id] ?? null,
+        alignment: me.roleKey ? catalog.roles.get(me.roleKey)?.alignmentKey ?? null : null,
         nightAbilities: alive && handler
           ? handler.nightAbilities.map((a) => ({ key: a.key, target: a.target, usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0 }))
           : [],

@@ -15,5 +15,5 @@ export type Command =
     }
   | { type: "night.action.cancel"; actorId: PlayerId }
   | { type: "will.write"; playerId: PlayerId; text: string }
-  | { type: "chat.send"; senderId: PlayerId; channel: "public" | "mafia" | "dead"; text: string }
+  | { type: "chat.send"; senderId: PlayerId; channel: "public" | "mafia" | "dead" | "whisper"; text: string; recipientId?: PlayerId }
   | { type: "timer.expired" };

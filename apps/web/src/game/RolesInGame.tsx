@@ -1,5 +1,5 @@
 import type { MatchView } from "../types.js";
-import { ALIGNMENT_ES, ALIGNMENT_ORDER, ROLE_NAMES } from "../lib/roles.js";
+import { ALIGNMENT_ES, ALIGNMENT_ORDER, ROLE_NAMES, alignmentLabel } from "../lib/roles.js";
 import { Card, Pill } from "../ui/primitives.js";
 
 /** Roles de la partida agrupados por bando y tipo, como la lista de roles de ToS. */
@@ -17,7 +17,7 @@ export function RolesInGame({ roles }: { roles: MatchView["rolesInGame"] }) {
       <div className="space-y-3">
         {groups.map((g) => (
           <div key={g.alignment}>
-            <p className="text-sm font-semibold">{ALIGNMENT_ES[g.alignment]!.faction} · {ALIGNMENT_ES[g.alignment]!.name}</p>
+            <p className="text-sm font-semibold">{alignmentLabel(g.alignment)}</p>
             <div className="mt-1 flex flex-wrap gap-2">
               {g.counts.map(([key, n]) => (
                 <Pill key={key} className={ALIGNMENT_ES[g.alignment]!.faction === "Mafia" ? "bg-mafia text-paper" : ""}>

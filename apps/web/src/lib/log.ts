@@ -1,6 +1,6 @@
 import type { GameEvent, Phase } from "../types.js";
 import { abilityLabel } from "./text.js";
-import { roleNameEs, roleNameFromEnglish } from "./roles.js";
+import { alignmentLabel, roleNameEs, roleNameFromEnglish } from "./roles.js";
 
 /**
  * Registro de la partida, como en Town of Salem: separadores "Día N" / "Noche N", lo que pasó
@@ -42,11 +42,9 @@ const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const
 /** Eventos de la noche que se cuentan al amanecer, no en el momento. */
 const MORNING = new Set(["player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed"]);
 
+/** Grupo que revela el Investigador: "Pueblo (Apoyo)", "Mafia (Engaño)"… */
 function alignmentEs(key: string): string {
-  if (key.includes("mafia")) return key.includes("deception") ? "Mafia (disfrazado)" : "Mafia";
-  if (key.includes("town")) return "Pueblo";
-  if (key === "unknown") return "desconocido";
-  return key.replace(/_/g, " ");
+  return alignmentLabel(key) ?? (key === "unknown" ? "desconocido" : key.replace(/_/g, " "));
 }
 
 /** Frase de un resultado de investigación (solo lo ve quien investigó). */

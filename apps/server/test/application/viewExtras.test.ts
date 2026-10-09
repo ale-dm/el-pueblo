@@ -51,3 +51,14 @@ describe("vista: cuenta atrás, roles y compañeros", () => {
     expect(townView.players.some((p) => p.ally)).toBe(false);
   });
 });
+
+describe("vista: alineamiento propio", () => {
+  it("cada jugador ve el grupo de su rol", async () => {
+    const app = createTestApp();
+    const host = await app.services.createRoom({ nick: "P1" });
+    for (let i = 2; i <= 10; i++) await app.services.joinRoom({ roomCode: host.roomCode, nick: `P${i}` });
+    await app.services.startMatch({ matchId: host.matchId, token: host.token });
+    const view = await app.services.getView({ matchId: host.matchId, token: host.token });
+    expect(view.me.alignment).toMatch(/^(town|mafia)_/);
+  });
+});

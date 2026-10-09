@@ -6,13 +6,14 @@ import type { MatchView } from "../types.js";
 const view = (over: { phase?: MatchView["phase"]; status?: string; faction?: "town" | "mafia"; flags?: Record<string, boolean>; defendantId?: string | null }): MatchView =>
   ({
     phase: over.phase ?? "discussion",
+    players: [{ id: "a", status: over.status ?? "alive" }, { id: "b", status: "alive" }],
     defendantId: over.defendantId ?? null,
     me: { id: "a", status: over.status ?? "alive", faction: over.faction ?? "town", flags: over.flags ?? {} },
   }) as unknown as MatchView;
 
 describe("quién puede escribir y por qué", () => {
   it("de día, los vivos hablan en la plaza", () => {
-    expect(chatRights(view({ phase: "discussion" }))).toEqual({ channels: ["public"], notice: null });
+    expect(chatRights(view({ phase: "discussion" }))).toEqual({ channels: ["public", "whisper"], notice: null });
   });
 
   it("de noche solo habla la Mafia, y el resto recibe el aviso", () => {
@@ -21,7 +22,7 @@ describe("quién puede escribir y por qué", () => {
   });
 
   it("en defensa y últimas palabras solo habla el acusado", () => {
-    expect(chatRights(view({ phase: "defense", defendantId: "a" })).channels).toEqual(["public"]);
+    expect(chatRights(view({ phase: "defense", defendantId: "a" })).channels).toEqual(["public", "whisper"]);
     expect(chatRights(view({ phase: "defense", defendantId: "b" })).notice).toBe("Solo habla el acusado.");
     expect(chatRights(view({ phase: "last_words", defendantId: "b" })).notice).toBe("Solo habla el acusado.");
   });

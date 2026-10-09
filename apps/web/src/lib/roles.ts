@@ -88,3 +88,9 @@ export const ALIGNMENT_ES: Record<string, { faction: string; name: string }> = {
 
 /** Orden de los grupos en la lista: primero el pueblo, después la Mafia. */
 export const ALIGNMENT_ORDER = Object.keys(ALIGNMENT_ES);
+
+/** Cómo se escribe un alineamiento, como en ToS: "Pueblo (Apoyo)", "Mafia (Engaño)". Null si no se conoce. */
+export function alignmentLabel(key: string | null | undefined): string | null {
+  const a = key ? ALIGNMENT_ES[key] : undefined;
+  return a ? `${a.faction} (${a.name})` : null;
+}

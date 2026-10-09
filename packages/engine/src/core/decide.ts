@@ -54,8 +54,15 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
       if (text.length === 0 || text.length > MAX_CHAT_LENGTH) {
         return err("invalid_command", `El mensaje debe tener entre 1 y ${MAX_CHAT_LENGTH} caracteres`);
       }
-      const denied = chatDenied(state, command.senderId, command.channel);
+      const denied = chatDenied(state, command.senderId, command.channel, command.recipientId);
       if (denied) return err("invalid_command", denied);
+      if (command.channel === "whisper") {
+        const recipientId = command.recipientId!;
+        return ok([
+          { type: "chat.message", payload: { channel: "whisper", senderId: command.senderId, text, recipientId, audienceId: recipientId } },
+          { type: "chat.message", payload: { channel: "whisper", senderId: command.senderId, text, recipientId, audienceId: command.senderId } },
+        ]);
+      }
       return ok([{ type: "chat.message", payload: { channel: command.channel, senderId: command.senderId, text } }]);
     }
     case "timer.expired":

@@ -21,11 +21,13 @@ interface Props {
   secondsLeft: number | null;
   /** Qué está pasando ahora, en una frase. */
   subtitle: string;
+  muted?: boolean;
+  onToggleMute?: () => void;
   className?: string;
 }
 
 /** Barra superior: día, juicios que quedan, reloj y la pregunta de la fase. */
-export function TopBar({ view, trialsLeft, secondsLeft, subtitle, className = "" }: Props) {
+export function TopBar({ view, trialsLeft, secondsLeft, subtitle, muted = false, onToggleMute, className = "" }: Props) {
   const night = view.phase === "night";
   return (
     <header className={`flex flex-col items-center gap-1 text-center ${className}`}>
@@ -34,6 +36,11 @@ export function TopBar({ view, trialsLeft, secondsLeft, subtitle, className = ""
         <Pill className="bg-paper">⚖ {trialsLeft}</Pill>
         {secondsLeft !== null && <Pill className="tabular-nums bg-paper">⏱ {formatClock(secondsLeft)}</Pill>}
         <Pill className="bg-paper">{night ? "🌙 Noche" : "☀️ Día"}</Pill>
+        {onToggleMute && (
+          <button type="button" onClick={onToggleMute} aria-pressed={muted} aria-label={muted ? "Activar sonidos" : "Silenciar sonidos"} className="cartoon-btn px-2 py-0 text-sm">
+            {muted ? "🔇" : "🔊"}
+          </button>
+        )}
       </div>
       <h1 className="short-title font-display text-3xl drop-shadow-[3px_3px_0_var(--color-ink)] md:text-4xl">{PHASE_PROMPT[view.phase]}</h1>
       <p className="short-hide text-sm font-semibold">{subtitle}</p>
