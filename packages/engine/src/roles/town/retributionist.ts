@@ -5,11 +5,21 @@ import { ROLE_HANDLERS } from "../registry.js";
 import { handlerOf } from "../../phases/context.js";
 
 // Retributionist · Town · prioridad 1 · ficha: docs/roles/Retributionist.md
-/** Habilidad que usa el zombi (Town muerto) sobre su segundo objetivo: una de objetivo único y sin usos limitados. */
-export const zombieAbilityOf = (zombie: PlayerState | undefined): NightAbility | undefined => {
-  const zombieHandler = zombie ? handlerOf(zombie) : undefined;
-  return zombieHandler?.nightAbilities.find((a) => a.target === "player" && a.usesLimit === null);
-};
+/**
+ * Habilidad de objetivo único del zombi (Town muerto), tenga o no usos. El zombi visita a su segundo objetivo aunque no
+ * le quede ninguna bala: "Vigilante (without bullets)... You can use it to prove yourself as the Retributionist to a Lookout
+ * or Tracker." (wiki: Retributionist.md:302-304).
+ */
+export const zombieVisitAbilityOf = (zombie: PlayerState | undefined): NightAbility | undefined =>
+  zombie ? handlerOf(zombie)?.nightAbilities.find((a) => a.target === "player") : undefined;
+
+/**
+ * Habilidad que el zombi usa sobre su segundo objetivo: de objetivo único y con usos sin gastar. Los usos son los del zombi,
+ * no los del Retributionist: el Vigilante zombi dispara con sus balas restantes, y sin ellas no hace nada (wiki:
+ * Retributionist.md:294-308, "Will shoot the target" / "No effect.").
+ */
+export const zombieAbilityOf = (zombie: PlayerState | undefined): NightAbility | undefined =>
+  zombie ? handlerOf(zombie)?.nightAbilities.find((a) => a.target === "player" && (a.usesLimit === null || (zombie.usesLeft[a.key] ?? 0) > 0)) : undefined;
 
 /**
  * Wiki (Forger.md:232): el Retributionist no usa un cadáver falsificado con un rol que no sea Town visitante, aunque el
@@ -46,10 +56,13 @@ export const handler: RoleHandler = {
     const { ability, actor, targetId, secondTargetId, state } = ctx;
     if (ability !== "raise" || !targetId || !secondTargetId) return [];
     const zombie = state.players.find((p) => p.id === targetId);
+    if (!zombie || !zombieVisitAbilityOf(zombie)) return [];
+    // El zombi actúa con su propio efecto, dirigido al segundo objetivo, si le quedan usos. Se usa una vez y se pudre
+    // (wiki: Retributionist.md:155), tenga o no balas: se marca como usado en cualquier caso.
     const zombieAbility = zombieAbilityOf(zombie);
-    if (!zombie || !zombieAbility) return [];
-    // El zombi actúa con su propio efecto, dirigido al segundo objetivo; después se marca como usado.
-    const effects = handlerOf(zombie)!.resolveNight({ ...ctx, actor: zombie, ability: zombieAbility.key, targetId: secondTargetId, secondTargetId: null, choice: null });
+    const effects = zombieAbility
+      ? handlerOf(zombie)!.resolveNight({ ...ctx, actor: zombie, ability: zombieAbility.key, targetId: secondTargetId, secondTargetId: null, choice: null })
+      : [];
     return [...effects, { kind: "mark", actorId: actor.id, targetId: zombie.id, flag: "zombied" }];
   },
 };

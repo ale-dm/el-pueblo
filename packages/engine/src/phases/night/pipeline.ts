@@ -6,7 +6,7 @@ import type { Effect } from "../../roles/effects.js";
 import type { RoleHandler } from "../../roles/types.js";
 import { handlerOf, isAlive, playerOf } from "../context.js";
 import { promotionEvents } from "../promotion.js";
-import { zombieAbilityOf } from "../../roles/town/retributionist.js";
+import { zombieVisitAbilityOf } from "../../roles/town/retributionist.js";
 import { INVESTIGATIVE_ROLE_KEYS, investigatorGroupOf } from "../../rules/investigation.js";
 
 /**
@@ -345,7 +345,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       if (act.targetId && act.secondTargetId) {
         visits.push({ visitorId: act.actor.id, houseId: act.targetId });
         const zombie = playerOf(s, act.targetId);
-        if (zombie && zombieAbilityOf(zombie)) visits.push({ visitorId: zombie.id, houseId: remap(act.secondTargetId) });
+        if (zombie && zombieVisitAbilityOf(zombie)) visits.push({ visitorId: zombie.id, houseId: remap(act.secondTargetId) });
       }
       continue;
     }
