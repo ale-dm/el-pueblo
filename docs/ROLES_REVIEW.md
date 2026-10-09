@@ -34,7 +34,7 @@ Contrastado con las fichas de `docs/roles/` (wiki de Town of Salem 1). Estados:
 
 | Rol | Estado | Nota |
 |---|---|---|
-| Ambusher | OK | Ataca a los visitantes de su objetivo |
+| Ambusher | Parcial | Ataca a un visitante al azar, nunca a la Mafia. Falta el ascenso a Mafioso cuando mueren los otros asesinos: promotion.ts trata al Ambusher como asesino y nunca le asciende. La wiki no se contradice: Ambusher.md:43, 49, 114, 168 y 228 dicen lo mismo (la nota de "Mafia Killing" en 12-16 no lo contradice). Pendiente en otro lote. |
 | Blackmailer | OK | Silencia al objetivo de día |
 | Bootlegger | OK | Bloquea una acción |
 | Consigliere | OK | Revela el rol del objetivo |
