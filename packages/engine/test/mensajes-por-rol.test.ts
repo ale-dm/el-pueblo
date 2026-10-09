@@ -314,6 +314,29 @@ describe("Jailor: avisos de encarcelado (wiki: Jailor.md:550, 562, 566)", () => 
   });
 });
 
+describe("Jailor que ya mató a un Town (wiki: Jailor.md:294; Messages_ToS.md:1687-1689)", () => {
+  const sent = (events: ReturnType<typeof step>["events"]) =>
+    ofType(events, "night.notice").map((e) => [e.payload.playerId, e.payload.notice, e.payload.subjectId ?? null]);
+  // p1 Jailor encarceló a p3 (Town); p2 Godfather; p3 Investigator. Llega la noche.
+  const jailedNight = (noExecute: boolean): GameState => {
+    const base = game(["jailor", "godfather", "investigator"], { phase: "voting", dayNumber: 2, jailedBy: { p3: "p1" } });
+    return noExecute ? { ...base, players: base.players.map((p) => (p.id === "p1" ? { ...p, flags: { ...p.flags, noExecute: true } } : p)) } : base;
+  };
+
+  it("\"You have slain a town member so you can't attack again.\" llega al Jailor cada vez que encarcela, tras matar a un Town", () => {
+    const { events } = step(jailedNight(true), timer());
+    expect(sent(events)).toContainEqual(["p1", "jailor_slain_town", null]);
+    const notice = ofType(events, "night.notice").find((e) => e.payload.notice === "jailor_slain_town");
+    expect(notice?.visibility).toBe("private");
+    expect(notice?.audiencePlayerId).toBe("p1");
+  });
+
+  it("sin haber matado a un Town, el Jailor no recibe el aviso", () => {
+    const { events } = step(jailedNight(false), timer());
+    expect(sent(events).filter(([, notice]) => notice === "jailor_slain_town")).toEqual([]);
+  });
+});
+
 describe("Jailor: el prisionero se entera al empezar la noche (wiki: Jailor.md:558, 560)", () => {
   it("\"You were hauled off to jail!\" llega al empezar la noche, no cuando el Jailor le encarcela de día", () => {
     const s = game(["jailor", "godfather", "investigator"], { phase: "discussion", dayNumber: 2 });

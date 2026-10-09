@@ -126,6 +126,8 @@ const NOTICE_TEXT: Record<string, string> = {
   jailor_dragged: "Has arrastrado a tu objetivo a la cárcel.",
   // Wiki (Jailor.md:550): "You must wait a day before executing."
   jailor_wait_day: "Debes esperar un día antes de ejecutar.",
+  // Wiki (Jailor.md:294; Messages_ToS.md:1687): "You have slain a town member so you can't attack again."
+  jailor_slain_town: "Has matado a un miembro del pueblo, así que no puedes volver a atacar.",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */

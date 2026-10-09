@@ -30,6 +30,8 @@ function nightStart(s: GameState): EventInput[] {
  * jail!" al empezar la noche (Jailor.md:558, 560), no al ser encarcelado de día. El Jailor sabe a quién arrastró.
  * La Mafia y el Coven vivos ven "(Player) was hauled off to jail" por cada encarcelado (Jailor.md:566: cuando es de
  * los suyos y cuando el Jailor encarcela a alguien).
+ * Si el Jailor ya mató a un Town, cada vez que encarcela recibe "You have slain a town member so you can't attack
+ * again." (Jailor.md:294; Messages_ToS.md:1687-1689, "Displays for the Jailor if they executed a Townie.").
  */
 function jailNotices(s: GameState): EventInput[] {
   const prisoners = Object.entries(s.jailedBy).filter(([prisonerId]) => isAlive(playerOf(s, prisonerId)));
@@ -37,6 +39,9 @@ function jailNotices(s: GameState): EventInput[] {
   for (const [prisonerId, jailorId] of prisoners) {
     out.push({ type: "night.notice", payload: { playerId: prisonerId, notice: "jailed" } });
     if (isAlive(playerOf(s, jailorId))) out.push({ type: "night.notice", payload: { playerId: jailorId, notice: "jailor_dragged", subjectId: prisonerId } });
+    if (isAlive(playerOf(s, jailorId)) && playerOf(s, jailorId)?.flags.noExecute === true) {
+      out.push({ type: "night.notice", payload: { playerId: jailorId, notice: "jailor_slain_town" } });
+    }
     for (const m of s.players) {
       if (isAlive(m) && (m.faction === "mafia" || m.faction === "coven")) {
         out.push({ type: "night.notice", payload: { playerId: m.id, notice: "team_jailed", subjectId: prisonerId } });

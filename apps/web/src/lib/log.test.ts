@@ -598,6 +598,14 @@ describe("mensajes del Jailor (wiki: Jailor.md:550, 558, 562, 566)", () => {
     ], ctx({ meId: "a" })));
     expect(items).toEqual(["Caro fue arrastrado a la cárcel.", "Has arrastrado a tu objetivo a la cárcel.", "Debes esperar un día antes de ejecutar."]);
   });
+
+  it("tras matar a un Town, el Jailor lee \"You have slain a town member so you can't attack again.\" (Jailor.md:294; Messages_ToS.md:1687)", () => {
+    seq = 0;
+    const items = texts(buildLog([
+      ev("night.notice", { playerId: "b", notice: "jailor_slain_town" }, "private"),
+    ], ctx({ meId: "b" })));
+    expect(items).toEqual(["Has matado a un miembro del pueblo, así que no puedes volver a atacar."]);
+  });
 });
 
 describe("aviso del prisionero (wiki: Jailor.md:558, 560)", () => {
