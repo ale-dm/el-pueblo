@@ -152,9 +152,39 @@ export function groupText(result: string, target: string): string {
 export function bugText(result: string, target: string): string {
   if (result === "nada") return `${target} no recibió nada esta noche.`;
   const sentence: Record<string, string> = {
+    // Wiki (Spy.md:221-309): cada frase es el mensaje de la tabla del Spy, en español.
     jail: `${target} estaba encarcelado: no pudiste espiarle.`,
+    // Spy.md:225: "Your target was Transported to another location."
     transport: `${target} fue transportado a otra casa.`,
-    block: `${target} fue bloqueado: su acción no tuvo efecto.`,
+    // Spy.md:227: "Someone occupied your target's night. They were role blocked!"
+    block: `Alguien ocupó la noche de ${target}: fue bloqueado.`,
+    // Spy.md:229: "Someone threatened to reveal your target's secrets. They were blackmailed!"
+    blackmail: `Alguien amenazó con revelar los secretos de ${target}: fue chantajeado.`,
+    // Spy.md:263: "Someone tried to role block your target but they were immune!"
+    block_immune: `Alguien intentó bloquear a ${target}, pero era inmune.`,
+    // Spy.md:239: "Your target was attacked by a member of the Mafia!"
+    attack_mafia: `${target} fue atacado por un miembro de la Mafia.`,
+    // Spy.md:243: "Your target was shot by a Vigilante!"
+    attack_shot: `${target} fue disparado por un Vigilante.`,
+    // Spy.md:247: "Your target was shot by the Veteran they visited!"
+    attack_veteran: `${target} fue disparado por el Veterano al que visitó.`,
+    // Spy.md:237: "Your target was attacked but someone nursed them back to health!"
+    attack_healed: `${target} fue atacado, pero alguien le curó.`,
+    // Spy.md:235: "Your target was attacked but someone fought off their attacker!"
+    attack_fought_off: `${target} fue atacado, pero alguien repelió al atacante.`,
+    // Spy.md:271: "Your target was attacked but their bulletproof vest saved them!"
+    attack_vest: `${target} fue atacado, pero su chaleco antibalas le salvó.`,
+    // Spy.md:273: "Someone tried to attack your alert target and failed!"
+    attack_alert: `Alguien intentó atacar a ${target}, que estaba en alerta, y falló.`,
+    // Spy.md:261: "Someone attacked your target but their Defense was too strong!"
+    attack_defense: `Alguien atacó a ${target}, pero su defensa era demasiado fuerte.`,
+    // Spy.md:259: "Your target was killed by a Bodyguard!"
+    killed_by_bodyguard: `Un Guardaespaldas mató a ${target}.`,
+    // Spy.md:249: "Your target was killed protecting someone!"
+    killed_guarding: `${target} murió protegiendo a alguien.`,
+    // Spy.md:275: "Your target shot themselves over the guilt of killing a town member!"
+    killed_guilt: `${target} se disparó por la culpa de matar a un miembro del pueblo.`,
+    // Claves anteriores al lote 9, de partidas guardadas: se leen con su frase antigua.
     attack: `${target} fue atacado.`,
     protect: `Alguien le protegió del ataque.`,
   };

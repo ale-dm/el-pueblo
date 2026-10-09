@@ -379,6 +379,56 @@ describe("espionaje del Spy", () => {
   });
 });
 
+describe("espionaje del Spy: un mensaje por acción directa (wiki: Spy.md:221-309)", () => {
+  it("cada clave muestra su frase de la tabla del Spy", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "transport", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "block", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "blackmail", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "block_immune", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack_mafia", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack_shot", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack_veteran", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack_healed", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack_fought_off", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack_vest", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack_alert", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "attack_defense", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "killed_by_bodyguard", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "killed_guarding", check: "bug" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "killed_guilt", check: "bug" }, "private"),
+    ], ctx({ meId: "a" })));
+    expect(text).toEqual([
+      "Bea fue transportado a otra casa.",
+      "Alguien ocupó la noche de Bea: fue bloqueado.",
+      "Alguien amenazó con revelar los secretos de Bea: fue chantajeado.",
+      "Alguien intentó bloquear a Bea, pero era inmune.",
+      "Bea fue atacado por un miembro de la Mafia.",
+      "Bea fue disparado por un Vigilante.",
+      "Bea fue disparado por el Veterano al que visitó.",
+      "Bea fue atacado, pero alguien le curó.",
+      "Bea fue atacado, pero alguien repelió al atacante.",
+      "Bea fue atacado, pero su chaleco antibalas le salvó.",
+      "Alguien intentó atacar a Bea, que estaba en alerta, y falló.",
+      "Alguien atacó a Bea, pero su defensa era demasiado fuerte.",
+      "Un Guardaespaldas mató a Bea.",
+      "Bea murió protegiendo a alguien.",
+      "Bea se disparó por la culpa de matar a un miembro del pueblo.",
+    ]);
+  });
+
+  it("varias acciones contra el objetivo: una frase por cada una", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "block,attack_healed", check: "bug" }, "private"),
+    ], ctx({ meId: "a" })));
+    expect(text).toEqual([
+      "Alguien ocupó la noche de Bea: fue bloqueado. Bea fue atacado, pero alguien le curó.",
+    ]);
+  });
+});
+
 describe("mensajes del Hypnotist", () => {
   it("el bloqueo a un inmune lleva el texto de inmunidad (wiki: Hypnotist)", () => {
     seq = 0;

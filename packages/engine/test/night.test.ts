@@ -502,7 +502,8 @@ describe("noche: el Spy espía a su objetivo (wiki: Spy)", () => {
     // p1 Spy espía a p3. p2 Godfather ataca a p3 y p4 Doctor lo cura: el ataque no le alcanza.
     const s = game(["spy", "godfather", "investigator", "doctor"]);
     const { events } = resolve(s, [night("p1", "bug", "p3"), night("p2", "kill", "p3"), night("p4", "heal", "p3")]);
-    expect(spyResults(events)).toEqual([["p1", "attack,protect"]]);
+    // Wiki (Spy.md:237): "Your target was attacked but someone nursed them back to health!" (una sola frase, la de la curación).
+    expect(spyResults(events)).toEqual([["p1", "attack_healed"]]);
   });
 
   it("el Transporter cambia el objetivo del Spy: recibe la información de la otra casa", () => {

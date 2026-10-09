@@ -103,6 +103,14 @@ const remapEffect = (e: Effect, remap: (id: string) => string): Effect => {
   }
 };
 
+/** Mensaje del espionaje por causa de muerte de un ataque directo (wiki: Spy.md:239, 243, 247, 275). */
+const SPY_KILL_TAG: Record<string, string> = {
+  mafia: "attack_mafia",
+  shot: "attack_shot",
+  veteran: "attack_veteran",
+  guilt: "killed_guilt",
+};
+
 export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInput[] {
   const out: EventInput[] = [];
 
@@ -184,6 +192,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
   }
 
+  /** Lo que el espionaje (Spy) ve de cada jugador esta noche, con las claves de `SPY_TAG` (wiki: Spy.md:221-309). */
+  const spyTags = new Map<string, string[]>();
+  const tagSpy = (playerId: string, tag: string) => spyTags.set(playerId, [...(spyTags.get(playerId) ?? []), tag]);
+
   // 2. Bloqueos: solo bloqueadores activos, en orden de prioridad. El bloqueo va a la casa del objetivo tras el
   // transporte: un bloqueador también cambia de sitio (wiki: Transporter.md:184, visitantes).
   for (const blocker of acts) {
@@ -200,10 +212,14 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       const victim = playerOf(s, victimId);
       if (victim && handlerOf(victim)?.roleblockImmune) {
         out.push({ type: "night.notice", payload: { playerId: victimId, notice: "blocked_immune" } });
+        // Wiki (Spy.md:263): "Someone tried to role block your target but they were immune!"
+        tagSpy(victimId, "block_immune");
         continue;
       }
       const target = acts.find((a) => a.actor.id === victimId);
       // Wiki (Tavern_Keeper.md:347-349): "Someone occupied your night. You were role blocked!" también si no tenía acción.
+      // Wiki (Spy.md:227): el bloqueo se le ve al Spy aunque el bloqueado no tuviera acción.
+      tagSpy(victimId, "block");
       if (!target) {
         out.push({ type: "night.notice", payload: { playerId: victimId, notice: "blocked_occupied" } });
         continue;
@@ -656,6 +672,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Vigilante: si su disparo mata a un Town, la culpa le quitará la vida la noche siguiente (wiki: Vigilante).
     const killVictim = (cause: string) => {
       if (!kill(atk.victimId, cause, atk.reasons, atk.note)) return;
+      // Wiki (Spy.md:239, 243, 247, 275): lo que ve el espionaje de quien muere por un ataque directo.
+      const killTag = SPY_KILL_TAG[cause];
+      if (killTag) tagSpy(atk.victimId, killTag);
       // Wiki (Death_Note_ToS.md:17): la nota del asesino se puede cambiar la mañana en que se anuncia la víctima.
       if (atk.noteAuthorId !== undefined) {
         out.push({ type: "death.note.authored", payload: { victimId: atk.victimId, authorId: atk.noteAuthorId, dayNumber: s.dayNumber + 1, note: atk.note ?? "" } });
@@ -692,10 +711,20 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(bodyguard.protectorId) } });
       // Wiki (Bodyguard.md:438): "You were attacked but someone fought off your attacker!" al protegido.
       out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "bodyguard_saved" } });
+      // Wiki (Spy.md:235): "Your target was attacked but someone fought off their attacker!"
+      tagSpy(atk.victimId, "attack_fought_off");
       // Wiki (Bodyguard.md:434, 430): avisos de muerte del atacante y del Bodyguard, solo si de verdad mueren.
-      if (kill(atk.attackerId, "bodyguard")) out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "bodyguard_killed_you" } });
+      if (kill(atk.attackerId, "bodyguard")) {
+        out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "bodyguard_killed_you" } });
+        // Wiki (Spy.md:259): "Your target was killed by a Bodyguard!"
+        tagSpy(atk.attackerId, "killed_by_bodyguard");
+      }
       // Causa distinta de la del atacante: el Bodyguard "died guarding someone" (wiki: Bodyguard.md:450).
-      if (kill(bodyguard.protectorId, "guarding")) out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "bodyguard_killed_protecting" } });
+      if (kill(bodyguard.protectorId, "guarding")) {
+        out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "bodyguard_killed_protecting" } });
+        // Wiki (Spy.md:249): "Your target was killed protecting someone!"
+        tagSpy(bodyguard.protectorId, "killed_guarding");
+      }
       continue;
     }
     // La defensa de la trampa solo cuenta contra su atacante (Keyword_System.md:349) y una vez por noche.
@@ -727,6 +756,13 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       // Wiki (Veteran.md:486): "Someone tried to attack you but your defense while on alert was too strong!" Lo recibe el
       // Veteran, cuando solo la alerta (Basic Defense) detuvo al atacante.
       if (alerted.has(atk.victimId) && !strongest) out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "alert_blocked" } });
+      // Espionaje (wiki: Spy.md:237, 271, 273, 261): la defensa que detuvo el ataque. La tabla del Spy (Spy.md:221-309)
+      // no tiene mensaje para la trampa: se usa la clave anterior "protect" para no decir que no pasó nada (SKIPPED).
+      if (strongest?.source === "doctor") tagSpy(atk.victimId, "attack_healed");
+      else if (strongest?.source === "vest") tagSpy(atk.victimId, "attack_vest");
+      else if (strongest?.source === "trap") tagSpy(atk.victimId, "protect");
+      else if (!strongest && alerted.has(atk.victimId)) tagSpy(atk.victimId, "attack_alert");
+      else if (!strongest && baseDefense >= atk.power) tagSpy(atk.victimId, "attack_defense");
       // Wiki (Doctor.md:225, 253): el atacado recibe el aviso de curación, uno por ataque aunque haya varios Doctors.
       if (strongest?.source === "doctor") {
         out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "healed" } });
@@ -752,10 +788,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (s.jailedBy[target] !== undefined) {
       tags.push("jail");
     } else {
+      // Wiki (Spy.md:225, 229): transporte y chantaje; el bloqueo (Spy.md:227) y los ataques van por tagSpy.
       if (swaps.some(([a, b]) => a === target || b === target)) tags.push("transport");
-      if (acts.some((a) => a.actor.id === target && a.blocked)) tags.push("block");
-      if (attacks.some((a) => a.victimId === target)) tags.push("attack");
-      if (prevented.has(target)) tags.push("protect");
+      if (marks.some((m) => m.flag === "blackmailed" && m.targetId === target)) tags.push("blackmail");
+      tags.push(...(spyTags.get(target) ?? []));
     }
     out.push({
       type: "investigation.result",
