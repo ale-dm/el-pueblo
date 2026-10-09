@@ -67,6 +67,8 @@ const NOTICE_TEXT: Record<string, string> = {
   alert_blocked: "Alguien intentó atacarte, pero tu defensa en alerta fue demasiado fuerte.",
   // Wiki (Bodyguard.md:250): "You were attacked but your bulletproof vest saved you!"
   vest_saved: "Te atacaron, pero tu chaleco antibalas te salvó.",
+  // Wiki (Blackmailer.md:395): "Someone tried to blackmail you but you were in jail last night."
+  blackmail_jailed: "Alguien intentó chantajearte, pero anoche estabas encarcelado.",
   // Wiki (Jailor.md:282, 284): "The jailor has decided to Execute you." / "The jailor has changed his mind."
   jailor_execute: "El Jailor ha decidido ejecutarte.",
   jailor_changed_mind: "El Jailor ha cambiado de opinión.",

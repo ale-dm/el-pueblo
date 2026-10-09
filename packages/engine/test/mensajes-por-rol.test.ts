@@ -36,6 +36,34 @@ describe("Vigilante y Veteran: cuántos usos les quedan (wiki: Vigilante, Vetera
   });
 });
 
+describe("Blackmailer y cárcel (wiki: Blackmailer.md:221, 395)", () => {
+  // p1 Jailor encarcela de día a p3; p2 es el Blackmailer; llega la noche.
+  const jailedNight = () => {
+    let s = game(["jailor", "blackmailer", "investigator", "godfather"], { phase: "discussion", dayNumber: 2 });
+    s = step(s, { type: "day.action", actorId: "p1", ability: "jail", targetId: "p3" }).state;
+    return step({ ...s, phase: "voting" }, timer()).state;
+  };
+  const blackmailJailed = () => step(jailedNight(), { type: "night.action", actorId: "p2", ability: "blackmail", targetId: "p3", secondTargetId: null }).state;
+
+  it("no silencia a un encarcelado, y él lo sabe con el aviso de la wiki", () => {
+    const { events } = step(blackmailJailed(), timer());
+    expect(ofType(events, "player.blackmailed")).toHaveLength(0);
+    expect(notices(events)).toContainEqual(["p3", "blackmail_jailed"]);
+  });
+
+  it("el Blackmailer sabe que su visita falló", () => {
+    const { events } = step(blackmailJailed(), timer());
+    expect(notices(events)).toContainEqual(["p2", "target_jailed"]);
+  });
+
+  it("sin cárcel, el silencio sí se aplica y no hay aviso de cárcel", () => {
+    const s = game(["blackmailer", "investigator", "godfather"], { phase: "night", dayNumber: 2 });
+    const { events } = step(step(s, { type: "night.action", actorId: "p1", ability: "blackmail", targetId: "p2", secondTargetId: null }).state, timer());
+    expect(ofType(events, "player.blackmailed").map((e) => e.payload.targetId)).toEqual(["p2"]);
+    expect(notices(events).some(([, n]) => n === "blackmail_jailed")).toBe(false);
+  });
+});
+
 describe("Bodyguard: chaleco antibalas (wiki: Bodyguard.md:240-250, 444)", () => {
   it("el chaleco detiene un ataque Basic, sin contraataque, y el Bodyguard recibe el aviso", () => {
     const { events, state } = resolve(game(["bodyguard", "godfather", "investigator"]), [night("p1", "vest", null), night("p2", "kill", "p1")]);

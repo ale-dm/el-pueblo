@@ -201,6 +201,14 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       const victim = remap(e.targetId);
       if (s.jailedBy[victim] !== undefined) out.push({ type: "night.notice", payload: { playerId: victim, notice: "attack_attempt" } });
     }
+    // Wiki (Blackmailer.md:221, 395): no se puede silenciar a quien estuvo encarcelado esa noche; él lo sabe.
+    act.effects = act.effects.filter((e) => {
+      if (e.kind !== "mark" || e.flag !== "blackmailed") return true;
+      const victim = remap(e.targetId);
+      if (s.jailedBy[victim] === undefined) return true;
+      out.push({ type: "night.notice", payload: { playerId: victim, notice: "blackmail_jailed" } });
+      return false;
+    });
     // Wiki (Spy.md:205): el espionaje dice que el objetivo estaba encarcelado; y las visitas de la Mafia siguen.
     const reportsJail = act.effects.some((e) => e.kind === "investigate" && e.check === "bug");
     if (!reportsJail) out.push({ type: "night.notice", payload: { playerId: act.actor.id, notice: "target_jailed" } });
