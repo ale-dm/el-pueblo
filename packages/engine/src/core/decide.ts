@@ -5,7 +5,7 @@ import type { GameState } from "../types/state.js";
 import type { Rng } from "./rng.js";
 import { err, ok, type Result } from "./result.js";
 import { emit } from "../events/emit.js";
-import { BLACKMAIL_LINE, chatDenied, chatRefusal, seanceHearers, seanceRecipient, type ChatChannel } from "../rules/chat.js";
+import { BLACKMAIL_LINE, chatDenied, chatRefusal, jailPartners, seanceHearers, seanceRecipient, seancingMediums, type ChatChannel } from "../rules/chat.js";
 import { castVote, dayAction, judgementVote } from "../phases/day.js";
 import { cancelNightAction, nightAction, writeDeathNote, writeWill } from "../phases/night/collect.js";
 import { onTimerExpired } from "../phases/machine.js";
@@ -67,14 +67,22 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
         const recipientId = seanceRecipient(state, command.senderId);
         const hearers = seanceHearers(state, command.senderId);
         if (!recipientId || hearers.length === 0) return err("invalid_command", "No tienes ninguna sesión abierta esta noche");
-        return ok(hearers.map((audienceId) => ({ type: "chat.message", payload: { channel: "seance", senderId: command.senderId, text, recipientId, audienceId } })));
+        // Wiki (Jailor.md:266, 268): si el seanceado está encarcelado o es el Jailor, su pareja de cárcel oye sus mensajes
+        // de sesión ("the Jailee will likewise listen and talk to both you and Medium"). Los del Médium no llegan a la pareja.
+        const seancedSpeaks = state.nightActions[command.senderId]?.ability !== "seance";
+        const partners = seancedSpeaks ? jailPartners(state, command.senderId) : [];
+        const audience = [...new Set([...hearers, ...partners])];
+        return ok(audience.map((audienceId) => ({ type: "chat.message", payload: { channel: "seance", senderId: command.senderId, text, recipientId, audienceId } })));
       }
       if (command.channel === "jail") {
         // El destinatario sale del estado: el Jailor habla con su prisionero y al revés.
         const recipientId = state.jailedBy[command.senderId] ?? Object.keys(state.jailedBy).find((id) => state.jailedBy[id] === command.senderId)!;
+        // Wiki (Medium.md:217): el Médium que tiene sesión con el encarcelado o con el Jailor ve el canal de cárcel.
+        const watchers = seancingMediums(state, [command.senderId, recipientId]);
         return ok([
           { type: "chat.message", payload: { channel: "jail", senderId: command.senderId, text, recipientId, audienceId: recipientId } },
           { type: "chat.message", payload: { channel: "jail", senderId: command.senderId, text, recipientId, audienceId: command.senderId } },
+          ...watchers.map((audienceId) => ({ type: "chat.message" as const, payload: { channel: "jail" as const, senderId: command.senderId, text, recipientId, audienceId } })),
         ]);
       }
       if (command.channel === "whisper") {
@@ -101,13 +109,27 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
         }
         // Un muerto habla con los muertos; de noche, cada Médium vivo también lo oye (Medium.md:186).
         const listeners = state.phase === "night" ? state.players.filter((p) => p.status === "alive" && p.roleKey === "medium") : [];
+        // Wiki (Medium.md:223): "While seancing, you are still able to hear the dead, but the dead won't hear you."
+        // El Médium que hace sesión solo se oye a sí mismo entre los muertos.
+        const seancing = state.nightActions[command.senderId]?.ability === "seance" && seanceRecipient(state, command.senderId) !== null;
         return ok([
-          { type: "chat.message", payload: { channel: "dead", senderId: command.senderId, text } },
+          { type: "chat.message", payload: { channel: "dead", senderId: command.senderId, text, ...(seancing ? { audienceId: command.senderId } : {}) } },
           ...listeners.map((m) => ({ type: "chat.message" as const, payload: { channel: "dead" as const, senderId: command.senderId, text, audienceId: m.id } })),
         ]);
       }
       // Wiki (Blackmailer.md:213): un silenciado en su defensa solo dice "I am blackmailed.".
       const blackmailed = state.players.find((p) => p.id === command.senderId)?.flags.blackmailed === true;
+      if (command.channel === "mafia") {
+        // Wiki (Jailor.md:268): el encarcelado oye a su equipo, pero el equipo y los muertos no ven sus mensajes.
+        // Wiki (Medium.md:217-219): el Médium que tiene sesión con un Mafioso ve el canal de la Mafia.
+        const jailed = state.jailedBy[command.senderId] !== undefined;
+        const mafiaAlive = state.players.filter((p) => p.faction === "mafia" && p.status === "alive").map((p) => p.id);
+        const watchers = seancingMediums(state, mafiaAlive);
+        return ok([
+          { type: "chat.message", payload: { channel: "mafia", senderId: command.senderId, text: blackmailed ? BLACKMAIL_LINE : text, ...(jailed ? { audienceId: command.senderId } : {}) } },
+          ...watchers.map((audienceId) => ({ type: "chat.message" as const, payload: { channel: "mafia" as const, senderId: command.senderId, text: blackmailed ? BLACKMAIL_LINE : text, audienceId } })),
+        ]);
+      }
       return ok([{ type: "chat.message", payload: { channel: command.channel, senderId: command.senderId, text: blackmailed ? BLACKMAIL_LINE : text } }]);
     }
     case "timer.expired":

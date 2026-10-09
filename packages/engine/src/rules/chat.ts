@@ -36,6 +36,28 @@ export function seanceHearers(state: GameState, senderId: string): string[] {
   return [...new Set([target, ...mediums])];
 }
 
+/**
+ * Médiums muertos que tienen sesión esta noche con alguno de estos jugadores (wiki: Medium.md:217-219). Quien oye la
+ * sesión de un encarcelado o de un Mafioso oye también el canal de cárcel o de la Mafia.
+ */
+export function seancingMediums(state: GameState, targetIds: readonly string[]): string[] {
+  if (state.phase !== "night") return [];
+  return Object.keys(state.nightActions).filter((id) => {
+    const action = state.nightActions[id]!;
+    return action.ability === "seance" && action.targetId !== null && targetIds.includes(action.targetId);
+  });
+}
+
+/**
+ * Pareja de cárcel de un jugador vivo: su Jailor si está encarcelado, o su prisionero si es Jailor. Quien habla en una
+ * sesión con uno de ellos, lo hace también con el otro (wiki: Jailor.md:266, 268).
+ */
+export function jailPartners(state: GameState, playerId: string): string[] {
+  const jailor = state.jailedBy[playerId];
+  const prisoner = Object.keys(state.jailedBy).find((id) => state.jailedBy[id] === playerId);
+  return [jailor, prisoner].filter((id): id is string => id !== undefined && state.players.find((p) => p.id === id)?.status === "alive");
+}
+
 const DAY_PHASES = new Set(["day_1", "discussion", "voting", "defense", "judgement", "last_words"]);
 
 /** Wiki (Blackmailer.md:213): el mensaje del acusado silenciado pasa a ser este, una vez por juicio. */
