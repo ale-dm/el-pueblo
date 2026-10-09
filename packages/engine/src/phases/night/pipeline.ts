@@ -198,6 +198,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   // 2. Bloqueos: solo bloqueadores activos, en orden de prioridad. El bloqueo va a la casa del objetivo tras el
   // transporte: un bloqueador también cambia de sitio (wiki: Transporter.md:184, visitantes).
+  /** Bloqueados que no enviaron acción: el bloqueo les llega igual (wiki: Tavern_Keeper.md:347-349). */
+  const blockedWithoutAction = new Set<string>();
   for (const blocker of acts) {
     if (blocker.blocked) continue;
     for (const e of blocker.effects) {
@@ -222,6 +224,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       tagSpy(victimId, "block");
       if (!target) {
         out.push({ type: "night.notice", payload: { playerId: victimId, notice: "blocked_occupied" } });
+        // Sin acción, el bloqueo también cuenta: la Mafia lo mira al decidir quién ataca (Godfather.md:225).
+        blockedWithoutAction.add(victimId);
         continue;
       }
       target.blocked = true;
@@ -276,7 +280,14 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const godOrder = mafiaKill("godfather");
   const ownKill = mafiaKill("mafioso");
   const mafiosoPlayer = s.players.find((p) => p.roleKey === "mafioso" && isAlive(p));
-  const blockedIds = new Set(acts.filter((a) => a.blocked).map((a) => a.actor.id));
+  // Quién no puede actuar esta noche, tenga o no acción: bloqueado (aunque no eligiera) o encarcelado.
+  // Wiki (Godfather.md:225): "If your Mafioso is role blocked, dead, or does not exist, you will attack the target."
+  // Antes solo contaban las acciones enviadas, y un Mafioso bloqueado o encarcelado sin acción seguía ejecutando la orden.
+  const blockedIds = new Set([
+    ...acts.filter((a) => a.blocked).map((a) => a.actor.id),
+    ...blockedWithoutAction,
+    ...s.players.filter((p) => p.flags.jailed === true).map((p) => p.id),
+  ]);
   const mafiosoExecutes = !!godOrder && !!mafiosoPlayer && !blockedIds.has(mafiosoPlayer.id);
   let mafiaExecutor: { attackerId: string; victimId: string } | null = null;
   if (godOrder && mafiosoExecutes && mafiosoPlayer) mafiaExecutor = { attackerId: mafiosoPlayer.id, victimId: godOrder.targetId };
