@@ -142,6 +142,46 @@ describe("registro estilo Town of Salem", () => {
     expect(text).toContain("El resultado de Caro no está definido en la tabla Classic.");
   });
 
+  it("avisos de la noche por rol: curado, Jailor, Psíquica (wiki: Doctor, Jailor, Psychic)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "healed" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "jailor_execute" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "jailor_changed_mind" }, "private"),
+      ev("night.notice", { playerId: "a", notice: "psychic_small" }, "private"),
+      ev("night.notice", { playerId: "a", notice: "psychic_evil" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Te atacaron, pero alguien te curó.");
+    expect(text).toContain("El Jailor ha decidido ejecutarte.");
+    expect(text).toContain("El Jailor ha cambiado de opinión.");
+    expect(text).toContain("El pueblo es demasiado pequeño para encontrar a un malvado con precisión.");
+    expect(text).toContain("El pueblo es demasiado malvado para encontrar a nadie bueno.");
+  });
+
+  it("cuántos usos quedan: balas del Vigilante y alertas del Veteran, en singular y plural", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("uses.left", { playerId: "a", ability: "shoot", left: 2 }, "private"),
+      ev("uses.left", { playerId: "a", ability: "alert", left: 1 }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Te quedan 2 balas.");
+    expect(text).toContain("Te queda 1 alerta.");
+  });
+
+  it("el Janitor ve el rol real de su limpiado, en inglés como en la wiki (Janitor.md:214)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("clean.revealed", { janitorId: "a", playerId: "b", roleKey: "tavern_keeper" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Sabes en secreto que el rol de Bea era Tavern Keeper.");
+  });
+
   it("la hipnosis llega al amanecer; la falsificación y el ascenso se cuentan al momento", () => {
     seq = 0;
     const text = texts(buildLog([

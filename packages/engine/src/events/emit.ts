@@ -18,6 +18,10 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
       return event.payload.mafiaTeam ? { visibility: "mafia" as Visibility, audiencePlayerId: null } : priv(event.payload.actorId);
     case "night.action.blocked":
       return priv(event.payload.actorId);
+    case "uses.left":
+      return priv(event.payload.playerId);
+    case "clean.revealed":
+      return priv(event.payload.janitorId);
     case "night.notice":
       return priv(event.payload.playerId);
     case "will.written":

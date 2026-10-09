@@ -1,6 +1,6 @@
 import type { GameEvent, Phase } from "../types.js";
 import { HYPNOSIS_TEXT, abilityLabel } from "./text.js";
-import { ROLE_NAMES, roleName } from "./roles.js";
+import { roleName, roleNameEn } from "./roles.js";
 
 /**
  * Registro de la partida, como en Town of Salem: separadores "Día N" / "Noche N", lo que pasó
@@ -44,7 +44,7 @@ const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const
 /** Eventos de la noche que se cuentan al amanecer, no en el momento. */
 const MORNING = new Set([
   "player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed",
-  "hypnosis.message", "role.promoted", "night.notice",
+  "hypnosis.message", "role.promoted", "night.notice", "uses.left", "clean.revealed",
 ]);
 
 /** Avisos privados de la noche (evento night.notice). */
@@ -55,12 +55,15 @@ const NOTICE_TEXT: Record<string, string> = {
   transport_jailed: "Uno de tus objetivos estaba encarcelado: no pudiste transportarles.",
   jailed_transport_attempt: "Alguien intentó transportarte, pero estabas encarcelado.",
   transported: "Fuiste transportado a otro lugar.",
+  // Wiki (Doctor.md:225): "You were attacked but someone nursed you back to health!"
+  healed: "Te atacaron, pero alguien te curó.",
+  // Wiki (Jailor.md:282, 284): "The jailor has decided to Execute you." / "The jailor has changed his mind."
+  jailor_execute: "El Jailor ha decidido ejecutarte.",
+  jailor_changed_mind: "El Jailor ha cambiado de opinión.",
+  // Wiki (Psychic.md:318, 322): "The town is too small..." / "The town is too evil..."
+  psychic_small: "El pueblo es demasiado pequeño para encontrar a un malvado con precisión.",
+  psychic_evil: "El pueblo es demasiado malvado para encontrar a nadie bueno.",
 };
-
-/** Nombre en inglés de un rol (como en Town of Salem); si no está en ROLE_NAMES, la clave con mayúsculas. */
-function roleNameEn(key: string): string {
-  return ROLE_NAMES[key] ?? key.split("_").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-}
 
 /**
  * Grupo que revela el Investigador (wiki: Investigator.md, "Classic Investigator Results"): "P3 podría ser un
@@ -275,6 +278,16 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "night.notice":
         // Wiki (Jailor.md:252): el visitante sabe que su objetivo estaba encarcelado; el prisionero, de los atacantes.
         line(e, NOTICE_TEXT[p.notice] ?? "Algo ocurrió anoche.", "private");
+        break;
+      case "uses.left": {
+        // Wiki (Vigilante, Veteran): "You have (#) bullet(s) left" / "You have (#) alert(s) left."
+        const noun = p.ability === "shoot" ? (p.left === 1 ? "bala" : "balas") : p.left === 1 ? "alerta" : "alertas";
+        line(e, `${p.left === 1 ? "Te queda" : "Te quedan"} ${p.left} ${noun}.`, "private");
+        break;
+      }
+      case "clean.revealed":
+        // Wiki (Janitor.md:214): "You secretly know that your target's role was [Role]."
+        line(e, `Sabes en secreto que el rol de ${ctx.nick(p.playerId)} era ${p.roleKey ? roleNameEn(p.roleKey) : "desconocido"}.`, "private");
         break;
       case "player.blackmailed":
         line(e, "Estás silenciado durante el día.", "private");

@@ -37,8 +37,15 @@ export type GameEventPayloads = {
    * target_jailed: su objetivo estaba encarcelado y su acción falla (Jailor.md:252).
    * attack_attempt: lo atacó alguien mientras estaba encarcelado (Jailor.md:252, Vigilante.md:194).
    * medium_talking: un Médium le habla esta noche; un aviso por cada Médium (Medium.md:209, 213).
+   * healed: lo atacaron y un Doctor lo curó (Doctor.md:225, 253).
+   * jailor_execute / jailor_changed_mind: el Jailor decide ejecutarle o cambia de opinión (Jailor.md:282, 284).
+   * psychic_small / psychic_evil: la Psíquica no puede dar visión (Psychic.md:318, 322).
    */
-  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" };
+  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" | "healed" | "jailor_execute" | "jailor_changed_mind" | "psychic_small" | "psychic_evil" };
+  /** Usos que le quedan tras disparar o ponerse en alerta (wiki: Vigilante y Veteran, "You have (#) bullet(s) left"). Solo lo ve el jugador. */
+  "uses.left": { playerId: PlayerId; ability: string; left: number };
+  /** El Janitor limpió a un jugador que murió esta noche: ve su rol real al amanecer (wiki: Janitor.md:214). */
+  "clean.revealed": { janitorId: PlayerId; playerId: PlayerId; roleKey: string | null };
   /** check: tipo de comprobación (suspicious, group, role, visitors, targets, mafiaVisits, vision). group: claves de rol del grupo (wiki: Investigator). */
   /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic).
    * more: el Lookout sabe que hubo más visitantes de los tres que identifica (wiki: Lookout). */

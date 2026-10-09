@@ -419,6 +419,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   }
   for (const u of usesSpent) {
     out.push({ type: "ability.used", payload: { playerId: u.playerId, ability: u.ability } });
+    // Wiki (Vigilante, Veteran): cuántas balas o alertas quedan. Se gasta una por noche, así que queda uno menos.
+    if (u.ability === "shoot" || u.ability === "alert") {
+      const left = (playerOf(s, u.playerId)?.usesLeft[u.ability] ?? 0) - 1;
+      out.push({ type: "uses.left", payload: { playerId: u.playerId, ability: u.ability, left } });
+    }
   }
 
   // 7. Investigaciones: calculadas con el estado de la noche.
@@ -482,6 +487,17 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         // Impares: 3 jugadores, al menos uno Mafia. Pares: 2 jugadores, al menos uno Town.
         const alive = s.players.filter((x) => x.status === "alive" && x.id !== inv.actorId);
         const wantMafia = s.dayNumber % 2 === 1;
+        // Wiki (Psychic.md:318): entre los tres últimos vivos en noche impar, no hay visión: solo el aviso.
+        if (wantMafia && alive.length + 1 <= 3) {
+          out.push({ type: "night.notice", payload: { playerId: inv.actorId, notice: "psychic_small" } });
+          continue;
+        }
+        // Wiki (Psychic.md:322): en noche par, si no quedan otros Townies ni Neutral Benign vivos, solo el aviso.
+        const goodAlive = alive.some((x) => x.faction === "town" || (x.roleKey !== null && catalog.roles.get(x.roleKey)?.alignmentKey === "neutral_benign"));
+        if (!wantMafia && !goodAlive) {
+          out.push({ type: "night.notice", payload: { playerId: inv.actorId, notice: "psychic_evil" } });
+          continue;
+        }
         const sideKey = wantMafia ? "mafia" : "town";
         side = sideKey;
         const sideAlive = rng.shuffle(alive.filter((x) => x.faction === sideKey));
@@ -510,6 +526,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Un limpiado no deja testamento visible (wiki: Janitor).
     const will = cleaned.has(playerId) ? null : s.wills[playerId] ?? null;
     out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will, ...(cleaned.has(playerId) ? { cleaned: true } : {}) } });
+    // Wiki (Janitor.md:214): el Janitor que lo limpió sabe su rol real al amanecer.
+    const janitorId = marks.find((m) => m.flag === "cleaned" && m.targetId === playerId)?.actorId;
+    if (cleaned.has(playerId) && janitorId !== undefined) {
+      out.push({ type: "clean.revealed", payload: { janitorId, playerId, roleKey: playerOf(s, playerId)?.roleKey ?? null } });
+    }
     return true;
   };
   /** Trampas ya gastadas esta noche: cada una defiende de un solo ataque. */
@@ -558,6 +579,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       prevented.add(atk.victimId);
       if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(strongest.protectorId) } });
       if (strongest?.source === "trap") trapSpent.add(atk.victimId);
+      // Wiki (Doctor.md:225, 253): el atacado recibe el aviso de curación, uno por ataque aunque haya varios Doctors.
+      if (strongest?.source === "doctor") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "healed" } });
     }
   }
 

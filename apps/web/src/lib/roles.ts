@@ -70,6 +70,11 @@ export const ROLE_NAMES: Record<string, string> = {
 export const roleName = (roleKey: string | null | undefined): string | null =>
   roleKey ? ROLE_NAMES[roleKey] ?? roleKey : null;
 
+/** Nombre en inglés de cualquier rol de la wiki; si no está en ROLE_NAMES, la clave con mayúsculas ("Serial Killer"). */
+export function roleNameEn(key: string): string {
+  return ROLE_NAMES[key] ?? key.split("_").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
+
 /** Grupos de roles (alineamientos) con el nombre de ToS: "Town (Support)", "Mafia (Deception)". */
 export const ALIGNMENT_NAMES: Record<string, { faction: string; name: string }> = {
   town_investigative: { faction: "Town", name: "Investigative" },

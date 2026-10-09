@@ -103,12 +103,18 @@ export function nightAction(
     return err("invalid_command", "Solo puedes ejecutar a un jugador encarcelado");
   }
 
-  return ok([
+  const events: EventInput[] = [
     {
       type: "night.action.submitted",
       payload: { actorId, ability, targetId, secondTargetId, choice: choice ?? null, mafiaTeam: actor.faction === "mafia", roleKey: actor.roleKey },
     },
-  ]);
+  ];
+  // Wiki (Jailor.md:282): el prisionero recibe el aviso cuando el Jailor decide ejecutarle (una sola vez).
+  const previous = s.nightActions[actorId];
+  if (ability === "execute" && !(previous?.ability === "execute" && previous.targetId === targetId)) {
+    events.push({ type: "night.notice", payload: { playerId: targetId!, notice: "jailor_execute" } });
+  }
+  return ok(events);
 }
 
 /** Cancela la acción de esta noche. Hasta el final de la noche, el jugador puede volver a elegir. */
@@ -116,8 +122,12 @@ export function cancelNightAction(s: GameState, actorId: string): Result<EventIn
   if (s.phase !== "night") return err("wrong_phase", "Las acciones nocturnas solo se hacen de noche");
   const actor = playerOf(s, actorId);
   if (!isAlive(actor)) return err("invalid_command", "Solo los vivos actúan de noche");
-  if (!s.nightActions[actorId]) return err("invalid_command", "No tienes ninguna acción que cancelar");
-  return ok([{ type: "night.action.cancelled", payload: { actorId, mafiaTeam: actor.faction === "mafia" } }]);
+  const own = s.nightActions[actorId];
+  if (!own) return err("invalid_command", "No tienes ninguna acción que cancelar");
+  const events: EventInput[] = [{ type: "night.action.cancelled", payload: { actorId, mafiaTeam: actor.faction === "mafia" } }];
+  // Wiki (Jailor.md:284): si el Jailor cancela la ejecución, el prisionero lo sabe.
+  if (own.ability === "execute" && own.targetId) events.push({ type: "night.notice", payload: { playerId: own.targetId, notice: "jailor_changed_mind" } });
+  return ok(events);
 }
 
 /** Escribe o cambia la última voluntad. Solo vivos; texto vacío la borra. */
