@@ -18,7 +18,7 @@ Contrastado con las fichas de `docs/roles/` (wiki de Town of Salem 1). Estados:
 | Lookout | OK | Ve las visitas al objetivo |
 | Mayor | OK | Revelarse una vez; el voto cuenta como 3. No puede ser curado tras revelarse |
 | Medium | Pendiente | Comunicación con los muertos no implementada. Oculta su habilidad |
-| Psychic | OK | Recibe una visión cada noche |
+| Psychic | OK | Recibe una visión cada noche sin elegir nada (pasiva) |
 | Retributionist | Pendiente | Revivir muertos no implementado. Oculta su habilidad |
 | Sheriff | OK | Sospechoso / inocente. Excepciones de inmunidad a la detección sin verificar |
 | Spy | Parcial | Ve las visitas de la Mafia, sin ver la casa concreta |

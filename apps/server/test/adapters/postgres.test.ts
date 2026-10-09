@@ -72,7 +72,7 @@ describe("adaptadores PostgreSQL (sobre PGlite)", () => {
     await log.append(matchId, 3, [
       {
         seq: 4, type: "investigation.result",
-        payload: { investigatorId: "a", targetId: "b", result: "innocent" },
+        payload: { investigatorId: "a", targetId: "b", result: "innocent", check: "suspicious" },
         visibility: "private", audiencePlayerId: "33333333-3333-3333-3333-333333333333",
       },
     ]);

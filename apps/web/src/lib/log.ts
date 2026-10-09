@@ -1,0 +1,216 @@
+import type { GameEvent, Phase } from "../types.js";
+import { abilityLabel } from "./text.js";
+import { roleNameEs, roleNameFromEnglish } from "./roles.js";
+
+/**
+ * Registro de la partida, como en Town of Salem: separadores "Día N" / "Noche N", lo que pasó
+ * durante la noche aparece al amanecer, los votos cambian con sus mensajes y el juicio enseña
+ * quién votó qué. Los eventos internos (juicio intermedio, etc.) no se muestran.
+ */
+
+export type LogTone = "info" | "private" | "danger" | "good";
+
+export type LogItem =
+  | { kind: "separator"; key: string; text: string; night: boolean }
+  | { kind: "line"; key: string; text: string; tone: LogTone };
+
+export interface LogContext {
+  meId: string;
+  /** El jugador tiene habilidad nocturna y está vivo: se le avisa si no actúa. */
+  hasNightAbility: boolean;
+  nick: (id: string) => string;
+  /** Votantes que cuentan ahora (vivos y conectados). Para el umbral de juicio. */
+  voters: number;
+}
+
+const VERDICT_ES = { guilty: "culpable", innocent: "inocente" } as const;
+
+const CAUSE_ES: Record<string, string> = {
+  mafia: "ha sido asesinado por la Mafia",
+  shot: "ha sido abatido a tiros",
+  execute: "ha sido ejecutado",
+  ambush: "ha sido emboscado",
+  veteran: "ha sido abatido por un Veterano",
+  trap: "ha caído en una trampa",
+  crusade: "ha sido abatido por el Cruzado",
+  bodyguard: "ha muerto en un duelo con un Guardaespaldas",
+  guilt: "se ha quitado la vida por culpa",
+};
+
+const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const;
+
+/** Eventos de la noche que se cuentan al amanecer, no en el momento. */
+const MORNING = new Set(["player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed"]);
+
+function alignmentEs(key: string): string {
+  if (key.includes("mafia")) return key.includes("deception") ? "Mafia (disfrazado)" : "Mafia";
+  if (key.includes("town")) return "Pueblo";
+  if (key === "unknown") return "desconocido";
+  return key.replace(/_/g, " ");
+}
+
+/** Frase de un resultado de investigación (solo lo ve quien investigó). */
+export function investigationText(p: Record<string, any>, nick: (id: string) => string): string {
+  const t = p.targetId ? nick(p.targetId) : "";
+  switch (p.check) {
+    case "suspicious":
+      return p.result === "suspicious" ? `${t} parece sospechoso.` : `${t} parece inocente.`;
+    case "alignment":
+      return `${t} pertenece al bando ${alignmentEs(String(p.result))}.`;
+    case "role":
+      return `${t} es ${roleNameFromEnglish(String(p.result))}.`;
+    case "visitors":
+      return p.result === "nadie" ? `Nadie visitó a ${t} esta noche.` : `Visitaron a ${t}: ${p.result}.`;
+    case "targets":
+      return p.result === "nadie" ? `${t} no visitó a nadie.` : `${t} visitó a: ${p.result}.`;
+    case "mafiaVisits":
+      return p.result === "nadie" ? "Esta noche la Mafia no visitó a nadie." : `La Mafia visitó: ${p.result}.`;
+    case "vision":
+      return `Visión de esta noche: ${p.result}.`;
+    default:
+      return `Resultado: ${p.result}.`;
+  }
+}
+
+/** Construye las líneas del registro a partir de los eventos, en orden. */
+export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem[] {
+  const items: LogItem[] = [];
+  let phase: Phase | null = null;
+  let morning: LogItem[] = [];
+  let trialsToday = 0;
+  let defendant: string | null = null;
+  let verdictVotes: Array<{ voter: string; verdict: string }> = [];
+  let lastVote = new Map<string, string | null>();
+  let submittedTonight = false;
+
+  const line = (e: GameEvent, text: string, tone: LogTone = "info") => {
+    const item: LogItem = { kind: "line", key: `l${e.seq}`, text, tone };
+    if (phase === "night" && MORNING.has(e.type)) morning.push(item);
+    else items.push(item);
+  };
+  const separator = (e: GameEvent, text: string, night: boolean) => items.push({ kind: "separator", key: `s${e.seq}`, text, night });
+  /** Lo de la noche sale al amanecer, justo después del separador del día. */
+  const flushMorning = () => {
+    items.push(...morning);
+    morning = [];
+  };
+
+  for (const e of events) {
+    const p = e.payload;
+    switch (e.type) {
+      case "phase.started": {
+        const next = p.phase as Phase;
+        if (next === "day_1") {
+          trialsToday = 0;
+          separator(e, "Día 1", false);
+          line(e, "Primer día: nadie puede ser juzgado hoy.");
+        } else if (next === "night") {
+          submittedTonight = false;
+          separator(e, `Noche ${p.dayNumber}`, true);
+          line(e, "Cae la noche.");
+        } else if (next === "discussion") {
+          if (phase === "night" && ctx.hasNightAbility && !submittedTonight) {
+            morning.push({ kind: "line", key: `n${e.seq}`, text: "No realizaste tu habilidad nocturna.", tone: "private" });
+          }
+          trialsToday = 0;
+          separator(e, `Día ${p.dayNumber}`, false);
+          flushMorning();
+        } else if (next === "voting") {
+          lastVote = new Map();
+          line(e, `Votación: hacen falta ${Math.ceil(ctx.voters / 2)} votos para llevar a alguien a juicio.`);
+          line(e, `Quedan ${Math.max(0, 3 - trialsToday)} juicios posibles hoy.`);
+        } else if (next === "defense" && defendant) {
+          line(e, `${ctx.nick(defendant)} se defiende.`);
+        } else if (next === "judgement") {
+          verdictVotes = [];
+          line(e, "Juicio: ¿culpable o inocente?");
+        } else if (next === "last_words" && defendant) {
+          line(e, `${ctx.nick(defendant)}, tus últimas palabras.`, "danger");
+        }
+        phase = next;
+        break;
+      }
+      case "trial.started":
+        defendant = p.defendantId;
+        trialsToday++;
+        verdictVotes = [];
+        line(e, `${ctx.nick(p.defendantId)} va a juicio.`, "danger");
+        break;
+      case "vote.cast": {
+        const voter = p.voterId as string;
+        const target = p.targetId as string | null;
+        const had = lastVote.has(voter);
+        const previous = lastVote.get(voter) ?? null;
+        if (had && previous === target) break;
+        lastVote.set(voter, target);
+        if (target === null) {
+          line(e, had && previous ? `${ctx.nick(voter)} retira su voto.` : `${ctx.nick(voter)} se abstiene.`);
+        } else if (had && previous) {
+          line(e, `${ctx.nick(voter)} cambia su voto a ${ctx.nick(target)}.`);
+        } else {
+          line(e, `${ctx.nick(voter)} vota a ${ctx.nick(target)}.`);
+        }
+        break;
+      }
+      case "judgement.cast":
+        verdictVotes.push({ voter: p.voterId, verdict: p.verdict });
+        break;
+      case "trial.verdict": {
+        for (const v of verdictVotes) line(e, `${ctx.nick(v.voter)} votó ${VERDICT_ES[v.verdict as keyof typeof VERDICT_ES]}.`);
+        if (p.verdict === "guilty") {
+          const guilty = verdictVotes.filter((v) => v.verdict === "guilty").length;
+          const innocent = verdictVotes.length - guilty;
+          line(e, `El Pueblo ha decidido ahorcar a ${ctx.nick(p.defendantId)} por ${guilty} votos a ${innocent}.`, "danger");
+        } else {
+          line(e, `${ctx.nick(p.defendantId)} es declarado inocente.`, "good");
+        }
+        break;
+      }
+      case "player.hanged": {
+        const role = roleNameEs(p.roleKey);
+        line(e, `${ctx.nick(p.playerId)} ha sido ahorcado${role ? `. Era ${role}` : ""}.`, "danger");
+        break;
+      }
+      case "player.killed": {
+        const role = roleNameEs(p.roleKey);
+        const cause = CAUSE_ES[p.cause] ?? "ha muerto";
+        line(e, `${ctx.nick(p.playerId)} murió anoche: ${cause}. ${role ? `Era ${role}.` : "No pudimos determinar su rol."}`, "danger");
+        break;
+      }
+      case "night.action.submitted":
+        if (p.actorId !== ctx.meId) break;
+        submittedTonight = true;
+        line(e, `Has decidido ${abilityLabel(p.ability)}${p.targetId ? ` a ${ctx.nick(p.targetId)}` : ""} esta noche.`, "private");
+        break;
+      case "investigation.result":
+        line(e, investigationText(p, ctx.nick), "private");
+        break;
+      case "attack.prevented":
+        line(e, `Has protegido a ${ctx.nick(p.victimId)} de un ataque.`, "good");
+        break;
+      case "night.action.blocked":
+        line(e, "Tu acción fue bloqueada esta noche.", "private");
+        break;
+      case "player.jailed":
+        line(e, "Has sido encarcelado.", "private");
+        break;
+      case "player.blackmailed":
+        line(e, "Estás silenciado durante el día.", "private");
+        break;
+      case "mayor.revealed":
+        line(e, `${ctx.nick(p.playerId)} se revela como Alcalde: su voto cuenta por tres.`, "good");
+        break;
+      case "trap.placed":
+        line(e, `Has colocado una trampa en ${ctx.nick(p.targetId)}.`, "private");
+        break;
+      case "game.ended":
+        flushMorning();
+        separator(e, "Fin de la partida", false);
+        line(e, WIN_ES[p.winner as keyof typeof WIN_ES] ?? "Fin de la partida", "good");
+        break;
+      default:
+        break;
+    }
+  }
+  return items;
+}

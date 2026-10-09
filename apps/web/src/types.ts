@@ -19,6 +19,8 @@ export interface PublicPlayer {
   connected: boolean;
   /** Lo controla el servidor: juega solo. */
   isBot: boolean;
+  /** Compañero de Mafia visible para quien mira. */
+  ally: boolean;
   revealedRoleKey: string | null;
 }
 
@@ -30,6 +32,10 @@ export interface MatchView {
   dayNumber: number;
   defendantId: string | null;
   winner: "town" | "mafia" | null;
+  /** Fin del temporizador de la fase actual (ISO), o null. */
+  phaseEndsAt: string | null;
+  /** Roles que hay en la partida (claves). Público. */
+  rolesInGame: string[];
   players: PublicPlayer[];
   votes: Record<string, string | null>;
   verdicts: Record<string, "guilty" | "innocent">;

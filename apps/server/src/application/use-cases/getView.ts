@@ -1,7 +1,8 @@
 import { ROLE_HANDLERS, replay, type Catalog, type GameState } from "@el-pueblo/engine";
 import { AppError } from "../errors.js";
-import type { CatalogSource, EventLog, MatchStore, PlayerStore, Security } from "../ports.js";
+import type { CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Security } from "../ports.js";
 import { initialState } from "../state/initialState.js";
+import { modeOf, phaseDelayFor } from "../timing.js";
 
 export interface GetViewDeps {
   matches: MatchStore;
@@ -9,6 +10,7 @@ export interface GetViewDeps {
   events: EventLog;
   catalog: CatalogSource;
   security: Security;
+  clock: Clock;
 }
 
 export interface PublicPlayer {
@@ -18,6 +20,8 @@ export interface PublicPlayer {
   status: string;
   connected: boolean;
   isBot: boolean;
+  /** Compañero de Mafia visible para quien mira (la Mafia se conoce entre sí). */
+  ally: boolean;
   /** Rol revelado tras morir (si el registro lo muestra). */
   revealedRoleKey: string | null;
 }
@@ -31,6 +35,10 @@ export interface MatchView {
   dayNumber: number;
   defendantId: string | null;
   winner: string | null;
+  /** Cuándo termina el temporizador de la fase actual (ISO), o null si no tiene. */
+  phaseEndsAt: string | null;
+  /** Roles que hay en la partida (claves, ordenadas). Es información pública, como en la lista de roles de ToS. */
+  rolesInGame: string[];
   players: PublicPlayer[];
   votes: Record<string, string | null>;
   verdicts: Record<string, "guilty" | "innocent">;
@@ -61,10 +69,20 @@ export function getView(deps: GetViewDeps) {
     if (!viewer) throw new AppError("forbidden", "Token no válido para esta partida");
 
     const roster = await deps.players.listByMatch(match.id);
-    const history = await deps.events.read(match.id);
+    const timed = await deps.events.readTimed(match.id);
+    const history = timed.map((t) => t.event);
     const state = replay(initialState(match, roster), history);
     cachedCatalog ??= deps.catalog.load();
     const catalog = await cachedCatalog;
+
+    // Fin del temporizador: inicio de la fase actual + lo que duraba (una votación reanudada, lo que le quedaba).
+    const lastStart = timed.map((t) => t.event.type).lastIndexOf("phase.started");
+    let phaseEndsAt: string | null = null;
+    if (match.status === "playing" && lastStart >= 0) {
+      const delay = phaseDelayFor(catalog, modeOf(match.config), state.phase, state.dayNumber, timed.slice(0, lastStart));
+      if (delay !== null) phaseEndsAt = new Date(timed[lastStart]!.at.getTime() + delay).toISOString();
+    }
+    const rolesInGame = roster.map((p) => p.roleKey).filter((k): k is string => k !== null).sort();
 
     const revealed = new Map<string, string>();
     for (const e of history) {
@@ -87,6 +105,8 @@ export function getView(deps: GetViewDeps) {
       dayNumber: state.dayNumber,
       defendantId: state.defendantId,
       winner: state.winner,
+      phaseEndsAt,
+      rolesInGame,
       players: state.players.map((p) => ({
         id: p.id,
         seat: p.seat,
@@ -94,6 +114,7 @@ export function getView(deps: GetViewDeps) {
         status: p.status,
         connected: p.connected,
         isBot: roster.find((r) => r.id === p.id)?.isBot ?? false,
+        ally: me.faction === "mafia" && p.faction === "mafia" && p.id !== me.id,
         revealedRoleKey: revealed.get(p.id) ?? null,
       })),
       votes: state.votes,

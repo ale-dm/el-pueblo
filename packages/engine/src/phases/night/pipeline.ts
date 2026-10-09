@@ -86,6 +86,20 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       blocked: actor.flags.jailed === true,
     });
   }
+  // Roles pasivos: actúan cada noche aunque no elijan nada.
+  for (const actor of s.players) {
+    const handler = handlerOf(actor);
+    if (!handler?.passive || !isAlive(actor) || s.nightActions[actor.id]) continue;
+    acts.push({
+      actor,
+      handler,
+      ability: "passive",
+      targetId: null,
+      secondTargetId: null,
+      effects: [],
+      blocked: actor.flags.jailed === true,
+    });
+  }
   acts.sort((a, b) => (a.handler.priority ?? 99) - (b.handler.priority ?? 99) || a.actor.seat - b.actor.seat);
 
   for (const act of acts) {
@@ -294,7 +308,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
     out.push({
       type: "investigation.result",
-      payload: { investigatorId: inv.actorId, targetId: target, result },
+      payload: { investigatorId: inv.actorId, targetId: target, result, check: inv.check },
     });
   }
 

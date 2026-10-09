@@ -7,7 +7,9 @@ export const handler: RoleHandler = {
   name: "Psychic",
   faction: "town",
   priority: 4,
-  nightAbilities: [{ key: "vision", target: "none", usesLimit: null }],
+  // Pasiva: recibe su visión cada noche sin elegir nada (wiki: Psychic). No se ofrece como acción.
+  passive: true,
+  nightAbilities: [],
   dayAbilities: [],
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     return [{ kind: "investigate", actorId: actor.id, targetId: null, check: "vision" }];

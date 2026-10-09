@@ -19,7 +19,8 @@ export type GameEventPayloads = {
   "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null };
   "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null };
   "night.action.blocked": { actorId: PlayerId; ability: string };
-  "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string };
+  /** check: tipo de comprobación (suspicious, alignment, role, visitors, targets, mafiaVisits, vision). */
+  "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string; check: string };
   "ability.used": { playerId: PlayerId; ability: string };
   "effect.applied": { actorId: PlayerId; targetId: PlayerId; flag: PlayerFlag };
   "player.blackmailed": { actorId: PlayerId; targetId: PlayerId };

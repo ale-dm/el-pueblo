@@ -11,7 +11,7 @@ const roleOf = (key: string) => ({ godfather: "Godfather", doctor: "Doctor" })[k
 describe("hechos para el narrador", () => {
   it("usa solo eventos públicos: lo privado nunca llega al narrador", () => {
     const events: GameEventEnvelope[] = [
-      { seq: 1, type: "investigation.result", payload: { investigatorId: "a", targetId: "b", result: "suspicious" }, visibility: "private", audiencePlayerId: "a" },
+      { seq: 1, type: "investigation.result", payload: { investigatorId: "a", targetId: "b", result: "suspicious", check: "suspicious" }, visibility: "private", audiencePlayerId: "a" },
       { seq: 2, type: "attack.prevented", payload: { victimId: "b", protectorId: "c" }, visibility: "private", audiencePlayerId: "c" },
       { seq: 3, type: "night.resolved", payload: { dayNumber: 1 }, visibility: "public", audiencePlayerId: null },
     ];

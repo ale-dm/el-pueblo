@@ -46,6 +46,8 @@ export interface RoleHandler {
   dayAbilities: readonly DayAbility[];
   /** Inmune a bloqueos (Tavern Keeper, Veteran). */
   roleblockImmune?: boolean;
+  /** Actúa cada noche sin elegir nada (Psychic). El motor le añade la acción automáticamente. */
+  passive?: boolean;
   /** Efectos de una acción nocturna. Cada rol define el suyo. */
   resolveNight: (ctx: ResolveContext) => Effect[];
   /** Notas de lo que no se implementa en el MVP y por qué. */

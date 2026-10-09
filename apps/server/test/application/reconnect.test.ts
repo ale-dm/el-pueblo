@@ -11,8 +11,8 @@ describe("reconnect", () => {
     const log: GameEventEnvelope[] = [
       { seq: 1, type: "phase.started", payload: { phase: "discussion", dayNumber: 1 }, visibility: "public", audiencePlayerId: null },
       { seq: 2, type: "chat.message", payload: { channel: "mafia", senderId: host.playerId, text: "secreto" }, visibility: "mafia", audiencePlayerId: null },
-      { seq: 3, type: "investigation.result", payload: { investigatorId: guest.playerId, targetId: host.playerId, result: "suspicious" }, visibility: "private", audiencePlayerId: guest.playerId },
-      { seq: 4, type: "investigation.result", payload: { investigatorId: host.playerId, targetId: guest.playerId, result: "innocent" }, visibility: "private", audiencePlayerId: host.playerId },
+      { seq: 3, type: "investigation.result", payload: { investigatorId: guest.playerId, targetId: host.playerId, result: "suspicious", check: "suspicious" }, visibility: "private", audiencePlayerId: guest.playerId },
+      { seq: 4, type: "investigation.result", payload: { investigatorId: host.playerId, targetId: guest.playerId, result: "innocent", check: "suspicious" }, visibility: "private", audiencePlayerId: host.playerId },
     ];
     await app.events.append(host.matchId, 0, log);
     await app.players.update({ ...(await app.players.listByMatch(host.matchId))[1]!, connected: false });

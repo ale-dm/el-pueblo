@@ -31,3 +31,46 @@ export const ROLE_BLURB: Record<string, string> = {
   veteran: "Te pones en alerta (tres veces): atacas a quien te visite y no puedes ser bloqueado.",
   vigilante: "Disparas a alguien (tres veces). Si es del pueblo, tú también mueres.",
 };
+
+/** Nombre en español y en inglés (el del catálogo, que llega en los resultados de investigación). */
+export const ROLE_NAMES: Record<string, { es: string; en: string }> = {
+  ambusher: { es: "Emboscador", en: "Ambusher" },
+  blackmailer: { es: "Chantajista", en: "Blackmailer" },
+  bootlegger: { es: "Contrabandista", en: "Bootlegger" },
+  consigliere: { es: "Consigliere", en: "Consigliere" },
+  disguiser: { es: "Disfrazador", en: "Disguiser" },
+  forger: { es: "Falsificador", en: "Forger" },
+  framer: { es: "Incriminador", en: "Framer" },
+  godfather: { es: "Padrino", en: "Godfather" },
+  hypnotist: { es: "Hipnotizador", en: "Hypnotist" },
+  janitor: { es: "Conserje", en: "Janitor" },
+  mafioso: { es: "Mafioso", en: "Mafioso" },
+  bodyguard: { es: "Guardaespaldas", en: "Bodyguard" },
+  crusader: { es: "Cruzado", en: "Crusader" },
+  doctor: { es: "Médico", en: "Doctor" },
+  investigator: { es: "Investigador", en: "Investigator" },
+  jailor: { es: "Carcelero", en: "Jailor" },
+  lookout: { es: "Vigía", en: "Lookout" },
+  mayor: { es: "Alcalde", en: "Mayor" },
+  medium: { es: "Médium", en: "Medium" },
+  psychic: { es: "Psíquico", en: "Psychic" },
+  retributionist: { es: "Retribuidor", en: "Retributionist" },
+  sheriff: { es: "Sheriff", en: "Sheriff" },
+  spy: { es: "Espía", en: "Spy" },
+  tavern_keeper: { es: "Tabernero", en: "Tavern Keeper" },
+  tracker: { es: "Rastreador", en: "Tracker" },
+  transporter: { es: "Transportista", en: "Transporter" },
+  trapper: { es: "Trampero", en: "Trapper" },
+  vampire_hunter: { es: "Cazavampiros", en: "Vampire Hunter" },
+  veteran: { es: "Veterano", en: "Veteran" },
+  vigilante: { es: "Vigilante", en: "Vigilante" },
+};
+
+/** Nombre a mostrar de un rol; si no se conoce, la clave. */
+export const roleNameEs = (roleKey: string | null | undefined): string | null =>
+  roleKey ? ROLE_NAMES[roleKey]?.es ?? roleKey : null;
+
+/** Traduce el nombre en inglés del catálogo (resultado de Investigador) al español. */
+export function roleNameFromEnglish(name: string): string {
+  return Object.values(ROLE_NAMES).find((r) => r.en === name)?.es ?? name;
+}
