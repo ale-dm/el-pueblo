@@ -21,7 +21,7 @@ describe("hechos para el narrador", () => {
 
   it("una noche con muertes recoge el nombre, la causa y el rol revelado", () => {
     const events: GameEventEnvelope[] = [
-      { seq: 1, type: "player.killed", payload: { playerId: "b", cause: "mafia", roleKey: "doctor" }, visibility: "public", audiencePlayerId: null },
+      { seq: 1, type: "player.killed", payload: { playerId: "b", cause: "mafia", roleKey: "doctor", will: null }, visibility: "public", audiencePlayerId: null },
       { seq: 2, type: "night.resolved", payload: { dayNumber: 2 }, visibility: "public", audiencePlayerId: null },
     ];
     expect(factsFromEvents(events, nickOf, roleOf)).toEqual([

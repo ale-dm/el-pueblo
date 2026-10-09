@@ -13,5 +13,7 @@ export type Command =
       targetId: PlayerId | null;
       secondTargetId?: PlayerId | null;
     }
+  | { type: "night.action.cancel"; actorId: PlayerId }
+  | { type: "will.write"; playerId: PlayerId; text: string }
   | { type: "chat.send"; senderId: PlayerId; channel: "public" | "mafia" | "dead"; text: string }
   | { type: "timer.expired" };

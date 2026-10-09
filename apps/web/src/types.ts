@@ -34,8 +34,8 @@ export interface MatchView {
   winner: "town" | "mafia" | null;
   /** Fin del temporizador de la fase actual (ISO), o null. */
   phaseEndsAt: string | null;
-  /** Roles que hay en la partida (claves). Público. */
-  rolesInGame: string[];
+  /** Roles que hay en la partida, con su grupo (alineamiento). Público. */
+  rolesInGame: Array<{ key: string; alignment: string | null }>;
   players: PublicPlayer[];
   votes: Record<string, string | null>;
   verdicts: Record<string, "guilty" | "innocent">;
@@ -50,6 +50,8 @@ export interface MatchView {
     roleSummary: string | null;
     flags: Record<string, boolean>;
     nightAction: { ability: string; targetId: string | null } | null;
+    /** Tu última voluntad. */
+    will: string | null;
     nightAbilities: Array<{ key: string; target: "player" | "none" | "two"; usesLeft: number | null }>;
     dayAbilities: Array<{ key: string; target: "player" | "none"; oncePerDay: boolean; usesLeft: number | null }>;
   };

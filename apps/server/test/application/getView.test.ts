@@ -52,7 +52,7 @@ describe("vista por jugador", () => {
     const target = roster.find((p) => p.faction === "town")!;
     const events = await app.events.read(matchId);
     await app.events.append(matchId, events.at(-1)!.seq, [
-      { seq: events.at(-1)!.seq + 1, type: "player.killed", payload: { playerId: target.id, cause: "mafia", roleKey: target.roleKey }, visibility: "public", audiencePlayerId: null },
+      { seq: events.at(-1)!.seq + 1, type: "player.killed", payload: { playerId: target.id, cause: "mafia", roleKey: target.roleKey, will: null }, visibility: "public", audiencePlayerId: null },
     ]);
     const view = await app.services.getView({ matchId, token: players[0]!.token });
     expect(view.players.find((p) => p.id === target.id)?.revealedRoleKey).toBe(target.roleKey);

@@ -39,12 +39,16 @@ Contrastado con las fichas de `docs/roles/` (wiki de Town of Salem 1). Estados:
 | Bootlegger | OK | Bloquea una acción |
 | Consigliere | OK | Revela el rol del objetivo |
 | Disguiser | Pendiente | Disfraz no implementado. Oculta su habilidad |
-| Forger | Pendiente | Falsificar voluntades no implementado (no hay voluntades en el MVP). Usos: 2, según la ficha. Oculta su habilidad |
+| Forger | Pendiente | Falsificar voluntades no implementado (las voluntades sí existen desde esta versión). Usos: 2, según la ficha. Oculta su habilidad |
 | Framer | OK | Marca al objetivo como enmarcado |
 | Godfather | OK | Ordena la muerte; inmune a la detección |
 | Hypnotist | Pendiente | Recuerdos falsos no implementados. Oculta su habilidad |
 | Janitor | Parcial | Limpia el rol. Usos: 3 en el código; la ficha no confirma el límite (sin verificar) |
 | Mafioso | OK | Ejecuta la orden del Godfather. Pasar a Godfather si este muere: sin verificar |
+
+## Nombres en español
+
+Los nombres de los roles en `apps/web/src/lib/roles.ts` son traducciones propias y no están confirmados. Antes de darlos por buenos hay que compararlos con la versión en español del juego.
 
 ## Cambios de esta revisión
 

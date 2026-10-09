@@ -195,7 +195,7 @@ describe("noche: victoria y muertos", () => {
 
   it("un jugador muerto no puede actuar de noche", () => {
     const s = game(["godfather", "investigator"]);
-    const dead = applyAll(s, [{ seq: 1, type: "player.killed", payload: { playerId: "p1", cause: "x", roleKey: null }, visibility: "public", audiencePlayerId: null }]);
+    const dead = applyAll(s, [{ seq: 1, type: "player.killed", payload: { playerId: "p1", cause: "x", roleKey: null, will: null }, visibility: "public", audiencePlayerId: null }]);
     expect(apply(dead, { seq: 2, type: "phase.started", payload: { phase: "night", dayNumber: 1 }, visibility: "public", audiencePlayerId: null }).phase).toBe("night");
   });
 });

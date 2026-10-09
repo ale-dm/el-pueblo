@@ -126,3 +126,33 @@ describe("registro estilo Town of Salem", () => {
     expect(texts(items)).toEqual(["== Fin de la partida", "¡Gana el pueblo!"]);
   });
 });
+
+describe("decisiones de la Mafia, cancelaciones y testamentos", () => {
+  it("un compañero de la Mafia ve lo que elige el otro", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("night.action.submitted", { actorId: "b", ability: "kill", targetId: "c", secondTargetId: null, mafiaTeam: true }, "mafia"),
+    ], ctx({ meId: "a" }))).join(" ");
+    expect(text).toContain("Bea ha elegido Atacar a Caro.");
+  });
+
+  it("cancelar se registra, y tu propia cancelación cuenta como tal", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("night.action.cancelled", { actorId: "a", mafiaTeam: false }, "private"),
+      ev("night.action.cancelled", { actorId: "b", mafiaTeam: false }, "private"),
+    ], ctx({ meId: "a" }))).join(" | ");
+    expect(text).toContain("Has cancelado tu acción esta noche.");
+    expect(text).toContain("Bea ha cancelado su acción.");
+  });
+
+  it("al morir se lee el testamento, o que no había ninguno", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("player.killed", { playerId: "b", cause: "mafia", roleKey: "doctor", will: "Dejo mi reloj." }),
+      ev("player.killed", { playerId: "c", cause: "mafia", roleKey: null, will: null }),
+    ], ctx())).join(" | ");
+    expect(text).toContain('Testamento de Bea: "Dejo mi reloj."');
+    expect(text).toContain("No encontramos un testamento de Caro.");
+  });
+});

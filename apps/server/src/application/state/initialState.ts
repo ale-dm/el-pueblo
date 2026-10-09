@@ -23,5 +23,6 @@ export function initialState(match: MatchRecord, players: readonly PlayerRecord[
     nightActions: {},
     traps: {},
     dayActionDay: {},
+    wills: {},
   };
 }

@@ -15,9 +15,13 @@ export type GameEventPayloads = {
   "trial.started": { defendantId: PlayerId };
   "judgement.cast": { voterId: PlayerId; verdict: "guilty" | "innocent" };
   "trial.verdict": { defendantId: PlayerId; verdict: "guilty" | "innocent" };
-  "player.hanged": { playerId: PlayerId; roleKey: string | null };
-  "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null };
-  "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null };
+  /** will: última voluntad (texto), o null si no escribió ni fue limpiado. Se revela al morir. */
+  "player.hanged": { playerId: PlayerId; roleKey: string | null; will: string | null };
+  "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null };
+  /** mafiaTeam: si el actor es de la Mafia, la decisión la ven los demás miembros vivos de la Mafia. */
+  "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; mafiaTeam: boolean };
+  "night.action.cancelled": { actorId: PlayerId; mafiaTeam: boolean };
+  "will.written": { playerId: PlayerId; text: string };
   "night.action.blocked": { actorId: PlayerId; ability: string };
   /** check: tipo de comprobación (suspicious, alignment, role, visitors, targets, mafiaVisits, vision). */
   "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string; check: string };

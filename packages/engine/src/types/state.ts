@@ -58,4 +58,6 @@ export interface GameState {
   traps: Record<PlayerId, TrapState>;
   /** Último día en que cada jugador usó una habilidad de día (una vez por día). */
   dayActionDay: Record<PlayerId, number>;
+  /** Últimas voluntades escritas por jugadores vivos. Se revelan al morir. */
+  wills: Record<PlayerId, string>;
 }

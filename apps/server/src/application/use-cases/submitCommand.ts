@@ -30,6 +30,10 @@ function actorOf(command: Command): string | undefined {
     case "vote":
     case "judgement.vote":
       return command.voterId;
+    case "night.action.cancel":
+      return command.actorId;
+    case "will.write":
+      return command.playerId;
     case "day.action":
     case "night.action":
       return command.actorId;

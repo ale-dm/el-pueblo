@@ -89,6 +89,10 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
     else items.push(item);
   };
   const separator = (e: GameEvent, text: string, night: boolean) => items.push({ kind: "separator", key: `s${e.seq}`, text, night });
+  /** Testamento al morir: el texto tal cual, o que no había ninguno. */
+  const willLine = (e: GameEvent, will: string | null, playerId: string) => {
+    line(e, will ? `Testamento de ${ctx.nick(playerId)}: "${will}"` : `No encontramos un testamento de ${ctx.nick(playerId)}.`, will ? "info" : "private");
+  };
   /** Lo de la noche sale al amanecer, justo después del separador del día. */
   const flushMorning = () => {
     items.push(...morning);
@@ -169,18 +173,32 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "player.hanged": {
         const role = roleNameEs(p.roleKey);
         line(e, `${ctx.nick(p.playerId)} ha sido ahorcado${role ? `. Era ${role}` : ""}.`, "danger");
+        willLine(e, p.will, p.playerId);
         break;
       }
       case "player.killed": {
         const role = roleNameEs(p.roleKey);
         const cause = CAUSE_ES[p.cause] ?? "ha muerto";
         line(e, `${ctx.nick(p.playerId)} murió anoche: ${cause}. ${role ? `Era ${role}.` : "No pudimos determinar su rol."}`, "danger");
+        willLine(e, p.will, p.playerId);
         break;
       }
       case "night.action.submitted":
-        if (p.actorId !== ctx.meId) break;
-        submittedTonight = true;
-        line(e, `Has decidido ${abilityLabel(p.ability)}${p.targetId ? ` a ${ctx.nick(p.targetId)}` : ""} esta noche.`, "private");
+        if (p.actorId === ctx.meId) {
+          submittedTonight = true;
+          line(e, `Has decidido ${abilityLabel(p.ability)}${p.targetId ? ` a ${ctx.nick(p.targetId)}` : ""} esta noche.`, "private");
+        } else {
+          // Solo llega a la Mafia viva: decisiones de los compañeros.
+          line(e, `${ctx.nick(p.actorId)} ha elegido ${abilityLabel(p.ability)}${p.targetId ? ` a ${ctx.nick(p.targetId)}` : ""}.`, "private");
+        }
+        break;
+      case "night.action.cancelled":
+        if (p.actorId === ctx.meId) {
+          submittedTonight = false;
+          line(e, "Has cancelado tu acción esta noche.", "private");
+        } else {
+          line(e, `${ctx.nick(p.actorId)} ha cancelado su acción.`, "private");
+        }
         break;
       case "investigation.result":
         line(e, investigationText(p, ctx.nick), "private");

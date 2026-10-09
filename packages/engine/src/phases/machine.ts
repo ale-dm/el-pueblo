@@ -62,7 +62,7 @@ function resolveJudgement(s: GameState): EventInput[] {
   const events: EventInput[] = [{ type: "trial.verdict", payload: { defendantId: defendant.id, verdict } }];
   if (verdict === "guilty") {
     const roleKey = defendant.roleKey;
-    events.push({ type: "player.hanged", payload: { playerId: defendant.id, roleKey } });
+    events.push({ type: "player.hanged", payload: { playerId: defendant.id, roleKey, will: s.wills[defendant.id] ?? null } });
     const withEnd = withVictory(s, events);
     if (withEnd.length > events.length) return withEnd;
     return [...events, phaseStarted("last_words", s.dayNumber)];

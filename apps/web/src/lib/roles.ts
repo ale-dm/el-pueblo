@@ -74,3 +74,17 @@ export const roleNameEs = (roleKey: string | null | undefined): string | null =>
 export function roleNameFromEnglish(name: string): string {
   return Object.values(ROLE_NAMES).find((r) => r.en === name)?.es ?? name;
 }
+
+/** Grupos de roles (alineamientos) como en la lista de roles de ToS. */
+export const ALIGNMENT_ES: Record<string, { faction: string; name: string }> = {
+  town_investigative: { faction: "Pueblo", name: "Investigación" },
+  town_protective: { faction: "Pueblo", name: "Protección" },
+  town_killing: { faction: "Pueblo", name: "Asesinato" },
+  town_support: { faction: "Pueblo", name: "Apoyo" },
+  mafia_killing: { faction: "Mafia", name: "Asesinato" },
+  mafia_support: { faction: "Mafia", name: "Apoyo" },
+  mafia_deception: { faction: "Mafia", name: "Engaño" },
+};
+
+/** Orden de los grupos en la lista: primero el pueblo, después la Mafia. */
+export const ALIGNMENT_ORDER = Object.keys(ALIGNMENT_ES);

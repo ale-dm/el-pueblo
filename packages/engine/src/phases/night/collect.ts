@@ -53,7 +53,28 @@ export function nightAction(
   return ok([
     {
       type: "night.action.submitted",
-      payload: { actorId, ability, targetId, secondTargetId },
+      payload: { actorId, ability, targetId, secondTargetId, mafiaTeam: actor.faction === "mafia" },
     },
   ]);
 }
+
+/** Cancela la acción de esta noche. Hasta el final de la noche, el jugador puede volver a elegir. */
+export function cancelNightAction(s: GameState, actorId: string): Result<EventInput[]> {
+  if (s.phase !== "night") return err("wrong_phase", "Las acciones nocturnas solo se hacen de noche");
+  const actor = playerOf(s, actorId);
+  if (!isAlive(actor)) return err("invalid_command", "Solo los vivos actúan de noche");
+  if (!s.nightActions[actorId]) return err("invalid_command", "No tienes ninguna acción que cancelar");
+  return ok([{ type: "night.action.cancelled", payload: { actorId, mafiaTeam: actor.faction === "mafia" } }]);
+}
+
+/** Escribe o cambia la última voluntad. Solo vivos; texto vacío la borra. */
+export function writeWill(s: GameState, playerId: string, text: string): Result<EventInput[]> {
+  const player = playerOf(s, playerId);
+  if (!player) return err("invalid_command", "Jugador desconocido");
+  if (!isAlive(player)) return err("invalid_command", "Los muertos ya no pueden escribir su testamento");
+  const trimmed = text.trim();
+  if (trimmed.length > MAX_WILL_LENGTH) return err("invalid_command", `El testamento tiene como máximo ${MAX_WILL_LENGTH} caracteres`);
+  return ok([{ type: "will.written", payload: { playerId, text: trimmed } }]);
+}
+
+export const MAX_WILL_LENGTH = 300;

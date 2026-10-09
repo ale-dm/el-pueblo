@@ -56,6 +56,13 @@ export function ActionPanel({ view, targets, clearTargets }: { view: MatchView; 
   }
 
   if (view.phase === "night") {
+    if (me.nightAction) {
+      actions.push(
+        <Button key="cancel" tone="danger" disabled={busy} onClick={() => dispatch({ type: "night.action.cancel", actorId: me.id })}>
+          Cancelar mi acción
+        </Button>,
+      );
+    }
     status = me.nightAction
       ? `Has decidido ${abilityLabel(me.nightAction.ability)}${me.nightAction.targetId ? ` a ${nick(me.nightAction.targetId)}` : ""} esta noche.`
       : me.nightAbilities.length ? "Aún no has elegido acción esta noche." : "Esta noche no tienes nada que hacer.";
@@ -90,7 +97,7 @@ export function ActionPanel({ view, targets, clearTargets }: { view: MatchView; 
       <h3 className="mb-2 font-display text-xl">Tus acciones</h3>
       {status && <p className="mb-3 font-semibold">{status}</p>}
       {actions.length ? <div className="flex flex-wrap gap-2">{actions}</div> : <p className="text-sm">No tienes nada que hacer ahora.</p>}
-      {view.phase === "night" && me.nightAction && <p className="mt-2 text-sm">Puedes cambiar tu elección hasta que acabe la noche.</p>}
+      {view.phase === "night" && me.nightAction && <p className="mt-2 text-sm">Puedes cambiar o cancelar tu elección hasta que acabe la noche.</p>}
     </Card>
   );
 }

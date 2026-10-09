@@ -62,6 +62,19 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
     case "judgement.cast":
       return { ...s, verdicts: { ...s.verdicts, [e.payload.voterId]: e.payload.verdict } };
 
+    case "will.written": {
+      const wills = { ...s.wills };
+      if (e.payload.text) wills[e.payload.playerId] = e.payload.text;
+      else delete wills[e.payload.playerId];
+      return { ...s, wills };
+    }
+
+    case "night.action.cancelled": {
+      const nightActions = { ...s.nightActions };
+      delete nightActions[e.payload.actorId];
+      return { ...s, nightActions };
+    }
+
     case "player.hanged":
     case "player.killed": {
       const cause = e.type === "player.hanged" ? "hanged" : e.payload.cause;

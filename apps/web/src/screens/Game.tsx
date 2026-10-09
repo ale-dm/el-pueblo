@@ -12,6 +12,8 @@ import { ActionPanel } from "../game/ActionPanel.js";
 import { Chat } from "../game/Chat.js";
 import { LogPanel } from "../game/LogPanel.js";
 import { PushButton } from "../game/PushButton.js";
+import { RolesInGame } from "../game/RolesInGame.js";
+import { WillCard } from "../game/WillCard.js";
 
 /** Cuántos objetivos pide la fase actual: votación y noche con dos objetivos. */
 function targetsNeeded(view: MatchView): { selectable: boolean; max: number } {
@@ -51,22 +53,6 @@ function useNow(active: boolean): number {
     return () => clearInterval(tick);
   }, [active]);
   return now;
-}
-
-/** Roles de la partida con su número, como la lista de roles de ToS. */
-function RolesInGame({ roles }: { roles: string[] }) {
-  const counts = new Map<string, number>();
-  for (const key of roles) counts.set(key, (counts.get(key) ?? 0) + 1);
-  return (
-    <Card>
-      <h3 className="mb-2 font-display text-xl">Roles en la partida</h3>
-      <div className="flex flex-wrap gap-2">
-        {[...counts].map(([key, n]) => (
-          <Pill key={key}>{ROLE_NAMES[key]?.es ?? key}{n > 1 ? ` ×${n}` : ""}</Pill>
-        ))}
-      </div>
-    </Card>
-  );
 }
 
 export function Game({ view }: { view: MatchView }) {
@@ -109,32 +95,32 @@ export function Game({ view }: { view: MatchView }) {
   return (
     <>
       <RoleReveal view={view} />
-      <main className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-4 p-4 md:p-6">
+      <main className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-3 p-3 md:p-6 landscape:max-w-none landscape:p-2">
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="font-semibold">Día {view.dayNumber} · sala {view.roomCode}</p>
-            <h1 className="font-display text-4xl drop-shadow-[3px_3px_0_var(--color-ink)]">{PHASE_LABEL[view.phase]}</h1>
+            <h1 className="font-display text-4xl drop-shadow-[3px_3px_0_var(--color-ink)] landscape:text-3xl">{PHASE_LABEL[view.phase]}</h1>
           </div>
           <div className="flex items-center gap-3">
-            {left !== null && (
-              <Pill className="tabular-nums">⏱ {formatClock(left)}</Pill>
-            )}
+            {left !== null && <Pill className="tabular-nums">⏱ {formatClock(left)}</Pill>}
             <Pill>{night ? "🌙 Noche" : "☀️ Día"}</Pill>
             <PushButton />
           </div>
         </header>
 
-        <Card>
+        <Card className="landscape:p-3">
           <p className="font-semibold">{phaseBanner(view)}</p>
         </Card>
 
-        <div className="grid gap-4 md:grid-cols-[1fr_320px]">
-          <div className="space-y-4">
+        {/* Vertical en móvil; en apaisado y escritorio, el pueblo a la izquierda y los paneles a la derecha. */}
+        <div className="grid gap-4 md:grid-cols-[1fr_340px] landscape:grid-cols-[1fr_300px] landscape:items-start landscape:gap-3">
+          <div className="min-w-0 space-y-4 landscape:max-h-[calc(100dvh-7rem)] landscape:overflow-y-auto landscape:pr-1">
             <PlayerGrid view={view} selected={targets} selectable={need.selectable} onPick={pick} />
             <ActionPanel view={view} targets={targets} clearTargets={() => setTargets([])} />
           </div>
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4 landscape:max-h-[calc(100dvh-7rem)] landscape:overflow-y-auto landscape:pr-1">
             <RoleCard me={view.me} />
+            <WillCard me={view.me} />
             <Chat view={view} log={log} />
             <LogPanel view={view} log={log} />
             <RolesInGame roles={view.rolesInGame} />

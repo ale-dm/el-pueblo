@@ -37,8 +37,8 @@ export interface MatchView {
   winner: string | null;
   /** Cuándo termina el temporizador de la fase actual (ISO), o null si no tiene. */
   phaseEndsAt: string | null;
-  /** Roles que hay en la partida (claves, ordenadas). Es información pública, como en la lista de roles de ToS. */
-  rolesInGame: string[];
+  /** Roles que hay en la partida, con su grupo (alineamiento). Público, como la lista de roles de ToS. */
+  rolesInGame: Array<{ key: string; alignment: string | null }>;
   players: PublicPlayer[];
   votes: Record<string, string | null>;
   verdicts: Record<string, "guilty" | "innocent">;
@@ -53,6 +53,8 @@ export interface MatchView {
     roleSummary: string | null;
     flags: Record<string, boolean>;
     nightAction: { ability: string; targetId: string | null } | null;
+    /** Tu última voluntad (solo tú la ves mientras vives). */
+    will: string | null;
     /** Habilidades disponibles ahora mismo (con usos restantes). */
     nightAbilities: Array<{ key: string; target: string; usesLeft: number | null }>;
     dayAbilities: Array<{ key: string; target: string; oncePerDay: boolean; usesLeft: number | null }>;
@@ -82,7 +84,11 @@ export function getView(deps: GetViewDeps) {
       const delay = phaseDelayFor(catalog, modeOf(match.config), state.phase, state.dayNumber, timed.slice(0, lastStart));
       if (delay !== null) phaseEndsAt = new Date(timed[lastStart]!.at.getTime() + delay).toISOString();
     }
-    const rolesInGame = roster.map((p) => p.roleKey).filter((k): k is string => k !== null).sort();
+    const rolesInGame = roster
+      .map((p) => p.roleKey)
+      .filter((k): k is string => k !== null)
+      .sort()
+      .map((key) => ({ key, alignment: catalog.roles.get(key)?.alignmentKey ?? null }));
 
     const revealed = new Map<string, string>();
     for (const e of history) {
@@ -130,6 +136,7 @@ export function getView(deps: GetViewDeps) {
         roleSummary: roleDef?.summary ?? null,
         flags: { ...me.flags },
         nightAction: state.nightActions[me.id] ?? null,
+        will: state.wills[me.id] ?? null,
         nightAbilities: alive && handler
           ? handler.nightAbilities.map((a) => ({ key: a.key, target: a.target, usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0 }))
           : [],

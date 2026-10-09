@@ -159,3 +159,10 @@ Estado de cada supuesto según la wiki de Town of Salem (ToS 1).
 **Pendiente de implementar**
 - El Jailor que ejecuta a un Town pierde sus ejecuciones restantes (ficha del Jailor). `roles/town/jailor.ts` no lo implementa.
 - Victoria 1 contra 1 (fuera del MVP).
+
+## Comandos y eventos de la fase de la vista de juego
+
+- `night.action.cancel`: cancela la acción de esta noche. Evento `night.action.cancelled`, visible para la Mafia si quien cancela es de la Mafia y privado en otro caso.
+- `will.write`: escribe o cambia la última voluntad (máximo 300 caracteres, vacío la borra), solo mientras se vive. Evento `will.written`, privado. Al morir o ser ahorcado, `player.killed` y `player.hanged` llevan el testamento (`will`), salvo que el jugador haya sido limpiado.
+- `night.action.submitted` lleva `mafiaTeam`: si quien actúa es de la Mafia, la decisión la ven los miembros vivos de la Mafia.
+- Roles pasivos (`passive: true` en el handler): reciben su efecto cada noche sin elegir nada. Hoy solo la Psíquica.

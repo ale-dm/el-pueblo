@@ -10,8 +10,13 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
     case "roles.assigned":
       return priv(event.payload.playerId);
     case "night.action.submitted":
+    case "night.action.cancelled":
+      // La Mafia ve las decisiones de sus miembros (wiki: Mafia y Coven ven las decisiones de sus compañeros).
+      return event.payload.mafiaTeam ? { visibility: "mafia" as Visibility, audiencePlayerId: null } : priv(event.payload.actorId);
     case "night.action.blocked":
       return priv(event.payload.actorId);
+    case "will.written":
+      return priv(event.payload.playerId);
     case "investigation.result":
       return priv(event.payload.investigatorId);
     case "ability.used":

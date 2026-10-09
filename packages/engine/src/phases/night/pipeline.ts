@@ -318,7 +318,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (dead.has(playerId)) return;
     dead.add(playerId);
     const roleKey = cleaned.has(playerId) ? null : playerOf(s, playerId)?.roleKey ?? null;
-    out.push({ type: "player.killed", payload: { playerId, cause, roleKey } });
+    // Un limpiado no deja testamento visible (wiki: Janitor).
+    const will = cleaned.has(playerId) ? null : s.wills[playerId] ?? null;
+    out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will } });
   };
   for (let i = 0; i < attacks.length; i++) {
     const atk = attacks[i]!;
