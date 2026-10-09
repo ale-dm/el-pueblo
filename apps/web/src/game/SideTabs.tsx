@@ -2,6 +2,7 @@ import type { MatchView } from "../types.js";
 import { RoleCard } from "./RoleCard.js";
 import { RolesInGame } from "./RolesInGame.js";
 import { WillCard } from "./WillCard.js";
+import { DeathNoteCard } from "./DeathNoteCard.js";
 
 export type SideTab = "role" | "roles" | "will";
 
@@ -30,6 +31,8 @@ export function SideTabs({ view, tab, onTab, className = "" }: { view: MatchView
         ))}
       </div>
       <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
+        {/* La nota de muerte se cambia en la mañana del anuncio, sea cual sea la pestaña abierta (Death_Note_ToS.md:17). */}
+        <DeathNoteCard view={view} />
         {tab === "role" && <RoleCard me={view.me} />}
         {tab === "roles" && <RolesInGame roles={view.rolesInGame} />}
         {tab === "will" && <WillCard me={view.me} />}

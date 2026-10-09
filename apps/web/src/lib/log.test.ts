@@ -379,6 +379,19 @@ describe("espionaje del Spy", () => {
   });
 });
 
+describe("nota de muerte que cambia en la mañana (wiki: Death_Note_ToS.md:17)", () => {
+  it("el registro muestra la nota cambiada, y su borrado", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+      ev("death.note.written", { victimId: "b", note: "Es el Mafioso." }),
+      ev("death.note.written", { victimId: "b", note: "" }),
+    ], ctx())).join(" | ");
+    expect(text).toContain('La nota de muerte de Bea cambió: "Es el Mafioso."');
+    expect(text).toContain("La nota de muerte de Bea se quitó.");
+  });
+});
+
 describe("espionaje del Spy: un mensaje por acción directa (wiki: Spy.md:221-309)", () => {
   it("cada clave muestra su frase de la tabla del Spy", () => {
     seq = 0;

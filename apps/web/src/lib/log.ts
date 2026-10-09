@@ -340,6 +340,10 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         willLine(e, p.will, p.playerId);
         break;
       }
+      // Wiki (Death_Note_ToS.md:17): el asesino cambia la nota durante el anuncio de la mañana; el registro la muestra.
+      case "death.note.written":
+        line(e, p.note ? `La nota de muerte de ${ctx.nick(p.victimId)} cambió: "${p.note}"` : `La nota de muerte de ${ctx.nick(p.victimId)} se quitó.`, "info");
+        break;
       case "player.killed": {
         const role = roleName(p.roleKey);
         const cause = CAUSE_ES[p.cause] ?? "ha muerto";
