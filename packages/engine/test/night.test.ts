@@ -89,9 +89,16 @@ describe("noche: protecciones y ataques", () => {
   });
 
   it("el Vigilante que dispara a la Mafia sobrevive", () => {
-    const s = game(["vigilante", "godfather", "investigator"]);
+    const s = game(["vigilante", "mafioso", "investigator"]);
     const { events } = resolve(s, [night("p1", "shoot", "p2")]);
     expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).toEqual(["p2"]);
+  });
+
+  it("un disparo Basic no mata al Godfather (Basic Defense, wiki: Godfather)", () => {
+    const s = game(["vigilante", "godfather", "investigator"]);
+    const { events } = resolve(s, [night("p1", "shoot", "p2")]);
+    expect(ofType(events, "player.killed")).toHaveLength(0);
+    expect(ofType(events, "attack.prevented")).toHaveLength(0);
   });
 
   it("el Veteran en alerta mata a quien le visita", () => {
@@ -102,11 +109,11 @@ describe("noche: protecciones y ataques", () => {
     ]);
   });
 
-  it("el Crusader protege a su objetivo y mata al Godfather que lo visita", () => {
+  it("el Crusader protege a su objetivo; su ataque Basic no mata al Godfather que lo visita", () => {
     const s = game(["crusader", "godfather", "investigator"]);
     const { events } = resolve(s, [night("p1", "protect", "p3"), night("p2", "kill", "p3")]);
     expect(ofType(events, "attack.prevented")).toHaveLength(1);
-    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p2", "crusade"]]);
+    expect(ofType(events, "player.killed")).toHaveLength(0);
   });
 });
 

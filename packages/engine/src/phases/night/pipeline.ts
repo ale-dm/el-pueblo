@@ -394,7 +394,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
     const medical = prots.filter((p) => p.source !== "bodyguard");
     const strongest = medical.reduce<Protection | undefined>((best, p) => (!best || p.power > best.power ? p : best), undefined);
-    const defense = Math.max(strongest?.power ?? 0, alerted.has(atk.victimId) ? 1 : 0);
+    // Wiki (Godfather): Basic Defense permanente; un ataque Basic no le mata.
+    const baseDefense = victim?.roleKey === "godfather" ? 1 : 0;
+    const defense = Math.max(strongest?.power ?? 0, alerted.has(atk.victimId) ? 1 : 0, baseDefense);
     if (atk.power > defense) {
       kill(atk.victimId, atk.cause);
     } else if (strongest) {
