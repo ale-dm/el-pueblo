@@ -14,6 +14,7 @@ export * from "./rules/voting.js";
 export * from "./rules/victory.js";
 export * from "./rules/priority.js";
 export * from "./rules/roleblock.js";
+export * from "./rules/stalemate.js";
 export * from "./projection/visibility.js";
 export * from "./roles/types.js";
 export { ROLE_HANDLERS } from "./roles/registry.js";

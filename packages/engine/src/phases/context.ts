@@ -5,6 +5,7 @@ import type { GameState, PlayerState } from "../types/state.js";
 import { ROLE_HANDLERS } from "../roles/registry.js";
 import type { RoleHandler } from "../roles/types.js";
 import { checkVictory } from "../rules/victory.js";
+import { checkStalemate } from "../rules/stalemate.js";
 
 export const handlerOf = (p: PlayerState): RoleHandler | undefined =>
   p.roleKey ? ROLE_HANDLERS.get(p.roleKey) : undefined;
@@ -24,7 +25,9 @@ export function applyInputs(s: GameState, inputs: readonly EventInput[]): GameSt
 
 /** Añade game.ended si la partida termina con estos eventos. */
 export function withVictory(s: GameState, inputs: EventInput[]): EventInput[] {
-  const winner = checkVictory(applyInputs(s, inputs).players);
+  const after = applyInputs(s, inputs);
+  // Wiki (Victory_ToS.md:9-11): la victoria se comprueba tras las muertes anunciadas y tras un ahorcamiento.
+  const winner = checkVictory(after.players) ?? checkStalemate(after);
   return winner ? [...inputs, { type: "game.ended", payload: { winner } }] : inputs;
 }
 
