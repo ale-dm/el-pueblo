@@ -74,14 +74,12 @@ describe("narración durante una partida", () => {
     const victim = roster.find((p) => p.faction === "town")!;
     const tick = () => app.services.advance(host.matchId);
 
-    await tick(); // día 1 → discusión
-    await tick(); // discusión → votación
-    await tick(); // votación → noche
+    await tick(); // día 1 → noche 1 (sin votación en el día 1)
     await app.services.submitCommand({
       matchId: host.matchId, token: godToken,
       command: { type: "night.action", actorId: godfather.id, ability: "kill", targetId: victim.id },
     });
-    await tick(); // noche resuelta
+    await tick(); // noche 1 resuelta
 
     await app.services.drainNarrations();
     const stored = await app.narrations.listByMatch(host.matchId);

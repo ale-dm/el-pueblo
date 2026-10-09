@@ -103,22 +103,43 @@ Orden de resolución, por prioridad de `roles.priority` (menor primero), y desem
 
 Lo confirmaré en `Abilities (ToS)` y en las páginas de cada rol antes de cerrar `phases/night/resolve.ts`.
 
+## Transiciones de fase
+
+Las transiciones las decide `phases/machine.ts` cuando vence el temporizador de la fase (`timer.expired`). Los tiempos vienen de `phase_timings` (ver `docs/GDD.md` §5.3).
+
+| Fase actual | Siguiente | Notas |
+|---|---|---|
+| `day_1` | `night` (día 1) | Solo charla. No hay votación ni juicios el día 1 (wiki: Phases, "Day (Only on D1)") |
+| `discussion` | `voting` | |
+| `voting` | `defense` si hay candidato a juicio y quedan juicios; si no, `night` | Máximo 3 juicios por día. Al tercero, el día termina |
+| `defense` | `judgement` | Solo habla el acusado |
+| `judgement` | `last_words` si es condena; si no, `voting` (si quedan juicios) o `night` | Condena = más votos de culpable que de inocente. Empate = inocente |
+| `last_words` | `night` | |
+| `night` | `discussion` del día siguiente, o `ended` | Se resuelve la noche y después se comprueba la victoria |
+
+Tras cada transición se comprueba la victoria (`rules/victory.ts`). Si la partida termina, no se programa ningún temporizador.
+
 ## Tests
 
 | Fichero | Qué cubre |
 |---|---|
 | `rng.test.ts` | Semilla reproducible, límites, barajado sin mutar |
-| `voting.test.ts` | Tabla de votos de la wiki (13 casos), abstenciones, empate |
+| `voting.test.ts` | Tabla de votos de la wiki, abstenciones, empate |
 | `victory.test.ts` | Victoria de pueblo y mafia, jugadores desconectados |
 | `visibility.test.ts` | Público, mafia viva, muertos, privado y orden de proyección |
 | `replay.test.ts` | Snapshot sin repetir eventos |
-| `roles-registry.test.ts` | 30 roles del MVP registrados, con su bando del catálogo |
+| `roles-registry.test.ts` | Roles del MVP registrados, con su bando del catálogo |
+| `setup.test.ts` | Reparto de roles, límites de jugadores y arranque en día 1 |
+| `day.test.ts` | Votación, veredictos y habilidades de día |
+| `night.test.ts` | Acciones nocturnas, bloqueos, protecciones e información |
+| `phaseFlow.test.ts` | Transiciones de fase, incluido el día 1 sin votación |
+| `simulation.test.ts` | Partidas con decisiones aleatorias legales hasta el final |
+| `helpers/catalogSmoke.test.ts` | El catálogo carga y tiene todos los roles |
 
-Estado actual: **6 ficheros, 37 tests en verde**, con TypeScript 7.0.2 y Vitest 5.0.3.
+Estado actual: **12 ficheros, 89 tests en verde**, con TypeScript 7.0.2 y Vitest 5.0.3.
 
 ## Supuestos pendientes de verificar
 
 - Desempate en la votación de juicio: el motor lo trata como "nadie va a juicio". La wiki solo lo menciona para el veredicto de inocente (`Hanging (ToS)`).
-- Qué fase viene tras las últimas palabras de un juicio con condena (`Phases`).
 - Orden de resolución nocturna y desempate por asiento (ver arriba).
 - Victoria 1 contra 1 (fuera del MVP).

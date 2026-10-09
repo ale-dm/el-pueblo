@@ -167,7 +167,7 @@ Las prioridades, objetivos y habilidades de cada rol están en `data/roles/roles
 
 | Fase | Duración | Notas |
 |---|---|---|
-| Día 1 | 15 s | Solo en el primer día |
+| Día 1 | 15 s | Solo charla. No hay votación ni juicios en el primer día: al acabar, noche 1 |
 | Discusión | 45 s | Hablan los vivos |
 | Votación | 30 s | Se vota a quién llevar a juicio |
 | Defensa | 20 s | Solo si hay juicio |
@@ -175,7 +175,16 @@ Las prioridades, objetivos y habilidades de cada rol están en `data/roles/roles
 | Últimas palabras | 7 s | Solo si el condenado es ahorcado |
 | Noche | 37 s | Acciones de roles; la Mafia tiene chat privado |
 
-Rapid y Fast Mode están en `data/game_config.json`.
+Rapid y Fast Mode están en `data/game_config.json` y se copian a `phase_timings` (ver también `docs/wiki/Phases.md`). Resumen de la tabla de la wiki:
+
+| Modo | Día 1 | Discusión | Votación | Noche |
+|---|---|---|---|---|
+| Estándar | 15 s | 45 s | 30 s | 37 s |
+| Rapid (ToS1) | 15 s | 15 s | 30 s | 10 s |
+| Rapid (ToS2) | N/A | 10 s | 10 s | 15 s |
+| Fast (ToS2) | 15 s | 22 s | 15 s | 40 s |
+
+Defensa 20 s, Juicio 20 s y Últimas palabras 7 s en todos los modos. Rapid (ToS2) no tiene Día 1: el motor todavía no lo salta, así que ese modo no se puede elegir hasta implementarlo.
 
 ### 5.4 Votación *(verificado)*
 
@@ -195,7 +204,7 @@ Rapid y Fast Mode están en `data/game_config.json`.
 
 | Canal | Quién lo ve | Cuándo |
 |---|---|---|
-| Público | Vivos | Discusión, Juicio, Últimas palabras |
+| Público | Vivos | Día 1, Discusión, Votación y Juicio. En Defensa y Últimas palabras solo habla el acusado |
 | Mafia | Mafia viva | Noche |
 | Muertos | Muertos | Siempre |
 

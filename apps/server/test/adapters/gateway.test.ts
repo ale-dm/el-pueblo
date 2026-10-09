@@ -75,7 +75,8 @@ describe("gateway Socket.IO con clientes reales", () => {
     await waitFor(() => inbox.every((box) => box.some((e) => e.type === "phase.started")));
 
     expect(app.scheduler.fire(matchId)).toBe(true);
-    await waitFor(() => inbox.every((box) => box.some((e) => e.type === "phase.started" && e.payload.phase === "discussion")));
+    // Día 1 sin votación: el siguiente paso es la noche 1.
+    await waitFor(() => inbox.every((box) => box.some((e) => e.type === "phase.started" && e.payload.phase === "night")));
     expect(app.scheduler.pending.has(matchId)).toBe(true);
   });
 

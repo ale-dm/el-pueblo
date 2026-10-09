@@ -62,9 +62,7 @@ describe("flujo de partida completo con el motor real", () => {
     const mafiaToken = players.find((p) => p.playerId === mafia.id)!.token;
     const townToken = players.find((p) => p.playerId === town.id)!.token;
 
-    // Cambia a la noche con el motor (timers) y escribe un mensaje de la Mafia.
-    await app.services.advance(host.matchId);
-    await app.services.advance(host.matchId);
+    // Cambia a la noche con el motor (timers: día 1 → noche 1) y escribe un mensaje de la Mafia.
     await app.services.advance(host.matchId);
     await app.services.submitCommand({
       matchId: host.matchId,

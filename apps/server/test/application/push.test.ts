@@ -32,9 +32,14 @@ describe("avisos Web Push", () => {
     for (let i = 0; i < 3; i++) {
       await app.services.subscribePush({ matchId: players[i]!.matchId, token: players[i]!.token, ...subscription(i) });
     }
+    // Día 1 → noche 1 → día 2: cada cambio avisa a los tres suscritos.
     await app.services.advance(players[0]!.matchId);
     await app.services.drainNarrations();
     expect(app.pushSender.sent).toHaveLength(3);
+    expect(JSON.stringify(app.pushSender.sent.map((s) => s.payload))).toContain("Cae la noche");
+    await app.services.advance(players[0]!.matchId);
+    await app.services.drainNarrations();
+    expect(app.pushSender.sent).toHaveLength(6);
     const text = JSON.stringify(app.pushSender.sent.map((s) => s.payload));
     expect(text).toContain("Amanece");
     // El aviso no revela nada de la partida: ni nicks ni roles.

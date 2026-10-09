@@ -14,7 +14,8 @@ const MAX_TRIALS_PER_DAY = 3;
 export function onTimerExpired(s: GameState, catalog: Catalog, rng: Rng): Result<EventInput[]> {
   switch (s.phase) {
     case "day_1":
-      return ok([phaseStarted("discussion", s.dayNumber)]);
+      // Día 1: solo charla (15 s). No hay votación ni juicios; después, noche 1 (wiki: Phases, "Day (Only on D1)").
+      return ok([phaseStarted("night", s.dayNumber)]);
     case "discussion":
       return ok([phaseStarted("voting", s.dayNumber)]);
     case "voting":
