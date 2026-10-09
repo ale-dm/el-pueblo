@@ -89,6 +89,8 @@ const NOTICE_TEXT: Record<string, string> = {
   // Wiki (Blackmailer.md:395): "Someone tried to blackmail you but you were in jail last night."
   blackmail_jailed: "Alguien intentó chantajearte, pero anoche estabas encarcelado.",
   // Wiki (Jailor.md:282, 284): "The jailor has decided to Execute you." / "The jailor has changed his mind."
+  // Wiki (Jailor.md:558, 560): "You were hauled off to jail!" al empezar la noche, para el prisionero.
+  jailed: "Fuiste arrastrado a la cárcel.",
   jailor_execute: "El Jailor ha decidido ejecutarte.",
   jailor_changed_mind: "El Jailor ha cambiado de opinión.",
   // Wiki (Psychic.md:318, 322): "The town is too small..." / "The town is too evil..."
@@ -342,10 +344,6 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "night.action.blocked":
         // Wiki (Tavern_Keeper.md:347, Bootlegger.md:340): "Someone occupied your night. You were role blocked!"
         line(e, p.cause === "jail" ? "Tu acción fue bloqueada esta noche." : "Alguien ocupó tu noche. ¡Has sido bloqueado!", "private");
-        break;
-      case "player.jailed":
-        // Wiki (Jailor.md:558): "You were hauled off to jail!" (la wiki lo muestra al empezar la noche; aquí, al encarcelar)
-        line(e, "Fuiste arrastrado a la cárcel.", "private");
         break;
       case "night.notice":
         // Wiki (Jailor.md:566): "(Player) was hauled off to jail"

@@ -517,6 +517,21 @@ describe("mensajes del Jailor (wiki: Jailor.md:550, 558, 562, 566)", () => {
   });
 });
 
+describe("aviso del prisionero (wiki: Jailor.md:558, 560)", () => {
+  it("el encarcelado lo lee al empezar la noche; encarcelarle de día no escribe nada en el registro", () => {
+    seq = 0;
+    const day = texts(buildLog([ev("player.jailed", { jailorId: "b", playerId: "a" }, "private")], ctx({ meId: "a" })));
+    expect(day).toEqual([]);
+    seq = 0;
+    const night = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "jailed" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx({ meId: "a" })));
+    expect(night).toContain("Fuiste arrastrado a la cárcel.");
+  });
+});
+
 describe("nota del Jailor (wiki: Death_Note_ToS.md:76-92; Jailor.md:322)", () => {
   it("la ejecución muestra a todos los motivos marcados", () => {
     seq = 0;

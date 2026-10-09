@@ -309,3 +309,15 @@ describe("Jailor: avisos de encarcelado (wiki: Jailor.md:550, 562, 566)", () => 
     expect(sent(events)).toContainEqual(["p1", "jailor_wait_day", null]);
   });
 });
+
+describe("Jailor: el prisionero se entera al empezar la noche (wiki: Jailor.md:558, 560)", () => {
+  it("\"You were hauled off to jail!\" llega al empezar la noche, no cuando el Jailor le encarcela de día", () => {
+    const s = game(["jailor", "godfather", "investigator"], { phase: "discussion", dayNumber: 2 });
+    const day = step(s, { type: "day.action", actorId: "p1", ability: "jail", targetId: "p3" });
+    expect(notices(day.events)).toEqual([]);
+    // Discusión -> votación -> noche, sin votos: el prisionero lo oye al empezar la noche.
+    const night = step(step(day.state, timer()).state, timer());
+    expect(ofType(night.events, "phase.started").map((e) => e.payload.phase)).toContain("night");
+    expect(notices(night.events)).toContainEqual(["p3", "jailed"]);
+  });
+});
