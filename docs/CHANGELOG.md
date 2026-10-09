@@ -5,6 +5,15 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Exploración de partidas completas (servidor)
+
+- `apps/server/test/application/exploracion-partidas.test.ts`: partidas de diez jugadores con acciones aleatorias legales de todos los tipos (votos, juicios, chat en todos los canales, habilidades de noche y de día, cancelaciones, testamentos, Death Note) y una parte ilegal a propósito, que debe rechazarse con error de comando. Invariantes tras cada paso: secuencia de eventos contigua, los muertos no actúan (salvo la sesión de Médium), y el ganador coincide con los vivos (incluido el detector de empate de dos jugadores).
+- Barrido de 600 partidas (300 con diez humanos, 300 con cinco humanos y cinco bots): 31.089 pasos, 0 anomalías. Ganan la Mafia en 343 y el pueblo en 257.
+- Control: quitar la regla "los muertos no escriben su testamento" en el motor hace fallar el test (detecta el fallo).
+- Hallazgos, sin cambiar código:
+  - La tabla de jugadores no actualiza `status` cuando alguien muere (queda como al empezar). El motor y la vista usan el estado reproducido desde el registro, así que el juego no se ve afectado; pero el dato de la tabla miente. Pendiente de decidir si se corrige.
+  - Un autor muerto puede cambiar su Death Note durante la mañana. La wiki (Death_Note_ToS.md:13, :17) no dice si cuenta para un autor muerto: se cuenta aparte como observación (43 casos), no como anomalía.
+
 ## M2 (servidor): reinicio y recuperación de partidas
 
 - Criterio del GDD §9: "la partida se recupera tras reiniciar el servidor". Verificado con dos tests: `apps/server/test/application/reinicio.test.ts` (almacenes en memoria) y `apps/server/test/adapters/postgres-reinicio.test.ts` (almacenes PostgreSQL sobre PGlite, con procesos nuevos encima de la misma base). En ambos, la vista del jugador tras el reinicio es idéntica a la de antes, el temporizador de fase se vuelve a programar y el avance de fase funciona.
