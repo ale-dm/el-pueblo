@@ -15,11 +15,16 @@ export const isNight = (phase: Phase) => phase === "night";
 
 export const CHANNEL_LABEL = { public: "Plaza", mafia: "Mafia", dead: "Ultratumba", whisper: "Susurro", jail: "Prisión", seance: "Sesión" } as const;
 
-/** Mensajes que puede plantar el Hypnotist, como los lee quien los recibe. */
+/**
+ * Mensajes que puede plantar el Hypnotist, como los lee quien los recibe. Textos de la wiki (Hypnotist.md:232-256),
+ * traducidos: "You were attacked but someone nursed you back to health!", "You were attacked but someone protected
+ * you!", "Someone occupied your night. You were Roleblocked!" y su versión de inmunidad.
+ */
 export const HYPNOSIS_TEXT: Record<string, string> = {
-  attacked: "Recuerdas haber sido atacado anoche.",
-  protected: "Recuerdas que alguien te protegió anoche.",
-  roleblocked: "Recuerdas que alguien te bloqueó anoche.",
+  attacked: "Te atacaron, pero alguien te curó.",
+  protected: "Te atacaron, pero alguien te protegió.",
+  roleblocked: "Alguien ocupó tu noche: ¡fuiste bloqueado!",
+  roleblock_immune: "Alguien intentó bloquearte, pero eres inmune.",
 };
 
 /** Opciones de elección de una habilidad: mensajes en español, roles en inglés. */

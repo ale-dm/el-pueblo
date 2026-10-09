@@ -23,7 +23,8 @@ export type GameEventPayloads = {
   "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null };
   /** mafiaTeam: si el actor es de la Mafia, la decisión la ven los demás miembros vivos de la Mafia. */
   "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; choice: string | null; mafiaTeam: boolean };
-  "hypnosis.message": { playerId: PlayerId; message: "attacked" | "protected" | "roleblocked" };
+  /** roleblock_immune: el mensaje de bloqueo para un inmune al bloqueo (wiki: Hypnotist.md:262, 408). */
+  "hypnosis.message": { playerId: PlayerId; message: "attacked" | "protected" | "roleblocked" | "roleblock_immune" };
   /** Lo ve solo quien falsificó (forgerId). */
   "will.forged": { playerId: PlayerId; role: string; forgerId: PlayerId };
   "night.action.cancelled": { actorId: PlayerId; mafiaTeam: boolean };

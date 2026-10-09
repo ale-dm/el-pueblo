@@ -139,8 +139,8 @@ describe("registro estilo Town of Salem", () => {
     ], ctx())).join(" | ");
     expect(text).toContain("Has falsificado el testamento de Caro: parecerá que era Jailor.");
     expect(text).toContain("Eres el nuevo Mafioso");
-    expect(text).toContain("Recuerdas haber sido atacado anoche.");
-    expect(text.indexOf("Recuerdas")).toBeGreaterThan(text.indexOf("== Día 2"));
+    expect(text).toContain("Te atacaron, pero alguien te curó.");
+    expect(text.indexOf("Te atacaron")).toBeGreaterThan(text.indexOf("== Día 2"));
   });
 
   it("la visión de la Psíquica dice de qué bando hay al menos uno", () => {
@@ -237,6 +237,20 @@ describe("espionaje del Spy", () => {
       "Caro no recibió nada esta noche.",
       "Caro estaba encarcelado: no pudiste espiarle.",
     ]);
+  });
+});
+
+describe("mensajes del Hypnotist", () => {
+  it("el bloqueo a un inmune lleva el texto de inmunidad (wiki: Hypnotist)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 1 }),
+      ev("hypnosis.message", { playerId: "b", message: "roleblock_immune" }, "private"),
+      ev("hypnosis.message", { playerId: "b", message: "roleblocked" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 2 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Alguien intentó bloquearte, pero eres inmune.");
+    expect(text).toContain("Alguien ocupó tu noche: ¡fuiste bloqueado!");
   });
 });
 

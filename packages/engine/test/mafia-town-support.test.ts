@@ -142,6 +142,22 @@ describe("Consigliere: el disfraz no le engaña", () => {
   });
 });
 
+describe("Hypnotist: el bloqueo a un inmune lleva el mensaje de inmunidad (wiki: Hypnotist)", () => {
+  const hypnotize = (target: string, choice: string) => {
+    // p1 Hypnotist planta un recuerdo; el Godfather (p2) no mata, para que solo cuente el mensaje.
+    const s = game(["hypnotist", "godfather", "transporter", "investigator"]);
+    return ofType(step(step(s, { type: "night.action", actorId: "p1", ability: "hypnotize", targetId: target, secondTargetId: null, choice }).state, timer()).events, "hypnosis.message");
+  };
+
+  it("a un inmune al bloqueo le llega 'Someone tried to Roleblock you but you are immune'", () => {
+    expect(hypnotize("p3", "roleblocked").map((e) => [e.payload.playerId, e.payload.message])).toEqual([["p3", "roleblock_immune"]]);
+  });
+
+  it("a quien no es inmune le llega el bloqueo normal", () => {
+    expect(hypnotize("p4", "roleblocked").map((e) => [e.payload.playerId, e.payload.message])).toEqual([["p4", "roleblocked"]]);
+  });
+});
+
 describe("Forger: testamentos falsificados", () => {
   it("al morir, el rol que se muestra es el que eligió el Forger (dos usos)", () => {
     let s = game(["forger", "investigator", "godfather", "sheriff"]);

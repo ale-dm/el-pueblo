@@ -369,7 +369,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   }
   // Mensajes falsos de la Hypnotist: llegan al terminar la noche, solo a quien sigue vivo.
   for (const h of hypnoses) {
-    if (isAlive(playerOf(s, h.targetId))) out.push({ type: "hypnosis.message", payload: { playerId: h.targetId, message: h.message } });
+    const target = playerOf(s, h.targetId);
+    if (!isAlive(target)) continue;
+    // Wiki (Hypnotist.md:262): a quien es inmune al bloqueo le llega el mensaje de inmunidad.
+    const immune = h.message === "roleblocked" && handlerOf(target)?.roleblockImmune === true;
+    out.push({ type: "hypnosis.message", payload: { playerId: h.targetId, message: immune ? "roleblock_immune" : h.message } });
   }
   // Wiki (Medium.md:209, 213): el objetivo de una sesión de Médium empieza la noche con el aviso; uno por Médium.
   for (const act of active) {
