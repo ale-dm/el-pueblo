@@ -85,7 +85,8 @@ const MORNING = new Set([
 const NOTICE_TEXT: Record<string, string> = {
   target_jailed: "Tu objetivo estaba encarcelado: tu habilidad no tuvo efecto.",
   attack_attempt: "Alguien intentó atacarte mientras estabas encarcelado.",
-  medium_talking: "Un médium te está hablando.",
+  // Wiki (Medium.md:209; Messages_ToS.md:1953): "A medium is talking to you!" (uno por cada Médium que habla con el objetivo).
+  medium_talking: "¡Un médium te está hablando!",
   transport_jailed: "Uno de tus objetivos estaba encarcelado: no pudiste transportarles.",
   jailed_transport_attempt: "Alguien intentó transportarte, pero estabas encarcelado.",
   transported: "Fuiste transportado a otro lugar.",
@@ -440,8 +441,11 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         break;
       case "night.notice":
         // Wiki (Medium.md:483; Messages_ToS.md:1957): al empezar la noche, el Médium muerto que abrió la sesión lo lee en ese momento.
-        if (p.notice === "medium_opened") {
-          items.push({ kind: "line", key: `l${e.seq}`, seq: e.seq, text: "¡Has abierto una comunicación con los vivos!", tone: "private" });
+        // Wiki (Medium.md:209): "Your target will start the Night with the message "A medium is talking to you!"." Igual: el
+        // objetivo lo lee al empezar la noche, no al amanecer.
+        if (p.notice === "medium_opened" || p.notice === "medium_talking") {
+          const text = p.notice === "medium_opened" ? "¡Has abierto una comunicación con los vivos!" : NOTICE_TEXT.medium_talking!;
+          items.push({ kind: "line", key: `l${e.seq}`, seq: e.seq, text, tone: "private" });
         }
         // Wiki (Jailor.md:566): "(Player) was hauled off to jail"
         else if (p.notice === "team_jailed") line(e, `${ctx.nick(p.subjectId)} fue arrastrado a la cárcel.`, "private");

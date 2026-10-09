@@ -38,4 +38,13 @@ describe("Medium muerto: 'You have opened a communication with the living!' (wik
     const { events } = step(s, timer());
     expect(notices(events).some(([, n]) => n === "medium_opened")).toBe(false);
   });
+
+  it("el aviso al objetivo sale al empezar la noche, justo después de phase.started (wiki: Medium.md:209)", () => {
+    // Medium.md:209: "Your target will start the Night with the message "A medium is talking to you!"."
+    const { events } = step({ ...openedSession(), phase: "voting" }, timer());
+    const types = events.map((e) => (e.type === "night.notice" ? `notice:${e.payload.notice}` : e.type));
+    const started = types.indexOf("phase.started");
+    expect(types.indexOf("notice:medium_talking")).toBeGreaterThan(started);
+    expect(types.indexOf("notice:medium_talking")).toBeGreaterThanOrEqual(0);
+  });
 });

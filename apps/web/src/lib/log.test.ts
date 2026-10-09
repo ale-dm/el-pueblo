@@ -351,14 +351,12 @@ describe("avisos privados de la noche", () => {
       ev("phase.started", { phase: "night", dayNumber: 2 }),
       ev("night.notice", { playerId: "a", notice: "target_jailed" }, "private"),
       ev("night.notice", { playerId: "b", notice: "attack_attempt" }, "private"),
-      ev("night.notice", { playerId: "a", notice: "medium_talking" }, "private"),
       ev("phase.started", { phase: "discussion", dayNumber: 3 }),
     ], ctx({ meId: "a" })));
     const day = text.indexOf("== Día 3");
     expect(text.slice(day + 1)).toEqual([
       "Tu objetivo estaba encarcelado: tu habilidad no tuvo efecto.",
       "Alguien intentó atacarte mientras estabas encarcelado.",
-      "Un médium te está hablando.",
     ]);
   });
 });
@@ -845,5 +843,17 @@ describe("Chat: los rechazos que la wiki comunica al emisor se leen en el regist
       "No puedes susurrar a un Alcalde revelado.",
       "No puedes susurrar una vez te has revelado como Alcalde.",
     ]);
+  });
+});
+
+describe("Medium: 'A medium is talking to you!' al empezar la noche (wiki: Medium.md:209)", () => {
+  it("el objetivo del Médium lo lee al empezar la noche, no al amanecer", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "medium_talking" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    expect(text).toEqual(["== Noche 2", "Cae la noche.", "¡Un médium te está hablando!", "== Día 3"]);
   });
 });
