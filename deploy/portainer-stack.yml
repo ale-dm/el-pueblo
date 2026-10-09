@@ -3,7 +3,8 @@
 # en cada "Pull and redeploy". Las variables se cargan en el stack ("Load variables from .env file") y
 # Portainer las guarda en stack.env, en la raíz del repo clonado: por eso ../stack.env.
 #
-# La red "proxy" es la que comparte Nginx Proxy Manager. El servidor se publica solo hacia ella.
+# El servidor publica el puerto 3000 en el NAS. Nginx Proxy Manager lo alcanza por la IP del NAS.
+# No reenvíes el puerto 3000 en el router: solo debe ser accesible desde la red local.
 services:
   postgres:
     image: postgres:17
@@ -39,11 +40,10 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+    ports:
+      - "3000:3000"
     volumes:
       - /compose/el-pueblo/logs:/app/logs
-    networks:
-      - default
-      - proxy
 
   backup:
     image: postgres:17
@@ -62,7 +62,3 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
-
-networks:
-  proxy:
-    external: true

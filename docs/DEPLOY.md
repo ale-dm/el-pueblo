@@ -31,8 +31,8 @@ La configuración (`.env`) se guarda en el propio stack de Portainer.
 
 ## Lista previa (antes del primer despliegue)
 
-- [ ] Red Docker `proxy` existe en el NAS: `docker network ls | grep proxy` (la crea el stack de Nginx Proxy Manager). Si se llama distinto, cambiar `networks.proxy` en `deploy/portainer-stack.yml`.
-- [ ] Nginx Proxy Manager: host `pueblo.xelements.es` → `elpueblo-server:3000`, con **Websockets Support** activado y certificado Let's Encrypt por desafío DNS de Cloudflare.
+- [ ] Anota la IP local del NAS (p. ej. `192.168.1.X`): NPM la usará para llegar al servidor.
+- [ ] Nginx Proxy Manager: host `pueblo.xelements.es` → **IP del NAS, puerto 3000** (esquema http), con **Websockets Support** activado y certificado Let's Encrypt por desafío DNS de Cloudflare.
 - [ ] Cloudflare: registro `pueblo` (tipo A, proxy activado) y SSL/TLS en **Full (strict)**.
 - [ ] Token de GitHub de solo lectura para `ale-dm/el-pueblo` (paso 1 de "Primera vez").
 - [ ] `stack.env` preparado a partir de `deploy/stack.env.example`: contraseña de Postgres generada, claves VAPID si quieres avisos, `GOOGLE_API_KEY` si quieres narración con Gemini.
@@ -121,9 +121,9 @@ Probar la restauración una vez antes de la primera partida con amigos.
   certificado de Let's Encrypt.
 - Socket.IO envía pings periódicos, así que las conexiones WebSocket no se cierran por inactividad detrás del proxy.
   Confirmar en la documentación de Cloudflare que el plan que uses permite WebSockets.
-- Nginx Proxy Manager es el único punto de entrada. Host proxy `pueblo.xelements.es` → `elpueblo-server:3000`, con
+- Nginx Proxy Manager es el único punto de entrada. Host proxy `pueblo.xelements.es` → IP del NAS, puerto `3000`, con
   **Websockets Support** activado (Socket.IO) y certificado Let's Encrypt con forzar HTTPS.
-- `postgres` nunca publica puertos. `server` solo habla con NPM por la red `proxy`.
+- `postgres` nunca publica puertos. `server` publica el `3000` solo en la red local: no lo reenvíes en el router.
 - Las notificaciones push y la instalación de la PWA necesitan HTTPS.
 
 ## Copias de seguridad
