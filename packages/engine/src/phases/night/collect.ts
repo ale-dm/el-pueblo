@@ -4,7 +4,7 @@ import { err, ok, type Result } from "../../core/result.js";
 import { handlerOf, isAlive, playerOf } from "../context.js";
 import { ROLE_HANDLERS } from "../../roles/registry.js";
 import { canBeRoleblocked } from "../../rules/roleblock.js";
-import { shownRoleAllowsRaise } from "../../roles/town/retributionist.js";
+import { isResurrectableRole, shownRoleAllowsRaise } from "../../roles/town/retributionist.js";
 
 /** Valida una acción nocturna y, si es correcta, la registra. Un jugador puede cambiarla hasta el final de la noche. */
 export function nightAction(
@@ -49,6 +49,8 @@ export function nightAction(
     // Wiki (Retributionist.md:216): no se resucita a quien limpió el Janitor.
     if (dead.flags.cleaned) return err("invalid_command", "Ese Town fue limpiado: no queda rol que resucitar");
     if (dead.flags.zombied) return err("invalid_command", "Ese zombi ya se ha usado");
+    // Wiki (Retributionist.md:236): Psychic, Trapper, Jailor, Veteran, Mayor, Medium, Transporter y Retributionist no se resucitan.
+    if (!isResurrectableRole(dead.roleKey)) return err("invalid_command", "Ese Town no puede ser resucitado");
     // Wiki (Forger.md:232): un cadáver falsificado con rol no Town visitante no se puede usar.
     if (dead.shownRoleKey && dead.shownRoleKey !== dead.roleKey && !shownRoleAllowsRaise(dead.shownRoleKey)) {
       return err("invalid_command", "Solo puedes resucitar a un Town muerto cuyo rol se conozca");

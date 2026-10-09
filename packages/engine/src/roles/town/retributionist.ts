@@ -21,6 +21,17 @@ export const shownRoleAllowsRaise = (shownKey: string): boolean => {
   return shown !== undefined && shown.faction === "town" && shown.nightAbilities.some((a) => a.target !== "none");
 };
 
+/**
+ * Wiki (Retributionist.md:236): "A Psychic, Trapper, Jailor, Veteran, Mayor, Medium, Transporter, or another Retributionist
+ * (if you were an Amnesiac) cannot be resurrected." La excepción del otro Retributionist exige ser Amnesiac, que no es
+ * del MVP (catálogo: mvp = false): en el MVP ningún Retributionist se resucita. Se mira el rol real del muerto.
+ */
+export const NOT_RESURRECTABLE_KEYS: readonly string[] = [
+  "psychic", "trapper", "jailor", "veteran", "mayor", "medium", "transporter", "retributionist",
+];
+
+export const isResurrectableRole = (roleKey: string): boolean => !NOT_RESURRECTABLE_KEYS.includes(roleKey);
+
 export const handler: RoleHandler = {
   key: "retributionist",
   name: "Retributionist",
