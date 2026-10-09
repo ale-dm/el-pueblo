@@ -320,3 +320,9 @@ Cada ítem tiene su commit en español (ver `git log`). Regla del lote: la wiki 
 Línea base (inicio del lote 12, `06d2463`): engine 42 archivos y 496 pruebas, web 10 y 98, server 22 y 99 (`pnpm check` en verde). Resultado final, tras M16 (`ab5963c`), con `pnpm check` en verde: typecheck de engine, web y server sin errores; engine 52 archivos y 553 pruebas, web 12 y 116, server 23 y 101.
 
 Cada commit del lote se publicó tras un `pnpm check` en verde, salvo `65c0d1b` (M7), que se publicó en rojo por un error del encadenado del comando y se corrigió en `e7c490c` (ver M7). No se han hecho pruebas en el navegador ni con partidas reales.
+
+## Lote 13: mecánica pendiente de la wiki de roles MVP (P1 a P9)
+
+Regla del lote: la wiki manda; cada commit cita la frase exacta (archivo:línea) y los tests llevan la cita en el nombre. Si dos frases explícitas chocan, se aplica la más específica del rol y se anota aquí. Estado por ítem:
+
+- **P1, DONE** (commit de este lote, "Transporter"): Transporter.md:266-278 ("Let T1 and T2 be Transporters, and let T1 join the lobby before T2"; pasos 1 a 5) y Transporter.md:198 ("whoever joined the lobby first will have their Transport occur first"). El motor ya no encadena los nombres elegidos: cada intercambio mueve a quien está en la casa izquierda y al marcado (paso 2 si la derecha coincide con la de un Transporter anterior; paso 4 si no). Con objetivos sin repetir, el resultado no cambia. Decisión: la wiki no dice cuál de los dos objetivos es "izquierda" (Transporter.md:206 dice que el orden de elección no importa); se toma el primer objetivo elegido como izquierda. Otra elección invierte el sentido del ciclo de tres. Pendiente de confirmar. Pruebas: `packages/engine/test/transporter-dos.test.ts`.

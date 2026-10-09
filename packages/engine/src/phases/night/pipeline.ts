@@ -172,8 +172,16 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   // 1. Transportes primero: intercambian los objetivos de dos jugadores. Wiki (Tavern_Keeper.md:275): el Transporter
   // (prioridad 1) va antes que los bloqueadores (prioridad 2). Un Transporter encarcelado no transporta.
+  // `remap` dice quién está en cada casa tras los transportes anteriores (función de nombre a nombre).
+  // Wiki (Transporter.md:266-278, "Interaction between two Transporters"): cada intercambio mueve a quien está en la
+  // casa izquierda (paso 5) y al marcado (paso 1 y 3 para el primero; pasos 2 y 4 para el resto), no solo a los
+  // nombres elegidos. Con objetivos sin repetir, da lo mismo que intercambiar los nombres.
+  // Decisión: "izquierda" = primer objetivo elegido (`firstId`), "derecha" = segundo (`secondId`); la wiki no define
+  // izquierda y derecha (Transporter.md:206 dice que el orden de elección no importa), ver docs/ROLES_STATUS.md.
   let remap = (id: string) => id;
   const swaps: Array<[string, string]> = [];
+  /** Derechas de los transportes anteriores (paso 2, Transporter.md:272). */
+  const earlierRightTargets: string[] = [];
   for (const act of acts) {
     if (act.blocked) continue;
     for (const e of act.effects) {
@@ -185,13 +193,19 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         out.push({ type: "night.notice", payload: { playerId: jailed, notice: "jailed_transport_attempt" } });
         continue;
       }
-      const prev = remap;
       const { firstId, secondId } = e;
       swaps.push([firstId, secondId]);
+      // Wiki (Transporter.md:272): si la derecha es la misma que la de un Transporter anterior, se marca el nombre elegido.
+      // Wiki (Transporter.md:276): si no, se marca a quien está en su casa derecha.
+      const marked = earlierRightTargets.includes(secondId) ? secondId : remap(secondId);
+      // Wiki (Transporter.md:274, 278): se intercambia lo marcado con quien está en la casa izquierda.
+      const holder = remap(firstId);
+      const prev = remap;
       remap = (id) => {
         const x = prev(id);
-        return x === firstId ? secondId : x === secondId ? firstId : x;
+        return x === holder ? marked : x === marked ? holder : x;
       };
+      earlierRightTargets.push(secondId);
     }
   }
 
