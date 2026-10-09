@@ -329,6 +329,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const shown = playerOf(s, shownId);
     const isFramed = framed.has(target) || playerOf(s, target)?.flags.framed === true;
     let result = "";
+    let side: "mafia" | "town" | undefined;
     switch (inv.check) {
       case "suspicious": {
         const sus = isFramed || (shown?.faction === "mafia" && shown.roleKey !== "godfather");
@@ -362,6 +363,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         const alive = s.players.filter((x) => x.status === "alive" && x.id !== inv.actorId);
         const wantMafia = s.dayNumber % 2 === 1;
         const sideKey = wantMafia ? "mafia" : "town";
+        side = sideKey;
         const sideAlive = rng.shuffle(alive.filter((x) => x.faction === sideKey));
         const others = rng.shuffle(alive.filter((x) => x.id !== sideAlive[0]?.id));
         const picks = [...(sideAlive[0] ? [sideAlive[0]] : []), ...others].slice(0, wantMafia ? 3 : 2);
@@ -373,7 +375,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
     out.push({
       type: "investigation.result",
-      payload: { investigatorId: inv.actorId, targetId: target, result, check: inv.check },
+      payload: { investigatorId: inv.actorId, targetId: target, result, check: inv.check, ...(side ? { side } : {}) },
     });
   }
 

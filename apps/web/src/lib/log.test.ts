@@ -143,6 +143,16 @@ describe("registro estilo Town of Salem", () => {
     expect(text.indexOf("Recuerdas")).toBeGreaterThan(text.indexOf("== Día 2"));
   });
 
+  it("la visión de la Psíquica dice de qué bando hay al menos uno", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("investigation.result", { investigatorId: "a", targetId: "a", result: "Ana, Bea, Caro", check: "vision", side: "mafia" }, "private"),
+      ev("investigation.result", { investigatorId: "a", targetId: "a", result: "Ana, Bea", check: "vision", side: "town" }, "private"),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Al menos uno es de la Mafia: Ana, Bea, Caro.");
+    expect(text).toContain("Al menos uno es del Pueblo: Ana, Bea.");
+  });
+
   it("el ascenso a Godfather del Mafioso se cuenta como Godfather", () => {
     seq = 0;
     const text = texts(buildLog([ev("role.promoted", { playerId: "a", roleKey: "godfather", uses: {} }, "mafia")], ctx())).join(" | ");

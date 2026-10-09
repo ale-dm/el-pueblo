@@ -30,7 +30,8 @@ export type GameEventPayloads = {
   "will.written": { playerId: PlayerId; text: string };
   "night.action.blocked": { actorId: PlayerId; ability: string };
   /** check: tipo de comprobación (suspicious, alignment, role, visitors, targets, mafiaVisits, vision). */
-  "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string; check: string };
+  /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic). */
+  "investigation.result": { investigatorId: PlayerId; targetId: PlayerId; result: string; check: string; side?: "mafia" | "town" };
   "ability.used": { playerId: PlayerId; ability: string };
   "effect.applied": { actorId: PlayerId; targetId: PlayerId; flag: PlayerFlag };
   "player.blackmailed": { actorId: PlayerId; targetId: PlayerId };

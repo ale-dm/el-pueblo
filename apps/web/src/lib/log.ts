@@ -67,6 +67,10 @@ export function investigationText(p: Record<string, any>, nick: (id: string) => 
     case "mafiaVisits":
       return p.result === "nadie" ? "Esta noche la Mafia no visitó a nadie." : `La Mafia visitó: ${p.result}.`;
     case "vision":
+      // Wiki (Psychic): impares, al menos uno de la Mafia; pares, al menos uno del Pueblo.
+      if (p.result === "nadie") return "Esta noche no viste a nadie.";
+      if (p.side === "mafia") return `Al menos uno es de la Mafia: ${p.result}.`;
+      if (p.side === "town") return `Al menos uno es del Pueblo: ${p.result}.`;
       return `Visión de esta noche: ${p.result}.`;
     default:
       return `Resultado: ${p.result}.`;
