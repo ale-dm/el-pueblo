@@ -134,3 +134,19 @@ describe("Spy: la trampa no tiene mensaje en su tabla (wiki: Spy.md:221-309; Mes
     expect(spyResults(events)).toEqual([["p1", "p3", "protect"]]);
   });
 });
+
+describe("Spy: el atacante curado tras un contraataque del Bodyguard (wiki: Spy.md:255)", () => {
+  it("'A Bodyguard attacked your target but someone nursed them back to health!' (Spy.md:255)", () => {
+    // p3 Godfather ataca a p5; p4 Bodyguard lo protege y contraataca al Godfather; p2 Doctor cura al Godfather.
+    const s = game(["spy", "doctor", "godfather", "bodyguard", "investigator"]);
+    const { events, state } = resolve(s, [night("p1", "bug", "p3"), night("p2", "heal", "p3"), night("p3", "kill", "p5"), night("p4", "protect", "p5")]);
+    expect(spyResults(events)).toEqual([["p1", "p3", "bodyguard_attack_healed"]]);
+    expect(state.players.find((p) => p.id === "p3")!.status).toBe("alive");
+  });
+
+  it("sin curación del atacante, el Spy ve que murió por el Bodyguard, no el mensaje de curado (Spy.md:259)", () => {
+    const s = game(["spy", "godfather", "bodyguard", "investigator"]);
+    const { events } = resolve(s, [night("p1", "bug", "p2"), night("p2", "kill", "p4"), night("p3", "protect", "p4")]);
+    expect(spyResults(events)).toEqual([["p1", "p2", "killed_by_bodyguard"]]);
+  });
+});

@@ -174,6 +174,8 @@ export function bugText(result: string, target: string): string {
     attack_veteran: `${target} fue disparado por el Veterano al que visitó.`,
     // Spy.md:237: "Your target was attacked but someone nursed them back to health!"
     attack_healed: `${target} fue atacado, pero alguien le curó.`,
+    // Spy.md:255: "A Bodyguard attacked your target but someone nursed them back to health!" (el atacante, curado).
+    bodyguard_attack_healed: `Un Guardaespaldas atacó a ${target}, pero alguien le curó.`,
     // Spy.md:235: "Your target was attacked but someone fought off their attacker!"
     attack_fought_off: `${target} fue atacado, pero alguien repelió al atacante.`,
     // Spy.md:271: "Your target was attacked but their bulletproof vest saved them!"
