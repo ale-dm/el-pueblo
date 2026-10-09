@@ -152,8 +152,10 @@ describe("Doctor: el curado recibe el aviso (wiki: Doctor.md:225, 253)", () => {
     const { events } = resolve(game(["godfather", "doctor", "investigator"]), [night("p1", "kill", "p3"), night("p2", "heal", "p3")]);
     // El Doctor que curó recibe su aviso de atacado (Doctor.md:223). El Godfather, que ataca él mismo, recibe el aviso
     // de defensa (Godfather.md:233).
-    expect(notices(events)).toHaveLength(3);
+    // Y el superviviente de la Mafia recibe su aviso (Godfather.md:487; M7).
+    expect(notices(events)).toHaveLength(4);
     expect(notices(events)).toContainEqual(["p3", "healed"]);
+    expect(notices(events)).toContainEqual(["p3", "mafia_attacked_you"]);
     expect(notices(events)).toContainEqual(["p2", "target_attacked"]);
     expect(notices(events)).toContainEqual(["p1", "godfather_target_defense"]);
   });
