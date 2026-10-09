@@ -90,6 +90,12 @@ const NOTICE_TEXT: Record<string, string> = {
   veteran_shot_you: "¡Te ha disparado el Veterano al que visitaste!",
   // Wiki (Veteran.md:482): "You shot someone who visited you last night!"
   veteran_shot_visitor: "Disparaste a alguien que te visitó anoche.",
+  // Wiki (Bodyguard.md:438): "You were attacked but someone fought off your attacker!"
+  bodyguard_saved: "Te atacaron, pero alguien rechazó a tu atacante.",
+  // Wiki (Bodyguard.md:434): "You were killed by a Bodyguard!"
+  bodyguard_killed_you: "¡Te ha matado un Guardaespaldas!",
+  // Wiki (Bodyguard.md:430): "You were killed protecting your target!"
+  bodyguard_killed_protecting: "¡Has muerto protegiendo a tu objetivo!",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */
@@ -316,7 +322,9 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         break;
       case "uses.left": {
         // Wiki (Vigilante, Veteran): "You have (#) bullet(s) left" / "You have (#) alert(s) left."
-        const noun = p.ability === "shoot" ? (p.left === 1 ? "bala" : "balas") : p.left === 1 ? "alerta" : "alertas";
+        // Wiki (Bodyguard.md:426): "You have (#) bulletproof vest(s) left."
+        const noun = p.ability === "vest" ? (p.left === 1 ? "chaleco antibalas" : "chalecos antibalas")
+          : p.ability === "shoot" ? (p.left === 1 ? "bala" : "balas") : p.left === 1 ? "alerta" : "alertas";
         line(e, `${p.left === 1 ? "Te queda" : "Te quedan"} ${p.left} ${noun}.`, "private");
         break;
       }

@@ -468,3 +468,15 @@ describe("mensajes del Veteran (wiki: Veteran.md:478, 482)", () => {
     expect(visitor).toEqual(["¡Te ha disparado el Veterano al que visitaste!"]);
   });
 });
+
+describe("mensajes del Bodyguard (wiki: Bodyguard.md:426-438)", () => {
+  it("el duelo y el chaleco tienen sus frases; el chaleco dice cuántos quedan", () => {
+    seq = 0;
+    const text = (events: GameEvent[]) => texts(buildLog(events, ctx({ meId: "b" }))).join(" | ");
+    expect(text([ev("night.notice", { playerId: "b", notice: "bodyguard_saved" }, "private")])).toContain("Te atacaron, pero alguien rechazó a tu atacante.");
+    expect(text([ev("night.notice", { playerId: "b", notice: "bodyguard_killed_protecting" }, "private")])).toContain("¡Has muerto protegiendo a tu objetivo!");
+    expect(text([ev("night.notice", { playerId: "b", notice: "bodyguard_killed_you" }, "private")])).toContain("¡Te ha matado un Guardaespaldas!");
+    expect(text([ev("uses.left", { playerId: "b", ability: "vest", left: 1 }, "private")])).toContain("Te queda 1 chaleco antibalas.");
+    expect(text([ev("uses.left", { playerId: "b", ability: "vest", left: 0 }, "private")])).toContain("Te quedan 0 chalecos antibalas.");
+  });
+});

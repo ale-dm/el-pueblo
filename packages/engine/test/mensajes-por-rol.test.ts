@@ -249,3 +249,23 @@ describe("Veteran: avisos de disparo (wiki: Veteran.md:478, 482)", () => {
     expect(sent(events).filter(([, n]) => n === "veteran_shot_you" || n === "veteran_shot_visitor")).toEqual([]);
   });
 });
+
+describe("Bodyguard: avisos de duelo y de chaleco (wiki: Bodyguard.md:426-438)", () => {
+  const sent = (events: ReturnType<typeof step>["events"]) => ofType(events, "night.notice").map((e) => [e.payload.playerId, e.payload.notice]);
+
+  it("protegiendo a su objetivo, el Bodyguard y el atacante mueren; el protegido recibe \"fought off your attacker\" (Bodyguard.md:430, 434, 438)", () => {
+    const { events } = resolve(game(["bodyguard", "godfather", "investigator"]), [night("p1", "protect", "p3"), night("p2", "kill", "p3")]);
+    expect(ofType(events, "player.killed").map((e) => e.payload.playerId).sort()).toEqual(["p1", "p2"]);
+    expect(sent(events)).toEqual(expect.arrayContaining([
+      ["p3", "bodyguard_saved"],
+      ["p2", "bodyguard_killed_you"],
+      ["p1", "bodyguard_killed_protecting"],
+    ]));
+  });
+
+  it("el chaleco que se usa dice cuántos le quedan: \"You have (#) bulletproof vest(s) left.\" (Bodyguard.md:426)", () => {
+    const { events } = resolve(game(["bodyguard", "godfather", "investigator"]), [night("p1", "vest", null), night("p2", "kill", "p1")]);
+    expect(ofType(events, "uses.left").map((e) => e.payload)).toEqual([{ playerId: "p1", ability: "vest", left: 0 }]);
+    expect(sent(events)).toContainEqual(["p1", "vest_saved"]);
+  });
+});

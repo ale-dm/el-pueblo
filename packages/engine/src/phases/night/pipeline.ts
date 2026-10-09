@@ -490,7 +490,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   for (const u of usesSpent) {
     out.push({ type: "ability.used", payload: { playerId: u.playerId, ability: u.ability } });
     // Wiki (Vigilante, Veteran): cuántas balas o alertas quedan. Se gasta una por noche, así que queda uno menos.
-    if (u.ability === "shoot" || u.ability === "alert") {
+    // Wiki (Bodyguard.md:426): "You have (#) bulletproof vest(s) left."
+    if (u.ability === "shoot" || u.ability === "alert" || u.ability === "vest") {
       const left = (playerOf(s, u.playerId)?.usesLeft[u.ability] ?? 0) - 1;
       out.push({ type: "uses.left", payload: { playerId: u.playerId, ability: u.ability, left } });
     }
@@ -648,8 +649,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (bodyguard) {
       prevented.add(atk.victimId);
       out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(bodyguard.protectorId) } });
-      kill(atk.attackerId, "bodyguard");
-      kill(bodyguard.protectorId, "bodyguard");
+      // Wiki (Bodyguard.md:438): "You were attacked but someone fought off your attacker!" al protegido.
+      out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "bodyguard_saved" } });
+      // Wiki (Bodyguard.md:434, 430): avisos de muerte del atacante y del Bodyguard, solo si de verdad mueren.
+      if (kill(atk.attackerId, "bodyguard")) out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "bodyguard_killed_you" } });
+      if (kill(bodyguard.protectorId, "bodyguard")) out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "bodyguard_killed_protecting" } });
       continue;
     }
     // La defensa de la trampa solo cuenta contra su atacante (Keyword_System.md:349) y una vez por noche.
