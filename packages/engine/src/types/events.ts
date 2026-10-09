@@ -62,6 +62,11 @@ export type GameEventPayloads = {
   "trap.built": { trapperId: PlayerId; readyDay: number };
   /** La trampa se desmonta (el Trapper se elige a sí mismo) o se activa por una visita. */
   "trap.removed": { trapperId: PlayerId; reason: "dismantled" | "triggered" };
+  /**
+   * La trampa se activa: el Trapper recibe el rol real de cada visitante, sin nombres, aunque esté muerto
+   * (wiki: Keyword_System.md:349, Trapper.md:219, 362). attacked: si la trampa hirió a un atacante (Trapper.md:356).
+   */
+  "trap.triggered": { trapperId: PlayerId; roles: string[]; attacked: boolean };
   "attack.prevented": { victimId: PlayerId; protectorId: PlayerId };
   "night.resolved": { dayNumber: number };
   /**

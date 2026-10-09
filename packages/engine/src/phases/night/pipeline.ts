@@ -392,13 +392,18 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   for (const [trapperId, trap] of Object.entries(s.traps)) {
     // Una trampa construida y no colocada (targetId null) no se activa.
     if (trap.targetId === null) continue;
-    if (!isAlive(playerOf(s, trapperId)) || trap.readyDay > s.dayNumber || dismantles.includes(trapperId)) continue;
+    // Wiki (Trapper.md:260, 362, y nota de la versión 3.2.3): la trampa de un Trapper muerto sigue activa hasta que se dispara.
+    if (trap.readyDay > s.dayNumber || dismantles.includes(trapperId)) continue;
     const visitors = visitsTo(trap.targetId, trapperId);
     if (visitors.length === 0) continue;
     // Wiki (Trapper.md:219): cualquier visitante activa la trampa (y la gasta), aunque no ataque.
     // Wiki (Keyword_System.md:349): solo daña a los atacantes; si hay varios, a uno solo, elegido al azar, como el
     // visitante del Crusader y del Ambusher (Crusader.md:214, Ambusher.md:216). Trapper.md:223: ataque Powerful.
     const attackers = visitors.filter((v) => attacksOnVisit(v.visitorId));
+    // Wiki (Trapper.md:221): el Trapper ve el rol real de cada visitante (sin nombres), también si está muerto (Trapper.md:362).
+    const visitorIds = [...new Set(visitors.map((v) => v.visitorId))].sort((a, b) => (playerOf(s, a)?.seat ?? 0) - (playerOf(s, b)?.seat ?? 0));
+    const roles = visitorIds.map((id) => playerOf(s, id)?.roleKey).filter((r): r is string => !!r);
+    out.push({ type: "trap.triggered", payload: { trapperId, roles, attacked: attackers.length > 0 } });
     if (attackers.length > 0) {
       const attacker = attackers.length === 1 ? attackers[0]! : rng.shuffle(attackers)[0]!;
       attacks.push({ attackerId: trapperId, victimId: attacker.visitorId, power: 2, cause: "trap" });
