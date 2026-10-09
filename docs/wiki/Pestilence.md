@@ -6,8 +6,6 @@ Pestilence may refer to:
 
  Pestilence, a role in Town of Salem
 
- Pestilence, a role in Town of Salem 2
-
 Pestilence, a card in The Savior of Salem
 
  | 

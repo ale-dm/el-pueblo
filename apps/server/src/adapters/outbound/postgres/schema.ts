@@ -173,7 +173,7 @@ export const wikiPages = pgTable(
     pageId: integer("page_id"),
     isRedirect: boolean("is_redirect").notNull().default(false),
     redirectTarget: text("redirect_target"),
-    // ToS, ToS 2, TiS, BToS... o null si no lleva etiqueta de versión.
+    // ToS, TiS, BToS... o null si no lleva etiqueta de versión (la fase 1 no incluye ToS 2).
     versionTag: text("version_tag"),
     // true si la página está en el alcance ToS 1 (la que se usa para el juego).
     inScope: boolean("in_scope").notNull().default(false),

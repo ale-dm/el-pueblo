@@ -87,10 +87,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 role?
-
-This role has mechanics that appear in multiple roles in Town of Salem 2. For the ToS 2 counterparts, see Voodoo Master and Wildling.
-
  Blackmailer
 
 (BM/BMer)

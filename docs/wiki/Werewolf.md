@@ -6,8 +6,6 @@ Werewolf may refer to:
 
  Werewolf, a role in Town of Salem
 
- Werewolf, a role in Town of Salem 2
-
 Werewolf, a card in The Savior of Salem
 
  | 

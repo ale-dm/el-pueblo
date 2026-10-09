@@ -23,8 +23,8 @@ class Text(HTMLParser):
         t = re.sub(r"\n\s*\n+", "\n\n", t)
         return t.strip()
 
-pages = ["Game Modes (ToS)", "Game Modes (ToS 2)", "Game Modes/Coven Expansion", "Phases", "Modifiers",
-         "Fast Mode", "Slow Mode", "Custom Setups (ToS 2)", "Casual (BToS2)", "Friends (ToS)", "Mafia", "Town (ToS)"]
+pages = ["Game Modes (ToS)", "Game Modes/Coven Expansion", "Phases", "Modifiers",
+         "Friends (ToS)", "Mafia", "Town (ToS)"]
 for t in pages:
     q = urllib.parse.urlencode({"action": "parse", "page": t, "prop": "text", "format": "json", "formatversion": "2", "disabletoc": "1"})
     with urllib.request.urlopen(urllib.request.Request(API + "?" + q, headers=UA), timeout=60) as r:

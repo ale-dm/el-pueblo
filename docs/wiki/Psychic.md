@@ -8,8 +8,6 @@ Psychic may refer to:
 
  Psychic, a role in Traitors in Salem
 
- Psychic, a role in Town of Salem 2
-
 Psychic, a role in The Savior of Salem
 
  | 

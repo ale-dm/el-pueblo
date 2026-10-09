@@ -2,15 +2,11 @@
 
  | NOTE:
 
-These phases are exactly the same in both Town of Salem 1 and Town of Salem 2, with the exception of the various Rapid and Fast Modes.
-
 The gameplay of Town of Salem is split up into two primary phases, Day and Night. The Day is divided into several sub-phases: Discussion, Voting, Defense, Judgement, and Last Words. The Night phase contains a special function that modifies the abilities of some roles, deemed a Full Moon.
 
 The town will only go through the Defense (and subsequent Judgement and Last Words phases) if someone is put on trial during the Voting phase, and will only go through the Last Words phase if said person is deemed guilty by the majority of players and hanged.
 
 Town of Salem's Rapid Mode is a Classic Game Mode identical to Custom, but with the Discussion and Night phases reduced. There is no Coven equivalent.
-
-In Town of Salem 2, Fast Mode is a Modifier that can be added to a Custom lobby. The term Rapid Mode is changed to refer to the shortening of the timer that occurs at the beginning of the Day if only two players are left alive.
 
  | Phase
 
@@ -27,8 +23,6 @@ In Town of Salem 2, Fast Mode is a Modifier that can be added to a Custom lobby.
  | Standard Modes
 
  | Rapid Mode (ToS)
-
- | Rapid Mode (ToS 2)
 
  | Fast Mode
 
@@ -101,8 +95,6 @@ In Town of Salem 2, Fast Mode is a Modifier that can be added to a Custom lobby.
  | 15
 
  | 40
-
-"Standard Modes" refers to all game types in Town of Salem and Town of Salem 2 that are not Rapid Mode/ Fast Mode.
 
  Day[]
 
@@ -211,8 +203,6 @@ In Town of Salem 1, Blackmailed players may only say "I am blackmailed." once as
 
 Evil roles can use this as a last resort if they are not ready to claim a role.
 
-In Town of Salem 2, Silenced players may only say "..." once as their defense.
-
 In both games, the players cannot repeat the phrase if they are voted up a second time.
 
 Judgement[]
@@ -247,15 +237,11 @@ The Night phase in standard game modes lasts 37 seconds, and only lasts 10 secon
 
 In Town of Salem 1, during this phase, players who have a Night ability are given an opportunity to use it, excluding roles who have passive Night abilities (such as the Medium). Additionally, the Mafia, Coven, and Vampires may speak to each other, Mediums may speak with anyone in the graveyard or 1 alive player (if using their Seance), and the Jailor may speak with their Jailee.
 
-In Town of Salem 2, during this phase, players who have a Night ability are given an opportunity to use it, excluding roles who have passive Night abilities (such as the Amnesiac). Additionally, the Coven, Apocalypse, Vampires, and Wandering Souls may speak to each other, and the Jailor may speak with their Jailee.
-
 With the Feelin' Lucky? modifier enabled, a certain Jester Token can allow for the entire town to chat the following Night. This will replace the night chat of the Coven, Apocalypse, Vampires, and Wandering Souls but not of the Jailor and their Jailee.
 
  Full Moon[]
 
 Every Night in the game except for Night 1 and Night 3 will be a Full Moon Night.
-
-At this time, the Werewolf transforms into his beast form and can choose to rampage at any player's home, dealing a Powerful Attack to them and everyone who chooses to visit them. This can backfire if a Tavern Keeper/ Tavern Keeper, Bootlegger (or Poisoner in ToS2), Pirate or Jailor/ Jailor occupies their Night, in which case, the Werewolf will be forced to stay home and attack them.
 
 If there are few players left alive, it is ill-advised to visit any player during these Nights, as it may get you killed inadvertently.
 

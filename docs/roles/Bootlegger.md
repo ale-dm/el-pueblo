@@ -85,10 +85,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 role?
-
-This role has mechanics that appear in Town of Salem 2. For the ToS 2 counterpart, see Poisoner.
-
 Bootlegger 
 
 Alignment
@@ -360,8 +356,6 @@ Trivia[]
 The Bootlegger's old icon () (when it was still known as Consort) reflected how the Bootlegger is an Escort, with it being extremely similar to the Escort's old icon ().
 
 Prior to Version 2.0.0.6537, a Serial Killer would attack a Consort for role blocking them even if they were Jailed and/or executed.
-
-The Bootlegger's icon is a recolored version of the Town of Salem 2 Poisoner's "drink" icon ()
 
 History[]
 

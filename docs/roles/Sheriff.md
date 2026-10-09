@@ -70,10 +70,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 or Traitors in Salem role?
-
-This role appears in Town of Salem 2 and Traitors in Salem. For the ToS 2 counterpart, see Sheriff and for the TiS counterpart, see Sheriff
-
 Sheriff 
 
 Alignment

@@ -10,10 +10,6 @@ Game Modes/Coven Expansion, a list of all gamemodes in the Coven Expansion of To
 
 Game Modes (TiS), a list of all gamemodes in Traitors in Salem
 
-Game Modes (ToS 2), a list of all gamemodes in Town of Salem 2
-
-Game Modes (ToS 2)/Casual, a list of all the Casual role lists in Town of Salem 2
-
  | 
 
  | The contents of this article have often been confused with each other. This page clears up any misunderstanding caused by an Amnesiac. This is a disambiguation page.

@@ -432,6 +432,4 @@ Patch B.0.1.2 - 05/30/2023
 
 Fixed bug where Town Traitor was being revealed as Coven to Admirer.
 
-Town of Salem 2 Release
-
 Introduced.

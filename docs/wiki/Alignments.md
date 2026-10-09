@@ -8,8 +8,6 @@ Alignments (ToS), alignments of roles in Town of Salem
 
 Alignments (TiS), alignments or roles in Traitors in Salem
 
-Alignments (ToS 2), alignments of roles in Town of Salem 2
-
  | 
 
  | The contents of this article have often been confused with each other. This page clears up any misunderstanding caused by an Amnesiac. This is a disambiguation page.

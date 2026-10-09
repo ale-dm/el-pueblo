@@ -396,8 +396,6 @@ Prior to Version 3.3.0, a Disguiser could only Disguise themselves as other livi
 
 There used to be a glitch where if a Disguiser had Disguised themselves as a Medium, they would have a nonfunctioning seance button after death.
 
- Disguiser is one of four roles in the entire franchise that can directly visit two different players in one Night. The others are Transporter in Town of Salem 1, and Seer and War in Town of Salem 2.
-
 Several other roles, such as Witch and Necromancer, can select two targets, but only visit one of their targets, usually their first target.
 
 History[]

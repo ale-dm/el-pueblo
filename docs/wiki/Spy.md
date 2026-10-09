@@ -6,8 +6,6 @@ Spy may refer to:
 
  Spy, a role in Town of Salem
 
- Spy, a role in Town of Salem 2
-
 Spy, a role in The Savior of Salem
 
  | 

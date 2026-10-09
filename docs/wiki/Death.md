@@ -10,10 +10,6 @@ In Town of Salem
 
 In Traitors in Salem
 
-In Town of Salem 2
-
- Death, a role in Town of Salem 2 capable of bringing Armageddon upon the entire Town unless hanged before Sundown.
-
 Death, a card in The Savior of Salem.
 
  | 

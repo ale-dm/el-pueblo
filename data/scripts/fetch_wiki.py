@@ -19,9 +19,9 @@ def category_members(cat):
     return out
 
 roles = category_members("Category:Roles")
-extra = ["Mafia", "Town (ToS)", "Coven (ToS)", "Vampire (ToS)", "Game Modes (ToS)", "Game Modes (ToS 2)",
-         "Game Modes/Coven Expansion", "Phases", "Modifiers", "Custom Setups (ToS 2)", "Fast Mode", "Slow Mode",
-         "Getting Started", "Casual (BToS2)", "Game Modes (ToS 2)/Casual", "Anomaly", "Friends (ToS)"]
+extra = ["Mafia", "Town (ToS)", "Coven (ToS)", "Vampire (ToS)", "Game Modes (ToS)",
+         "Game Modes/Coven Expansion", "Phases", "Modifiers",
+         "Getting Started", "Anomaly", "Friends (ToS)"]
 titles = list(dict.fromkeys(roles + extra))
 print("titles:", len(titles), file=sys.stderr)
 

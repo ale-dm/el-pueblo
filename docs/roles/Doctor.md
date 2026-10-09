@@ -88,10 +88,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 role?
-
-This role has mechanics that appear in Town of Salem 2. For the ToS 2 counterpart, see Cleric.
-
 Doctor 
 
 Alignment

@@ -8,8 +8,6 @@ Classic Custom, a game mode in Town of Salem
 
 Coven Custom, a game mode in Town of Salem - The Coven (DLC)
 
-Custom (ToS 2), a game mode in Town of Salem 2
-
  | 
 
  | The contents of this article have often been confused with each other. This page clears up any misunderstanding caused by an Amnesiac. This is a disambiguation page.

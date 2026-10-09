@@ -8,8 +8,6 @@ Vigilante may refer to:
 
  Vigilante, a role in Traitors in Salem
 
- Vigilante, a role in Town of Salem 2
-
 Vigilante, a role in The Savior of Salem
 
  | 

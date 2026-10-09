@@ -6,8 +6,6 @@ Medusa may refer to:
 
  Medusa, a role in Town of Salem
 
- Medusa, a role in Town of Salem 2
-
 Medusa, a card in The Savior of Salem
 
  | 

@@ -148,7 +148,7 @@ async function seedWikiPages(tx: any, gz: Buffer, textIndex: { title: string }[]
       wikitext: string; categories: string[];
     };
     const redirect = /^\s*#REDIRECT\s*\[\[([^\]|#]+)/i.exec(r.wikitext);
-    const tag = /\((ToS 2|ToS2|TiS|BToS1|BToS2|ToS)\)\s*$/.exec(r.title);
+    const tag = /\((TiS|BToS1|BToS2|ToS)\)\s*$/.exec(r.title);
     const row = {
       title: r.title,
       pageId: r.pageid ?? null,

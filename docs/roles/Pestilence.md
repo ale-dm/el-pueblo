@@ -69,10 +69,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 role?
-
-This role appears in Town of Salem 1 and 2. For the ToS 2 counterpart, see Pestilence.
-
  | 
 
  | Please note: You cannot roll Pestilence from the role wheel. The only way to get it is by rolling Plaguebearer and infecting everyone.

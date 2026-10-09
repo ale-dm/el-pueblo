@@ -6,8 +6,6 @@ Potion Master may refer to:
 
  Potion Master, a role in Town of Salem
 
- Potion Master, a role in Town of Salem 2
-
 Potion Master, a card in The Savior of Salem
 
  | 

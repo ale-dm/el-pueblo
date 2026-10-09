@@ -8,8 +8,6 @@ Veteran may refer to:
 
  Veteran, a role in Traitors in Salem
 
- Veteran, a role in Town of Salem 2
-
 Veteran, a role in The Savior of Salem
 
  | 

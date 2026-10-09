@@ -4,8 +4,6 @@ Fuente: https://town-of-salem.fandom.com/wiki/Official_Town_of_Salem_Stories
 
 BlankMediaGames has published backstory and lore to Town of Salem over the years. Below are the stories for you to read it for yourself.
 
-This is NOT the place for user-made stories. Those can be found in Custom Stories, Custom Stories - Coven, Custom Stories - Traitors in Salem, and Custom Stories - Town of Salem 2.
-
 A Salem Christmas Story[]
 
 In a dark chamber of an old run down cabin, muffled sounds were barely audible above the sputters of fire. Atop the fire, there was a black cauldron, big enough to boil a person. A dark figure, with olive skin and dark eyes, was draped in a long, dark dress.

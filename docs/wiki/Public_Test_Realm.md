@@ -10,8 +10,6 @@ Fuente: https://town-of-salem.fandom.com/wiki/Public_Test_Realm
 
  | The Public Test Realm is currently closed.
 
-The Public Test Realm (PTR) was an area that was used to test out any new mechanics before they were added to the actual game by BlankMediaGames. It may have either used an old version of your account updated to whatever was included in the PTR, or a system that used a different account entirely. The realm functioned exactly like the regular game, however, the player count was low and finding games was harder. However, you were able to test out any new mechanic that may have been added to the game by BMG without restriction. Since the Public Test Realm is closed off from the public, creating a failed connection message, it means that Digital Bandidos is currently working on other games, particularly Town of Salem 2.
-
 FAQ
 
 Is it currently possible to access the PTR, and where can I find it?

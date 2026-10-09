@@ -2,8 +2,6 @@
 
 Fuente: https://town-of-salem.fandom.com/wiki/Town_of_Salem
 
-Town of Salem is an online game created by BlankMediaGames, which is similar to the popular party games Mafia and Werewolf. It is the prequel to Town of Salem 2. Town of Salem is based on the concept of an informed minority and an uninformed majority. The game can be purchased and played through on Steam or through the mobile app on Apple and Google Play.
-
 Gameplay
 
 The game is set in Salem, Massachusetts and progresses in a Day/night cycle. At the start of the game, each player will get one of the various roles in the game, which are split into multiple teams. The goal of each team, or faction, is to kill or hang all members of all opposing teams. Each role may have abilities which are commonly used during the Night or attributes which have passive effects. The Town normally has the most team members with a great variety of roles, usually having the majority at the beginning of certain games, which can be used to their advantage. The Mafia, Coven, and Vampires have fewer members, but know their teammates and can speak with them at Night. Neutral Killing roles rarely have any teammates but have Defense against regular attacks. Other Neutral roles may have special goals, allowing them to team up with anyone to win, or a select few roles. Depending on their role, a player may need persuasiveness, deception, intuition, logic or luck to win.

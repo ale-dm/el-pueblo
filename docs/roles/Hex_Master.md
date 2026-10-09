@@ -65,10 +65,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 or Traitors in Salem role?
-
-This role appears in Town of Salem 2 and Traitors in Salem. For the ToS 2 counterpart, see Hex Master and for the TiS counterpart, see Hex Master.
-
  | 
 
  | This page describes content that can only be accessed in the Coven Expansion.

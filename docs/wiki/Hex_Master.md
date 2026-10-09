@@ -8,8 +8,6 @@ Hex Master may refer to:
 
  Hex Master, a role in Traitors in Salem
 
- Hex Master, a role in Town of Salem 2
-
 Hex Master, a card in The Savior of Salem
 
  | 

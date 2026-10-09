@@ -4,8 +4,6 @@ Fuente: https://town-of-salem.fandom.com/wiki/Town_of_Salem_Wiki
 
 Welcome to the Town of Salem Wiki!
 
-We are the definitive source for all things related to the Town of Salem franchise, a social deduction series owned by Digital Bandidos. Titles include Town of Salem, Town of Salem 2, and Traitors in Salem. This site has information about roles, factions, strategies, and anything else you'd need to know before (and while) playing. Unlike traditional social deduction games, every player has a "role", which typically gives them a special ability they can do at Night, either to help the Town in its quest to rid Salem of evil, or hinder it through murder, witchcraft, or deception.
-
 Town of Salem is a difficult game, both to learn and to master. Whether you're unfamiliar with the franchise or a devoted fan, the Town of Salem Wiki has resources to aid you. 
 
 If you see something here that is inaccurate, please feel free to correct it.
@@ -14,13 +12,9 @@ If you are brand new to the game, you might want to take a look at our various s
 
 The Town of Salem Wiki hosts a collection of 5,000+ custom role ideas, including a few that were added to the game itself! If you wish to submit a role idea, please make sure it follows the guidelines on this page.
 
-Click here to submit ideas for the original Town of Salem, or here for Town of Salem 2 ideas.
-
 603,516 edits have been made to this wiki, transforming it into the library of knowledge we are still expanding today!
 
 Town of Salem
-
-Town of Salem 2
 
 Traitors in Salem
 
@@ -232,11 +226,7 @@ Twitter
 
 About the game
 
-Town of Salem 2 is an online game created by BlankMediaGames and currently owned by Digital Bandidos, and is the sequel of Town of Salem.
-
 The game is currently in Version R1.5.14.
-
-”Town of Salem 2: The ultimate game of murder, deceit, and survival, set in the quaint yet treacherous Town of Salem. Immerse yourself in this thrilling social deduction adventure, where your strategy, wit, and ability to read others are your greatest assets. Can you uncover the truth before it's too late, or will deception lead you astray?"
 
 Main Content
 
@@ -328,8 +318,6 @@ Hanging
 
 Guides
 
-Getting Started (ToS 2)
-
 Role Claims Guide
 
 Glossary of Abbreviations
@@ -357,8 +345,6 @@ Metagame
  Settings
 
 Bussing
-
-Town of Salem 2 Rules
 
 Cosmetics
 
@@ -392,8 +378,6 @@ Wallpapers
 
 Community Contributions
 
-Custom Stories - Town of Salem 2
-
 Custom Setups
 
 Role Ideas]
@@ -421,8 +405,6 @@ VERSION UPDATE R1.5.14
 Read the patch notes to see what has changed! Click here for more information.
 
 Watch the trailer!
-
-Town of Salem 2 Trailer
 
 Town of Salem Social Media
 

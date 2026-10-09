@@ -21,7 +21,7 @@ Siembra del catálogo: `apps/server/src/adapters/outbound/postgres/seed.ts`, eje
 | `roles` | `data/catalog/roles.json` | 50 roles: prioridad, Attack/Defense, resumen, objetivo, habilidades, resultados de Sheriff/Investigator/Consigliere, iconos, registro completo (`raw`) |
 | `role_attributes` | derivada de `roles` | Una fila por línea de atributos del rol (119 filas) |
 | `role_interactions` | **a rellenar** | Interacciones entre roles, una por caso. Se rellena al implementar cada rol y sus tests |
-| `phase_timings` | `data/catalog/phase_timings.json` | Duración de cada fase por modo (standard, rapid ToS 1, rapid ToS 2, fast mode) |
+| `phase_timings` | `data/catalog/phase_timings.json` | Duración de cada fase por modo (standard y rapid ToS 1) |
 | `game_modes` | `data/catalog/game_modes.json` | Modos de Mafia: Classic, Ranked Practice, Ranked, Rapid, All Any, Custom |
 | `host_rules` | `data/catalog/host_rules.json` | Reglas que el host debe cumplir en Custom (9) |
 | `voting_thresholds` | `data/catalog/voting_thresholds.json` | Votos necesarios según vivos, de 3 a 15: `ceil(vivos / 2)` |
@@ -94,5 +94,5 @@ Texto generado por Gemini o plantilla, asociado a un evento.
 - **Retención** de partidas terminadas: pendiente de decidir antes de producción.
 - **Cuentas**: no existen en la fase 1.
 - **Interacciones entre roles**: la tabla existe, pero se rellena al implementar cada rol.
-- **Modificadores**: la página Modifiers mezcla ToS 1 y ToS 2 en los iconos. Hay que revisar cuáles son de ToS 1 antes de activarlos.
+- **Modificadores**: la página Modifiers del catálogo sigue mezclando modificadores de otras versiones. Hay que revisar cuáles son de ToS 1 antes de activarlos.
 - **Índices adicionales**: se añaden según las consultas reales de M2.

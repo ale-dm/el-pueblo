@@ -18,8 +18,6 @@ Please make sure that you add your custom story to the specific custom role stor
 
  | 
 
- | For custom Town of Salem 2 stories, please post them on the templates on the Custom Stories - Town of Salem 2 article.
-
  | 
 
  | Custom Stories - Coven has been made together by the Town. Be wary of anyone claiming the hard work as their own, especially if it's yours.

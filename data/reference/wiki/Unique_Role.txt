@@ -2,8 +2,6 @@ Unique Roles are roles that are limited to 1 player per game. Usually, there wil
 
 Town of Salem
 
-Town of Salem 2
-
 Traitors in Salem
 
 Currently, there are 18 Unique Roles.

@@ -2,8 +2,6 @@
 
 Fuente: https://town-of-salem.fandom.com/wiki/BlankMediaGames
 
-BlankMediaGames LLC or BlankMediaGames, also shortened as BMG, was a game company known for developing and publishing the video games Town of Salem, Traitors in Salem, and Town of Salem 2.
-
 Aside from the online games, BlankMediaGames has also made two card games based on their first game: "Town of Salem - The Card Game" and "Town of Salem's The Savior of Salem".
 
 History[]

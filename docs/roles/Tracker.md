@@ -77,10 +77,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 or Traitors in Salem role?
-
-This role appears in Town of Salem 2 and Traitors in Salem. For the ToS 2 counterpart, see Tracker and for the TiS counterpart, see Tracker.
-
  | 
 
  | This page describes content that can only be accessed in the Coven Expansion.

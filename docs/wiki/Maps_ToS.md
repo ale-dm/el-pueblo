@@ -2,8 +2,6 @@
 
 Fuente: https://town-of-salem.fandom.com/wiki/Maps_(ToS)
 
-For the maps in Town of Salem 2 or Traitors in Salem, see Maps (ToS 2) or Map (TiS).
-
 Maps (also known as Villages or Backgrounds) give you the option of choosing a map for your house and Avatar to reside in. This is purely cosmetic and will not show up to other players. Most maps cost Town Points or Merit Points. You can buy villages separately or in packs with other items.
 
 Default Maps[]

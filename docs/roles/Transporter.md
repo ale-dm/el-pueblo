@@ -483,8 +483,6 @@ Prior to Version 2.0.0.6501, a Transporter could stop an Arsonist from incinerat
 
 Prior to Version 3.3.0, the Transporter was the only role that could be seen by a Tracker visiting 2 targets.
 
-In addition to this, Transporter is one of four roles in the entire franchise that can directly visit two different players in one Night. The others are Disguiser in Town of Salem 1, and Seer and War in Town of Salem 2.
-
 Several other roles, such as Witch and Necromancer, can select two targets, but only visit one of their targets, usually their first target.
 
  Transporter Scroll

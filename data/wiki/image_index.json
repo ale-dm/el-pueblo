@@ -8975,11 +8975,6 @@
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/8/8f/RoleIcon_Bootlegger.png/revision/latest?cb=20241013093127",
    "mime": "image/png"
   },
-  "RoleIcon Casual ToS2.png": {
-   "bytes": 29901,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/a/a0/RoleIcon_Casual_ToS2.png/revision/latest?cb=20250723030140",
-   "mime": "image/png"
-  },
   "Remove Best Friend.png": {
    "bytes": 101000,
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/e/ed/Remove_Best_Friend.png/revision/latest?cb=20260930165943",
@@ -9225,11 +9220,6 @@
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/0/0f/RoleIcon_TavernKeeper.png/revision/latest?cb=20250410115249",
    "mime": "image/png"
   },
-  "RoleIcon Poisoner Ability 1 ToS2.png": {
-   "bytes": 28049,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/e/ef/RoleIcon_Poisoner_Ability_1_ToS2.png/revision/latest?cb=20230613002656",
-   "mime": "image/png"
-  },
   "RoleIcon Story.png": {
    "bytes": 65596,
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/5/55/RoleIcon_Story.png/revision/latest?cb=20260716184721",
@@ -9305,71 +9295,6 @@
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/b/bd/RoleIcon_Witch_Circled.png/revision/latest?cb=20201025013442",
    "mime": "image/png"
   },
-  "RoleIcon Investigator ToS2.png": {
-   "bytes": 321946,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/2/2e/RoleIcon_Investigator_ToS2.png/revision/latest?cb=20230423194251",
-   "mime": "image/png"
-  },
-  "RoleIcon Lookout ToS2.png": {
-   "bytes": 312030,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/f/f3/RoleIcon_Lookout_ToS2.png/revision/latest?cb=20230423194652",
-   "mime": "image/png"
-  },
-  "RoleIcon Amnesiac ToS2.png": {
-   "bytes": 319167,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/9/9c/RoleIcon_Amnesiac_ToS2.png/revision/latest?cb=20230424020951",
-   "mime": "image/png"
-  },
-  "RoleIcon Bodyguard ToS2.png": {
-   "bytes": 336977,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/b/bf/RoleIcon_Bodyguard_ToS2.png/revision/latest?cb=20230424023013",
-   "mime": "image/png"
-  },
-  "RoleIcon Crusader ToS2.png": {
-   "bytes": 344209,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/f/f1/RoleIcon_Crusader_ToS2.png/revision/latest?cb=20230424023834",
-   "mime": "image/png"
-  },
-  "RoleIcon Arsonist ToS2.png": {
-   "bytes": 55957,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/3/3a/RoleIcon_Arsonist_ToS2.png/revision/latest?cb=20230604065152",
-   "mime": "image/png"
-  },
-  "RoleIcon Jester ToS2.png": {
-   "bytes": 60756,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/d/d0/RoleIcon_Jester_ToS2.png/revision/latest?cb=20260301173600",
-   "mime": "image/png"
-  },
-  "RoleIcon Executioner ToS2.png": {
-   "bytes": 53400,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/b/be/RoleIcon_Executioner_ToS2.png/revision/latest?cb=20230604070425",
-   "mime": "image/png"
-  },
-  "RoleIcon Cleric ToS2.png": {
-   "bytes": 27246,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/1/1b/RoleIcon_Cleric_ToS2.png/revision/latest?cb=20230613001624",
-   "mime": "image/png"
-  },
-  "RoleIcon Enchanter ToS2.png": {
-   "bytes": 25752,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/d/d3/RoleIcon_Enchanter_ToS2.png/revision/latest?cb=20230613001625",
-   "mime": "image/png"
-  },
-  "RoleIcon Jailor ToS2.png": {
-   "bytes": 26840,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/a/ae/RoleIcon_Jailor_ToS2.png/revision/latest?cb=20230613001626",
-   "mime": "image/png"
-  },
-  "RoleIcon Jinx ToS2.png": {
-   "bytes": 28879,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/6/6c/RoleIcon_Jinx_ToS2.png/revision/latest?cb=20230613001627",
-   "mime": "image/png"
-  },
-  "RoleIcon HexMaster ToS2.png": {
-   "bytes": 46208,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/b/b3/RoleIcon_HexMaster_ToS2.png/revision/latest?cb=20230613001627",
-   "mime": "image/png"
-  },
   "RoleIcon Disguiser TiS.png": {
    "bytes": 142748,
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/9/9a/RoleIcon_Disguiser_TiS.png/revision/latest?cb=20240704150143",
@@ -9385,114 +9310,9 @@
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/f/f6/RoleIcon_PlagueBearer_1.png/revision/latest?cb=20200910205951",
    "mime": "image/png"
   },
-  "RoleIcon Psychic ToS2.png": {
-   "bytes": 340903,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/7/79/RoleIcon_Psychic_ToS2.png/revision/latest?cb=20230423195110",
-   "mime": "image/png"
-  },
-  "RoleIcon Sheriff ToS2.png": {
-   "bytes": 334497,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/2/22/RoleIcon_Sheriff_ToS2.png/revision/latest?cb=20230423200551",
-   "mime": "image/png"
-  },
-  "RoleIcon Spy ToS2.png": {
-   "bytes": 337993,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/e/ee/RoleIcon_Spy_ToS2.png/revision/latest?cb=20230423231137",
-   "mime": "image/png"
-  },
-  "RoleIcon Tracker ToS2.png": {
-   "bytes": 316699,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/f/ff/RoleIcon_Tracker_ToS2.png/revision/latest?cb=20230423231549",
-   "mime": "image/png"
-  },
-  "RoleIcon Veteran ToS2.png": {
-   "bytes": 321611,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/6/6b/RoleIcon_Veteran_ToS2.png/revision/latest?cb=20230424020156",
-   "mime": "image/png"
-  },
-  "RoleIcon Vigilante ToS2.png": {
-   "bytes": 322395,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/9/9d/RoleIcon_Vigilante_ToS2.png/revision/latest?cb=20230424020206",
-   "mime": "image/png"
-  },
-  "RoleIcon Retributionist ToS2.png": {
-   "bytes": 322045,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/6/6d/RoleIcon_Retributionist_ToS2.png/revision/latest?cb=20230424021610",
-   "mime": "image/png"
-  },
-  "RoleIcon Trapper ToS2.png": {
-   "bytes": 311733,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/e/e9/RoleIcon_Trapper_ToS2.png/revision/latest?cb=20230424024427",
-   "mime": "image/png"
-  },
-  "RoleIcon Mayor ToS2.png": {
-   "bytes": 25949,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/e/ee/RoleIcon_Mayor_ToS2.png/revision/latest?cb=20230611091805",
-   "mime": "image/png"
-  },
-  "RoleIcon Medusa ToS2.png": {
-   "bytes": 76410,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/2/26/RoleIcon_Medusa_ToS2.png/revision/latest?cb=20230604063528",
-   "mime": "image/png"
-  },
-  "RoleIcon Necromancer ToS2.png": {
-   "bytes": 108445,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/5/53/RoleIcon_Necromancer_ToS2.png/revision/latest?cb=20230604063655",
-   "mime": "image/png"
-  },
-  "RoleIcon Poisoner ToS2.png": {
-   "bytes": 79869,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/e/e4/RoleIcon_Poisoner_ToS2.png/revision/latest?cb=20230604063817",
-   "mime": "image/png"
-  },
-  "RoleIcon Pirate ToS2.png": {
-   "bytes": 63760,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/9/92/RoleIcon_Pirate_ToS2.png/revision/latest?cb=20230604070131",
-   "mime": "image/png"
-  },
-  "RoleIcon SerialKiller ToS2.png": {
-   "bytes": 44732,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/3/38/RoleIcon_SerialKiller_ToS2.png/revision/latest?cb=20250410114153",
-   "mime": "image/png"
-  },
-  "RoleIcon Plaguebearer ToS2.png": {
-   "bytes": 36065,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/f/f3/RoleIcon_Plaguebearer_ToS2.png/revision/latest?cb=20230613001628",
-   "mime": "image/png"
-  },
-  "RoleIcon Pestilence ToS2.png": {
-   "bytes": 43589,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/a/a7/RoleIcon_Pestilence_ToS2.png/revision/latest?cb=20230613001628",
-   "mime": "image/png"
-  },
-  "RoleIcon PotionMaster ToS2.png": {
-   "bytes": 43745,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/2/2c/RoleIcon_PotionMaster_ToS2.png/revision/latest?cb=20230613001628",
-   "mime": "image/png"
-  },
-  "RoleIcon Werewolf ToS2.png": {
-   "bytes": 38745,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/6/64/RoleIcon_Werewolf_ToS2.png/revision/latest?cb=20230613001628",
-   "mime": "image/png"
-  },
-  "RoleIcon TavernKeeper ToS2.png": {
-   "bytes": 332181,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/d/dc/RoleIcon_TavernKeeper_ToS2.png/revision/latest?cb=20250410113851",
-   "mime": "image/png"
-  },
-  "RoleIcon Vampire ToS2.png": {
-   "bytes": 71137,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/3/3d/RoleIcon_Vampire_ToS2.png/revision/latest?cb=20230613001628",
-   "mime": "image/png"
-  },
   "RoleIcon Transporter TiS.png": {
    "bytes": 142911,
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/1/17/RoleIcon_Transporter_TiS.png/revision/latest?cb=20240629152152",
-   "mime": "image/png"
-  },
-  "RoleIcon VoodooMaster ToS2.png": {
-   "bytes": 26150,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/2/21/RoleIcon_Voodoo_Master_ToS2.png/revision/latest?cb=20230613001628",
    "mime": "image/png"
   },
   "Shack.png": {
@@ -9710,11 +9530,6 @@
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/e/e2/Shop_Transparent.png/revision/latest?cb=20230114200937",
    "mime": "image/png"
   },
-  "RoleIcon Witch ToS2.png": {
-   "bytes": 61975,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/d/d0/RoleIcon_Witch_ToS2.png/revision/latest?cb=20230604062826",
-   "mime": "image/png"
-  },
   "StartScreen.jpg": {
    "bytes": 184037,
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/5/52/StartScreen.jpg/revision/latest?cb=20150628075019",
@@ -9915,19 +9730,9 @@
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/b/bc/Statistics_Transparent.png/revision/latest?cb=20230114202610",
    "mime": "image/png"
   },
-  "Town of Salem 2 Banner Clear Colored Full.png": {
-   "bytes": 1208437,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/b/bd/Town_of_Salem_2_Banner_Clear_Colored_Full.png/revision/latest?cb=20230424190016",
-   "mime": "image/png"
-  },
   "ToS1 Trailer - DB": {
    "bytes": 17710,
    "url": "https://static.wikia.nocookie.net/town-of-salem/images/1/14/Town_of_Salem_1_Trailer/revision/latest?cb=20260317221221",
-   "mime": "video/youtube"
-  },
-  "ToS2 Trailer": {
-   "bytes": 37479,
-   "url": "https://static.wikia.nocookie.net/town-of-salem/images/d/df/Town_of_Salem_2_Trailer/revision/latest?cb=20260317221422",
    "mime": "video/youtube"
   },
   "TiS Trailer": {
@@ -11673,96 +11478,61 @@
   "Rest_In_Peace.png",
   "RoleIcon_Ambusher.png",
   "RoleIcon_Amnesiac.png",
-  "RoleIcon_Amnesiac_ToS2.png",
   "RoleIcon_Arsonist 1.png",
   "RoleIcon_Arsonist_2.png",
-  "RoleIcon_Arsonist_ToS2.png",
   "RoleIcon_Blackmailer.png",
   "RoleIcon_Blackmailer_Circled.png",
   "RoleIcon_Bodyguard.png",
-  "RoleIcon_Bodyguard_ToS2.png",
   "RoleIcon_Bootlegger.png",
-  "RoleIcon_Cleric_ToS2.png",
   "RoleIcon_Consigliere.png",
   "RoleIcon_CovenLeader.png",
   "RoleIcon_Crusader.png",
-  "RoleIcon_Crusader_ToS2.png",
   "RoleIcon_Disguiser.png",
   "RoleIcon_Disguiser_TiS.png",
   "RoleIcon_Doctor 1.png",
-  "RoleIcon_Enchanter_ToS2.png",
   "RoleIcon_Executioner.png",
-  "RoleIcon_Executioner_ToS2.png",
   "RoleIcon_Forger.png",
   "RoleIcon_Framer.png",
   "RoleIcon_Godfather.png",
   "RoleIcon_GuardianAngel.png",
   "RoleIcon_HexMaster.png",
-  "RoleIcon_HexMaster_ToS2.png",
   "RoleIcon_Hypnotist.png",
   "RoleIcon_Inquisitor_TiS.png",
   "RoleIcon_Investigator.png",
-  "RoleIcon_Investigator_ToS2.png",
   "RoleIcon_Jailor.png",
-  "RoleIcon_Jailor_ToS2.png",
   "RoleIcon_Janitor.png",
   "RoleIcon_Jester.png",
-  "RoleIcon_Jester_ToS2.png",
-  "RoleIcon_Jinx_ToS2.png",
   "RoleIcon_Juggernaut.png",
   "RoleIcon_Lookout.png",
-  "RoleIcon_Lookout_ToS2.png",
   "RoleIcon_Mafioso.png",
   "RoleIcon_Mayor.png",
-  "RoleIcon_Mayor_ToS2.png",
   "RoleIcon_Medium.png",
   "RoleIcon_Medusa.png",
-  "RoleIcon_Medusa_ToS2.png",
   "RoleIcon_Necromancer.png",
-  "RoleIcon_Necromancer_ToS2.png",
   "RoleIcon_Pestilence.png",
-  "RoleIcon_Pestilence_ToS2.png",
   "RoleIcon_Pirate.png",
-  "RoleIcon_Pirate_ToS2.png",
   "RoleIcon_PlagueBearer 1.png",
   "RoleIcon_PlagueBearer 2.png",
   "RoleIcon_PlagueBearer_2.png",
-  "RoleIcon_Plaguebearer_ToS2.png",
   "RoleIcon_Poisoner.png",
-  "RoleIcon_Poisoner_ToS2.png",
   "RoleIcon_PotionMaster.png",
-  "RoleIcon_PotionMaster_ToS2.png",
   "RoleIcon_Psychic.png",
-  "RoleIcon_Psychic_ToS2.png",
   "RoleIcon_Retributionist.png",
-  "RoleIcon_Retributionist_ToS2.png",
   "RoleIcon_SerialKiller.png",
-  "RoleIcon_SerialKiller_ToS2.png",
   "RoleIcon_Sheriff.png",
-  "RoleIcon_Sheriff_ToS2.png",
   "RoleIcon_Spy.png",
-  "RoleIcon_Spy_ToS2.png",
   "RoleIcon_Survivor.png",
   "RoleIcon_TavernKeeper.png",
-  "RoleIcon_TavernKeeper_ToS2.png",
   "RoleIcon_Tracker.png",
-  "RoleIcon_Tracker_ToS2.png",
   "RoleIcon_Transporter.png",
   "RoleIcon_Transporter_TiS.png",
   "RoleIcon_Trapper.png",
-  "RoleIcon_Trapper_ToS2.png",
   "RoleIcon_Vampire.png",
   "RoleIcon_VampireHunter.png",
-  "RoleIcon_Vampire_ToS2.png",
   "RoleIcon_Veteran.png",
-  "RoleIcon_Veteran_ToS2.png",
   "RoleIcon_Vigilante.png",
-  "RoleIcon_Vigilante_ToS2.png",
-  "RoleIcon_VoodooMaster_ToS2.png",
   "RoleIcon_Werewolf.png",
-  "RoleIcon_Werewolf_ToS2.png",
   "RoleIcon_Witch.png",
-  "RoleIcon_Witch_ToS2.png",
   "Royal_Palace.png",
   "Samurai_Sanctuary.png",
   "Screenshot_2020-05-11_at_2.39.52_PM.png",

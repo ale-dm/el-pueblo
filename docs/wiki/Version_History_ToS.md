@@ -5,8 +5,6 @@ Fuente: https://town-of-salem.fandom.com/wiki/Version_History_(ToS)
 These are the official patch notes for all versions of the PC, Steam, and Mobile versions of Town of Salem. 
 The current version of Town of Salem can be found by clicking the "Patch Notes" button in the upper-right of the login-screen.
 
-Looking for Town of Salem 2 patch notes? Click here. 
-
 Looking for Traitors in Salem patch notes? Click here.
 
  | Version

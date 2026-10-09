@@ -74,10 +74,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 role?
-
-This role appears in Town of Salem 2. For the ToS 2 counterpart, see Tavern Keeper.
-
 Tavern Keeper 
 
 Alignment

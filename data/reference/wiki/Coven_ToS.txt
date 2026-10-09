@@ -185,8 +185,6 @@ Similar to the Mafia, all Coven members will die when bitten by a Vampire.
 
 In the Public Test Realm, there used to be a now-scrapped Coven Support Alignment. Most notably, the only known role to fit in this Alignment was the Potion Master.
 
-This later became Town of Salem 2's Coven Utility.
-
 The Coven is the only faction not available in Classic. It can be accessed through the Coven Expansion.
 
 Since the Coven is very similar to Mafia, refer to the Mafia page for some strategies to adopt into your own strategies.

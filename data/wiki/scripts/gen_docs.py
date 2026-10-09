@@ -3,7 +3,11 @@ REPO="/home/user/el-pueblo"; DOCS=f"{REPO}/docs"
 roles=json.load(open("out/roles.json"))
 tidx={i["title"]:i for i in json.load(open("full/text/index.json"))}
 def slugify(s): return re.sub(r"[^A-Za-z0-9]+","_",s).strip("_")
-def read_text(slug): return open(f"full/text/{slug}.txt").read()
+# Fase 1: sin contenido de ToS2. Se quitan las líneas que lo mencionan (avisos entre versiones, enlaces).
+TOS2=re.compile(r"ToS ?2\b|ToS2|Town of Salem 2|Better Town of Salem 2|BToS2", re.I)
+def read_text(slug):
+    lines=open(f"full/text/{slug}.txt").read().split("\n")
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(l for l in lines if not TOS2.search(l)))
 
 os.makedirs(f"{DOCS}/roles",exist_ok=True); os.makedirs(f"{DOCS}/wiki",exist_ok=True)
 ROLE_PAGES=set()

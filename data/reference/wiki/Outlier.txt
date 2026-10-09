@@ -1,4 +1,3 @@
-Outlier is a sub-alignment for Town, Coven, and Neutrals in Town of Salem 2 under which a variety of Roles fall under. This sub-alignment was introduced to the game on June 26, 2025 following the release of Patch R.1.5.00. 
 
 Roles with the Outlier alignment are special. They will only appear in a game when specified in the Role Deck, and often make dramatic changes to the flow of a game. Note that each Outlier role's faction varies.
 

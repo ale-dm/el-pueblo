@@ -4,10 +4,6 @@ Fuente: https://town-of-salem.fandom.com/wiki/Werewolf_(ToS)
 
 | 
 
- | Looking for the Town of Salem 2 role?
-
-This role appears in Town of Salem 1 and 2. For the ToS 2 counterpart, see Werewolf.
-
 Werewolf 
 
 (WW)

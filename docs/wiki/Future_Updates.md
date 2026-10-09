@@ -2,9 +2,6 @@
 
 Fuente: https://town-of-salem.fandom.com/wiki/Future_Updates
 
-Town of Salem will no longer receive non-Quality-of-Life updates, as the developers have chosen to focus on Town of Salem 2.
-Many features that were planned for Town of Salem were now implemented in Town of Salem 2. This inclues
-
 A Reconnect button
 
 Account leveling system

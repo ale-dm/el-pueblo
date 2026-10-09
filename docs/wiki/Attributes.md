@@ -6,8 +6,6 @@ Attributes may refer to:
 
 Attributes (ToS), from Town of Salem
 
-Attributes (ToS 2), from Town of Salem 2
-
 Attributes (BToS1), from Better Town of Salem
 
  | 

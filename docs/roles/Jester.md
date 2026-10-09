@@ -87,10 +87,6 @@
 
 | 
 
- | Looking for the Town of Salem 2 or Traitors in Salem role?
-
-This role appears in Town of Salem 2 and Traitors in Salem. For the ToS 2 counterpart, see Jester and for the TiS counterpart, see Jester.
-
 Jester 
 
 (Jest)
@@ -444,8 +440,6 @@ You can pretend to not know how to whisper. However, this will only work if you 
 While using this strategy, don't whisper unless told how to do so. Some people will notice that and accuse you of not being new. Most beginners don't know how to whisper.
 
 Note that these strategies are only likely to work in Classic Mode. For example, playing this strategy in Ranked will almost certainly result in you being called out as Jester.
-
-If you have played Town of Salem 2, you can also try claiming to be a Town Investigative role and fake results that are normally seen in their respective Town Investigative counterparts such as claiming to be Investigator who has seen someone as No Crime/ Trespassing/ Murder instead of the usual results. This will make you seem like a confused evil who clearly has not adapted to the game yet and will get you hung.
 
 In the Coven Expansion, a good strategy is to claim Psychic, but switch the order of visions (have a Good Vision on Night 1).
 

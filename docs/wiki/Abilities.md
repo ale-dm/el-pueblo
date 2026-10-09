@@ -8,8 +8,6 @@ Abilities (ToS), abilities of roles in Town of Salem
 
 Abilities (TiS), abilities or roles in Traitors in Salem
 
-Abilities (ToS 2), abilities of roles in Town of Salem 2
-
 Abilities (BToS1), abilities of roles in Better Town of Salem
 
  | 
