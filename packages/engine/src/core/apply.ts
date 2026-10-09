@@ -131,7 +131,11 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
         nightActions: {},
         // Las falsificaciones duran una noche (wiki: Forger).
         forgeries: {},
-        players: s.players.map((p) => ({ ...p, flags: without(without(p.flags, "alert"), "jailed") })),
+        // "cleaned" se conserva en los muertos (el Retributionist lo consulta); en los vivos caduca con la noche.
+        players: s.players.map((p) => ({
+          ...p,
+          flags: p.status === "alive" ? without(without(without(p.flags, "alert"), "jailed"), "cleaned") : without(without(p.flags, "alert"), "jailed"),
+        })),
         jailedBy: {},
       };
 

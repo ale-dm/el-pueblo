@@ -40,6 +40,8 @@ export function nightAction(
     if (!dead || dead.status !== "dead" || dead.faction !== "town" || !dead.roleKey) {
       return err("invalid_command", "Solo puedes resucitar a un Town muerto cuyo rol se conozca");
     }
+    // Wiki (Retributionist.md:216): no se resucita a quien limpió el Janitor.
+    if (dead.flags.cleaned) return err("invalid_command", "Ese Town fue limpiado: no queda rol que resucitar");
     if (dead.flags.zombied) return err("invalid_command", "Ese zombi ya se ha usado");
     const second = check(secondTargetId, "Objetivo");
     if (second) return err("invalid_command", second);

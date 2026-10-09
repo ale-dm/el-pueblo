@@ -212,7 +212,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   for (const act of active) {
     const def = act.handler.nightAbilities.find((a) => a.key === act.ability);
-    if (def?.usesLimit !== null && def?.usesLimit !== undefined) {
+    // Wiki (Janitor.md:250): visitar a un encarcelado no gasta una limpieza.
+    const visitsJailed = act.ability === "clean" && act.targetId !== null && playerOf(s, remap(act.targetId))?.flags.jailed === true;
+    if (def?.usesLimit !== null && def?.usesLimit !== undefined && !visitsJailed) {
       usesSpent.push({ playerId: act.actor.id, ability: act.ability });
     }
     for (const raw of act.effects) {

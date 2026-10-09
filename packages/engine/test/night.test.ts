@@ -252,6 +252,41 @@ describe("noche: jailor y trampero", () => {
   });
 });
 
+describe("noche: Janitor y Retributionist (wiki: Janitor, Retributionist)", () => {
+  it("limpiar a un encarcelado no gasta una limpieza", () => {
+    const s = game(["janitor", "jailor", "investigator", "godfather"]);
+    s.players[2] = { ...s.players[2]!, flags: { jailed: true } };
+    s.jailedBy = { p3: "p2" };
+    const { state } = resolve(s, [night("p1", "clean", "p3")]);
+    expect(state.players[0]!.usesLeft.clean).toBe(3);
+  });
+
+  it("limpiar a un libre sí gasta una limpieza", () => {
+    const s = game(["janitor", "investigator", "godfather"]);
+    const { state } = resolve(s, [night("p1", "clean", "p2")]);
+    expect(state.players[0]!.usesLeft.clean).toBe(2);
+  });
+
+  it("el Retributionist no puede resucitar a un Town limpiado", () => {
+    const s = game(["janitor", "retributionist", "doctor", "godfather", "sheriff", "investigator"]);
+    const { state } = resolve(s, [night("p1", "clean", "p3"), night("p4", "kill", "p3")]);
+    expect(state.players[2]!.status).toBe("dead");
+    expect(state.players[2]!.flags.cleaned).toBe(true);
+    const next = { ...state, phase: "night" as const, dayNumber: 2 };
+    expect(rejected(next, { type: "night.action", actorId: "p2", ability: "raise", targetId: "p3", secondTargetId: "p5" })).toMatch(/limpiado/);
+  });
+
+  it("la limpieza de un vivo caduca: si muere otra noche, el Retributionist sí puede resucitarlo", () => {
+    const s = game(["janitor", "retributionist", "doctor", "godfather", "sheriff", "investigator"]);
+    const cleanedNight = resolve(s, [night("p1", "clean", "p3")]).state;
+    expect(cleanedNight.players[2]!.flags.cleaned).toBeUndefined();
+    const killed = resolve({ ...cleanedNight, phase: "night", dayNumber: 2 }, [night("p4", "kill", "p3")]).state;
+    expect(killed.players[2]!.status).toBe("dead");
+    const next = { ...killed, phase: "night" as const, dayNumber: 3 };
+    expect(rejected(next, { type: "night.action", actorId: "p2", ability: "raise", targetId: "p3", secondTargetId: "p5" })).toBeNull();
+  });
+});
+
 describe("noche: victoria y muertos", () => {
   it("la Mafia gana cuando no queda ningún Town vivo", () => {
     const s = game(["godfather", "investigator"]);
