@@ -6,12 +6,12 @@ import { Button, Card } from "../ui/primitives.js";
 
 /**
  * Nota de muerte que el asesino puede cambiar durante el anuncio de la mañana (wiki: Death_Note_ToS.md:13, 17).
- * No se muestra fuera de esa ventana ni a quien no ha escrito una nota.
+ * No se muestra fuera de esa ventana, ni a quien no ha escrito una nota, ni a un asesino muerto (el motor lo rechaza).
  */
 export function DeathNoteCard({ view }: { view: MatchView }) {
   const log = useGame((s) => s.log);
   const notes = useMemo(() => editableDeathNotes(log, view.me.id, view.phase, view.dayNumber), [log, view.me.id, view.phase, view.dayNumber]);
-  if (notes.length === 0) return null;
+  if (view.me.status !== "alive" || notes.length === 0) return null;
   return (
     <Card>
       <h3 className="font-display text-xl">Tu nota de muerte</h3>

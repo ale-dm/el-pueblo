@@ -63,6 +63,11 @@ async function playGame(game: number, report: Report, bots = 0) {
     for (const e of log) {
       if (e.type === "player.killed" || e.type === "player.hanged") dead.add(e.payload.playerId);
     }
+    // La tabla de jugadores debe reflejar las muertes del registro (recordDeaths, en cada comando y temporizador).
+    const deadInRoster = new Set((await app.players.listByMatch(matchId)).filter((p) => p.status === "dead").map((p) => p.id));
+    if (deadInRoster.size !== dead.size || [...dead].some((id) => !deadInRoster.has(id))) {
+      anomaly(step, "roster-desincronizado", `registro ${[...dead].join(",")} / tabla ${[...deadInRoster].join(",")}`);
+    }
 
     const order = [...seats];
     for (let i = order.length - 1; i > 0; i--) {
@@ -133,10 +138,9 @@ async function playGame(game: number, report: Report, bots = 0) {
           await app.services.submitCommand({ matchId, token: seat.token, command: command as any });
           count(report.accepted, key);
           // Un muerto solo actúa con la sesión de Médium; cualquier otra acción aceptada es una anomalía.
+          // La Death Note de un asesino muerto no se cambia (decisión del proyecto, ver writeDeathNote): también es anomalía.
           if (dead.has(actorId) && !(kind === "night.action" && command.ability === "seance") && kind !== "chat.send") {
-            // La Death Note del asesino muerto es ambigua en la wiki (Death_Note_ToS.md:13, :17): se cuenta aparte, no es anomalía.
-            if (kind === "death.note.write") count(report.observations, "death.note.write por autor muerto");
-            else anomaly(step, "muerto-actua", `${kind} ${JSON.stringify(command)}`);
+            anomaly(step, "muerto-actua", `${kind} ${JSON.stringify(command)}`);
           }
         } catch (error) {
           if (error instanceof AppError && EXPECTED_REJECTIONS.has(error.code)) {
@@ -159,7 +163,7 @@ async function playGame(game: number, report: Report, bots = 0) {
   const finalMatch = await app.matches.findById(matchId);
   if (finalMatch?.status === "finished") {
     report.finished++;
-    // Los vivos salen del registro de eventos (fuente de verdad): el almacén de jugadores no se actualiza al morir.
+    // Los vivos salen del registro de eventos (fuente de verdad); la tabla de jugadores debe coincidir (ver invariante arriba).
     const logAtEnd = await app.events.read(matchId);
     const deadAtEnd = new Set(logAtEnd.filter((e) => e.type === "player.killed" || e.type === "player.hanged").map((e) => e.payload.playerId));
     const roster = await app.players.listByMatch(matchId);

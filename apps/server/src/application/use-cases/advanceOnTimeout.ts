@@ -2,6 +2,7 @@ import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { createRng, decide, replay, type Catalog } from "@el-pueblo/engine";
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
 import { initialState } from "../state/initialState.js";
+import { recordDeaths } from "../state/recordDeaths.js";
 import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler } from "../ports.js";
 import { modeOf, phaseDelayFor } from "../timing.js";
 
@@ -44,6 +45,7 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
       if (!decision.ok) return;
 
       await deps.events.append(matchId, state.seq, decision.value);
+      await recordDeaths(deps.players, roster, decision.value);
       const ended = decision.value.some((e) => e.type === "game.ended");
       if (ended) {
         await deps.matches.update({ ...match, status: "finished", endedAt: deps.clock.now() });

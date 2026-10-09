@@ -3,6 +3,7 @@ import { createRng, decide, replay, type Catalog, type Command } from "@el-puebl
 import { AppError, ConcurrencyError } from "../errors.js";
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
 import { initialState } from "../state/initialState.js";
+import { recordDeaths } from "../state/recordDeaths.js";
 import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler, Security } from "../ports.js";
 import { modeOf, phaseDelayFor } from "../timing.js";
 
@@ -90,6 +91,7 @@ export function submitCommand(deps: SubmitCommandDeps) {
         if (error instanceof ConcurrencyError) throw new AppError("conflict", error.message);
         throw error;
       }
+      await recordDeaths(deps.players, roster, decision.value);
       const ended = decision.value.some((e) => e.type === "game.ended");
       if (ended) {
         await deps.matches.update({ ...match, status: "finished", endedAt: deps.clock.now() });

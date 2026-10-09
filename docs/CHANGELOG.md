@@ -11,8 +11,16 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Barrido de 600 partidas (300 con diez humanos, 300 con cinco humanos y cinco bots): 31.089 pasos, 0 anomalías. Ganan la Mafia en 343 y el pueblo en 257.
 - Control: quitar la regla "los muertos no escriben su testamento" en el motor hace fallar el test (detecta el fallo).
 - Hallazgos, sin cambiar código:
-  - La tabla de jugadores no actualiza `status` cuando alguien muere (queda como al empezar). El motor y la vista usan el estado reproducido desde el registro, así que el juego no se ve afectado; pero el dato de la tabla miente. Pendiente de decidir si se corrige.
-  - Un autor muerto puede cambiar su Death Note durante la mañana. La wiki (Death_Note_ToS.md:13, :17) no dice si cuenta para un autor muerto: se cuenta aparte como observación (43 casos), no como anomalía.
+  - La tabla de jugadores no actualizaba `status` al morir. **Corregido** en la sección siguiente.
+  - Un autor muerto podía cambiar su Death Note durante la mañana. **Prohibido** por decisión del usuario, en la sección siguiente.
+
+## Tabla de jugadores y Death Note de un asesino muerto
+
+- Commits: este lote (ver `git log`).
+- Tests nuevos: `apps/server/test/application/roster-muertes.test.ts`
+- Citas de la wiki: Death_Note_ToS.md:13, :17 (ambiguo sobre el autor muerto; decisión del usuario); Death_Note_ToS.md:5, 15.
+- **Corrección 1: la tabla de jugadores registra las muertes.** `recordDeaths` (`apps/server/src/application/state/recordDeaths.ts`) pone `status: "dead"` y la causa a cada `player.killed` / `player.hanged`, tras cada lote que se añade al registro, en `submitCommand` y `advanceOnTimeout`. `initialState` empieza a todos vivos y sin causa: la reconstrucción ya no hereda el estado de la tabla, así que la recuperación tras reinicio no cambia. Invariante nueva en la exploración: la tabla y el registro tienen los mismos muertos en cada paso. Pruebas: `roster-muertes.test.ts` (2). Control: quitar la llamada en el temporizador hace fallar las dos; copiar el estado de la tabla en `initialState` hace fallar la de reinicio.
+- **Corrección 2 (decisión del usuario: prohibido): un asesino muerto no cambia su Death Note.** `writeDeathNote` rechaza con "Un asesino muerto no puede cambiar su nota de muerte" (`packages/engine/src/phases/night/collect.ts`). La tarjeta de la web no se muestra a un muerto (`apps/web/src/game/DeathNoteCard.tsx`). En la exploración, un `death.note.write` de un muerto deja de ser observación: si el motor lo aceptara sería anomalía; el motor lo rechaza como error esperado. Pruebas: `death-note-edicion.test.ts` (+1, "un asesino muerto no cambia su nota").
 
 ## M2 (servidor): reinicio y recuperación de partidas
 

@@ -56,6 +56,13 @@ describe("Nota de muerte: cambio durante el anuncio de la mañana (wiki: Death_N
     expect(rejected(s, write("p3", "p2", "no es mía"))).toMatch(/Solo el asesino/);
   });
 
+  it("un asesino muerto no cambia su nota, aunque sea la mañana del anuncio (decisión del proyecto; Death_Note_ToS.md:13, :17)", () => {
+    const s = morningOfDayThree();
+    const dead: GameState = { ...s, players: s.players.map((p) => (p.id === "p1" ? { ...p, status: "dead" as const } : p)) };
+    expect(rejected(dead, write("p1", "p2", "desde la tumba"))).toMatch(/asesino muerto/);
+    expect(dead.players[1]!.deathNote?.note).toBe("Nota original");
+  });
+
   it("una víctima que no murió de la Mafia no tiene nota que cambiar", () => {
     const s = morningOfDayThree();
     expect(rejected(s, write("p1", "p3", "x"))).toMatch(/Solo el asesino/);

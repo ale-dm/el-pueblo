@@ -16,7 +16,8 @@ apps/server/src/
     errors.ts                 AppError con código estable
     limits.ts                 Límites de sala (15 jugadores máximo, nick de 24 caracteres...)
     concurrency/keyedQueue.ts Serializa tareas por clave (una partida = una clave)
-    state/initialState.ts     Estado inicial del motor a partir del registro de la partida
+    state/initialState.ts     Estado inicial del motor a partir del registro de la partida (todos vivos)
+    state/recordDeaths.ts     Refleja en la tabla de jugadores las muertes del registro
     use-cases/                createRoom, joinRoom, submitCommand, reconnect
   adapters/
     outbound/memory/          Implementaciones en memoria de todos los puertos (tests y desarrollo)

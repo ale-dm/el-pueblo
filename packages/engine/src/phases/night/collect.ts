@@ -194,12 +194,14 @@ export function writeWill(s: GameState, playerId: string, text: string): Result<
  * Death Note while the victims are being announced in the morning"). Ventana: la mañana en que la víctima aparece
  * (`dayNumber` de la muerte + 1), en day_1 o discussion. El motor no tiene fase de anuncio, así que la ventana es la
  * charla de esa mañana (wiki: Phases; ver docs/ENGINE.md). Solo escribe la nota su autor. Máximo 400 caracteres
- * (wiki: Death_Note_ToS.md:15). Un texto vacío quita la nota.
+ * (wiki: Death_Note_ToS.md:15). Un texto vacío quita la nota. Un asesino muerto no la cambia: decisión del proyecto
+ * (la wiki es ambigua, Death_Note_ToS.md:13, :17; ver docs/ROLES_STATUS.md, Notas).
  */
 export function writeDeathNote(s: GameState, actorId: string, victimId: string, note: string): Result<EventInput[]> {
   const victim = playerOf(s, victimId);
   const record = victim?.deathNote;
   if (!victim || !record || record.authorId !== actorId) return err("invalid_command", "Solo el asesino puede cambiar esa nota de muerte");
+  if (!isAlive(playerOf(s, actorId))) return err("invalid_command", "Un asesino muerto no puede cambiar su nota de muerte");
   if (s.phase !== "day_1" && s.phase !== "discussion") return err("wrong_phase", "La nota de muerte solo se cambia durante el anuncio de la mañana");
   if (s.dayNumber !== record.dayNumber) return err("wrong_phase", "La nota de muerte solo se cambia la mañana en que se anuncia la víctima");
   const text = note.trim();
