@@ -5,7 +5,7 @@ import type { GameState } from "../types/state.js";
 import type { Rng } from "./rng.js";
 import { err, ok, type Result } from "./result.js";
 import { emit } from "../events/emit.js";
-import { BLACKMAIL_LINE, chatDenied, seanceHearers, seanceRecipient, type ChatChannel } from "../rules/chat.js";
+import { BLACKMAIL_LINE, chatDenied, chatRefusal, seanceHearers, seanceRecipient, type ChatChannel } from "../rules/chat.js";
 import { castVote, dayAction, judgementVote } from "../phases/day.js";
 import { cancelNightAction, nightAction, writeDeathNote, writeWill } from "../phases/night/collect.js";
 import { onTimerExpired } from "../phases/machine.js";
@@ -56,6 +56,9 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
       if (text.length === 0 || text.length > MAX_CHAT_LENGTH) {
         return err("invalid_command", `El mensaje debe tener entre 1 y ${MAX_CHAT_LENGTH} caracteres`);
       }
+      // Wiki (Blackmailer.md:209, 211; Mayor.md:397, 401): el intento se comunica al emisor como mensaje, no como error.
+      const refusal = chatRefusal(state, command.senderId, command.channel as ChatChannel, command.recipientId);
+      if (refusal) return ok([{ type: "chat.refused", payload: { playerId: command.senderId, reason: refusal } }]);
       const denied = chatDenied(state, command.senderId, command.channel as ChatChannel, command.recipientId);
       if (denied) return err("invalid_command", denied);
       if (command.channel === "seance") {

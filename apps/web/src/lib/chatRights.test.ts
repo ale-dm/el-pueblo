@@ -27,8 +27,8 @@ describe("quién puede escribir y por qué", () => {
     expect(chatRights(view({ phase: "last_words", defendantId: "b" })).notice).toBe("Solo habla el acusado.");
   });
 
-  it("un silenciado no escribe de día y lo dice", () => {
-    expect(chatRights(view({ phase: "discussion", flags: { blackmailed: true } }))).toEqual({ channels: [], notice: "Estás silenciado durante el día." });
+  it("un silenciado puede intentar hablar o susurrar: el motor le responde con el mensaje de la wiki (Blackmailer.md:209, 211)", () => {
+    expect(chatRights(view({ phase: "discussion", flags: { blackmailed: true } }))).toEqual({ channels: ["public", "whisper"], notice: null });
   });
 
   it("los muertos solo tienen Ultratumba", () => {
@@ -43,21 +43,21 @@ describe("quién puede escribir y por qué", () => {
 });
 
 describe("Mayor revelado y susurros (wiki: Mayor.md:203)", () => {
-  it("el Mayor revelado no ofrece susurros, pero sí la plaza", () => {
-    expect(chatRights(view({ phase: "discussion", flags: { mayorRevealed: true } })).channels).toEqual(["public"]);
+  it("el Mayor revelado puede intentar susurrar y recibe el mensaje de la wiki (Mayor.md:401)", () => {
+    expect(chatRights(view({ phase: "discussion", flags: { mayorRevealed: true } })).channels).toEqual(["public", "whisper"]);
   });
 
-  it("no se susurra a un Mayor revelado, y el susurro a otro sigue abierto", () => {
+  it("se puede intentar susurrar a un Mayor revelado, que recibe el aviso (Mayor.md:397)", () => {
     const players = [
       { id: "a", status: "alive", mayorRevealed: false },
       { id: "b", status: "alive", mayorRevealed: true },
       { id: "c", status: "alive", mayorRevealed: false },
     ];
-    expect(whisperTarget(players[1]!, "a")).toBe(false);
+    expect(whisperTarget(players[1]!, "a")).toBe(true);
     expect(whisperTarget(players[2]!, "a")).toBe(true);
     expect(whisperTarget(players[0]!, "a")).toBe(false);
     const onlyMayor = { ...view({ phase: "discussion" }), players: [{ id: "a", status: "alive" }, { id: "b", status: "alive", mayorRevealed: true }] } as unknown as MatchView;
-    expect(chatRights(onlyMayor).channels).toEqual(["public"]);
+    expect(chatRights(onlyMayor).channels).toEqual(["public", "whisper"]);
   });
 });
 
@@ -66,12 +66,12 @@ describe("acusado silenciado (wiki: Blackmailer.md:213)", () => {
     const r = chatRights(view({ phase: "defense", defendantId: "a", flags: { blackmailed: true } }));
     expect(r.channels).toEqual(["public"]);
     expect(r.notice).toContain("I am blackmailed.");
-    expect(chatRights(view({ phase: "defense", defendantId: "a", flags: { blackmailed: true, blackmailSpoke: true } }))).toEqual({ channels: [], notice: "Estás silenciado durante el día." });
+    expect(chatRights(view({ phase: "defense", defendantId: "a", flags: { blackmailed: true, blackmailSpoke: true } })).notice).toBeNull();
   });
 
   it("no es el acusado, o no es su defensa: sigue silenciado", () => {
-    expect(chatRights(view({ phase: "defense", defendantId: "b", flags: { blackmailed: true } })).channels).toEqual([]);
-    expect(chatRights(view({ phase: "discussion", defendantId: "a", flags: { blackmailed: true } })).channels).toEqual([]);
+    expect(chatRights(view({ phase: "defense", defendantId: "b", flags: { blackmailed: true } })).notice).toBe("Solo habla el acusado.");
+    expect(chatRights(view({ phase: "discussion", defendantId: "a", flags: { blackmailed: true } })).channels).toEqual(["public", "whisper"]);
   });
 });
 

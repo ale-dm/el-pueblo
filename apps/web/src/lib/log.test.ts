@@ -827,3 +827,23 @@ describe("Spy: 'Your target's target was attacked last night!' en el registro (w
     expect(text).toContain("El objetivo de Bea fue atacado anoche.");
   });
 });
+
+describe("Chat: los rechazos que la wiki comunica al emisor se leen en el registro (wiki: Blackmailer.md:209, 211; Mayor.md:397, 401)", () => {
+  it("cada rechazo muestra su frase en español, solo a quien lo intentó", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "discussion", dayNumber: 2 }),
+      ev("chat.refused", { playerId: "a", reason: "blackmailed" }, "private"),
+      ev("chat.refused", { playerId: "a", reason: "blackmailed_whisper" }, "private"),
+      ev("chat.refused", { playerId: "a", reason: "whisper_to_mayor" }, "private"),
+      ev("chat.refused", { playerId: "a", reason: "mayor_revealed_whisper" }, "private"),
+    ], ctx()));
+    expect(text).toEqual([
+      "== Día 2",
+      "Estás chantajeado: nadie ha visto tu mensaje.",
+      "No puedes hablar ni susurrar mientras estás chantajeado.",
+      "No puedes susurrar a un Alcalde revelado.",
+      "No puedes susurrar una vez te has revelado como Alcalde.",
+    ]);
+  });
+});

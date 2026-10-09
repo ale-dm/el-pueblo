@@ -89,6 +89,8 @@ export type GameEventPayloads = {
    * (audienceId cambia). Así cada uno lo ve como un mensaje privado suyo.
    */
   /** anonymous: el Médium vivo habla con los muertos y los muertos lo ven como "Medium" (wiki: Medium). */
+  /** Rechazo de un intento de chat que la wiki comunica como mensaje al emisor (ver rules/chat.ts chatRefusal). Solo lo ve él. */
+  "chat.refused": { playerId: PlayerId; reason: "blackmailed" | "blackmailed_whisper" | "mayor_revealed_whisper" | "whisper_to_mayor" };
   "chat.message": { channel: "public" | "mafia" | "dead" | "whisper" | "jail" | "seance"; senderId: PlayerId; text: string; recipientId?: PlayerId; audienceId?: PlayerId; anonymous?: boolean };
   "game.ended": { winner: FactionKey };
 };

@@ -161,6 +161,14 @@ const NOTICE_TEXT: Record<string, string> = {
   crusader_attacked_visitor: "Atacaste a alguien que visitó a tu objetivo.",
 };
 
+/** Rechazos de chat que la wiki comunica al emisor (ver chat.refused en el motor). */
+const CHAT_REFUSED_ES: Record<string, string> = {
+  blackmailed: "Estás chantajeado: nadie ha visto tu mensaje.",
+  blackmailed_whisper: "No puedes hablar ni susurrar mientras estás chantajeado.",
+  mayor_revealed_whisper: "No puedes susurrar una vez te has revelado como Alcalde.",
+  whisper_to_mayor: "No puedes susurrar a un Alcalde revelado.",
+};
+
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */
 const TRAP_STATUS_TEXT: Record<string, string> = {
   building: "Estás construyendo tu trampa.",
@@ -464,6 +472,11 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         break;
       case "player.blackmailed":
         line(e, "Estás silenciado durante el día.", "private");
+        break;
+      case "chat.refused":
+        // Wiki (Blackmailer.md:209): "You are Blackmailed."; (Blackmailer.md:211): "You cannot chat or whisper while Blackmailed.";
+        // (Mayor.md:397): "You can't whisper to a revealed Mayor."; (Mayor.md:401): "You can't whisper once you have revealed as the Mayor!"
+        line(e, CHAT_REFUSED_ES[p.reason] ?? "No se pudo enviar tu mensaje.", "private");
         break;
       case "mayor.revealed":
         line(e, `${ctx.nick(p.playerId)} se revela como Alcalde: su voto cuenta por tres.`, "good");

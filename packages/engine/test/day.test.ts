@@ -100,7 +100,10 @@ describe("día: chat", () => {
   it("un jugador silenciado por el Blackmailer no habla de día", () => {
     const s = game(["blackmailer", "investigator"], { phase: "discussion" });
     const silenced = { ...s, players: s.players.map((p) => (p.id === "p2" ? { ...p, flags: { blackmailed: true as const } } : p)) };
-    expect(rejected(silenced, { type: "chat.send", senderId: "p2", channel: "public", text: "hola" })).toMatch(/silenciado/);
+    // Wiki (Blackmailer.md:209): "You are Blackmailed." como mensaje al emisor, y el texto no llega a nadie.
+    const r = step(silenced, { type: "chat.send", senderId: "p2", channel: "public", text: "hola" });
+    expect(ofType(r.events, "chat.refused").map((e) => [e.audiencePlayerId, e.payload.reason])).toEqual([["p2", "blackmailed"]]);
+    expect(ofType(r.events, "chat.message")).toHaveLength(0);
   });
 
   it("los muertos hablan en su canal y no en el público", () => {

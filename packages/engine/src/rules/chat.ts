@@ -41,6 +41,31 @@ const DAY_PHASES = new Set(["day_1", "discussion", "voting", "defense", "judgeme
 /** Wiki (Blackmailer.md:213): el mensaje del acusado silenciado pasa a ser este, una vez por juicio. */
 export const BLACKMAIL_LINE = "I am blackmailed.";
 
+/**
+ * Rechazos que la wiki comunica como mensaje al emisor, no como error (Blackmailer.md:209, 211; Mayor.md:203, 397, 401):
+ * - blackmailed: "You are Blackmailed." (al hablar de día; Blackmailer.md:209)
+ * - blackmailed_whisper: "You cannot chat or whisper while Blackmailed." (al susurrar; Blackmailer.md:211)
+ * - mayor_revealed_whisper: "You can't whisper once you have revealed as the Mayor!" (Mayor.md:401)
+ * - whisper_to_mayor: "You can't whisper to a revealed Mayor." (Mayor.md:397)
+ * El mensaje va solo al emisor; el resto de la regla es la de chatDenied.
+ */
+export type ChatRefusal = "blackmailed" | "blackmailed_whisper" | "mayor_revealed_whisper" | "whisper_to_mayor";
+
+export function chatRefusal(state: GameState, senderId: string, channel: ChatChannel, recipientId?: string): ChatRefusal | null {
+  const sender = state.players.find((p) => p.id === senderId);
+  if (!sender || sender.status !== "alive" || !DAY_PHASES.has(state.phase)) return null;
+  if (channel === "public") {
+    return sender.flags.blackmailed && !canSpeakBlackmailed(state, sender) ? "blackmailed" : null;
+  }
+  if (channel !== "whisper" || !recipientId) return null;
+  const recipient = state.players.find((p) => p.id === recipientId);
+  if (!recipient || recipient.status !== "alive" || recipient.id === senderId) return null;
+  if (sender.flags.blackmailed) return "blackmailed_whisper";
+  if (sender.flags.mayorRevealed) return "mayor_revealed_whisper";
+  if (recipient.flags.mayorRevealed) return "whisper_to_mayor";
+  return null;
+}
+
 /** El acusado silenciado puede decir BLACKMAIL_LINE en su defensa, si aún no lo ha dicho en este juicio. */
 export function canSpeakBlackmailed(state: GameState, sender: GameState["players"][number]): boolean {
   return state.phase === "defense" && state.defendantId === sender.id && !sender.flags.blackmailSpoke;

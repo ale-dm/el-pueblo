@@ -1,13 +1,14 @@
 import type { Channel, MatchView } from "../types.js";
 
-/** Susurros: de día, entre vivos, si no estás silenciado ni eres un Mayor revelado (wiki: Mayor.md:203). Refleja rules/chat.ts. */
-const canWhisper = (view: MatchView) =>
-  view.me.status === "alive" && !view.me.flags.blackmailed && !view.me.flags.mayorRevealed &&
-  view.players.some((p) => whisperTarget(p, view.me.id));
+/**
+ * Susurros: se puede intentar de día, entre vivos. El motor responde al intento con el mensaje de la wiki si está
+ * silenciado o si el destinatario es un Mayor revelado (Blackmailer.md:211; Mayor.md:397, 401), así que la UI deja intentarlo.
+ */
+const canWhisper = (view: MatchView) => view.me.status === "alive" && view.players.some((p) => whisperTarget(p, view.me.id));
 
-/** A quién se puede susurrar: vivos, distintos de uno mismo y sin Mayor revelado. */
+/** A quién se puede susurrar (intentarlo): vivos y distintos de uno mismo. Un Mayor revelado también, para recibir el aviso. */
 export const whisperTarget = (p: { id: string; status: string; mayorRevealed?: boolean }, meId: string) =>
-  p.status === "alive" && p.id !== meId && !p.mayorRevealed;
+  p.status === "alive" && p.id !== meId;
 
 /**
  * Quién aparece como autor de un mensaje. Los muertos ven al Médium vivo como "Medium" (wiki: Medium).
@@ -44,7 +45,7 @@ export function chatRights(view: MatchView): { channels: Channel[]; notice: stri
   if (me.flags.blackmailed && view.phase === "defense" && view.defendantId === me.id && !me.flags.blackmailSpoke) {
     return { channels: ["public"], notice: "Estás silenciado: en tu defensa solo puedes decir «I am blackmailed.»." };
   }
-  if (me.flags.blackmailed) return { channels: [], notice: "Estás silenciado durante el día." };
+  // Wiki (Blackmailer.md:209, 211): el silenciado intenta hablar o susurrar y recibe el mensaje de la wiki; la UI lo deja intentar.
   if ((view.phase === "defense" || view.phase === "last_words") && view.defendantId !== me.id) {
     return { channels: [], notice: "Solo habla el acusado." };
   }
