@@ -9,7 +9,8 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 
 - Criterio del GDD §9: "la partida se recupera tras reiniciar el servidor". Verificado con dos tests: `apps/server/test/application/reinicio.test.ts` (almacenes en memoria) y `apps/server/test/adapters/postgres-reinicio.test.ts` (almacenes PostgreSQL sobre PGlite, con procesos nuevos encima de la misma base). En ambos, la vista del jugador tras el reinicio es idéntica a la de antes, el temporizador de fase se vuelve a programar y el avance de fase funciona.
 - Mutación comprobada: quitar la reprogramación de `recoverTimers` hace fallar los dos tests.
-- Pendiente de M2: "dos clientes juegan una partida completa" por sockets reales no está verificado en este hito; el gateway tiene tests (`apps/server/test/adapters/gateway.test.ts`), pero no una partida de dos clientes de extremo a extremo.
+- "Dos clientes juegan una partida completa" verificado con `apps/server/test/adapters/partida-dos-clientes.test.ts`: dos clientes humanos por Socket.IO real (anfitrión e invitado) y ocho bots en el servidor. Los humanos votan, juzgan, hablan y usan su habilidad de noche por socket (6 votos, 1 juicio, 7 acciones de noche y 2 mensajes aceptados, 0 rechazos). La partida termina, ambos clientes reciben `game.ended` con el mismo ganador, y cada cliente recibe solo su propio rol.
+- Límite de esta prueba: los humanos no hacen todas las acciones posibles (por ejemplo, no usan habilidades de dos objetivos ni la Death Note), y la partida es determinista por los IDs secuenciales. No es una prueba de navegador.
 
 ## Posterior al lote 13: checklist y Médium en solo lectura
 
