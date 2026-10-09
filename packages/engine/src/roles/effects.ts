@@ -12,7 +12,7 @@ export type Effect =
   /** Protege al objetivo de ataques. power: 1 básico, 2 poderoso. */
   | { kind: "protect"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; source: "doctor" | "bodyguard" | "crusader" | "vest" }
   /** Ataque directo al objetivo. */
-  | { kind: "attack"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; cause: string; unstoppable?: boolean }
+  | { kind: "attack"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; cause: string; unstoppable?: boolean; reasons?: string[] }
   /** Ataca a los que visiten la casa `houseId` esta noche. `single`: a uno solo, al azar (Crusader, Ambusher).
    * `spareMafia`: nunca a un miembro de la Mafia (Ambusher). */
   | { kind: "attackVisitors"; actorId: PlayerId; houseId: PlayerId; power: 1 | 2; cause: string; single?: boolean; spareMafia?: boolean }

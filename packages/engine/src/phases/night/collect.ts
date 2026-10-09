@@ -73,6 +73,14 @@ export function nightAction(
     }
   }
 
+  // Motivos del Jailor (wiki: Jailor.md:322): solo razones de la lista, sin repetir. Sin elegir, queda "No reason specified".
+  if (def.multiChoices !== undefined && choice) {
+    const picked = choice.split(",");
+    if (picked.some((k) => !def.multiChoices!.includes(k)) || new Set(picked).size !== picked.length) {
+      return err("invalid_command", "Motivo no válido");
+    }
+  }
+
   // Disfraz del Disguiser: un Mafioso vivo y no encarcelado, disfrazado de alguien que no es de la Mafia.
   if (ability === "disguise") {
     if (playerOf(s, targetId ?? "")?.faction !== "mafia") return err("invalid_command", "Solo puedes disfrazar a alguien de la Mafia");

@@ -42,6 +42,17 @@ const CAUSE_ES: Record<string, string> = {
 
 const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const;
 
+/** Motivos de la nota del Jailor (wiki: Death_Note_ToS.md:76-88; Jailor.md:308-320). */
+const JAILOR_REASON_ES: Record<string, string> = {
+  no_reason: "Sin motivo especificado.",
+  evildoer: "Se sabe que es un malvado.",
+  contradictory: "Su confesión fue contradictoria.",
+  possessed: "Está poseído y dice tonterías.",
+  quiet: "Está demasiado callado o no responde a las preguntas.",
+  outsider: "Es un forastero que podría volverse contra nosotros.",
+  discretion: "Lo decido según mi criterio.",
+};
+
 /** Eventos de la noche que se cuentan al amanecer, no en el momento. */
 const MORNING = new Set([
   "player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed",
@@ -286,6 +297,8 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         // Wiki (Janitor.md:212): el rol de un limpiado aparece como "Cleaned".
         const roleText = role ? `Era ${role}.` : p.cleaned ? "Su rol aparece como Limpiado." : "No pudimos determinar su rol.";
         line(e, `${ctx.nick(p.playerId)} murió anoche: ${cause}. ${roleText}`, "danger");
+        // Wiki (Death_Note_ToS.md:92): la nota del Jailor dice a todos por qué ejecutó.
+        if (Array.isArray(p.reasons)) line(e, `Nota del Jailor: ${p.reasons.map((r: string) => JAILOR_REASON_ES[r] ?? r).join(" ")}`, "info");
         willLine(e, p.will, p.playerId);
         break;
       }

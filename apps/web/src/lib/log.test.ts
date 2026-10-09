@@ -503,3 +503,15 @@ describe("mensajes del Jailor (wiki: Jailor.md:550, 558, 562, 566)", () => {
     expect(items).toEqual(["Caro fue arrastrado a la cárcel.", "Has arrastrado a tu objetivo a la cárcel.", "Debes esperar un día antes de ejecutar."]);
   });
 });
+
+describe("nota del Jailor (wiki: Death_Note_ToS.md:76-92; Jailor.md:322)", () => {
+  it("la ejecución muestra a todos los motivos marcados", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("player.killed", { playerId: "b", cause: "execute", roleKey: "investigator", will: null, reasons: ["evildoer", "quiet"] }),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Nota del Jailor: Se sabe que es un malvado. Está demasiado callado o no responde a las preguntas.");
+  });
+});

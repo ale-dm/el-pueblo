@@ -40,6 +40,8 @@ interface Attack {
   cause: string;
   /** Ataque imparable: ignora protecciones y guardaespaldas (ejecución del Jailor). */
   unstoppable?: boolean;
+  /** Razones de la nota del Jailor en su ejecución (wiki: Death_Note_ToS.md:92). */
+  reasons?: string[];
 }
 
 interface Act {
@@ -335,7 +337,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           break;
         }
         case "attack":
-          attacks.push({ attackerId: e.actorId, victimId: e.targetId, power: e.power, cause: e.cause, unstoppable: e.unstoppable });
+          attacks.push({ attackerId: e.actorId, victimId: e.targetId, power: e.power, cause: e.cause, unstoppable: e.unstoppable, reasons: e.reasons });
           break;
         case "attackVisitors": {
           // Wiki (Crusader.md:214, Ambusher.md:216): un visitante al azar; el Ambusher no ataca a la Mafia.
@@ -604,14 +606,14 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   // 8. Ataques contra protecciones. Un ataque que mata a alguien ya muerto no hace nada.
   const dead = new Set(s.players.filter((p) => p.status !== "alive").map((p) => p.id));
-  const kill = (playerId: string, cause: string): boolean => {
+  const kill = (playerId: string, cause: string, reasons?: string[]): boolean => {
     if (dead.has(playerId)) return false;
     dead.add(playerId);
     // Wiki (Forger): la falsificación solo vale si la víctima muere esa misma noche.
     const roleKey = cleaned.has(playerId) ? null : forged.get(playerId) ?? playerOf(s, playerId)?.roleKey ?? null;
     // Un limpiado no deja testamento visible (wiki: Janitor).
     const will = cleaned.has(playerId) ? null : s.wills[playerId] ?? null;
-    out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will, ...(cleaned.has(playerId) ? { cleaned: true } : {}) } });
+    out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will, ...(cleaned.has(playerId) ? { cleaned: true } : {}), ...(reasons ? { reasons } : {}) } });
     // Wiki (Janitor.md:214): el Janitor que lo limpió sabe su rol real al amanecer.
     const janitorId = marks.find((m) => m.flag === "cleaned" && m.targetId === playerId)?.actorId;
     if (cleaned.has(playerId) && janitorId !== undefined) {
@@ -628,7 +630,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     const victim = playerOf(s, atk.victimId);
     // Vigilante: si su disparo mata a un Town, la culpa le quitará la vida la noche siguiente (wiki: Vigilante).
     const killVictim = (cause: string) => {
-      if (!kill(atk.victimId, cause)) return;
+      if (!kill(atk.victimId, cause, atk.reasons)) return;
       if (atk.cause === "shot" && victim?.faction === "town" && !dead.has(atk.attackerId)) {
         out.push({ type: "effect.applied", payload: { actorId: atk.attackerId, targetId: atk.attackerId, flag: "guilty" } });
         // Wiki (Vigilante.md:362): "You have put away your gun for killing a town member." (al matar a un Town).
