@@ -80,6 +80,12 @@ const NOTICE_TEXT: Record<string, string> = {
   trap_triggered: "¡Has activado una trampa!",
   // Wiki (Trapper.md:352): "You were attacked but a trap saved you!"
   trap_saved: "Te atacaron, pero una trampa te salvó.",
+  // Wiki (Tavern_Keeper.md:353, Bootlegger.md:346): "Someone tried to role block you but you are immune!"
+  blocked_immune: "Alguien intentó bloquearte, ¡pero eres inmune!",
+  // Wiki (Tavern_Keeper.md:357, Bootlegger.md:350): "Someone tried to role block you but you were in jail."
+  blocked_jailed: "Alguien intentó bloquearte, pero estabas encarcelado.",
+  // Wiki (Tavern_Keeper.md:349): "Someone occupied your night. You were role blocked!" (sin acción que cancelar)
+  blocked_occupied: "Alguien ocupó tu noche. ¡Has sido bloqueado!",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */
@@ -294,7 +300,8 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         line(e, `Has protegido a ${ctx.nick(p.victimId)} de un ataque.`, "good");
         break;
       case "night.action.blocked":
-        line(e, "Tu acción fue bloqueada esta noche.", "private");
+        // Wiki (Tavern_Keeper.md:347, Bootlegger.md:340): "Someone occupied your night. You were role blocked!"
+        line(e, p.cause === "jail" ? "Tu acción fue bloqueada esta noche." : "Alguien ocupó tu noche. ¡Has sido bloqueado!", "private");
         break;
       case "player.jailed":
         line(e, "Has sido encarcelado.", "private");

@@ -48,7 +48,7 @@ describe("noche: protecciones y ataques", () => {
       night("p2", "distract", "p3"),
       night("p3", "heal", "p4"),
     ]);
-    expect(ofType(events, "night.action.blocked")[0]?.payload).toEqual({ actorId: "p3", ability: "heal" });
+    expect(ofType(events, "night.action.blocked")[0]?.payload).toEqual({ actorId: "p3", ability: "heal", cause: "roleblock" });
     expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).toEqual(["p4"]);
   });
 

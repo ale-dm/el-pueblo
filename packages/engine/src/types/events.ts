@@ -31,7 +31,8 @@ export type GameEventPayloads = {
   "will.forged": { playerId: PlayerId; role: string; forgerId: PlayerId };
   "night.action.cancelled": { actorId: PlayerId; mafiaTeam: boolean };
   "will.written": { playerId: PlayerId; text: string };
-  "night.action.blocked": { actorId: PlayerId; ability: string };
+  /** cause: "jail" si la cárcel le impide actuar; "roleblock" si le bloquearon (wiki: Tavern_Keeper.md:347). */
+  "night.action.blocked": { actorId: PlayerId; ability: string; cause?: "jail" | "roleblock" };
   /**
    * Aviso privado de la noche (wiki): solo lo recibe `playerId`.
    * target_jailed: su objetivo estaba encarcelado y su acción falla (Jailor.md:252).
@@ -41,7 +42,7 @@ export type GameEventPayloads = {
    * jailor_execute / jailor_changed_mind: el Jailor decide ejecutarle o cambia de opinión (Jailor.md:282, 284).
    * psychic_small / psychic_evil: la Psíquica no puede dar visión (Psychic.md:318, 322).
    */
-  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" | "healed" | "target_attacked" | "vigilante_put_away_gun" | "vigilante_guilt_suicide" | "alert_blocked" | "vest_saved" | "blackmail_jailed" | "jailor_execute" | "jailor_changed_mind" | "psychic_small" | "psychic_evil" | "trap_triggered" | "trap_saved" };
+  "night.notice": { playerId: PlayerId; notice: "target_jailed" | "attack_attempt" | "medium_talking" | "transport_jailed" | "jailed_transport_attempt" | "transported" | "healed" | "target_attacked" | "vigilante_put_away_gun" | "vigilante_guilt_suicide" | "alert_blocked" | "vest_saved" | "blackmail_jailed" | "jailor_execute" | "jailor_changed_mind" | "psychic_small" | "psychic_evil" | "trap_triggered" | "trap_saved" | "blocked_jailed" | "blocked_immune" | "blocked_occupied" };
   /** Usos que le quedan tras disparar o ponerse en alerta (wiki: Vigilante y Veteran, "You have (#) bullet(s) left"). Solo lo ve el jugador. */
   "uses.left": { playerId: PlayerId; ability: string; left: number };
   /** El Janitor limpió a un jugador que murió esta noche: ve su rol real al amanecer (wiki: Janitor.md:214). */

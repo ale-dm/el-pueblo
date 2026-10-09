@@ -177,15 +177,31 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (blocker.blocked) continue;
     for (const e of blocker.effects) {
       if (e.kind !== "block") continue;
-      const target = acts.find((a) => a.actor.id === remap(e.targetId));
-      if (!target || target.handler.roleblockImmune) continue;
+      const victimId = remap(e.targetId);
+      // Wiki (Tavern_Keeper.md:355-357, Bootlegger.md:348-350): encarcelado, el bloqueo no llega y él lo sabe.
+      if (s.jailedBy[victimId] !== undefined) {
+        out.push({ type: "night.notice", payload: { playerId: victimId, notice: "blocked_jailed" } });
+        continue;
+      }
+      // Wiki (Tavern_Keeper.md:351-353, Bootlegger.md:344-346): inmune, el bloqueo no llega y él lo sabe.
+      const victim = playerOf(s, victimId);
+      if (victim && handlerOf(victim)?.roleblockImmune) {
+        out.push({ type: "night.notice", payload: { playerId: victimId, notice: "blocked_immune" } });
+        continue;
+      }
+      const target = acts.find((a) => a.actor.id === victimId);
+      // Wiki (Tavern_Keeper.md:347-349): "Someone occupied your night. You were role blocked!" también si no tenía acción.
+      if (!target) {
+        out.push({ type: "night.notice", payload: { playerId: victimId, notice: "blocked_occupied" } });
+        continue;
+      }
       target.blocked = true;
     }
   }
   for (const act of acts) {
     if (!act.blocked) continue;
     act.effects = [];
-    out.push({ type: "night.action.blocked", payload: { actorId: act.actor.id, ability: act.ability } });
+    out.push({ type: "night.action.blocked", payload: { actorId: act.actor.id, ability: act.ability, cause: act.actor.flags.jailed === true ? "jail" : "roleblock" } });
   }
   const active = acts.filter((a) => !a.blocked);
 

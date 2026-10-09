@@ -437,3 +437,23 @@ describe("mensajes del Trapper (wiki: Trapper.md:340-366)", () => {
     expect(text).toContain("Bea murió anoche: ha sido asesinado por un Trapper. Era Godfather.");
   });
 });
+
+describe("avisos del Tavern Keeper y del Bootlegger (wiki: Tavern_Keeper.md:347-357)", () => {
+  it("el bloqueo y los avisos de inmune y encarcelado llevan su frase", () => {
+    seq = 0;
+    const items = texts(buildLog([
+      ev("night.action.blocked", { actorId: "b", ability: "investigate", cause: "roleblock" }, "private"),
+      ev("night.action.blocked", { actorId: "b", ability: "investigate", cause: "jail" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "blocked_immune" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "blocked_jailed" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "blocked_occupied" }, "private"),
+    ], ctx({ meId: "b" })));
+    expect(items).toEqual([
+      "Alguien ocupó tu noche. ¡Has sido bloqueado!",
+      "Tu acción fue bloqueada esta noche.",
+      "Alguien intentó bloquearte, ¡pero eres inmune!",
+      "Alguien intentó bloquearte, pero estabas encarcelado.",
+      "Alguien ocupó tu noche. ¡Has sido bloqueado!",
+    ]);
+  });
+});
