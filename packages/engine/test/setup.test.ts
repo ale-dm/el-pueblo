@@ -35,6 +35,13 @@ describe("arranque de partida", () => {
     expect(roles).toHaveLength(15);
   });
 
+  it("el Vampire Hunter no sale: no hay Vampiros en el MVP (A1)", () => {
+    expect(catalog.roles.get("vampire_hunter")?.mvp).toBe(false);
+    for (let seed = 1; seed <= 50; seed++) {
+      expect(buildRoleList(15, catalog, createRng(seed))).not.toContain("vampire_hunter");
+    }
+  });
+
   it("los roles únicos no se repiten", () => {
     for (let seed = 1; seed <= 50; seed++) {
       const roles = buildRoleList(15, catalog, createRng(seed));

@@ -2740,7 +2740,7 @@
    "You can hear Vampires at night.",
    "If all the Vampires die you will become a Vigilante with one bullet."
   ],
-  "mvp": true,
+  "mvp": false,
   "icon_file": "roles/img/Vampire_Hunter_icon.png",
   "skin_file": "roles/img/Vampire_Hunter_skin.png",
   "raw": {

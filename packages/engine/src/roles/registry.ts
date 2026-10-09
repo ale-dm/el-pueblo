@@ -25,7 +25,6 @@ import * as tavern_keeper from "./town/tavern_keeper.js";
 import * as tracker from "./town/tracker.js";
 import * as transporter from "./town/transporter.js";
 import * as trapper from "./town/trapper.js";
-import * as vampire_hunter from "./town/vampire_hunter.js";
 import * as veteran from "./town/veteran.js";
 import * as vigilante from "./town/vigilante.js";
 
@@ -61,7 +60,6 @@ export const ROLE_HANDLERS: ReadonlyMap<string, RoleHandler> = new Map(
   tracker.handler,
   transporter.handler,
   trapper.handler,
-  vampire_hunter.handler,
   veteran.handler,
   vigilante.handler,
   ].map((h) => [h.key, h]),
