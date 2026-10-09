@@ -125,6 +125,12 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
     case "trap.placed":
       return { ...s, traps: { ...s.traps, [e.payload.trapperId]: { targetId: e.payload.targetId, readyDay: e.payload.readyDay } } };
 
+    case "trap.removed": {
+      const traps = { ...s.traps };
+      delete traps[e.payload.trapperId];
+      return { ...s, traps };
+    }
+
     case "night.resolved":
       return {
         ...s,

@@ -205,6 +205,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const marks: Array<{ actorId: string; targetId: string; flag: "framed" | "cleaned" | "blackmailed" | "zombied" }> = [];
   const investigations: Array<{ actorId: string; targetId: string | null; check: string }> = [];
   const traps: Array<{ trapperId: string; targetId: string }> = [];
+  const dismantles: string[] = [];
   const usesSpent: Array<{ playerId: string; ability: string }> = [];
   const disguises = new Map<string, string>();
   const hypnoses: Array<{ targetId: string; message: "attacked" | "protected" | "roleblocked" }> = [];
@@ -251,7 +252,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           marks.push({ actorId: e.actorId, targetId: e.targetId, flag: e.flag });
           break;
         case "trap":
-          traps.push({ trapperId: e.actorId, targetId: e.targetId });
+          // Ponerse a sí mismo desmonta la trampa propia: no se activa esta noche (wiki: Trapper).
+          if (e.targetId === e.actorId) dismantles.push(e.actorId);
+          else traps.push({ trapperId: e.actorId, targetId: e.targetId });
           break;
         case "alert":
           alerted.add(e.actorId);
@@ -283,11 +286,15 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
   }
   // Trampas activas (colocadas la noche anterior o antes).
+  // Wiki (Trapper.md:223): la trampa es poderosa; se activa con una visita y entonces se retira (Trapper.md:227).
   for (const [trapperId, trap] of Object.entries(s.traps)) {
-    if (!isAlive(playerOf(s, trapperId)) || trap.readyDay > s.dayNumber) continue;
-    for (const v of visitsTo(trap.targetId, trapperId)) {
-      attacks.push({ attackerId: trapperId, victimId: v.visitorId, power: 1, cause: "trap" });
+    if (!isAlive(playerOf(s, trapperId)) || trap.readyDay > s.dayNumber || dismantles.includes(trapperId)) continue;
+    const visitors = visitsTo(trap.targetId, trapperId);
+    if (visitors.length === 0) continue;
+    for (const v of visitors) {
+      attacks.push({ attackerId: trapperId, victimId: v.visitorId, power: 2, cause: "trap" });
     }
+    out.push({ type: "trap.removed", payload: { trapperId, reason: "triggered" } });
   }
 
   // 6. Marcas y trampas (antes de muertes: la limpieza afecta al registro de la muerte).
@@ -304,6 +311,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   }
   for (const t of traps) {
     out.push({ type: "trap.placed", payload: { trapperId: t.trapperId, targetId: t.targetId, readyDay: s.dayNumber + 1 } });
+  }
+  for (const trapperId of dismantles) {
+    out.push({ type: "trap.removed", payload: { trapperId, reason: "dismantled" } });
   }
   // Mensajes falsos de la Hypnotist: llegan al terminar la noche, solo a quien sigue vivo.
   for (const h of hypnoses) {

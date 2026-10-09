@@ -75,6 +75,14 @@ export function nightAction(
     if (playerOf(s, secondTargetId ?? "")?.faction === "mafia") return err("invalid_command", "El disfraz debe ser de alguien que no es de la Mafia");
   }
 
+  // Trampero: una trampa a la vez; elegirse a sí mismo desmonta la que tiene (wiki: Trapper).
+  if (ability === "trap") {
+    if (targetId === actorId) {
+      if (!s.traps[actorId]) return err("invalid_command", "No tienes ninguna trampa que desmontar");
+    } else if (s.traps[actorId]) {
+      return err("invalid_command", "Ya tienes una trampa puesta: desmóntala antes de poner otra");
+    }
+  }
   // Ambusher: no tiende emboscadas en la casa de un miembro de la Mafia (wiki: Ambusher, "Other Mafia roles cannot be attacked").
   if (ability === "ambush" && playerOf(s, targetId ?? "")?.faction === "mafia") {
     return err("invalid_command", "No puedes emboscar a un miembro de la Mafia");

@@ -316,6 +316,31 @@ describe("noche: jailor y trampero", () => {
     expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p3", "trap"]]);
   });
 
+  it("el Trapper solo tiene una trampa a la vez (wiki: Trapper)", () => {
+    const s = game(["trapper", "investigator", "sheriff", "godfather"], { dayNumber: 2, traps: { p1: { targetId: "p3", readyDay: 2 } } });
+    expect(rejected(s, night("p1", "trap", "p2"))).toMatch(/Ya tienes una trampa/);
+  });
+
+  it("elegirse a sí mismo desmonta la trampa: no se activa esa noche (wiki: Trapper)", () => {
+    const s = game(["trapper", "investigator", "sheriff", "godfather"], { dayNumber: 2, traps: { p1: { targetId: "p2", readyDay: 2 } } });
+    const { events, state } = resolve(s, [night("p1", "trap", "p1"), night("p3", "interrogate", "p2")]);
+    expect(ofType(events, "player.killed")).toHaveLength(0);
+    expect(ofType(events, "trap.removed").map((e) => e.payload.reason)).toEqual(["dismantled"]);
+    expect(state.traps["p1"]).toBeUndefined();
+  });
+
+  it("una trampa activada es poderosa (mata al Godfather visitante) y se retira", () => {
+    const s = game(["trapper", "godfather", "investigator", "sheriff"], { dayNumber: 2, traps: { p1: { targetId: "p3", readyDay: 2 } } });
+    const { events, state } = resolve(s, [night("p2", "kill", "p3")]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual(
+      expect.arrayContaining([["p2", "trap"], ["p3", "mafia"]]),
+    );
+    expect(ofType(events, "trap.removed").map((e) => e.payload.reason)).toEqual(["triggered"]);
+    expect(state.traps["p1"]).toBeUndefined();
+    // Retirada la trampa, el Trapper puede poner otra (el Godfather ya murió: sigue la partida).
+    expect(rejected({ ...state, phase: "night", dayNumber: 3 }, night("p1", "trap", "p4"))).toBeNull();
+  });
+
   it("la trampa colocada esta noche no se activa esta noche", () => {
     const s = game(["trapper", "sheriff"]);
     const { events } = resolve(s, [night("p1", "trap", "p2"), night("p2", "interrogate", "p1")]);

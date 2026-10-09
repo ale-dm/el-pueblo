@@ -7,7 +7,8 @@ export const handler: RoleHandler = {
   name: "Trapper",
   faction: "town",
   priority: 1,
-  nightAbilities: [{ key: "trap", target: "player", usesLimit: null }],
+  // Wiki (Trapper.md:46): "Traps can be torn down by selecting yourself at night."
+  nightAbilities: [{ key: "trap", target: "player", usesLimit: null, selfAllowed: true }],
   dayAbilities: [],
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {
