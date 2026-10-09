@@ -12,8 +12,10 @@ export type Command =
       ability: string;
       targetId: PlayerId | null;
       secondTargetId?: PlayerId | null;
+      /** Elección de la habilidad (mensaje del Hypnotist, rol del Forger). */
+      choice?: string | null;
     }
   | { type: "night.action.cancel"; actorId: PlayerId }
   | { type: "will.write"; playerId: PlayerId; text: string }
-  | { type: "chat.send"; senderId: PlayerId; channel: "public" | "mafia" | "dead" | "whisper" | "jail"; text: string; recipientId?: PlayerId }
+  | { type: "chat.send"; senderId: PlayerId; channel: "public" | "mafia" | "dead" | "whisper" | "jail" | "seance"; text: string; recipientId?: PlayerId }
   | { type: "timer.expired" };

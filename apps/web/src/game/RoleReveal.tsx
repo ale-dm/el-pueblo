@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import type { MatchView } from "../types.js";
-import { ROLE_BLURB, ROLE_NAMES, roleNameEs } from "../lib/roles.js";
+import { ROLE_BLURB, ROLE_NAMES, roleName } from "../lib/roles.js";
 import { Button, Card } from "../ui/primitives.js";
 
 /** Clave por partida: la revelación se enseña una sola vez en este navegador. */
@@ -67,9 +67,9 @@ export function RoleReveal({ view }: { view: MatchView }) {
   const [spinning, setSpinning] = useState(true);
   // Roles distintos, en orden estable: cada uno aparece una vez en la rueda.
   const unique = [...new Set(view.rolesInGame.map((r) => r.key))];
-  const names = unique.map((k) => ROLE_NAMES[k]?.es ?? k);
+  const names = unique.map((k) => ROLE_NAMES[k] ?? k);
   const target = Math.max(0, unique.indexOf(view.me.roleKey ?? ""));
-  const mine = roleNameEs(view.me.roleKey) ?? view.me.roleName ?? "";
+  const mine = roleName(view.me.roleKey) ?? view.me.roleName ?? "";
   const faction = view.me.faction === "mafia" ? "Mafia" : "Pueblo";
 
   if (!open) return null;

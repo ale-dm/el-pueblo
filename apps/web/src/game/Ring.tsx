@@ -1,11 +1,12 @@
 import { motion } from "motion/react";
-import type { MatchView } from "../types.js";
+import type { MatchView, PublicPlayer } from "../types.js";
 import { Pill } from "../ui/primitives.js";
 
 interface Props {
   view: MatchView;
   selected: string[];
-  selectable: boolean;
+  /** Qué jugadores se pueden elegir como objetivo ahora. */
+  isPickable: (p: PublicPlayer) => boolean;
   onPick: (playerId: string) => void;
 }
 
@@ -15,7 +16,7 @@ const houseColor = (seat: number) => `hsl(${(seat * 47) % 360} 65% 78%)`;
  * El pueblo en círculo, como en Town of Salem: cada casa en su sitio alrededor de la plaza,
  * con la tuya abajo, en el centro de tu mesa. En medio, la horca cuando hay juicio.
  */
-export function Ring({ view, selected, selectable, onPick }: Props) {
+export function Ring({ view, selected, isPickable, onPick }: Props) {
   const n = view.players.length;
   const meIndex = Math.max(0, view.players.findIndex((p) => p.id === view.me.id));
   const votesFor = (id: string) => Object.values(view.votes).filter((t) => t === id).length;
@@ -46,11 +47,12 @@ export function Ring({ view, selected, selectable, onPick }: Props) {
         const dead = p.status !== "alive";
         const isMe = p.id === view.me.id;
         const isSelected = selected.includes(p.id);
+        const canPick = isPickable(p) && !isMe;
         return (
           <motion.button
             key={p.id}
             type="button"
-            disabled={!selectable || dead || isMe}
+            disabled={!canPick}
             onClick={() => onPick(p.id)}
             aria-label={`${p.nick}${dead ? ", muerto" : ""}`}
             initial={{ opacity: 0, scale: 0.8 }}

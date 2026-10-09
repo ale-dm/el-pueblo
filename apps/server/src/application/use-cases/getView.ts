@@ -52,7 +52,9 @@ export interface MatchView {
     faction: string | null;
     roleSummary: string | null;
     flags: Record<string, boolean>;
-    nightAction: { ability: string; targetId: string | null } | null;
+    nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null } | null;
+    /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
+    seance: "medium" | "target" | null;
     /** Tu última voluntad (solo tú la ves mientras vives). */
     will: string | null;
     /** Grupo del rol (alineamiento del catálogo, p. ej. town_support). */
@@ -63,7 +65,7 @@ export interface MatchView {
     attack: string | null;
     defense: string | null;
     /** Habilidades disponibles ahora mismo (con usos restantes). */
-    nightAbilities: Array<{ key: string; target: string; usesLeft: number | null }>;
+    nightAbilities: Array<{ key: string; target: string; usesLeft: number | null; choices: string[] | null; deadOnly: boolean }>;
     dayAbilities: Array<{ key: string; target: string; oncePerDay: boolean; usesLeft: number | null }>;
   };
 }
@@ -109,6 +111,11 @@ export function getView(deps: GetViewDeps) {
     const handler = me.roleKey ? ROLE_HANDLERS.get(me.roleKey) : undefined;
     const roleDef = me.roleKey ? catalog.roles.get(me.roleKey) : undefined;
     const alive = me.status === "alive";
+    // Sesión de Médium: el Médium (muerto) la abre; el vivo elegido recibe el canal anónimo.
+    const seance: "medium" | "target" | null = state.phase !== "night" ? null
+      : state.nightActions[me.id]?.ability === "seance" ? "medium"
+      : Object.values(state.nightActions).some((a) => a.ability === "seance" && a.targetId === me.id) ? "target"
+      : null;
 
     return {
       matchId: match.id,
@@ -143,13 +150,23 @@ export function getView(deps: GetViewDeps) {
         roleSummary: roleDef?.summary ?? null,
         flags: { ...me.flags },
         nightAction: state.nightActions[me.id] ?? null,
+        seance,
         will: state.wills[me.id] ?? null,
         alignment: me.roleKey ? catalog.roles.get(me.roleKey)?.alignmentKey ?? null : null,
         jail: Object.values(state.jailedBy).includes(me.id) ? "jailor" : state.jailedBy[me.id] ? "prisoner" : null,
         attack: me.roleKey ? catalog.roles.get(me.roleKey)?.attack ?? null : null,
         defense: me.roleKey ? catalog.roles.get(me.roleKey)?.defense ?? null : null,
-        nightAbilities: alive && handler
-          ? handler.nightAbilities.map((a) => ({ key: a.key, target: a.target, usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0 }))
+        // Los vivos tienen sus habilidades de noche; los muertos, solo las de muerto (Medium).
+        nightAbilities: handler
+          ? handler.nightAbilities
+              .filter((a) => (alive ? !a.deadOnly : a.deadOnly))
+              .map((a) => ({
+                key: a.key,
+                target: a.target,
+                usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0,
+                choices: a.choices === "roles" ? [...ROLE_HANDLERS.keys()] : a.choices ? [...a.choices] : null,
+                deadOnly: a.deadOnly ?? false,
+              }))
           : [],
         dayAbilities: alive && handler
           ? handler.dayAbilities.map((a) => ({ key: a.key, target: a.target, oncePerDay: a.oncePerDay, usesLeft: a.usesLimit === null ? null : me.usesLeft[a.key] ?? 0 }))

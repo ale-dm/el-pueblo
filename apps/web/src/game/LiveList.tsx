@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { MatchView } from "../types.js";
-import { ROLE_NAMES, roleNameEs } from "../lib/roles.js";
+import { ROLE_NAMES, roleName } from "../lib/roles.js";
 import { Card } from "../ui/primitives.js";
 
 export type LiveTab = "live" | "dead";
@@ -29,7 +29,7 @@ export function LiveList({ view, tab, onTab, footer, className = "" }: { view: M
       </div>
       <ul className="min-h-0 flex-1 space-y-1 overflow-y-auto p-2">
         {shown.map((p) => {
-          const role = p.id === view.me.id ? roleNameEs(view.me.roleKey) : p.revealedRoleKey ? ROLE_NAMES[p.revealedRoleKey]?.es ?? p.revealedRoleKey : null;
+          const role = p.id === view.me.id ? roleName(view.me.roleKey) : p.revealedRoleKey ? roleName(p.revealedRoleKey) : null;
           return (
             <li key={p.id} className="flex items-center gap-2 rounded-xl border-2 border-ink bg-white/70 px-2 py-1">
               <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-sun font-display text-sm">

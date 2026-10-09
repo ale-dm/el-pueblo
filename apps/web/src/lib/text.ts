@@ -13,7 +13,21 @@ export const PHASE_LABEL: Record<Phase, string> = {
 
 export const isNight = (phase: Phase) => phase === "night";
 
-export const CHANNEL_LABEL = { public: "Plaza", mafia: "Mafia", dead: "Ultratumba", whisper: "Susurro", jail: "Prisión" } as const;
+export const CHANNEL_LABEL = { public: "Plaza", mafia: "Mafia", dead: "Ultratumba", whisper: "Susurro", jail: "Prisión", seance: "Sesión" } as const;
+
+/** Mensajes que puede plantar el Hypnotist, como los lee quien los recibe. */
+export const HYPNOSIS_TEXT: Record<string, string> = {
+  attacked: "Recuerdas haber sido atacado anoche.",
+  protected: "Recuerdas que alguien te protegió anoche.",
+  roleblocked: "Recuerdas que alguien te bloqueó anoche.",
+};
+
+/** Opciones de elección de una habilidad: mensajes en español, roles en inglés. */
+export const CHOICE_LABEL: Record<string, string> = {
+  attacked: "Ser atacado",
+  protected: "Ser protegido",
+  roleblocked: "Ser bloqueado",
+};
 
 const ABILITY_LABEL: Record<string, string> = {
   kill: "Atacar", ambush: "Emboscar", blackmail: "Chantajear", distract: "Distraer", check: "Consultar",

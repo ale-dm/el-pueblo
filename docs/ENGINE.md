@@ -166,3 +166,9 @@ Estado de cada supuesto según la wiki de Town of Salem (ToS 1).
 - `will.write`: escribe o cambia la última voluntad (máximo 300 caracteres, vacío la borra), solo mientras se vive. Evento `will.written`, privado. Al morir o ser ahorcado, `player.killed` y `player.hanged` llevan el testamento (`will`), salvo que el jugador haya sido limpiado.
 - `night.action.submitted` lleva `mafiaTeam`: si quien actúa es de la Mafia, la decisión la ven los miembros vivos de la Mafia.
 - Roles pasivos (`passive: true` en el handler): reciben su efecto cada noche sin elegir nada. Hoy solo la Psíquica.
+- `night.action` admite `choice`: la elección de la habilidad (mensaje del Hypnotist, rol del Forger). Si la habilidad define `choices` y no llega una opción válida, se rechaza. `night.action.submitted` la guarda.
+- `chat.send` canal `seance`: la sesión de Médium. Solo de noche, entre el Médium muerto y el vivo que eligió (dos eventos, con audiencia cada uno; el vivo ve al Médium como "Médium").
+- Habilidades `deadOnly` (Medium): solo las usa un jugador muerto, y los vivos no las ven ni pueden elegirlas. No crean visitas.
+- Evento `hypnosis.message` (privado al objetivo, al terminar la noche), `will.forged` (privado al Forger; el rol falso aparece en `player.killed` y `player.hanged`) y `role.promoted` (visible a la Mafia viva).
+- Ascenso: `phases/promotion.ts`. Si no queda ningún Godfather ni Mafioso vivo, el Mafioso de apoyo vivo con menor asiento pasa a Mafioso. Se comprueba al final de la noche (`night.resolved`) y al ahorcar a alguien.
+- Retributionist: la resurrección es la marca `zombied` del zombi; el zombi no puede volver a usarse.

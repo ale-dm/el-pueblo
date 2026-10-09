@@ -1,13 +1,13 @@
 import { motion } from "motion/react";
-import type { MatchView } from "../types.js";
+import type { MatchView, PublicPlayer } from "../types.js";
 import { Pill } from "../ui/primitives.js";
-import { ROLE_NAMES } from "../lib/roles.js";
+import { roleName } from "../lib/roles.js";
 
 interface Props {
   view: MatchView;
   selected: string[];
-  /** Si true, tocar a un jugador lo selecciona como objetivo. */
-  selectable: boolean;
+  /** Qué jugadores se pueden elegir como objetivo ahora. */
+  isPickable: (p: PublicPlayer) => boolean;
   onPick: (playerId: string) => void;
 }
 
@@ -18,7 +18,7 @@ const houseColor = (seat: number) => `hsl(${(seat * 47) % 360} 65% 78%)`;
  * El pueblo: una casa por jugador, en calle. Como en Town of Salem cada casa lleva a su dueño;
  * tu casa lleva marca. Lo que se ve de cada casa depende de quién mira.
  */
-export function PlayerGrid({ view, selected, selectable, onPick }: Props) {
+export function PlayerGrid({ view, selected, isPickable, onPick }: Props) {
   const votesFor = (id: string) => Object.values(view.votes).filter((t) => t === id).length;
   const myTarget = view.me.nightAction?.targetId ?? null;
   const myVote = view.votes[view.me.id];
@@ -30,18 +30,19 @@ export function PlayerGrid({ view, selected, selectable, onPick }: Props) {
           const dead = p.status !== "alive";
           const isSelected = selected.includes(p.id);
           const isMe = p.id === view.me.id;
+          const canPick = isPickable(p) && !isMe;
           const roleKey = p.revealedRoleKey;
           return (
             <motion.button
               key={p.id}
               type="button"
-              disabled={!selectable || dead || isMe}
+              disabled={!canPick}
               onClick={() => onPick(p.id)}
               aria-label={`${p.nick}${dead ? ", muerto" : ""}`}
               initial={{ y: 12, opacity: 0 }}
               animate={{ y: 0, opacity: dead ? 0.9 : 1 }}
               transition={{ delay: i * 0.03 }}
-              className={`group relative flex min-w-0 flex-col items-center text-center ${selectable && !dead && !isMe ? "cursor-pointer" : "cursor-default"}`}
+              className={`group relative flex min-w-0 flex-col items-center text-center ${canPick ? "cursor-pointer" : "cursor-default"}`}
             >
               {/* Tejado */}
               <span aria-hidden="true" className="h-0 w-0 border-x-[46px] border-b-[30px] border-x-transparent border-b-ink" />
@@ -65,7 +66,7 @@ export function PlayerGrid({ view, selected, selectable, onPick }: Props) {
                 {p.ally && <Pill className="bg-mafia text-paper">Mafia</Pill>}
                 {p.isBot && <Pill>Bot</Pill>}
                 {!p.connected && <Pill>Desconectado</Pill>}
-                {dead && <Pill className="bg-ink text-paper">{roleKey ? `Muerto · ${ROLE_NAMES[roleKey]?.es ?? roleKey}` : "Muerto"}</Pill>}
+                {dead && <Pill className="bg-ink text-paper">{roleKey ? `Muerto · ${roleName(roleKey)}` : "Muerto"}</Pill>}
                 {!dead && votesFor(p.id) > 0 && <Pill>{votesFor(p.id)} voto{votesFor(p.id) > 1 ? "s" : ""}</Pill>}
               </div>
             </motion.button>

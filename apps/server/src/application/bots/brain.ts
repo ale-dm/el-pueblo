@@ -22,7 +22,8 @@ export interface BotCommand {
 export function planBotCommands(state: GameState, botIds: ReadonlySet<string>, rng: Rng): BotCommand[] {
   const plan: BotCommand[] = [];
   for (const bot of state.players) {
-    if (!botIds.has(bot.id) || bot.status !== "alive") continue;
+    // Los muertos solo actúan de noche, y solo con habilidades de muerto (Medium).
+    if (!botIds.has(bot.id) || (bot.status !== "alive" && state.phase !== "night")) continue;
     for (const command of commandsFor(state, bot, rng)) plan.push({ botId: bot.id, command });
   }
   return plan;
@@ -70,27 +71,64 @@ function judgementCommand(state: GameState, bot: PlayerState, rng: Rng): Command
   return { type: "judgement.vote", voterId: bot.id, verdict };
 }
 
-/** Primera habilidad nocturna utilizable. Jailor solo ejecuta a un jugador encarcelado. */
+/** Primera habilidad nocturna utilizable para el estado de vida del bot. */
 function nightCommand(state: GameState, bot: PlayerState, rng: Rng): Command | null {
   const handler = bot.roleKey ? ROLE_HANDLERS.get(bot.roleKey) : undefined;
   if (!handler) return null;
+  const alive = bot.status === "alive";
   for (const ability of handler.nightAbilities) {
+    if (Boolean(ability.deadOnly) === alive) continue;
     if (ability.usesLimit !== null && (bot.usesLeft[ability.key] ?? 0) <= 0) continue;
     // Jailor no ejecuta en la primera noche (el motor lo rechazaría).
     if (ability.key === "execute" && state.dayNumber === 1) continue;
-    const base = { type: "night.action" as const, actorId: bot.id, ability: ability.key };
+    const choice = ability.choices === undefined ? null : chooseOption(ability.choices, rng);
+    const base = { type: "night.action" as const, actorId: bot.id, ability: ability.key, ...(choice === null ? {} : { choice }) };
     if (ability.target === "none") return { ...base, targetId: null, secondTargetId: null };
-    const pool = targetsFor(state, bot, ability.selfAllowed ?? false)
-      .filter((p) => ability.key !== "execute" || p.flags.jailed);
-    if (ability.target === "two") {
-      if (pool.length < 2) continue;
-      const [first, second] = rng.shuffle(pool);
-      return { ...base, targetId: first!.id, secondTargetId: second!.id };
-    }
-    if (pool.length === 0) continue;
-    return { ...base, targetId: pick(pool, rng).id, secondTargetId: null };
+    const plan = targetPlan(state, bot, ability.key, ability.target, ability.selfAllowed ?? false, rng);
+    if (plan) return { ...base, ...plan };
   }
   return null;
+}
+
+/** Elección de una habilidad: una de sus opciones, o cualquier rol del juego. */
+function chooseOption(choices: readonly string[] | "roles", rng: Rng): string {
+  return pick(choices === "roles" ? [...ROLE_HANDLERS.keys()] : choices, rng);
+}
+
+/** Objetivos válidos según la habilidad. Las reglas especiales están aquí; el motor valida el resto. */
+function targetPlan(
+  state: GameState,
+  bot: PlayerState,
+  key: string,
+  target: "player" | "none" | "two",
+  selfAllowed: boolean,
+  rng: Rng,
+): { targetId: string; secondTargetId: string | null } | null {
+  const alivePool = targetsFor(state, bot, selfAllowed);
+  if (key === "execute") {
+    const jailed = alivePool.filter((p) => p.flags.jailed);
+    return jailed.length ? { targetId: pick(jailed, rng).id, secondTargetId: null } : null;
+  }
+  if (key === "raise") {
+    // Zombi: un Town muerto con rol conocido que no se haya usado; el segundo objetivo es un vivo.
+    const zombies = state.players.filter((p) => p.status === "dead" && p.faction === "town" && p.roleKey && !p.flags.zombied);
+    const second = state.players.filter((p) => p.status === "alive" && p.id !== bot.id);
+    if (!zombies.length || !second.length) return null;
+    return { targetId: pick(zombies, rng).id, secondTargetId: pick(second, rng).id };
+  }
+  if (key === "disguise") {
+    // Un Mafioso vivo y libre, disfrazado de alguien que no es de la Mafia.
+    const mafia = state.players.filter((p) => p.status === "alive" && p.faction === "mafia" && !p.flags.jailed);
+    const innocents = state.players.filter((p) => p.status === "alive" && p.faction !== "mafia");
+    if (!mafia.length || !innocents.length) return null;
+    return { targetId: pick(mafia, rng).id, secondTargetId: pick(innocents, rng).id };
+  }
+  if (target === "two") {
+    if (alivePool.length < 2) return null;
+    const [first, second] = rng.shuffle(alivePool);
+    return { targetId: first!.id, secondTargetId: second!.id };
+  }
+  return alivePool.length ? { targetId: pick(alivePool, rng).id, secondTargetId: null } : null;
 }
 
 /** Habilidades de día: cada una se usa con poca probabilidad por fase, respetando usos y "una vez al día". */

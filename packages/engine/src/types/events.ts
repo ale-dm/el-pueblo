@@ -10,6 +10,8 @@ export type Visibility = "public" | "mafia" | "dead" | "private";
 export type GameEventPayloads = {
   "game.started": { playerCount: number };
   "roles.assigned": { playerId: PlayerId; roleKey: string; faction: FactionKey; uses: Record<string, number> };
+  /** Un rol de apoyo de la Mafia se convierte en Mafioso cuando ya no quedan Mafiosos que maten. */
+  "role.promoted": { playerId: PlayerId; roleKey: string; uses: Record<string, number> };
   "phase.started": { phase: Phase; dayNumber: number };
   "vote.cast": { voterId: PlayerId; targetId: PlayerId | null };
   "trial.started": { defendantId: PlayerId };
@@ -19,7 +21,10 @@ export type GameEventPayloads = {
   "player.hanged": { playerId: PlayerId; roleKey: string | null; will: string | null };
   "player.killed": { playerId: PlayerId; cause: string; roleKey: string | null; will: string | null };
   /** mafiaTeam: si el actor es de la Mafia, la decisión la ven los demás miembros vivos de la Mafia. */
-  "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; mafiaTeam: boolean };
+  "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; choice: string | null; mafiaTeam: boolean };
+  "hypnosis.message": { playerId: PlayerId; message: "attacked" | "protected" | "roleblocked" };
+  /** Lo ve solo quien falsificó (forgerId). */
+  "will.forged": { playerId: PlayerId; role: string; forgerId: PlayerId };
   "night.action.cancelled": { actorId: PlayerId; mafiaTeam: boolean };
   "will.written": { playerId: PlayerId; text: string };
   "night.action.blocked": { actorId: PlayerId; ability: string };
@@ -37,7 +42,7 @@ export type GameEventPayloads = {
    * whisper: un susurro se registra dos veces, una para quien lo envía y otra para quien lo recibe
    * (audienceId cambia). Así cada uno lo ve como un mensaje privado suyo.
    */
-  "chat.message": { channel: "public" | "mafia" | "dead" | "whisper" | "jail"; senderId: PlayerId; text: string; recipientId?: PlayerId; audienceId?: PlayerId };
+  "chat.message": { channel: "public" | "mafia" | "dead" | "whisper" | "jail" | "seance"; senderId: PlayerId; text: string; recipientId?: PlayerId; audienceId?: PlayerId };
   "game.ended": { winner: FactionKey };
 };
 

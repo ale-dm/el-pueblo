@@ -14,12 +14,12 @@ Contrastado con las fichas de `docs/roles/` (wiki de Town of Salem 1). Estados:
 | Crusader | OK | Ilimitado, no puede protegerse a sí mismo; ataca a los visitantes |
 | Doctor | OK | Curar a otros ilimitado. Autocuración una vez por partida (habilidad `selfHeal`). No cura a un Mayor revelado |
 | Investigator | Parcial | Muestra el bando del objetivo, no dos roles posibles |
-| Jailor | Parcial | Encarcela de día (también el día 1) y ejecuta de noche, 3 veces, nunca en la noche 1. Falta: al ejecutar a un Town pierde las ejecuciones restantes |
+| Jailor | OK | Encarcela de día (también el día 1) y ejecuta de noche, 3 veces, nunca en la noche 1. La ejecución es un ataque imparable; el encarcelado tiene defensa poderosa esta noche. Tras ejecutar a un Town pierde las ejecuciones restantes. Chat privado y anónimo con el prisionero |
 | Lookout | OK | Ve las visitas al objetivo |
 | Mayor | OK | Revelarse una vez; el voto cuenta como 3. No puede ser curado tras revelarse |
-| Medium | Pendiente | Comunicación con los muertos no implementada. Oculta su habilidad |
+| Medium | Parcial | Solo muerto: una sesión por partida con un vivo, de noche (canal Sesión; el vivo no sabe quién es). Usos: 1. No visita casas |
 | Psychic | OK | Recibe una visión cada noche sin elegir nada (pasiva) |
-| Retributionist | Pendiente | Revivir muertos no implementado. Oculta su habilidad |
+| Retributionist | Parcial | Resucita a un Town muerto con rol conocido (una vez por zombi) y usa su primera habilidad de objetivo único sobre el segundo objetivo. Inmune a bloqueos. Simplificación: el zombi no usa habilidades de varios usos (p. ej. Vigilante) |
 | Sheriff | OK | Sospechoso / inocente. Excepciones de inmunidad a la detección sin verificar |
 | Spy | Parcial | Ve las visitas de la Mafia, sin ver la casa concreta |
 | Tavern Keeper | OK | Inmune a bloqueos |
@@ -38,17 +38,17 @@ Contrastado con las fichas de `docs/roles/` (wiki de Town of Salem 1). Estados:
 | Blackmailer | OK | Silencia al objetivo de día |
 | Bootlegger | OK | Bloquea una acción |
 | Consigliere | OK | Revela el rol del objetivo |
-| Disguiser | Pendiente | Disfraz no implementado. Oculta su habilidad |
-| Forger | Pendiente | Falsificar voluntades no implementado (las voluntades sí existen desde esta versión). Usos: 2, según la ficha. Oculta su habilidad |
+| Disguiser | Parcial | Disfraza a un Mafioso vivo y no encarcelado de alguien que no es de la Mafia. Sheriff e Investigador ven ese rol. Falta: Lookout y Spy no ven el disfraz |
+| Forger | Parcial | Falsifica el rol del testamento de un vivo: al morir se muestra el rol elegido. Usos: 2. Simplificación: el texto del testamento no cambia |
 | Framer | OK | Marca al objetivo como enmarcado |
 | Godfather | OK | Ordena la muerte; inmune a la detección |
-| Hypnotist | Pendiente | Recuerdos falsos no implementados. Oculta su habilidad |
+| Hypnotist | Parcial | Planta un mensaje (ataque, protección o bloqueo) que recibe el objetivo al terminar la noche. Simplificación: el mensaje es el elegido, sin comprobar si es verdad |
 | Janitor | Parcial | Limpia el rol. Usos: 3 en el código; la ficha no confirma el límite (sin verificar) |
-| Mafioso | OK | Ejecuta la orden del Godfather. Pasar a Godfather si este muere: sin verificar |
+| Mafioso | OK | Ejecuta la orden del Godfather. Si no queda ningún Mafioso que mate, el Mafioso de apoyo vivo con menor asiento asciende a Mafioso (Hypnotist, Forger y Disguiser: wiki) |
 
-## Nombres en español
+## Nombres en inglés
 
-Los nombres de los roles en `apps/web/src/lib/roles.ts` son traducciones propias y no están confirmados. Antes de darlos por buenos hay que compararlos con la versión en español del juego.
+Los nombres de los roles y de los grupos (alineamientos) se muestran en inglés, como en Town of Salem (`apps/web/src/lib/roles.ts`). La interfaz sigue en español. Los nombres salen del catálogo de la wiki.
 
 ## Cambios de esta revisión
 

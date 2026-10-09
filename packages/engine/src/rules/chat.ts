@@ -1,6 +1,24 @@
 import type { GameState } from "../types/state.js";
 
-export type ChatChannel = "public" | "mafia" | "dead" | "whisper" | "jail";
+export type ChatChannel = "public" | "mafia" | "dead" | "whisper" | "jail" | "seance";
+
+/**
+ * Sesión de Médium: el Médium (muerto) habla esta noche con un vivo que ha elegido. Devuelve con quién
+ * habla quien envía, o null si no hay sesión abierta.
+ */
+export function seanceRecipient(state: GameState, senderId: string): string | null {
+  if (state.phase !== "night") return null;
+  const own = state.nightActions[senderId];
+  if (own?.ability === "seance" && own.targetId) {
+    const target = state.players.find((p) => p.id === own.targetId);
+    return target?.status === "alive" ? target.id : null;
+  }
+  const medium = Object.keys(state.nightActions).find((id) => {
+    const action = state.nightActions[id]!;
+    return action.ability === "seance" && action.targetId === senderId;
+  });
+  return medium ?? null;
+}
 
 const DAY_PHASES = new Set(["day_1", "discussion", "voting", "defense", "judgement", "last_words"]);
 
@@ -14,6 +32,10 @@ const DAY_PHASES = new Set(["day_1", "discussion", "voting", "defense", "judgeme
 export function chatDenied(state: GameState, senderId: string, channel: ChatChannel, recipientId?: string): string | null {
   const sender = state.players.find((p) => p.id === senderId);
   if (!sender) return "Jugador desconocido";
+  if (channel === "seance") {
+    if (!seanceRecipient(state, senderId)) return "No hay ninguna sesión abierta esta noche";
+    return null;
+  }
   if (channel === "jail") {
     // Jailor y prisionero hablan en privado (anónimo para el prisionero), mientras dure el encarcelamiento.
     const jailor = state.jailedBy[senderId];

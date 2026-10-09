@@ -5,6 +5,7 @@ import type { Rng } from "../../core/rng.js";
 import type { Effect } from "../../roles/effects.js";
 import type { RoleHandler } from "../../roles/types.js";
 import { handlerOf, isAlive, playerOf } from "../context.js";
+import { promotionEvents } from "../promotion.js";
 
 /**
  * Resolución de la noche, en este orden fijo:
@@ -43,6 +44,7 @@ interface Act {
   ability: string;
   targetId: string | null;
   secondTargetId: string | null;
+  choice: string | null;
   effects: Effect[];
   blocked: boolean;
 }
@@ -57,7 +59,11 @@ const remapEffect = (e: Effect, remap: (id: string) => string): Effect => {
     case "attack":
     case "mark":
     case "trap":
+    case "hypnosis":
+    case "forge":
       return { ...e, targetId: remap(e.targetId) };
+    case "disguise":
+      return { ...e, targetId: remap(e.targetId), asId: remap(e.asId) };
     case "attackVisitors":
       return { ...e, houseId: remap(e.houseId) };
     case "mafiaKill":
@@ -72,18 +78,20 @@ const remapEffect = (e: Effect, remap: (id: string) => string): Effect => {
 export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInput[] {
   const out: EventInput[] = [];
 
-  // 0. Acciones válidas de jugadores vivos, por prioridad y asiento.
+  // 0. Acciones válidas, por prioridad y asiento. Los muertos solo actúan con habilidades de muerto (Medium).
   const acts: Act[] = [];
   for (const [actorId, action] of Object.entries(s.nightActions)) {
     const actor = playerOf(s, actorId);
     const handler = actor && handlerOf(actor);
-    if (!actor || !handler || !isAlive(actor)) continue;
+    const def = handler?.nightAbilities.find((a) => a.key === action.ability);
+    if (!actor || !handler || !def || isAlive(actor) === !!def.deadOnly) continue;
     acts.push({
       actor,
       handler,
       ability: action.ability,
       targetId: action.targetId,
       secondTargetId: action.secondTargetId,
+      choice: action.choice,
       effects: [],
       blocked: actor.flags.jailed === true,
     });
@@ -98,6 +106,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       ability: "passive",
       targetId: null,
       secondTargetId: null,
+      choice: null,
       effects: [],
       blocked: actor.flags.jailed === true,
     });
@@ -111,6 +120,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       actor: act.actor,
       targetId: act.targetId,
       secondTargetId: act.secondTargetId,
+      choice: act.choice,
       catalog,
       rng,
     });
@@ -150,6 +160,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   // 3. Visitas: habilidades que apuntan a un jugador.
   const visits: Visit[] = [];
   for (const act of active) {
+    // Un muerto (Medium) no visita casas: sus efectos no llegan a Lookout ni a Sheriff.
+    if (!isAlive(act.actor)) continue;
     const def = act.handler.nightAbilities.find((a) => a.key === act.ability);
     if (def?.target === "player" && act.targetId !== null) {
       visits.push({ visitorId: act.actor.id, houseId: remap(act.targetId) });
@@ -167,10 +179,13 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   }
   const alerted = new Set<string>();
   const attacks: Attack[] = [];
-  const marks: Array<{ actorId: string; targetId: string; flag: "framed" | "cleaned" | "blackmailed" }> = [];
+  const marks: Array<{ actorId: string; targetId: string; flag: "framed" | "cleaned" | "blackmailed" | "zombied" }> = [];
   const investigations: Array<{ actorId: string; targetId: string | null; check: string }> = [];
   const traps: Array<{ trapperId: string; targetId: string }> = [];
   const usesSpent: Array<{ playerId: string; ability: string }> = [];
+  const disguises = new Map<string, string>();
+  const hypnoses: Array<{ targetId: string; message: "attacked" | "protected" | "roleblocked" }> = [];
+  const forges: Array<{ forgerId: string; targetId: string; role: string }> = [];
 
   for (const act of active) {
     const def = act.handler.nightAbilities.find((a) => a.key === act.ability);
@@ -210,6 +225,15 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           break;
         case "alert":
           alerted.add(e.actorId);
+          break;
+        case "disguise":
+          disguises.set(e.targetId, e.asId);
+          break;
+        case "hypnosis":
+          hypnoses.push({ targetId: e.targetId, message: e.message });
+          break;
+        case "forge":
+          forges.push({ forgerId: e.actorId, targetId: e.targetId, role: e.role });
           break;
         default:
           break;
@@ -254,6 +278,15 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   for (const t of traps) {
     out.push({ type: "trap.placed", payload: { trapperId: t.trapperId, targetId: t.targetId, readyDay: s.dayNumber + 1 } });
   }
+  // Mensajes falsos de la Hypnotist: llegan al terminar la noche, solo a quien sigue vivo.
+  for (const h of hypnoses) {
+    if (isAlive(playerOf(s, h.targetId))) out.push({ type: "hypnosis.message", payload: { playerId: h.targetId, message: h.message } });
+  }
+  for (const f of forges) {
+    if (isAlive(playerOf(s, f.targetId))) out.push({ type: "will.forged", payload: { playerId: f.targetId, role: f.role, forgerId: f.forgerId } });
+  }
+  // Rol que se mostrará al morir: el último que falsificó el Forger (esta noche o antes).
+  const forged = new Map<string, string>(forges.map((f) => [f.targetId, f.role]));
   for (const vetId of alerted) {
     out.push({ type: "effect.applied", payload: { actorId: vetId, targetId: vetId, flag: "alert" } });
   }
@@ -269,22 +302,24 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const nick = (id: string) => playerOf(s, id)?.nick ?? "?";
   for (const inv of investigations) {
     const target = inv.targetId ?? inv.actorId;
-    const p = playerOf(s, target);
+    // Disfraz: el Investigador y el Sheriff ven el rol de la persona por la que se hace pasar.
+    const shownId = disguises.get(target) ?? target;
+    const shown = playerOf(s, shownId);
+    const isFramed = framed.has(target) || playerOf(s, target)?.flags.framed === true;
     let result = "";
     switch (inv.check) {
       case "suspicious": {
-        const sus = framed.has(target) || p?.flags.framed === true || (p?.faction === "mafia" && p.roleKey !== "godfather");
+        const sus = isFramed || (shown?.faction === "mafia" && shown.roleKey !== "godfather");
         result = sus ? "suspicious" : "innocent";
         break;
       }
       case "alignment": {
-        const isFramed = framed.has(target) || p?.flags.framed === true;
-        const key = p?.roleKey ? catalog.roles.get(p.roleKey)?.alignmentKey : null;
+        const key = shown?.roleKey ? catalog.roles.get(shown.roleKey)?.alignmentKey : null;
         result = isFramed ? "mafia_deception" : key ?? "unknown";
         break;
       }
       case "role":
-        result = roleName(target);
+        result = roleName(shownId);
         break;
       case "visitors":
         result = visitsTo(target, inv.actorId).map((v) => nick(v.visitorId)).join(", ") || "nadie";
@@ -324,7 +359,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const kill = (playerId: string, cause: string) => {
     if (dead.has(playerId)) return;
     dead.add(playerId);
-    const roleKey = cleaned.has(playerId) ? null : playerOf(s, playerId)?.roleKey ?? null;
+    const roleKey = cleaned.has(playerId) ? null : forged.get(playerId) ?? s.forgeries[playerId] ?? playerOf(s, playerId)?.roleKey ?? null;
     // Un limpiado no deja testamento visible (wiki: Janitor).
     const will = cleaned.has(playerId) ? null : s.wills[playerId] ?? null;
     out.push({ type: "player.killed", payload: { playerId, cause, roleKey, will } });
@@ -365,6 +400,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     }
   }
 
+  out.push(...promotionEvents(s, dead));
   out.push({ type: "night.resolved", payload: { dayNumber: s.dayNumber } });
   return out;
 }

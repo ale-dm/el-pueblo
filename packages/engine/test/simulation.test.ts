@@ -16,7 +16,7 @@ function newGame(seed: number): { state: GameState; rng: Rng } {
   }));
   let state: GameState = {
     matchId: "m", engineVersion: "sim", phase: "day_1", dayNumber: 1, seq: 0, winner: null, players,
-    trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {}, wills: {}, jailedBy: {},
+    trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {}, wills: {}, jailedBy: {}, forgeries: {},
   };
   const rng = createRng(seed);
   const r = decide(state, { type: "game.start", hostId: "p1" }, { catalog, rng, now: new Date() });

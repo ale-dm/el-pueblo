@@ -2,6 +2,7 @@ import type { EventInput } from "../../types/events.js";
 import type { GameState } from "../../types/state.js";
 import { err, ok, type Result } from "../../core/result.js";
 import { handlerOf, isAlive, playerOf } from "../context.js";
+import { ROLE_HANDLERS } from "../../roles/registry.js";
 
 /** Valida una acción nocturna y, si es correcta, la registra. Un jugador puede cambiarla hasta el final de la noche. */
 export function nightAction(
@@ -10,13 +11,16 @@ export function nightAction(
   ability: string,
   targetId: string | null,
   secondTargetId: string | null,
+  choice: string | null = null,
 ): Result<EventInput[]> {
   if (s.phase !== "night") return err("wrong_phase", "Las acciones nocturnas solo se hacen de noche");
   const actor = playerOf(s, actorId);
-  if (!isAlive(actor)) return err("invalid_command", "Solo los vivos actúan de noche");
-  const handler = handlerOf(actor);
+  const handler = actor ? handlerOf(actor) : undefined;
   const def = handler?.nightAbilities.find((a) => a.key === ability);
-  if (!handler || !def) return err("invalid_command", "Tu rol no tiene esa habilidad");
+  if (!actor || !handler || !def) return err("invalid_command", "Tu rol no tiene esa habilidad");
+  if (def.deadOnly ? isAlive(actor) : !isAlive(actor)) {
+    return err("invalid_command", def.deadOnly ? "Solo los muertos usan esa habilidad" : "Solo los vivos actúan de noche");
+  }
   if (def.usesLimit !== null && (actor.usesLeft[ability] ?? 0) <= 0) {
     return err("invalid_command", "Ya no te quedan usos de esa habilidad");
   }
@@ -29,7 +33,17 @@ export function nightAction(
     return null;
   };
 
-  if (def.target === "none") {
+  // Resurrección del Retributionist: el primer objetivo es un Town muerto con su rol intacto.
+  if (ability === "raise") {
+    if (targetId === null) return err("invalid_command", "Falta el Town muerto a resucitar");
+    const dead = playerOf(s, targetId);
+    if (!dead || dead.status !== "dead" || dead.faction !== "town" || !dead.roleKey) {
+      return err("invalid_command", "Solo puedes resucitar a un Town muerto cuyo rol se conozca");
+    }
+    if (dead.flags.zombied) return err("invalid_command", "Ese zombi ya se ha usado");
+    const second = check(secondTargetId, "Objetivo");
+    if (second) return err("invalid_command", second);
+  } else if (def.target === "none") {
     if (targetId !== null || secondTargetId !== null) return err("invalid_command", "Esta habilidad no lleva objetivo");
   } else if (def.target === "player") {
     const problem = check(targetId, "Objetivo");
@@ -40,6 +54,23 @@ export function nightAction(
     const second = check(secondTargetId, "Segundo objetivo");
     if (second) return err("invalid_command", second);
     if (targetId === secondTargetId) return err("invalid_command", "Los dos objetivos deben ser distintos");
+  }
+
+  // Elección de la habilidad: mensaje del Hypnotist, rol del Forger.
+  if (def.choices !== undefined) {
+    if (!choice) return err("invalid_command", "Elige una opción");
+    if (def.choices === "roles") {
+      if (!ROLE_HANDLERS.has(choice)) return err("invalid_command", "Rol desconocido");
+    } else if (!def.choices.includes(choice)) {
+      return err("invalid_command", "Opción no válida");
+    }
+  }
+
+  // Disfraz del Disguiser: un Mafioso vivo y no encarcelado, disfrazado de alguien que no es de la Mafia.
+  if (ability === "disguise") {
+    if (playerOf(s, targetId ?? "")?.faction !== "mafia") return err("invalid_command", "Solo puedes disfrazar a alguien de la Mafia");
+    if (playerOf(s, targetId ?? "")?.flags.jailed) return err("invalid_command", "No puedes disfrazar a un encarcelado");
+    if (playerOf(s, secondTargetId ?? "")?.faction === "mafia") return err("invalid_command", "El disfraz debe ser de alguien que no es de la Mafia");
   }
 
   // Jailor: solo puede ejecutar a un jugador encarcelado, y no en la primera noche (wiki: Jailor).
@@ -57,7 +88,7 @@ export function nightAction(
   return ok([
     {
       type: "night.action.submitted",
-      payload: { actorId, ability, targetId, secondTargetId, mafiaTeam: actor.faction === "mafia" },
+      payload: { actorId, ability, targetId, secondTargetId, choice: choice ?? null, mafiaTeam: actor.faction === "mafia" },
     },
   ]);
 }

@@ -9,6 +9,9 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
   switch (event.type) {
     case "roles.assigned":
       return priv(event.payload.playerId);
+    case "role.promoted":
+      // Lo sabe toda la Mafia viva: el ascendido ya es miembro del equipo.
+      return { visibility: "mafia" as Visibility, audiencePlayerId: null };
     case "night.action.submitted":
     case "night.action.cancelled":
       // La Mafia ve las decisiones de sus miembros (wiki: Mafia y Coven ven las decisiones de sus compañeros).
@@ -17,6 +20,10 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
       return priv(event.payload.actorId);
     case "will.written":
       return priv(event.payload.playerId);
+    case "hypnosis.message":
+      return priv(event.payload.playerId);
+    case "will.forged":
+      return priv(event.payload.forgerId);
     case "investigation.result":
       return priv(event.payload.investigatorId);
     case "ability.used":
@@ -32,7 +39,9 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
     case "attack.prevented":
       return priv(event.payload.protectorId);
     case "chat.message":
-      if (event.payload.channel === "whisper" || event.payload.channel === "jail") return priv(event.payload.audienceId ?? event.payload.senderId);
+      if (event.payload.channel === "whisper" || event.payload.channel === "jail" || event.payload.channel === "seance") {
+        return priv(event.payload.audienceId ?? event.payload.senderId);
+      }
       return {
         visibility: event.payload.channel === "public" ? "public" : event.payload.channel,
         audiencePlayerId: null,

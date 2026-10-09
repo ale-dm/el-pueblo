@@ -5,7 +5,7 @@ import type { PlayerId, Seat } from "./ids.js";
 export type PlayerStatus = "alive" | "dead" | "disconnected";
 
 /** Marcas que aplican las acciones. "alert", "jailed" y "blackmailed" duran solo hasta el final de la noche o del día. */
-export type PlayerFlag = "framed" | "cleaned" | "blackmailed" | "jailed" | "alert" | "mayorRevealed" | "noExecute";
+export type PlayerFlag = "framed" | "cleaned" | "blackmailed" | "jailed" | "alert" | "mayorRevealed" | "noExecute" | "zombied";
 
 export interface PlayerState {
   id: PlayerId;
@@ -27,6 +27,7 @@ export interface NightAction {
   ability: string;
   targetId: PlayerId | null;
   secondTargetId: PlayerId | null;
+  choice: string | null;
 }
 
 /** Trampa colocada por un Trapper. Se activa a partir de `readyDay`. */
@@ -62,4 +63,6 @@ export interface GameState {
   wills: Record<PlayerId, string>;
   /** Encarcelados de esta noche: prisionero → Jailor. Se vacía al final de la noche. */
   jailedBy: Record<PlayerId, PlayerId>;
+  /** Rol falsificado de cada jugador (Forger). Se muestra al morir o ser ahorcado. */
+  forgeries: Record<PlayerId, string>;
 }

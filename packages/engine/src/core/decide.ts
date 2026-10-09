@@ -5,7 +5,7 @@ import type { GameState } from "../types/state.js";
 import type { Rng } from "./rng.js";
 import { err, ok, type Result } from "./result.js";
 import { emit } from "../events/emit.js";
-import { chatDenied } from "../rules/chat.js";
+import { chatDenied, seanceRecipient, type ChatChannel } from "../rules/chat.js";
 import { castVote, dayAction, judgementVote } from "../phases/day.js";
 import { cancelNightAction, nightAction, writeWill } from "../phases/night/collect.js";
 import { onTimerExpired } from "../phases/machine.js";
@@ -44,7 +44,7 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
     case "day.action":
       return dayAction(state, ctx.catalog, command.actorId, command.ability, command.targetId);
     case "night.action":
-      return nightAction(state, command.actorId, command.ability, command.targetId, command.secondTargetId ?? null);
+      return nightAction(state, command.actorId, command.ability, command.targetId, command.secondTargetId ?? null, command.choice ?? null);
     case "night.action.cancel":
       return cancelNightAction(state, command.actorId);
     case "will.write":
@@ -54,8 +54,17 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
       if (text.length === 0 || text.length > MAX_CHAT_LENGTH) {
         return err("invalid_command", `El mensaje debe tener entre 1 y ${MAX_CHAT_LENGTH} caracteres`);
       }
-      const denied = chatDenied(state, command.senderId, command.channel, command.recipientId);
+      const denied = chatDenied(state, command.senderId, command.channel as ChatChannel, command.recipientId);
       if (denied) return err("invalid_command", denied);
+      if (command.channel === "seance") {
+        // Médium: el destinatario sale del estado (el vivo con quien habla esta noche).
+        const recipientId = seanceRecipient(state, command.senderId);
+        if (!recipientId) return err("invalid_command", "No tienes ninguna sesión abierta esta noche");
+        return ok([
+          { type: "chat.message", payload: { channel: "seance", senderId: command.senderId, text, recipientId, audienceId: recipientId } },
+          { type: "chat.message", payload: { channel: "seance", senderId: command.senderId, text, recipientId, audienceId: command.senderId } },
+        ]);
+      }
       if (command.channel === "jail") {
         // El destinatario sale del estado: el Jailor habla con su prisionero y al revés.
         const recipientId = state.jailedBy[command.senderId] ?? Object.keys(state.jailedBy).find((id) => state.jailedBy[id] === command.senderId)!;

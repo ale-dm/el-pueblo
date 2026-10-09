@@ -1,5 +1,5 @@
 import type { MatchView } from "../types.js";
-import { ROLE_BLURB, alignmentLabel, levelEs, roleNameEs } from "../lib/roles.js";
+import { ROLE_BLURB, alignmentLabel, levelEs, roleName } from "../lib/roles.js";
 import { abilityLabel } from "../lib/text.js";
 import { Card, Pill } from "../ui/primitives.js";
 
@@ -24,7 +24,7 @@ const GOAL: Record<string, string> = {
  */
 export function RoleCard({ me }: { me: MatchView["me"] }) {
   const dead = me.status !== "alive";
-  const name = roleNameEs(me.roleKey) ?? me.roleName ?? "Sin rol aún";
+  const name = roleName(me.roleKey) ?? me.roleName ?? "Sin rol aún";
   const faction = me.faction === "mafia" ? "Mafia" : me.faction === "town" ? "Pueblo" : null;
   const abilities = [...me.nightAbilities, ...me.dayAbilities];
   const flags = Object.keys(me.flags).filter((f) => FLAG_TEXT[f]);

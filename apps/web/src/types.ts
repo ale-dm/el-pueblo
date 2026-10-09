@@ -49,7 +49,9 @@ export interface MatchView {
     faction: "town" | "mafia" | null;
     roleSummary: string | null;
     flags: Record<string, boolean>;
-    nightAction: { ability: string; targetId: string | null } | null;
+    nightAction: { ability: string; targetId: string | null; secondTargetId?: string | null; choice?: string | null } | null;
+    /** Sesión de Médium esta noche: "medium" (la abre el Médium muerto) o "target" (el vivo elegido). */
+    seance: "medium" | "target" | null;
     /** Tu última voluntad. */
     will: string | null;
     /** Grupo del rol (p. ej. town_support). */
@@ -59,9 +61,10 @@ export interface MatchView {
     /** Ataque y defensa del catálogo (texto con condiciones). */
     attack: string | null;
     defense: string | null;
-    nightAbilities: Array<{ key: string; target: "player" | "none" | "two"; usesLeft: number | null }>;
+    /** Habilidades de noche: de vivo, o solo las de muerto (Medium). `choices`: opciones de la habilidad. */
+    nightAbilities: Array<{ key: string; target: "player" | "none" | "two"; usesLeft: number | null; choices: string[] | null; deadOnly: boolean }>;
     dayAbilities: Array<{ key: string; target: "player" | "none"; oncePerDay: boolean; usesLeft: number | null }>;
   };
 }
 
-export type Channel = "public" | "mafia" | "dead" | "whisper" | "jail";
+export type Channel = "public" | "mafia" | "dead" | "whisper" | "jail" | "seance";

@@ -7,10 +7,12 @@ export const handler: RoleHandler = {
   name: "Hypnotist",
   faction: "mafia",
   priority: 3,
-  nightAbilities: [], // pendiente: su habilidad aún no tiene efecto (ver gaps); no se ofrece para no engañar al jugador
+  // Planta un recuerdo falso en un jugador: al terminar la noche recibe un mensaje que no es verdad.
+  nightAbilities: [{ key: "hypnotize", target: "player", usesLimit: null, choices: ["attacked", "protected", "roleblocked"] }],
   dayAbilities: [],
-  gaps: "Recuerdos plantados que confunden a la víctima: no implementado en el MVP.",
-  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
-    return [{ kind: "none", actorId: actor.id }];
+  gaps: "No se convierte en Mafioso cuando no quedan Mafiosos con capacidad de matar (simplificación).",
+  resolveNight: ({ ability, actor, targetId, choice }): Effect[] => {
+    if (ability !== "hypnotize" || !targetId || (choice !== "attacked" && choice !== "protected" && choice !== "roleblocked")) return [];
+    return [{ kind: "hypnosis", actorId: actor.id, targetId, message: choice }];
   },
 };

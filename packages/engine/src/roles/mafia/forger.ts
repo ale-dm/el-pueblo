@@ -7,10 +7,12 @@ export const handler: RoleHandler = {
   name: "Forger",
   faction: "mafia",
   priority: 3,
-  nightAbilities: [], // pendiente: su habilidad aún no tiene efecto (ver gaps); no se ofrece para no engañar al jugador
+  // Falsifica la última voluntad de un jugador: si muere, se muestra como el rol elegido. Dos usos.
+  nightAbilities: [{ key: "forge", target: "player", usesLimit: 2, choices: "roles" }],
   dayAbilities: [],
-  gaps: "Falsificación de últimas voluntades: no hay últimas voluntades en el MVP.",
-  resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
-    return [{ kind: "none", actorId: actor.id }];
+  gaps: "El texto del testamento falsificado es genérico; la wiki no fija un texto.",
+  resolveNight: ({ ability, actor, targetId, choice }): Effect[] => {
+    if (ability !== "forge" || !targetId || !choice) return [];
+    return [{ kind: "forge", actorId: actor.id, targetId, role: choice }];
   },
 };

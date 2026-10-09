@@ -14,6 +14,10 @@ export interface NightAbility {
   usesLimit: number | null;
   /** Si el objetivo puede ser el propio jugador. */
   selfAllowed?: boolean;
+  /** Solo la puede usar un jugador muerto (Medium: hablar con los vivos desde el más allá). */
+  deadOnly?: boolean;
+  /** Elección extra: una lista de opciones, o "roles" para cualquier rol del juego. */
+  choices?: readonly string[] | "roles";
 }
 
 /** Habilidad de día (Jailor, Mayor). */
@@ -32,6 +36,8 @@ export interface ResolveContext {
   actor: PlayerState;
   targetId: PlayerId | null;
   secondTargetId: PlayerId | null;
+  /** Elección de la habilidad (mensaje del Hypnotist, rol del Forger). */
+  choice: string | null;
   catalog: Catalog;
   rng: Rng;
 }

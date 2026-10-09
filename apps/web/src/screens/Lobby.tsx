@@ -35,7 +35,7 @@ export function Lobby({ view }: { view: MatchView }) {
         <Card className="min-h-[22rem]">
           <h2 className="mb-2 font-display text-2xl">El pueblo se reúne</h2>
           <div className="h-[20rem]">
-            <Ring view={view} selected={[]} selectable={false} onPick={() => undefined} />
+            <Ring view={view} selected={[]} isPickable={() => false} onPick={() => undefined} />
           </div>
         </Card>
 

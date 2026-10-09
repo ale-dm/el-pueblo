@@ -1,6 +1,6 @@
 import type { GameEvent, Phase } from "../types.js";
-import { abilityLabel } from "./text.js";
-import { alignmentLabel, roleNameEs, roleNameFromEnglish } from "./roles.js";
+import { HYPNOSIS_TEXT, abilityLabel } from "./text.js";
+import { alignmentLabel, roleName } from "./roles.js";
 
 /**
  * Registro de la partida, como en Town of Salem: separadores "Día N" / "Noche N", lo que pasó
@@ -40,7 +40,10 @@ const CAUSE_ES: Record<string, string> = {
 const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const;
 
 /** Eventos de la noche que se cuentan al amanecer, no en el momento. */
-const MORNING = new Set(["player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed"]);
+const MORNING = new Set([
+  "player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed",
+  "hypnosis.message", "role.promoted",
+]);
 
 /** Grupo que revela el Investigador: "Pueblo (Apoyo)", "Mafia (Engaño)"… */
 function alignmentEs(key: string): string {
@@ -56,7 +59,7 @@ export function investigationText(p: Record<string, any>, nick: (id: string) => 
     case "alignment":
       return `${t} pertenece al bando ${alignmentEs(String(p.result))}.`;
     case "role":
-      return `${t} es ${roleNameFromEnglish(String(p.result))}.`;
+      return `${t} es ${p.result}.`;
     case "visitors":
       return p.result === "nadie" ? `Nadie visitó a ${t} esta noche.` : `Visitaron a ${t}: ${p.result}.`;
     case "targets":
@@ -169,13 +172,13 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         break;
       }
       case "player.hanged": {
-        const role = roleNameEs(p.roleKey);
+        const role = roleName(p.roleKey);
         line(e, `${ctx.nick(p.playerId)} ha sido ahorcado${role ? `. Era ${role}` : ""}.`, "danger");
         willLine(e, p.will, p.playerId);
         break;
       }
       case "player.killed": {
-        const role = roleNameEs(p.roleKey);
+        const role = roleName(p.roleKey);
         const cause = CAUSE_ES[p.cause] ?? "ha muerto";
         line(e, `${ctx.nick(p.playerId)} murió anoche: ${cause}. ${role ? `Era ${role}.` : "No pudimos determinar su rol."}`, "danger");
         willLine(e, p.will, p.playerId);
@@ -218,6 +221,15 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         break;
       case "trap.placed":
         line(e, `Has colocado una trampa en ${ctx.nick(p.targetId)}.`, "private");
+        break;
+      case "hypnosis.message":
+        line(e, HYPNOSIS_TEXT[p.message] ?? "Algo extraño te ocurrió anoche.", "private");
+        break;
+      case "will.forged":
+        line(e, `Has falsificado el testamento de ${ctx.nick(p.playerId)}: parecerá que era ${roleName(p.role)}.`, "private");
+        break;
+      case "role.promoted":
+        line(e, p.playerId === ctx.meId ? "Eres el nuevo Mafioso: ya no queda nadie de la Mafia que mate." : `${ctx.nick(p.playerId)} se convierte en Mafioso.`, "danger");
         break;
       case "game.ended":
         flushMorning();

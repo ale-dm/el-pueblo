@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../state/store.js";
-import type { MatchView } from "../types.js";
+import type { MatchView, PublicPlayer } from "../types.js";
 import { Button, Card, Pill } from "../ui/primitives.js";
 import { PHASE_LABEL } from "../lib/text.js";
-import { ROLE_NAMES, roleNameEs } from "../lib/roles.js";
+import { ROLE_NAMES, roleName } from "../lib/roles.js";
 import { secondsLeft as secondsUntil } from "../lib/countdown.js";
 import { trialsLeftToday } from "../lib/trials.js";
 import { RoleReveal } from "../game/RoleReveal.js";
@@ -22,18 +22,22 @@ import { isMuted, playCue, setMuted } from "../lib/sound.js";
 import { voteStatus } from "../lib/votes.js";
 import type { GameEvent } from "../types.js";
 
-/** Cuántos objetivos pide la fase actual: votación y noche con dos objetivos. */
-function targetsNeeded(view: MatchView): { selectable: boolean; max: number } {
+/** Cuántos objetivos pide la fase actual: votación y noche con dos objetivos. `raise`: el primero es un muerto. */
+function targetsNeeded(view: MatchView): { selectable: boolean; max: number; raise: boolean } {
   const me = view.me;
-  if (me.status !== "alive") return { selectable: false, max: 0 };
-  if (view.phase === "voting") return { selectable: true, max: 1 };
+  if (view.phase === "voting" && me.status === "alive") return { selectable: true, max: 1, raise: false };
   if (view.phase === "night") {
-    const selectable = me.nightAbilities.some((a) => a.target !== "none");
-    const twoTargets = me.nightAbilities.some((a) => a.target === "two");
-    return { selectable, max: twoTargets ? 2 : 1 };
+    const usable = me.nightAbilities.filter((a) => a.target !== "none" && a.usesLeft !== 0);
+    return {
+      selectable: usable.length > 0,
+      max: usable.some((a) => a.target === "two") ? 2 : 1,
+      raise: usable.some((a) => a.key === "raise"),
+    };
   }
-  if (["day_1", "discussion"].includes(view.phase) && me.dayAbilities.some((a) => a.target === "player")) return { selectable: true, max: 1 };
-  return { selectable: false, max: 0 };
+  if (me.status === "alive" && ["day_1", "discussion"].includes(view.phase) && me.dayAbilities.some((a) => a.target === "player")) {
+    return { selectable: true, max: 1, raise: false };
+  }
+  return { selectable: false, max: 0, raise: false };
 }
 
 /** Lo que dice el pueblo en cada fase, como el texto de ToS sobre el juego. */
@@ -126,6 +130,14 @@ export function Game({ view }: { view: MatchView }) {
     setMutedState(!muted);
   };
 
+  /** Con Retributionist, el primer objetivo es un Town muerto (zombi) y el segundo un vivo. */
+  const isPickable = (p: PublicPlayer) => {
+    if (!need.selectable || p.id === view.me.id) return false;
+    if (!need.raise) return p.status === "alive";
+    if (p.status === "alive") return targets.length > 0;
+    return targets.length === 0 && p.revealedRoleKey !== null;
+  };
+
   const pick = (id: string) =>
     setTargets((current) => {
       if (current.includes(id)) return current.filter((x) => x !== id);
@@ -145,7 +157,7 @@ export function Game({ view }: { view: MatchView }) {
           <h2 className="mb-2 font-display text-2xl">Quién era quién</h2>
           <ul className="space-y-1">
             {view.players.map((p) => (
-              <li key={p.id}>{p.nick}: <strong>{ROLE_NAMES[p.revealedRoleKey ?? ""]?.es ?? p.revealedRoleKey ?? "—"}</strong></li>
+              <li key={p.id}>{p.nick}: <strong>{roleName(p.revealedRoleKey) ?? "—"}</strong></li>
             ))}
           </ul>
         </Card>
@@ -177,7 +189,7 @@ export function Game({ view }: { view: MatchView }) {
     <>
       <RoleReveal view={view} />
       <ScreenBanner text={banner?.text ?? null} tone={banner?.tone} />
-      {death && <DeathFx nick={nickOf(death.payload.playerId)} role={roleNameEs(death.payload.roleKey)} will={death.payload.will ?? null} />}
+      {death && <DeathFx nick={nickOf(death.payload.playerId)} role={roleName(death.payload.roleKey)} will={death.payload.will ?? null} />}
       {!connected && <p role="status" className="fixed inset-x-0 top-0 z-50 bg-sunset p-2 text-center font-semibold">Sin conexión con el pueblo. Reconectando…</p>}
       {error && (
         <button type="button" role="alert" onClick={clearError} className="fixed inset-x-3 top-3 z-50 rounded-2xl border-4 border-ink bg-blood p-3 text-left font-semibold text-paper">
@@ -212,10 +224,10 @@ export function Game({ view }: { view: MatchView }) {
 
         <section className="md:col-start-2 md:row-start-2 md:min-h-0">
           <div className="md:hidden">
-            <PlayerGrid view={view} selected={targets} selectable={need.selectable} onPick={pick} />
+            <PlayerGrid view={view} selected={targets} isPickable={isPickable} onPick={pick} />
           </div>
           <div className="hidden h-full md:block">
-            <Ring view={view} selected={targets} selectable={need.selectable} onPick={pick} />
+            <Ring view={view} selected={targets} isPickable={isPickable} onPick={pick} />
           </div>
         </section>
 

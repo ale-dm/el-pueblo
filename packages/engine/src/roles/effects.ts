@@ -19,7 +19,13 @@ export type Effect =
   /** Investigación. El resultado se calcula con el estado de la noche. */
   | { kind: "investigate"; actorId: PlayerId; targetId: PlayerId | null; check: Check }
   /** Marca al objetivo (encuadrado, limpiado, chantajeado). */
-  | { kind: "mark"; actorId: PlayerId; targetId: PlayerId; flag: "framed" | "cleaned" | "blackmailed" }
+  | { kind: "mark"; actorId: PlayerId; targetId: PlayerId; flag: "framed" | "cleaned" | "blackmailed" | "zombied" }
+  /** Disfraz: el Mafioso `targetId` aparece como `asId` ante el Investigador y el Sheriff esta noche. */
+  | { kind: "disguise"; actorId: PlayerId; targetId: PlayerId; asId: PlayerId }
+  /** Mensaje falso que recibe `targetId` al terminar la noche (Hypnotist). */
+  | { kind: "hypnosis"; actorId: PlayerId; targetId: PlayerId; message: "attacked" | "protected" | "roleblocked" }
+  /** Falsifica la última voluntad de `targetId`: al morir, se muestra como el rol `role`. */
+  | { kind: "forge"; actorId: PlayerId; targetId: PlayerId; role: string }
   /** Coloca una trampa en la casa del objetivo; se activa al día siguiente. */
   | { kind: "trap"; actorId: PlayerId; targetId: PlayerId }
   /** El Veteran se pone en alerta. */

@@ -7,10 +7,12 @@ export const handler: RoleHandler = {
   name: "Disguiser",
   faction: "mafia",
   priority: 3,
-  nightAbilities: [], // pendiente: su habilidad aún no tiene efecto (ver gaps); no se ofrece para no engañar al jugador
+  // Disfraza a un Mafioso de alguien que no es de la Mafia: el Investigador y el Sheriff ven ese rol.
+  nightAbilities: [{ key: "disguise", target: "two", usesLimit: null }],
   dayAbilities: [],
-  gaps: "Disfraz de Mafia como Town para Investigator y Sheriff: no implementado en el MVP.",
+  gaps: "El Spy no descarta las visitas de un Mafioso disfrazado de Town (simplificación).",
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
-    return [{ kind: "none", actorId: actor.id }];
+    if (ability !== "disguise" || !targetId || !secondTargetId) return [];
+    return [{ kind: "disguise", actorId: actor.id, targetId, asId: secondTargetId }];
   },
 };

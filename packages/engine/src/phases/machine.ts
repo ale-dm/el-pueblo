@@ -7,6 +7,7 @@ import { trialCandidate } from "../rules/voting.js";
 import { phaseStarted, playerOf, votingPlayers, withVictory } from "./context.js";
 import { resolveNight } from "./night/pipeline.js";
 import { handlerOf } from "./context.js";
+import { promotionEvents } from "./promotion.js";
 
 const MAX_TRIALS_PER_DAY = 3;
 
@@ -61,8 +62,11 @@ function resolveJudgement(s: GameState): EventInput[] {
   const verdict = guilty > innocent ? "guilty" : "innocent";
   const events: EventInput[] = [{ type: "trial.verdict", payload: { defendantId: defendant.id, verdict } }];
   if (verdict === "guilty") {
-    const roleKey = defendant.roleKey;
+    // Un testamento falsificado muestra el rol que eligió el Forger.
+    const roleKey = s.forgeries[defendant.id] ?? defendant.roleKey;
     events.push({ type: "player.hanged", payload: { playerId: defendant.id, roleKey, will: s.wills[defendant.id] ?? null } });
+    const deadAfter = new Set([...s.players.filter((p) => p.status !== "alive").map((p) => p.id), defendant.id]);
+    events.push(...promotionEvents(s, deadAfter));
     const withEnd = withVictory(s, events);
     if (withEnd.length > events.length) return withEnd;
     return [...events, phaseStarted("last_words", s.dayNumber)];

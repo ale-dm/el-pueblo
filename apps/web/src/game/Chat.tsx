@@ -16,6 +16,8 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
   const nick = (id: string) => view.players.find((p) => p.id === id)?.nick ?? "?";
   /** En la prisión el Jailor es anónimo para el prisionero, y al revés. */
   const senderLabel = (p: Record<string, any>) => {
+    // El vivo que recibe la sesión de Médium no sabe quién es el Médium.
+    if (p.channel === "seance" && p.senderId !== view.me.id && view.me.status === "alive") return "Médium";
     if (p.channel !== "jail" || p.senderId === view.me.id) return nick(p.senderId);
     return view.me.jail === "prisoner" ? "Carcelero" : "Prisionero";
   };

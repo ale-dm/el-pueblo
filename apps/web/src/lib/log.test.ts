@@ -37,7 +37,7 @@ describe("registro estilo Town of Salem", () => {
     ], ctx()));
     const day = text.indexOf("== Día 2");
     expect(text.findIndex((t) => t.includes("murió anoche"))).toBeGreaterThan(day);
-    expect(text[day + 1]).toContain("Bea murió anoche: ha sido asesinado por la Mafia. Era Médico.");
+    expect(text[day + 1]).toContain("Bea murió anoche: ha sido asesinado por la Mafia. Era Doctor.");
   });
 
   it("si un limpiado muere, no se revela su rol", () => {
@@ -117,7 +117,22 @@ describe("registro estilo Town of Salem", () => {
       ev("phase.started", { phase: "discussion", dayNumber: 2 }),
     ], ctx())).join(" | ");
     expect(text).toContain("Bea parece sospechoso.");
-    expect(text).toContain("Caro es Padrino.");
+    expect(text).toContain("Caro es Godfather.");
+  });
+
+  it("la hipnosis llega al amanecer; la falsificación y el ascenso se cuentan al momento", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 1 }),
+      ev("hypnosis.message", { playerId: "b", message: "attacked" }, "private"),
+      ev("will.forged", { playerId: "c", role: "jailor", forgerId: "a" }, "private"),
+      ev("role.promoted", { playerId: "a", roleKey: "mafioso", uses: {} }, "mafia"),
+      ev("phase.started", { phase: "discussion", dayNumber: 2 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Has falsificado el testamento de Caro: parecerá que era Jailor.");
+    expect(text).toContain("Eres el nuevo Mafioso");
+    expect(text).toContain("Recuerdas haber sido atacado anoche.");
+    expect(text.indexOf("Recuerdas")).toBeGreaterThan(text.indexOf("== Día 2"));
   });
 
   it("el final de partida muestra el ganador", () => {

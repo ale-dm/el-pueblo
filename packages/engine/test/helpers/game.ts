@@ -51,7 +51,7 @@ export function game(roles: string[], overrides: Partial<GameState> = {}): GameS
   });
   return {
     matchId: "m", engineVersion: "test", phase: "night", dayNumber: 1, seq: 0, winner: null, players,
-    trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {}, wills: {}, jailedBy: {},
+    trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {}, wills: {}, jailedBy: {}, forgeries: {},
     ...overrides,
   };
 }

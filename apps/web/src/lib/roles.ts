@@ -32,66 +32,61 @@ export const ROLE_BLURB: Record<string, string> = {
   vigilante: "Disparas a alguien (tres veces). Si es del pueblo, tú también mueres.",
 };
 
-/** Nombre en español y en inglés (el del catálogo, que llega en los resultados de investigación). */
-export const ROLE_NAMES: Record<string, { es: string; en: string }> = {
-  ambusher: { es: "Emboscador", en: "Ambusher" },
-  blackmailer: { es: "Chantajista", en: "Blackmailer" },
-  bootlegger: { es: "Contrabandista", en: "Bootlegger" },
-  consigliere: { es: "Consigliere", en: "Consigliere" },
-  disguiser: { es: "Disfrazador", en: "Disguiser" },
-  forger: { es: "Falsificador", en: "Forger" },
-  framer: { es: "Incriminador", en: "Framer" },
-  godfather: { es: "Padrino", en: "Godfather" },
-  hypnotist: { es: "Hipnotizador", en: "Hypnotist" },
-  janitor: { es: "Conserje", en: "Janitor" },
-  mafioso: { es: "Mafioso", en: "Mafioso" },
-  bodyguard: { es: "Guardaespaldas", en: "Bodyguard" },
-  crusader: { es: "Cruzado", en: "Crusader" },
-  doctor: { es: "Médico", en: "Doctor" },
-  investigator: { es: "Investigador", en: "Investigator" },
-  jailor: { es: "Carcelero", en: "Jailor" },
-  lookout: { es: "Vigía", en: "Lookout" },
-  mayor: { es: "Alcalde", en: "Mayor" },
-  medium: { es: "Médium", en: "Medium" },
-  psychic: { es: "Psíquico", en: "Psychic" },
-  retributionist: { es: "Retribuidor", en: "Retributionist" },
-  sheriff: { es: "Sheriff", en: "Sheriff" },
-  spy: { es: "Espía", en: "Spy" },
-  tavern_keeper: { es: "Tabernero", en: "Tavern Keeper" },
-  tracker: { es: "Rastreador", en: "Tracker" },
-  transporter: { es: "Transportista", en: "Transporter" },
-  trapper: { es: "Trampero", en: "Trapper" },
-  vampire_hunter: { es: "Cazavampiros", en: "Vampire Hunter" },
-  veteran: { es: "Veterano", en: "Veteran" },
-  vigilante: { es: "Vigilante", en: "Vigilante" },
+/** Nombres de los roles, en inglés como en Town of Salem. La interfaz sigue en español. */
+export const ROLE_NAMES: Record<string, string> = {
+  ambusher: "Ambusher",
+  blackmailer: "Blackmailer",
+  bootlegger: "Bootlegger",
+  consigliere: "Consigliere",
+  disguiser: "Disguiser",
+  forger: "Forger",
+  framer: "Framer",
+  godfather: "Godfather",
+  hypnotist: "Hypnotist",
+  janitor: "Janitor",
+  mafioso: "Mafioso",
+  bodyguard: "Bodyguard",
+  crusader: "Crusader",
+  doctor: "Doctor",
+  investigator: "Investigator",
+  jailor: "Jailor",
+  lookout: "Lookout",
+  mayor: "Mayor",
+  medium: "Medium",
+  psychic: "Psychic",
+  retributionist: "Retributionist",
+  sheriff: "Sheriff",
+  spy: "Spy",
+  tavern_keeper: "Tavern Keeper",
+  tracker: "Tracker",
+  transporter: "Transporter",
+  trapper: "Trapper",
+  vampire_hunter: "Vampire Hunter",
+  veteran: "Veteran",
+  vigilante: "Vigilante",
 };
 
 /** Nombre a mostrar de un rol; si no se conoce, la clave. */
-export const roleNameEs = (roleKey: string | null | undefined): string | null =>
-  roleKey ? ROLE_NAMES[roleKey]?.es ?? roleKey : null;
+export const roleName = (roleKey: string | null | undefined): string | null =>
+  roleKey ? ROLE_NAMES[roleKey] ?? roleKey : null;
 
-/** Traduce el nombre en inglés del catálogo (resultado de Investigador) al español. */
-export function roleNameFromEnglish(name: string): string {
-  return Object.values(ROLE_NAMES).find((r) => r.en === name)?.es ?? name;
-}
-
-/** Grupos de roles (alineamientos) como en la lista de roles de ToS. */
-export const ALIGNMENT_ES: Record<string, { faction: string; name: string }> = {
-  town_investigative: { faction: "Pueblo", name: "Investigación" },
-  town_protective: { faction: "Pueblo", name: "Protección" },
-  town_killing: { faction: "Pueblo", name: "Asesinato" },
-  town_support: { faction: "Pueblo", name: "Apoyo" },
-  mafia_killing: { faction: "Mafia", name: "Asesinato" },
-  mafia_support: { faction: "Mafia", name: "Apoyo" },
-  mafia_deception: { faction: "Mafia", name: "Engaño" },
+/** Grupos de roles (alineamientos) con el nombre de ToS: "Town (Support)", "Mafia (Deception)". */
+export const ALIGNMENT_NAMES: Record<string, { faction: string; name: string }> = {
+  town_investigative: { faction: "Town", name: "Investigative" },
+  town_protective: { faction: "Town", name: "Protective" },
+  town_killing: { faction: "Town", name: "Killing" },
+  town_support: { faction: "Town", name: "Support" },
+  mafia_killing: { faction: "Mafia", name: "Killing" },
+  mafia_support: { faction: "Mafia", name: "Support" },
+  mafia_deception: { faction: "Mafia", name: "Deception" },
 };
 
 /** Orden de los grupos en la lista: primero el pueblo, después la Mafia. */
-export const ALIGNMENT_ORDER = Object.keys(ALIGNMENT_ES);
+export const ALIGNMENT_ORDER = Object.keys(ALIGNMENT_NAMES);
 
-/** Cómo se escribe un alineamiento, como en ToS: "Pueblo (Apoyo)", "Mafia (Engaño)". Null si no se conoce. */
+/** Cómo se escribe un alineamiento, como en ToS. Null si no se conoce. */
 export function alignmentLabel(key: string | null | undefined): string | null {
-  const a = key ? ALIGNMENT_ES[key] : undefined;
+  const a = key ? ALIGNMENT_NAMES[key] : undefined;
   return a ? `${a.faction} (${a.name})` : null;
 }
 

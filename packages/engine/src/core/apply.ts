@@ -32,6 +32,9 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
         usesLeft: { ...e.payload.uses },
       }));
 
+    case "role.promoted":
+      return updatePlayer(s, e.payload.playerId, (p) => ({ ...p, roleKey: e.payload.roleKey, usesLeft: { ...e.payload.uses } }));
+
     case "phase.started": {
       const { phase, dayNumber } = e.payload;
       const base: GameState = { ...s, phase, dayNumber };
@@ -62,6 +65,9 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
     case "judgement.cast":
       return { ...s, verdicts: { ...s.verdicts, [e.payload.voterId]: e.payload.verdict } };
 
+    case "will.forged":
+      return { ...s, forgeries: { ...s.forgeries, [e.payload.playerId]: e.payload.role } };
+
     case "will.written": {
       const wills = { ...s.wills };
       if (e.payload.text) wills[e.payload.playerId] = e.payload.text;
@@ -90,6 +96,7 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
             ability: e.payload.ability,
             targetId: e.payload.targetId,
             secondTargetId: e.payload.secondTargetId,
+            choice: e.payload.choice,
           },
         },
       };
