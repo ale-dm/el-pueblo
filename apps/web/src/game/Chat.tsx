@@ -5,6 +5,7 @@ import { Button, Card, TextField } from "../ui/primitives.js";
 import { CHANNEL_LABEL } from "../lib/text.js";
 import { chatRights, chatSenderLabel, whisperTarget } from "../lib/chatRights.js";
 import { buildLog, logContext } from "../lib/log.js";
+import { copyBlocked } from "../lib/copyRights.js";
 
 export function Chat({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
   const { channels, notice } = chatRights(view);
@@ -21,11 +22,15 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
   const stream = [
     ...log
       .filter((e) => e.type === "chat.message" && e.payload.channel === active)
-      .map((e) => ({ seq: e.seq, key: `c${e.seq}`, node: (
-        <p key={`c${e.seq}`}>
-          <strong>{senderLabel(e.payload)}{e.payload.channel === "whisper" ? ` → ${nick(e.payload.recipientId)}` : ""}:</strong> {e.payload.text}
-        </p>
-      ) })),
+      .map((e) => {
+        // Wiki (Medium.md:197, 215): estos mensajes no se copian; se impide en la UI.
+        const locked = copyBlocked(view, { channel: String(e.payload.channel), senderId: String(e.payload.senderId) });
+        return { seq: e.seq, key: `c${e.seq}`, node: (
+          <p key={`c${e.seq}`} className={locked ? "select-none" : undefined} onCopy={locked ? (ev) => ev.preventDefault() : undefined} onCut={locked ? (ev) => ev.preventDefault() : undefined} onContextMenu={locked ? (ev) => ev.preventDefault() : undefined}>
+            <strong>{senderLabel(e.payload)}{e.payload.channel === "whisper" ? ` → ${nick(e.payload.recipientId)}` : ""}:</strong> {e.payload.text}
+          </p>
+        ) };
+      }),
     ...(active === "public"
       ? buildLog(log, logContext(view))
           .filter((i) => i.kind === "line" && i.tone !== "private")
