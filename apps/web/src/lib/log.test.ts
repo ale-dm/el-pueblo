@@ -815,3 +815,15 @@ describe("Medium muerto: el aviso de apertura sale al empezar la noche (wiki: Me
     expect(text).toEqual(["== Noche 2", "Cae la noche.", "¡Has abierto una comunicación con los vivos!"]);
   });
 });
+
+describe("Spy: 'Your target's target was attacked last night!' en el registro (wiki: Spy.md:251)", () => {
+  it("el espionaje lo muestra con el nombre del objetivo", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("investigation.result", { investigatorId: "a", targetId: "b", result: "target_target_attacked", check: "bug" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    expect(text).toContain("El objetivo de Bea fue atacado anoche.");
+  });
+});

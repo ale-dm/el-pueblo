@@ -919,6 +919,12 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       if (swaps.some(([a, b]) => a === target || b === target)) tags.push("transport");
       if (marks.some((m) => m.flag === "blackmailed" && m.targetId === target)) tags.push("blackmail");
       tags.push(...(spyTags.get(target) ?? []));
+      // Wiki (Spy.md:251, 213, 481): "Your target's target was attacked last night!" solo lo da un Doctor o un Crusader
+      // cuyo objetivo fue atacado esa noche ("unique to the Doctor and Crusader"). El Witch/Coven Leader queda fuera del MVP.
+      const protects = (p: Protection) => p.protectorId === target && (p.source === "doctor" || p.source === "crusader");
+      if ([...protections].some(([victimId, prots]) => prots.some(protects) && attacks.some((a) => a.victimId === victimId))) {
+        tags.push("target_target_attacked");
+      }
       // Wiki (Hypnotist.md:226; Spy.md:191): el Spy que espía a un objetivo ve el mensaje falso que le envió la Hypnotist.
       const planted = hypnoses.find((h) => h.targetId === target && isAlive(playerOf(s, target)));
       if (planted) {

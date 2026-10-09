@@ -219,6 +219,8 @@ export function bugText(result: string, target: string): string {
     killed_guarding: `${target} murió protegiendo a alguien.`,
     // Spy.md:275: "Your target shot themselves over the guilt of killing a town member!"
     killed_guilt: `${target} se disparó por la culpa de matar a un miembro del pueblo.`,
+    // Wiki (Spy.md:251, 481): "Your target's target was attacked last night!" (Doctor o Crusader cuyo objetivo fue atacado).
+    target_target_attacked: `El objetivo de ${target} fue atacado anoche.`,
     // Claves anteriores al lote 9, de partidas guardadas: se leen con su frase antigua.
     attack: `${target} fue atacado.`,
     protect: `Alguien le protegió del ataque.`,
