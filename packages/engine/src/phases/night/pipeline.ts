@@ -82,7 +82,8 @@ const remapEffect = (e: Effect, remap: (id: string) => string): Effect => {
       return e;
     case "protect":
       // El chaleco protege a quien lo lleva, esté donde esté: no se redirige con el transporte (wiki: Bodyguard.md:246).
-      if (e.source === "vest") return e;
+      // La autocuración tampoco: "they will continue to do so" (wiki: Transporter.md:234).
+      if (e.source === "vest" || e.self) return e;
       return { ...e, targetId: remap(e.targetId) };
     case "attack":
     case "mark":

@@ -16,7 +16,8 @@ export const handler: RoleHandler = {
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {
       case "heal": return targetId ? [{ kind: "protect", actorId: actor.id, targetId, power: 2, source: "doctor" }] : [];
-      case "selfHeal": return [{ kind: "protect", actorId: actor.id, targetId: actor.id, power: 2, source: "doctor" }];
+      // Wiki (Transporter.md:234): si el Transporter lo lleva a otra casa, la autocuración se queda en el Doctor.
+      case "selfHeal": return [{ kind: "protect", actorId: actor.id, targetId: actor.id, power: 2, source: "doctor", self: true }];
       default: return [];
     }
   },

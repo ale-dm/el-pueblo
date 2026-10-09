@@ -10,7 +10,8 @@ export type Effect =
   /** Intercambia los objetivos de dos jugadores (Transporter). */
   | { kind: "transport"; actorId: PlayerId; firstId: PlayerId; secondId: PlayerId }
   /** Protege al objetivo de ataques. power: 1 básico, 2 poderoso. */
-  | { kind: "protect"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; source: "doctor" | "bodyguard" | "crusader" | "vest" }
+  /** `self`: autocuración del Doctor; no se redirige con el transporte (wiki: Transporter.md:234). */
+  | { kind: "protect"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; source: "doctor" | "bodyguard" | "crusader" | "vest"; self?: boolean }
   /** Ataque directo al objetivo. */
   | { kind: "attack"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; cause: string; unstoppable?: boolean; reasons?: string[] }
   /** Ataca a los que visiten la casa `houseId` esta noche. `single`: a uno solo, al azar (Crusader, Ambusher).
