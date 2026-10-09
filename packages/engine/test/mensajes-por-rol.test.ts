@@ -175,7 +175,9 @@ describe("Doctor: el curado recibe el aviso (wiki: Doctor.md:225, 253)", () => {
     expect(notices(events).some(([, n]) => n === "target_attacked")).toBe(false);
   });
 
-  it("un ataque letal que el Doctor no evita no le avisa", () => {
+  it("si nadie ataca a su objetivo, el Doctor no recibe aviso (aunque otro jugador sea atacado)", () => {
+    // Wiki (Doctor.md:249): solo avisa si "your target was attacked". El objetivo (p4) no es atacado; p3 sí.
+    // Antes el nombre de este test decía "un ataque letal que el Doctor no evita", y no era eso (ver doctor-defensa.test.ts).
     const { events } = resolve(game(["godfather", "doctor", "investigator", "sheriff"]), [night("p1", "kill", "p3"), night("p2", "heal", "p4")]);
     expect(notices(events).some(([, n]) => n === "target_attacked")).toBe(false);
     expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).toEqual(["p3"]);

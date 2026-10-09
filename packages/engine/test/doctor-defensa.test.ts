@@ -49,3 +49,21 @@ describe("Doctor: la defensa de su objetivo llega a cualquier atacante (wiki: Do
     expect(notices(events).some(([, n]) => n === "target_defense")).toBe(false);
   });
 });
+
+describe("Doctor: aviso de atacado también en un ataque letal (wiki: Doctor.md:249)", () => {
+  it("el Doctor recibe 'Your target was attacked last night!' aunque el ataque mate a su objetivo", () => {
+    // p1 Vigilante culpable (mató a un Town la noche anterior): la culpa lo mata sin defensa posible.
+    // p2 Doctor cura a p1 (su objetivo). Con la culpa, el ataque es letal y el Doctor no lo evita.
+    const s = game(["vigilante", "doctor", "investigator"], { dayNumber: 2 });
+    s.players[0] = { ...s.players[0]!, flags: { guilty: true } };
+    const { events, state } = resolve(s, [night("p2", "heal", "p1")]);
+    expect(state.players[0]!.status).toBe("dead");
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toContainEqual(["p1", "guilt"]);
+    expect(notices(events)).toContainEqual(["p2", "target_attacked"]);
+  });
+
+  it("un Doctor cuyo objetivo no es atacado no recibe aviso", () => {
+    const { events } = resolve(game(["godfather", "doctor", "investigator"]), [night("p2", "heal", "p3")]);
+    expect(notices(events).some(([, n]) => n === "target_attacked")).toBe(false);
+  });
+});

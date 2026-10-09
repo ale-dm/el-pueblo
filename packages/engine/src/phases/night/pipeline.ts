@@ -734,10 +734,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   };
   for (let i = 0; i < attacks.length; i++) {
     const atk = attacks[i]!;
-    // Wiki (Crusader.md:216; Messages_ToS.md:1865): "Your target was attacked last night!" cuando alguien intenta atacar
-    // a su objetivo, lo logre o no. Va antes de las muertes: el intento cuenta aunque la víctima ya haya muerto.
+    // Wiki (Doctor.md:249; Crusader.md:216; Messages_ToS.md:1865): "Your target was attacked last night!" cuando alguien
+    // intenta atacar a su objetivo, lo logre o no, también si el ataque es letal ("attacked in any way, shape, or form").
+    // Va antes de las muertes: el intento cuenta aunque la víctima ya haya muerto.
     for (const p of protections.get(atk.victimId) ?? []) {
-      if (p.source === "crusader") noteTargetAttacked(p.protectorId);
+      if (p.source === "crusader" || p.source === "doctor") noteTargetAttacked(p.protectorId);
     }
     if (dead.has(atk.victimId)) {
       // Wiki (Messages_ToS.md:151, 154): un segundo asesino que también habría matado añade su causa; no cambia nada más
