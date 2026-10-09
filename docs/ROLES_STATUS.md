@@ -9,9 +9,9 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 
 | Rol | a | b | c | d | e | f | g | h | Pendiente principal |
 |---|---|---|---|---|---|---|---|---|---|
-| Bodyguard | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Chaleco antibalas (lote 4, E7: Bodyguard.md:240-250). Lote 6 (G8): contador del chaleco (Bodyguard.md:426) y avisos del duelo (:430, :434, :438), con test en `mensajes-por-rol.test.ts`. Lote 7 (H2, H3): el caso "transported into yourself" queda verificado con test (Bodyguard.md:248); causas de muerte de :446 y :450 hechas. Lote 8 (I3): forma plural "also killed" de :446 y :450 en el registro, PARTIAL: el motor emite una causa por víctima (ver Lote 8). Lote 10 (L3): contraataque curado o repelido sin modelar (Bodyguard.md:260; Spy.md:255, 257), pendiente (ver Lote 10). |
+| Bodyguard | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Chaleco antibalas (lote 4, E7: Bodyguard.md:240-250). Lote 6 (G8): contador del chaleco (Bodyguard.md:426) y avisos del duelo (:430, :434, :438), con test en `mensajes-por-rol.test.ts`. Lote 7 (H2, H3): el caso "transported into yourself" queda verificado con test (Bodyguard.md:248); causas de muerte de :446 y :450 hechas. Lote 8 (I3): forma plural "also killed" de :446 y :450 en el registro, PARTIAL: el motor emite una causa por víctima (ver Lote 8). Lote 10 (L3): SKIPPED. Lote 11 (N1): Doctor y Crusader impiden la muerte del Bodyguard o del atacante en el contraataque, y un Bodyguard curado cuenta un solo contraataque (Bodyguard.md:260, 304, 306; Doctor.md:217), hecho con test. Spy.md:255 hecho en el lote 11 (N5); Spy.md:257 SKIPPED (ver Lote 11). |
 | Crusader | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Crusader es solo Coven en la wiki (alcance MVP sin decidir) |
-| Doctor | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Aviso "Your target was attacked last night!": hecho (lote 4, E4, Doctor.md:223, 251); Doctor.md:249 dice "attacked in any way", no fija el caso letal: se sigue :223. Lote 6 (G6): Doctor.md:245 es una prohibición ("You cannot"): verificado, no se quita el encuadre |
+| Doctor | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Aviso "Your target was attacked last night!": hecho (lote 4, E4, Doctor.md:223, 251); Doctor.md:249 dice "attacked in any way", no fija el caso letal: se sigue :223. Lote 6 (G6): Doctor.md:245 es una prohibición ("You cannot"): verificado, no se quita el encuadre. Lote 11 (N3): el Doctor que cura a un protegido por el Bodyguard recibe "Your target was attacked last night!" (Doctor.md:259), hecho con test; Doctor.md:263 es errata no replicada. |
 | Investigator | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | ◐ | Texto de ayuda y narración (f, h) |
 | Jailor | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Lote 6 (G9): nota con varios motivos (Jailor.md:322, selección múltiple; Death_Note_ToS.md:76-92). Lote 6 (G8): avisos de la Mafia y del Coven encarcelados, del arrastre y de la primera noche (Jailor.md:550, 562, 566). Lote 7 (H4): el aviso "You were hauled off to jail!" sale al empezar la noche (Jailor.md:558, 560). Lote 7 (H3): causa de muerte de :602. Lote 8 (I3): forma plural de :602, PARTIAL (ver Lote 8). Lote 10 (L1): aviso de haber matado a un Town, al encarcelar (Jailor.md:294; Messages_ToS.md:1687-1689), hecho |
 | Lookout | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | texto en inglés de la wiki |
@@ -20,7 +20,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Psychic | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED |
 | Retributionist | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Zombi limitado a una habilidad de un objetivo. Lote 9 (K1): no resucita a Psychic, Trapper, Jailor, Veteran, Mayor, Medium, Transporter ni Retributionist (Retributionist.md:236); la excepción de Amnesiac queda fuera del MVP (SKIPPED). Lote 10 (L4): el selector de Alzar no ofrece a los excluidos (`apps/web/src/lib/resurrect.ts`), hecho |
 | Sheriff | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Investigador hecho; Framer: persistencia del encuadre hecha en el lote 5 (F1, f283494; Framer.md:344, versión 3.3.0) |
-| Spy | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Lote 9 (K3): mensajes de la tabla de Spy.md:221-309 para roles MVP, un mensaje por acción directa; SKIPPED: trampa sin mensaje en la tabla, contraataque del Bodyguard (Spy.md:255, 257), y los demás con cita en Lote 9. Lote 9 (K4): el mensaje falso de la Hypnotist (Hypnotist.md:226; Spy.md:191). Lote 10 (L3): SKIPPED, Spy.md:255 y :257 (ver Lote 10) |
+| Spy | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Lote 9 (K3): mensajes de la tabla de Spy.md:221-309 para roles MVP, un mensaje por acción directa; SKIPPED: trampa sin mensaje en la tabla, contraataque del Bodyguard (Spy.md:255, 257), y los demás con cita en Lote 9. Lote 9 (K4): el mensaje falso de la Hypnotist (Hypnotist.md:226; Spy.md:191). Lote 10 (L3): SKIPPED, Spy.md:255 y :257. Lote 11 (N5): Spy.md:255 hecho (`bodyguard_attack_healed`); :257 SKIPPED. Lote 11 (N4): Spy.md:277, :283 y :293-309 SKIPPED (ver Lote 11) |
 | Tavern Keeper | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Auditoría completa (lote 5, F6). Lote 6: TK.md:183 verificado (G4, abandonó la partida); avisos de bloqueo, inmune y encarcelado (G5, TK.md:347-357). Ningún pendiente del MVP |
 | Tracker | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Visitas de roles de dos objetivos (hecho en lote 2) |
 | Transporter | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente al Mafioso (Victory ToS, hecho en lote 5: F4/F5, Victory_ToS.md:33, 39, 1030); mensaje de "transportado" (lote 2) |
@@ -34,10 +34,10 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Disguiser | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ✓ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, hecho en lote 5: F4/F5, Victory_ToS.md:33, 39, 1030); Lookout y Spy (hecho en lote 2) |
 | Forger | ✓ | ◐ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, hecho en lote 5: F4/F5, Victory_ToS.md:33, 39, 1030); Lote 7 (H5): testamento falsificado, rol por defecto Ambusher y objetivo no Mafia (Forger.md:34, 156, 204, 218, 242); primer Forger que elige (:226); verificados :208, :210, :212, :220, :222. Lote 8 (I2): Retributionist sobre cadáver falsificado (Forger.md:232), hecho. Pendiente: Forger.md:234 (Necromancer, fuera de MVP). SKIPPED: Forger.md:240 (sin borrador y sin decir qué pasa con el testamento; ver Lote 8) |
 | Framer | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Auditoría completa (lote 5, F6). Verificado: Framer.md:42, 148, 196, 198, 200, 202, 254, 280, 344 (test en `night.test.ts`), promoción Framer.md:43, 150 (test). Lote 6: Framer.md:252 (los Framer no mueren a Trampas) verificado con test en `trapper-un-visitante.test.ts`. Pendiente: Framer.md:196 (prioridad sobre el Douse del Arsonist: fuera de MVP) |
-| Godfather | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Transporter (Victory ToS, hecho en lote 5: F4/F5, Victory_ToS.md:33, 39, 1030) y frente a Tavern Keeper o Jailor; Death Note, lote 7 (H1): texto de hasta 400 caracteres de quien mata, que sale al amanecer (Death_Note_ToS.md:5, 15; Godfather.md:235). Lote 8 (I4): editarla en la mañana del anuncio (Death_Note_ToS.md:17), en el motor. Lote 9: botón en la web (K5, Death_Note_ToS.md:13, 17); aviso de defensa al ordenar un ataque, hecho (K2, Godfather.md:233; Messages_ToS.md:383). Cárcel: aviso general (Messages_ToS.md:1727) y, desde el lote 10 (L2), el de :1731 a quien mata (Godfather.md:233), hecho |
+| Godfather | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Transporter (Victory ToS, hecho en lote 5: F4/F5, Victory_ToS.md:33, 39, 1030) y frente a Tavern Keeper o Jailor; Death Note, lote 7 (H1): texto de hasta 400 caracteres de quien mata, que sale al amanecer (Death_Note_ToS.md:5, 15; Godfather.md:235). Lote 8 (I4): editarla en la mañana del anuncio (Death_Note_ToS.md:17), en el motor. Lote 9: botón en la web (K5, Death_Note_ToS.md:13, 17); aviso de defensa al ordenar un ataque, hecho (K2, Godfather.md:233; Messages_ToS.md:383). Cárcel: aviso general (Messages_ToS.md:1727) y, desde el lote 10 (L2), el de :1731 a quien mata (Godfather.md:233), hecho. Lote 11 (N2): Mafioso bloqueado o encarcelado sin acción no ejecuta la orden (Godfather.md:225, 227), hecho con test (`mafia-ordenes-bloqueo.test.ts`) |
 | Hypnotist | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ✓ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, hecho en lote 5: F4/F5, Victory_ToS.md:33, 39, 1030); el Spy que espía al objetivo ve el mensaje falso que recibe (lote 9, K4, Hypnotist.md:226) |
 | Janitor | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ✓ | Testamento del limpiado: hecho (lote 4, E10, Janitor.md:222-228), solo para el Janitor |
-| Mafioso | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, hecho en lote 5: F4/F5, Victory_ToS.md:33, 39, 1030); Death Note, lote 7 (H1), lote 8 (I4) y botón en la web en el lote 9 (K5), ver Godfather (Mafioso.md:237, 279). Lote 10 (L2): aviso de cárcel de :1731 a quien mata, si ejecuta la orden (Mafioso.md:235), hecho |
+| Mafioso | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, hecho en lote 5: F4/F5, Victory_ToS.md:33, 39, 1030); Death Note, lote 7 (H1), lote 8 (I4) y botón en la web en el lote 9 (K5), ver Godfather (Mafioso.md:237, 279). Lote 10 (L2): aviso de cárcel de :1731 a quien mata, si ejecuta la orden (Mafioso.md:235), hecho. Lote 11 (N2): mismo caso que Godfather (Godfather.md:225, 227), hecho |
 
 Notas:
 - **Icono y arte (g, lote 3, D3):** los 29 roles del MVP muestran el icono de la wiki en la carta y la revelación, y la ilustración (skin) donde existe. Es arte de la wiki reutilizado con permiso del equipo, no arte propio: por eso g queda en ◐. Ambusher, Blackmailer y Framer no tienen skin en la wiki (SKIPPED: solo icono). Ver `apps/web/src/lib/roleImages.ts` y `data/README.md`.
@@ -213,7 +213,7 @@ La wiki marca estos pasajes de roles MVP como error (la frase "bug" está en la 
 - Trapper.md:372: "There is currently a bug where a Trapped target will sometimes receive the Bodyguard protect message INSTEAD of the Trapper protect message."
 - Trapper.md:237 también dice "This may be a bug." en el mismo bloque. No estaba en el plan del lote 10 y no se ha revisado.
 
-Otros pasajes de páginas MVP que la wiki marca como bug, no revisados en el lote 10 (no se afirma si se replican): Doctor.md:257, 263, 265, 267, 333; Jailor.md:288, 302, 304, 624; Retributionist.md:228, 232, 234; Transporter.md:236, 252; Lookout.md:228; Spy.md:211, 467; Psychic.md:324; Janitor.md:218.
+Otros pasajes de páginas MVP que la wiki marca como bug: revisados en el lote 11 (N3), ver "Lote 11" abajo. Ninguno se replica.
 
 ## Reglas MVP de la wiki que siguen sin implementar (tras el lote 10)
 
@@ -232,3 +232,56 @@ Lista de lo verificado en los lotes 6 a 10. No es una re-auditoría completa de 
 ### Verificación del lote 10
 
 `pnpm check` del último commit del lote: engine 40 archivos y 476 pruebas, web 10 y 98, server 22 y 99; typecheck en verde. Comprobaciones de comportamiento hechas con scripts en el directorio de trabajo de la sesión (fuera del repo): la Mafia con Mafioso bloqueado sin acción, y el contraataque del Bodyguard contra un Godfather curado.
+
+## Lote 11: contraataque del Bodyguard, órdenes de la Mafia y erratas (N1 a N5)
+
+Cada ítem tiene su commit en español (ver `git log`). Estado por ítem, con la cita de la wiki y el test:
+
+- **N1, DONE** (`49c1d4d`): Bodyguard.md:260 ("Only Doctors, Potion Masters, Crusaders, and Guardian Angels can prevent a Bodyguard from dying in a counterattack") y Bodyguard.md:304 ("A Doctor, Crusader, Potion Master or a Guardian Angel can prevent you or the attacker from dying."). Ambas frases cuentan: la defensa del Bodyguard salva al Bodyguard, y la del atacante lo salva a él, cada una por su lado (Doctor.md:217). La cárcel y la trampa no cuentan contra el contraataque (Bodyguard.md:230; Jailor.md:362). Un Bodyguard curado cuenta un solo contraataque (Bodyguard.md:306). Potion Master y Guardian Angel no son MVP. Código: `packages/engine/src/phases/night/pipeline.ts` (`countered`, `counterproofOf`). Pruebas: `packages/engine/test/bodyguard-contraataque.test.ts` (6; cinco fallan con el pipeline anterior). Supuesto: el curado recibe "healed" y el Doctor "target_attacked" una vez (Messages_ToS.md:1893; Doctor.md:223); la wiki no lo dice para el contraataque.
+- **N2, DONE** (`7fd3735`): discrepancia del motor. `blockedIds` solo miraba las acciones enviadas, así que un Mafioso bloqueado o encarcelado que no eligió seguía ejecutando la orden del Godfather. Godfather.md:225 y :227 ("and they are not Roleblocked that night") piden que el Godfather ataque. Corregido: cuentan los bloqueados aunque no actuaran (Tavern_Keeper.md:349) y los encarcelados (Jailor.md:252). Pruebas: `packages/engine/test/mafia-ordenes-bloqueo.test.ts` (11; dos fallan con el motor anterior). Desviación del plan: la cita Tavern_Keeper.md:349 es el texto de un mensaje; la regla es Godfather.md:225 y :227.
+- **N3, DONE** (`b00413a`): Doctor.md:259 ("You will still receive the message that your target was attacked even if they were protected by a Bodyguard") implementado: el Doctor que cura a un protegido por el Bodyguard recibe el aviso, y el protegido no recibe "healed". Pruebas: `bodyguard-contraataque.test.ts` (1 nueva). Las demás líneas de la lista del plan son erratas o de roles fuera de MVP: ver "Erratas" abajo.
+- **N4, SKIPPED** (sin commit): Spy.md:277 ("Someone role blocked your target, so your target attacked them!") es de Serial Killer y Werewolf en Full Moon (Spy.md:455; Werewolf_ToS.md:211), fuera de MVP. Spy.md:283 ("...so they stayed at home.") es de Werewolf (Spy.md:477), fuera de MVP. Spy.md:293-309 ("This confirms your target as X"): la página no escribe el disparador de cada fila. Los que sí tienen texto son de Serial Killer y Werewolf (Spy.md:453, 455, 477), fuera de MVP, y el mensaje del Doctor de Spy.md:481 vale también para el Crusader, así que no confirma solo Doctor. Arsonist, Serial Killer, Vampire, Vampire Hunter y Werewolf están fuera de MVP. Para Doctor, Jailor, Veteran y Vigilante no hay disparador escrito en Spy.md:293-309: SKIPPED.
+- **N5, DONE** (`965dcd2`): Spy.md:255 ("A Bodyguard attacked your target but someone nursed them back to health!"). El atacante curado por un Doctor tras el contraataque: el Spy recibe `bodyguard_attack_healed`. Los Crusader no emiten este mensaje: su texto no está en la tabla (Crusader.md:216). Texto en `apps/web/src/lib/log.ts`; pruebas en `packages/engine/test/spy-mensajes.test.ts` (2) y `apps/web/src/lib/log.test.ts` (ampliada). Spy.md:257 ("A Bodyguard attacked your target but someone fought them off!") SKIPPED: la página no dice qué defensa produce "fought them off".
+
+### Erratas de la wiki no replicadas (lote 11)
+
+Cada línea se describe a sí misma como error ("bug", "may be a bug", "inconsistent"), salvo donde se indica:
+
+- Doctor.md:257 ("This is a known bug."): no replicado. Un aviso de atacado por Doctor y noche (`noteHealer`).
+- Doctor.md:263 ("This may be a bug."): no replicado desde N3 (`b00413a`). Contradice Doctor.md:259.
+- Doctor.md:265, 267, 333: Vampire, Poisoner y Witch, fuera de MVP. No aplica en el motor.
+- Jailor.md:288 ("Due to a bug..."): no replicado. Un Jailor bloqueado no ejecuta: sus efectos se vacían (`pipeline.ts`, acciones bloqueadas). El caso del Pirate queda fuera de MVP.
+- Jailor.md:302 ("...which may be a bug."): la primera parte es errata (Werewolf en Full Moon con Guardian Angel, fuera de MVP). La segunda, "they will still kill you if you get Roleblocked or controlled away", es regla de Serial Killer y Werewolf (fuera de MVP): SKIPPED.
+- Jailor.md:304 ("This is most likely a bug as well."): el motor pone `noExecute` al ejecutar a un Town (`pipeline.ts`, bucle de ataques). En MVP la ejecución es imparable (`roles/town/jailor.ts`, `unstoppable: true`), así que el Town siempre muere y el caso del Guardian Angel no puede darse. No se cambia.
+- Jailor.md:624 ("There is currently a bug..."): no replicado. Los avisos de cárcel solo van a prisioneros vivos (`machine.ts`, `jailNotices`).
+- Retributionist.md:228 ("this is a bug"): no replicado. El Retributionist es inmune a bloqueo (`roles/town/retributionist.ts`, `roleblockImmune`). El Pirate queda fuera de MVP.
+- Retributionist.md:232, Transporter.md:236 ("ignore transportation"): no replicado como errata: el motor no tiene un "a veces" en el transporte del zombi. Punto abierto, no resuelto: la visita al primer objetivo del Retributionist no se redirige con el transporte (`pipeline.ts`, paso 3). Retributionist.md:206 no dice nada de transporte; la regla que sí aplica es Retributionist.md:220, que el zombi visita a su segundo objetivo y el transporte se aplica ahí.
+- Retributionist.md:234 ("inconsistent bug"): no replicado. Las visitas del zombi se registran (`pipeline.ts`, paso 3) y el Lookout, el Tracker y el Trapper las ven.
+- Transporter.md:252 ("a bug exists"): Hex Master, fuera de MVP.
+- Lookout.md:228 ("inconsistent bug"), Spy.md:211 ("inconsistent bug"): no replicados, misma razón que Retributionist.md:234.
+- Spy.md:467 ("most likely a bug"): Witch y Coven Leader, fuera de MVP.
+- Psychic.md:324 ("this may be a bug"): Coven Leader, fuera de MVP.
+- Janitor.md:218 ("may be a bug"): Necromancer, fuera de MVP.
+- Trapper.md:237 ("This may be a bug."): Necromancer, fuera de MVP; el zombi activa la trampa como cualquier visitante.
+- Crusader.md:224 ("(this is a bug)"): no replicado en el sentido de la errata; el motor no da ningún aviso al Crusader (ver "Reglas" abajo, Crusader.md:216).
+
+### Reglas MVP de la wiki que siguen sin implementar (tras el lote 11)
+
+Lista de lo verificado en los lotes 6 a 11. No es una re-auditoría completa de las páginas MVP.
+
+- Crusader.md:216 ("You will receive the message 'Your target was attacked last night!'") y Crusader.md:216 ("If your target is attacked, the message 'You were attacked but someone protected you!' will appear to them"). Sin implementar: el motor solo avisa al Doctor y al curado (`pipeline.ts`, `noteHealer` y `healed` con `source === "doctor"`). Fuera de la lista de N-items; se deja para un lote posterior.
+- Messages_ToS.md:1875 ("Displays to a player attacked but protected by a Crusader."): mismo aviso, sin implementar.
+- Spy.md:257: SKIPPED (N5).
+- Spy.md:277, :283, :293-309: SKIPPED (N4).
+- Spy.md:221-309: la trampa no tiene mensaje en la tabla del Spy (SKIPPED, K3).
+- Forger.md:240: si la noche acaba sin guardar, el rol es Forger (SKIPPED, I1).
+- Jailor.md:302, segunda frase: Serial Killer y Werewolf, fuera de MVP.
+- Parcial: Messages_ToS.md:151, 154 y las formas "también" de Vigilante.md:374, 378; Bodyguard.md:446, 450; Veteran.md:490; Jailor.md:602. Hecho con limitación (K6): falta la prueba del segundo ataque bloqueado.
+- Fuera del MVP: Forger.md:234 (Necromancer), Retributionist.md:236 (excepción de Amnesiac), Framer.md:196 (Arsonist), Mayor.md:211 (Vampiro convertido), Messages_ToS.md:1733 (frases de werewolf, Pirate y Pestilence), Potion Master y Guardian Angel en Bodyguard.md:260 y :304.
+- Punto abierto: Retributionist.md:206, 220 y el transporte de la visita al primer objetivo (ver Erratas).
+
+### Verificación del lote 11
+
+Línea base (fin del lote 10): engine 40 archivos y 476 pruebas, web 10 y 98, server 22 y 99. `pnpm check` en verde tras cada ítem con código (N1, N2, N3, N5). Resultado final, con el código del lote 11: typecheck de engine, web y server sin errores; engine 42 archivos y 496 pruebas, web 10 y 98, server 22 y 99.
+
+Comprobaciones con el pipeline anterior: los tests de N1 (5 de 6) y de N2 (2 de 11) fallan con el código de antes del ítem; esto se comprobó cambiando el archivo y restaurándolo. No se han hecho pruebas en el navegador ni con partidas reales.

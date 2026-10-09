@@ -786,7 +786,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       const victimDoctor = (protections.get(atk.victimId) ?? []).find((p) => p.source === "doctor");
       if (victimDoctor) noteHealer(victimDoctor.protectorId);
       // Wiki (Bodyguard.md:210): el contraataque es un ataque Powerful contra el atacante y contra el Bodyguard.
-      // Wiki (Bodyguard.md:304; Doctor.md:221): Doctor, Crusader, Potion Master o Guardian Angel pueden impedir que
+      // Wiki (Bodyguard.md:304; Doctor.md:217): Doctor, Crusader, Potion Master o Guardian Angel pueden impedir que
       // muera el atacante, o el Bodyguard, cada uno por su lado. Aquí solo Doctor y Crusader (MVP); la defensa de la
       // cárcel y la de la trampa no cuentan (Bodyguard.md:230; Jailor.md:362).
       const attackerCure = counterproofOf(atk.attackerId);

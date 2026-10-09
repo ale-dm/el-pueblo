@@ -6,7 +6,7 @@ import type { GameState } from "../src/types/state.js";
 // Wiki (docs/roles/Bodyguard.md:260): "Only Doctors, Potion Masters, Crusaders, and Guardian Angels can prevent a Bodyguard
 // from dying in a counterattack, since those roles directly give their target Powerful Defense from all attacks."
 // Wiki (docs/roles/Bodyguard.md:304): "A Doctor, Crusader, Potion Master or a Guardian Angel can prevent you or the attacker from dying."
-// Wiki (docs/roles/Doctor.md:221): "You can heal a Bodyguard who was supposed to die protecting someone. This makes it so only
+// Wiki (docs/roles/Doctor.md:217): "You can heal a Bodyguard who was supposed to die protecting someone. This makes it so only
 // the attacker dies. This also applies if the attacker is healed and the Bodyguard is not."
 // Wiki (docs/roles/Bodyguard.md:306): "Being healed while counterattacking does not allow you to counter more than one attack on your target."
 const night = (actorId: string, ability: string, targetId: string | null) =>
@@ -27,7 +27,7 @@ const notices = (events: ReturnType<typeof step>["events"]) =>
   ofType(events, "night.notice").map((e) => [e.audiencePlayerId, e.payload.notice]);
 
 describe("Bodyguard: contraataque y quién lo impide (wiki: Bodyguard.md:260, 304)", () => {
-  it("un Doctor que cura al Bodyguard impide que muera; el atacante sí muere (Bodyguard.md:260; Doctor.md:221)", () => {
+  it("un Doctor que cura al Bodyguard impide que muera; el atacante sí muere (Bodyguard.md:260; Doctor.md:217)", () => {
     // p1 Bodyguard protege a p4; p2 Doctor cura a p1; p3 Godfather ataca a p4.
     const s = game(["bodyguard", "doctor", "godfather", "investigator"]);
     const { state, events } = resolve(s, [night("p1", "protect", "p4"), night("p2", "heal", "p1"), night("p3", "kill", "p4")]);
@@ -37,7 +37,7 @@ describe("Bodyguard: contraataque y quién lo impide (wiki: Bodyguard.md:260, 30
     expect(notices(events)).toContainEqual(["p2", "target_attacked"]);
   });
 
-  it("un Doctor que cura al atacante lo salva; el Bodyguard muere protegiendo (Doctor.md:221; Bodyguard.md:304)", () => {
+  it("un Doctor que cura al atacante lo salva; el Bodyguard muere protegiendo (Doctor.md:217; Bodyguard.md:304)", () => {
     // p1 Bodyguard protege a p4; p2 Doctor cura a p3 (Godfather); p3 ataca a p4.
     const s = game(["bodyguard", "doctor", "godfather", "investigator"]);
     const { state, events } = resolve(s, [night("p1", "protect", "p4"), night("p2", "heal", "p3"), night("p3", "kill", "p4")]);
@@ -48,7 +48,7 @@ describe("Bodyguard: contraataque y quién lo impide (wiki: Bodyguard.md:260, 30
     expect(notices(events)).toContainEqual(["p2", "target_attacked"]);
   });
 
-  it("si cura a los dos, no muere nadie (Bodyguard.md:304; Doctor.md:221)", () => {
+  it("si cura a los dos, no muere nadie (Bodyguard.md:304; Doctor.md:217)", () => {
     // p1 Bodyguard protege a p5; p2 Doctor cura a p1; p3 Doctor cura a p4 (Godfather); p4 ataca a p5.
     const s = game(["bodyguard", "doctor", "doctor", "godfather", "investigator"]);
     const { state } = resolve(s, [night("p1", "protect", "p5"), night("p2", "heal", "p1"), night("p3", "heal", "p4"), night("p4", "kill", "p5")]);
