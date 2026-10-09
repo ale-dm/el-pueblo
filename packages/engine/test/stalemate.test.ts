@@ -25,6 +25,20 @@ describe("detector de empate: celdas de la tabla (docs/wiki/Victory_ToS.md:393-1
     expect(checkStalemate(duel({ ...withoutExecutions(roleB), id: "p1" }, { ...withoutExecutions(roleA), id: "p2" }))).toBe(winner);
   });
 
+  it("cualquier miembro de la Mafia gana 1 contra 1 frente a Tavern Keeper, aunque no esté en la tabla (Victory_ToS.md:39)", () => {
+    expect(checkStalemate(duel(player("p1", "framer"), player("p2", "tavern_keeper")))).toBe("mafia");
+    expect(checkStalemate(duel(player("p1", "tavern_keeper"), player("p2", "ambusher")))).toBe("mafia");
+  });
+
+  it("cualquier miembro de la Mafia gana frente a un Jailor sin ejecuciones (Victory_ToS.md:39, 1030)", () => {
+    const jailor = player("p2", "jailor", { usesLeft: { execute: 0 } });
+    expect(checkStalemate(duel(player("p1", "bootlegger"), jailor))).toBe("mafia");
+  });
+
+  it("un miembro de la Mafia frente a un Transporter no está en la tabla: la partida sigue (Victory_ToS.md:33)", () => {
+    expect(checkStalemate(duel(player("p1", "framer"), player("p2", "transporter")))).toBeNull();
+  });
+
   it("Godfather contra Veteran: celda vacía, la partida sigue (Victory_ToS.md:538-544)", () => {
     expect(checkStalemate(duel(player("p1", "godfather"), player("p2", "veteran")))).toBeNull();
   });

@@ -19,6 +19,8 @@ import type { GameState } from "../types/state.js";
  *   sobre uno de los dos impide el detector. Una trampa construida y no colocada no cuenta.
  * - "If the Jailor has executions left, the stalemate detector will not grant an automatic victory to their opponent,
  *   and the game will continue." (Victory_ToS.md:1030).
+ * - "A Mafia member will win in a 1 v 1 situation against a Tavern Keeper or the Jailor without executions." (Victory_ToS.md:39):
+ *   cualquier miembro de la Mafia MVP gana frente a Tavern Keeper o Jailor, aunque no esté en la tabla.
  */
 type StalemateWinner = Extract<FactionKey, "town" | "mafia">;
 
@@ -42,12 +44,17 @@ export function checkStalemate(s: Pick<GameState, "players" | "traps">): Faction
   // Wiki (Victory_ToS.md:395): una trampa puesta sobre cualquiera de los dos impide el detector.
   if (Object.values(s.traps).some((t) => t.targetId === a.id || t.targetId === b.id)) return null;
 
-  const entry = STALEMATE_WINNERS.find(([x, y]) => (x === a.roleKey && y === b.roleKey) || (x === b.roleKey && y === a.roleKey));
-  if (!entry) return null;
-
   // Wiki (Victory_ToS.md:1030): con ejecuciones, el Jailor impide la victoria automática de su rival.
   const jailorWithExecutions = [a, b].some((p) => p.roleKey === "jailor" && (p.usesLeft["execute"] ?? 0) > 0 && p.flags.noExecute !== true);
   if (jailorWithExecutions) return null;
 
-  return entry[2];
+  const entry = STALEMATE_WINNERS.find(([x, y]) => (x === a.roleKey && y === b.roleKey) || (x === b.roleKey && y === a.roleKey));
+  if (entry) return entry[2];
+
+  // Wiki (Victory_ToS.md:39): "A Mafia member will win in a 1 v 1 situation against a Tavern Keeper or the Jailor without executions."
+  // Vale para cualquier miembro de la Mafia, no solo para los de la tabla.
+  const mafiaMember = [a, b].find((p) => p.faction === "mafia");
+  const rival = mafiaMember === a ? b : a;
+  if (mafiaMember && (rival.roleKey === "tavern_keeper" || rival.roleKey === "jailor")) return "mafia";
+  return null;
 }

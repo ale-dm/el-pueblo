@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { catalog, game, ofType, step, timer } from "./helpers/game.js";
 import { checkVictory } from "../src/rules/victory.js";
+import { checkStalemate } from "../src/rules/stalemate.js";
 import { ROLE_HANDLERS } from "../src/roles/registry.js";
 import type { FactionKey } from "../src/types/factions.js";
 
@@ -82,9 +83,27 @@ describe("victoria y derrota por rol (checklist d)", () => {
     });
   });
 
-  // Condiciones 1 contra 1 de la wiki (docs/wiki/Victory_ToS.md, "Town Victory" y "Mafia Victory"): el motor
-  // solo cuenta jugadores vivos por facción; no hay regla 1 contra 1. SKIPPED con cita.
-  it.skip("Transporter: gana 1 contra 1 solo frente al Mafioso (docs/wiki/Victory_ToS.md, Town Victory)", () => {});
-  it.skip("Godfather: gana automáticamente frente a un Transporter (docs/wiki/Victory_ToS.md, Mafia Victory)", () => {});
-  it.skip("Mafia: un miembro gana 1 contra 1 frente a Tavern Keeper o Jailor sin ejecuciones (docs/wiki/Victory_ToS.md, Mafia Victory)", () => {});
+  // Condiciones 1 contra 1 de la wiki (docs/wiki/Victory_ToS.md). Solo las de roles MVP; el detector está en rules/stalemate.ts.
+  // Town Victory (:33): "A Transporter will win in a 1 v 1 situation only against the Mafioso."
+  it("Transporter: gana 1 contra 1 solo frente al Mafioso (docs/wiki/Victory_ToS.md:33)", () => {
+    expect(checkStalemate(game(["transporter", "mafioso"]))).toBe("town");
+    // Frente al Godfather no gana el Transporter (Victory_ToS.md:39).
+    expect(checkStalemate(game(["transporter", "godfather"]))).toBe("mafia");
+  });
+
+  // Mafia Victory (:39): "A Mafia member will win in a 1 v 1 situation against a Tavern Keeper or the Jailor without executions.
+  // Additionally, the Godfather wins automatically against a Transporter."
+  it("Godfather: gana automáticamente frente a un Transporter (docs/wiki/Victory_ToS.md:39)", () => {
+    expect(checkStalemate(game(["godfather", "transporter"]))).toBe("mafia");
+  });
+
+  it("Mafia: un miembro gana 1 contra 1 frente a Tavern Keeper o Jailor sin ejecuciones (docs/wiki/Victory_ToS.md:39, 1030)", () => {
+    expect(checkStalemate(game(["mafioso", "tavern_keeper"]))).toBe("mafia");
+    expect(checkStalemate(game(["godfather", "tavern_keeper"]))).toBe("mafia");
+    // Con ejecuciones, el Jailor no pierde ante la Mafia (Victory_ToS.md:1030); sin ejecuciones, sí.
+    const jailor = game(["mafioso", "jailor"]);
+    expect(checkStalemate(jailor)).toBeNull();
+    const withoutExecutions = { ...jailor, players: jailor.players.map((p) => (p.roleKey === "jailor" ? { ...p, usesLeft: { execute: 0 } } : p)) };
+    expect(checkStalemate(withoutExecutions)).toBe("mafia");
+  });
 });
