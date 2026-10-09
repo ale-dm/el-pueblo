@@ -566,3 +566,31 @@ describe("textos de causa de muerte (wiki: Bodyguard.md:446, 450; Vigilante.md:3
     expect(text).toContain(`Bea murió anoche: ${phrase}. Era Doctor.`);
   });
 });
+
+describe("varias causas de muerte, forma singular y plural (wiki: Messages_ToS.md:151, 154; Jailor.md:602)", () => {
+  it("una sola causa: forma singular, sin líneas extra (Jailor.md:602 \"[They were] executed by the Jailor.\")", () => {
+    seq = 0;
+    const text = texts(buildLog([ev("player.killed", { playerId: "b", cause: "execute", causes: ["execute"], roleKey: "doctor", will: null })], ctx())).filter((t) => !t.includes("testamento")).join(" | ");
+    expect(text).toBe("Bea murió anoche: ha sido ejecutado por el Jailor. Era Doctor.");
+  });
+
+  it("dos causas: la primera en la línea de la muerte y la segunda en forma \"also\" (Messages_ToS.md:151, 154)", () => {
+    seq = 0;
+    const text = texts(buildLog([ev("player.killed", { playerId: "b", cause: "mafia", causes: ["mafia", "shot"], roleKey: "doctor", will: null })], ctx())).filter((t) => !t.includes("testamento")).join(" | ");
+    expect(text).toBe("Bea murió anoche: ha sido asesinado por la Mafia. Era Doctor. | Bea también ha sido abatido por un Vigilante.");
+  });
+
+  it("tres causas: cada una tiene su línea (Messages_ToS.md:154)", () => {
+    seq = 0;
+    const text = texts(buildLog([ev("player.killed", { playerId: "b", cause: "shot", causes: ["shot", "guilt", "bodyguard"], roleKey: "vigilante", will: null })], ctx())).filter((t) => !t.includes("testamento")).join(" | ");
+    expect(text).toBe(
+      "Bea murió anoche: ha sido abatido por un Vigilante. Era Vigilante. | Bea también ha muerto por la culpa. | Bea también ha sido asesinado por un Guardaespaldas.",
+    );
+  });
+
+  it("sin el campo causes, el evento se lee como antes (una causa)", () => {
+    seq = 0;
+    const text = texts(buildLog([ev("player.killed", { playerId: "b", cause: "veteran", roleKey: "doctor", will: null })], ctx())).filter((t) => !t.includes("testamento")).join(" | ");
+    expect(text).toBe("Bea murió anoche: ha sido asesinado por un Veterano. Era Doctor.");
+  });
+});

@@ -303,9 +303,13 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "player.killed": {
         const role = roleName(p.roleKey);
         const cause = CAUSE_ES[p.cause] ?? "ha muerto";
-        // Wiki (Janitor.md:212): el rol de un limpiado aparece como "Cleaned".
+        // Varias causas (Messages_ToS.md:151, 154): la primera va en la línea de la muerte y cada una de las demás en su
+        // propia línea, en la forma "also" (Jailor.md:602: "[They were] also executed by the Jailor."). El motor aún emite
+        // una sola causa: ver ROLES_STATUS.md, I3.
+        const extraCauses: string[] = Array.isArray(p.causes) ? p.causes.slice(1) : [];
         const roleText = role ? `Era ${role}.` : p.cleaned ? "Su rol aparece como Limpiado." : "No pudimos determinar su rol.";
         line(e, `${ctx.nick(p.playerId)} murió anoche: ${cause}. ${roleText}`, "danger");
+        for (const extra of extraCauses) line(e, `${ctx.nick(p.playerId)} también ${CAUSE_ES[extra] ?? "ha muerto"}.`, "danger");
         // Wiki (Death_Note_ToS.md:92): la nota del Jailor dice a todos por qué ejecutó.
         if (Array.isArray(p.reasons)) line(e, `Nota del Jailor: ${p.reasons.map((r: string) => JAILOR_REASON_ES[r] ?? r).join(" ")}`, "info");
         // Wiki (Death_Note_ToS.md:5, 17): la nota de muerte del asesino se muestra al amanecer junto a la víctima.
