@@ -519,7 +519,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Wiki (Keyword_System.md:349): solo daña a los atacantes; si hay varios, a uno solo, elegido al azar, como el
     // visitante del Crusader y del Ambusher (Crusader.md:214, Ambusher.md:216). Trapper.md:223: ataque Powerful.
     // Wiki (Trapper.md:223): el Poderoso y la defensa solo si el objetivo es atacado esta noche; si no, el visitante atacante no sufre nada.
-    const attackers = attackedBeforeTraps.has(trap.targetId) ? visitors.filter((v) => attacksOnVisit(v.visitorId)) : [];
+    // Wiki (Ambusher.md:232): "Your visit is passive ... you will not be attacked by any ... Traps protecting the player you attack."
+    // El Ambusher activa la trampa sin morir (Trapper.md:256; Ambusher.md:290), así que nunca es el atacante herido.
+    const attackers = attackedBeforeTraps.has(trap.targetId)
+      ? visitors.filter((v) => attacksOnVisit(v.visitorId) && playerOf(s, v.visitorId)?.roleKey !== "ambusher")
+      : [];
     // Wiki (Trapper.md:221): el Trapper ve el rol real de cada visitante (sin nombres), también si está muerto (Trapper.md:362).
     const visitorIds = [...new Set(visitors.map((v) => v.visitorId))].sort((a, b) => (playerOf(s, a)?.seat ?? 0) - (playerOf(s, b)?.seat ?? 0));
     const roles = visitorIds.map((id) => playerOf(s, id)?.roleKey).filter((r): r is string => !!r);
