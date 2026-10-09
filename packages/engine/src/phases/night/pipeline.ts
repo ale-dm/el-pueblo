@@ -407,6 +407,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (attackers.length > 0) {
       const attacker = attackers.length === 1 ? attackers[0]! : rng.shuffle(attackers)[0]!;
       attacks.push({ attackerId: trapperId, victimId: attacker.visitorId, power: 2, cause: "trap" });
+      // Wiki (Trapper.md:348): "You triggered a trap!" al atacante que la trampa hiere, al final de la noche.
+      out.push({ type: "night.notice", payload: { playerId: attacker.visitorId, notice: "trap_triggered" } });
       // Wiki (Keyword_System.md:349, Trapper.md:223, 225): la defensa Poderosa vale una vez y solo contra ese atacante.
       const list = protections.get(trap.targetId) ?? [];
       list.push({ protectorId: trapperId, power: 2, source: "trap", onlyAgainst: attacker.visitorId });
@@ -643,7 +645,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     } else {
       prevented.add(atk.victimId);
       if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(strongest.protectorId) } });
-      if (strongest?.source === "trap") trapSpent.add(atk.victimId);
+      if (strongest?.source === "trap") {
+        trapSpent.add(atk.victimId);
+        // Wiki (Trapper.md:352): "You were attacked but a trap saved you!" al objetivo que la trampa protegió.
+        out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "trap_saved" } });
+      }
       // Wiki (Bodyguard.md:250, 444): "You were attacked but your bulletproof vest saved you!" al Bodyguard que usó el chaleco.
       if (strongest?.source === "vest" && !vestNotified.has(atk.victimId)) {
         vestNotified.add(atk.victimId);

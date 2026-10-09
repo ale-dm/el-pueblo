@@ -33,7 +33,8 @@ const CAUSE_ES: Record<string, string> = {
   execute: "ha sido ejecutado",
   ambush: "ha sido emboscado",
   veteran: "ha sido abatido por un Veterano",
-  trap: "ha caído en una trampa",
+  // Wiki (Trapper.md:364): "[They were] killed by a Trapper."
+  trap: "ha sido asesinado por un Trapper",
   crusade: "ha sido abatido por el Cruzado",
   bodyguard: "ha muerto en un duelo con un Guardaespaldas",
   guilt: "se ha quitado la vida por culpa",
@@ -44,7 +45,7 @@ const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const
 /** Eventos de la noche que se cuentan al amanecer, no en el momento. */
 const MORNING = new Set([
   "player.killed", "investigation.result", "attack.prevented", "night.action.blocked", "player.blackmailed",
-  "hypnosis.message", "role.promoted", "night.notice", "uses.left", "clean.revealed",
+  "hypnosis.message", "role.promoted", "night.notice", "uses.left", "clean.revealed", "trap.triggered",
 ]);
 
 /** Avisos privados de la noche (evento night.notice). */
@@ -75,6 +76,17 @@ const NOTICE_TEXT: Record<string, string> = {
   // Wiki (Psychic.md:318, 322): "The town is too small..." / "The town is too evil..."
   psychic_small: "El pueblo es demasiado pequeño para encontrar a un malvado con precisión.",
   psychic_evil: "El pueblo es demasiado malvado para encontrar a nadie bueno.",
+  // Wiki (Trapper.md:348): "You triggered a trap!"
+  trap_triggered: "¡Has activado una trampa!",
+  // Wiki (Trapper.md:352): "You were attacked but a trap saved you!"
+  trap_saved: "Te atacaron, pero una trampa te salvó.",
+};
+
+/** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */
+const TRAP_STATUS_TEXT: Record<string, string> = {
+  building: "Estás construyendo tu trampa.",
+  ready: "Tu trampa está lista para ser colocada.",
+  set: "Tu trampa está puesta.",
 };
 
 /**
@@ -315,6 +327,15 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         break;
       case "trap.placed":
         line(e, `Has colocado una trampa en ${ctx.nick(p.targetId)}.`, "private");
+        break;
+      case "trap.status":
+        line(e, TRAP_STATUS_TEXT[p.status] ?? "", "private");
+        break;
+      case "trap.triggered":
+        // Wiki (Trapper.md:362): "Your trap has been triggered by the (Role)." una vez por visitante, con su rol real.
+        for (const role of p.roles as string[]) line(e, `Tu trampa ha sido activada por el rol ${roleName(role) ?? role}.`, "private");
+        // Wiki (Trapper.md:356): "Your trap attacked someone!"
+        if (p.attacked) line(e, "¡Tu trampa ha atacado a alguien!", "private");
         break;
       case "hypnosis.message":
         line(e, HYPNOSIS_TEXT[p.message] ?? "Algo extraño te ocurrió anoche.", "private");

@@ -47,6 +47,7 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
     case "trap.removed":
     case "trap.built":
     case "trap.triggered":
+    case "trap.status":
       return priv(event.payload.trapperId);
     case "attack.prevented":
       return priv(event.payload.protectorId);

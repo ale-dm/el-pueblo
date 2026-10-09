@@ -22,7 +22,22 @@ function nightStart(s: GameState): EventInput[] {
   const notices = Object.entries(s.nightActions)
     .filter(([, a]) => a.ability === "seance" && a.targetId !== null && isAlive(playerOf(s, a.targetId)))
     .map(([, a]): EventInput => ({ type: "night.notice", payload: { playerId: a.targetId!, notice: "medium_talking" } }));
-  return [phaseStarted("night", s.dayNumber), ...notices];
+  return [phaseStarted("night", s.dayNumber), ...notices, ...trapStatus(s)];
+}
+
+/**
+ * Estado de cada Trapper vivo al empezar la noche (wiki: Trapper.md:346: "Displays at the beginning of the Night,
+ * indicating the current state of your Trap."). Sin trampa: se construye esta noche (Trapper.md:340). Construida y
+ * sin colocar: lista para colocar (Trapper.md:342). Puesta: "Your trap is set." (Trapper.md:344).
+ */
+function trapStatus(s: GameState): EventInput[] {
+  return s.players
+    .filter((p) => p.roleKey === "trapper" && isAlive(p))
+    .map((p): EventInput => {
+      const trap = s.traps[p.id];
+      const status = !trap ? "building" : trap.targetId === null ? "ready" : "set";
+      return { type: "trap.status", payload: { trapperId: p.id, status } };
+    });
 }
 
 /** Avance por tiempo: cada fase termina cuando vence su temporizador. Las transiciones están en docs/ENGINE.md. */

@@ -386,3 +386,54 @@ describe("avisos del Transporter", () => {
   });
 });
 
+
+describe("mensajes del Trapper (wiki: Trapper.md:340-366)", () => {
+  it("el estado de la trampa al empezar la noche: construyendo, lista o puesta", () => {
+    seq = 0;
+    const text = (status: string) => texts(buildLog([ev("trap.status", { trapperId: "a", status }, "private")], ctx())).join(" | ");
+    expect(text("building")).toBe("Estás construyendo tu trampa.");
+    expect(text("ready")).toBe("Tu trampa está lista para ser colocada.");
+    expect(text("set")).toBe("Tu trampa está puesta.");
+  });
+
+  it("la activación da el rol de cada visitante, al amanecer, y si la trampa atacó a alguien", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("trap.triggered", { trapperId: "a", roles: ["investigator", "godfather"], attacked: true }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    const from = text.indexOf("== Día 3");
+    expect(text.slice(from + 1)).toEqual([
+      "Tu trampa ha sido activada por el rol Investigator.",
+      "Tu trampa ha sido activada por el rol Godfather.",
+      "¡Tu trampa ha atacado a alguien!",
+    ]);
+  });
+
+  it("sin ataque, la activación no dice que atacó", () => {
+    seq = 0;
+    const text = texts(buildLog([ev("trap.triggered", { trapperId: "a", roles: ["lookout"], attacked: false }, "private")], ctx())).join(" | ");
+    expect(text).toContain("Tu trampa ha sido activada por el rol Lookout.");
+    expect(text).not.toMatch(/atacado/);
+  });
+
+  it("el atacante y el protegido tienen su aviso privado", () => {
+    seq = 0;
+    const items = texts(buildLog([
+      ev("night.notice", { playerId: "b", notice: "trap_triggered" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "trap_saved" }, "private"),
+    ], ctx({ meId: "b" })));
+    expect(items).toEqual(["¡Has activado una trampa!", "Te atacaron, pero una trampa te salvó."]);
+  });
+
+  it("morir por la trampa dice que fue asesinado por un Trapper (wiki: Trapper.md:364)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("player.killed", { playerId: "b", cause: "trap", roleKey: "godfather", will: null }),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Bea murió anoche: ha sido asesinado por un Trapper. Era Godfather.");
+  });
+});
