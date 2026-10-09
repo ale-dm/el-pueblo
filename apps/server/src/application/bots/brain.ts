@@ -123,6 +123,11 @@ function targetPlan(
     if (!mafia.length || !innocents.length) return null;
     return { targetId: pick(mafia, rng).id, secondTargetId: pick(innocents, rng).id };
   }
+  if (key === "ambush") {
+    // Un Ambusher no tiende emboscadas a la Mafia (wiki: Ambusher).
+    const town = alivePool.filter((p) => p.faction !== "mafia");
+    return town.length ? { targetId: pick(town, rng).id, secondTargetId: null } : null;
+  }
   if (target === "two") {
     if (alivePool.length < 2) return null;
     const [first, second] = rng.shuffle(alivePool);

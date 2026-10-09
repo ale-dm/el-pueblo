@@ -75,6 +75,10 @@ export function nightAction(
     if (playerOf(s, secondTargetId ?? "")?.faction === "mafia") return err("invalid_command", "El disfraz debe ser de alguien que no es de la Mafia");
   }
 
+  // Ambusher: no tiende emboscadas en la casa de un miembro de la Mafia (wiki: Ambusher, "Other Mafia roles cannot be attacked").
+  if (ability === "ambush" && playerOf(s, targetId ?? "")?.faction === "mafia") {
+    return err("invalid_command", "No puedes emboscar a un miembro de la Mafia");
+  }
   // Jailor: solo puede ejecutar a un jugador encarcelado, y no en la primera noche (wiki: Jailor).
   if (ability === "execute" && s.dayNumber === 1) {
     return err("invalid_command", "No puedes ejecutar en la primera noche");

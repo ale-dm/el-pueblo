@@ -152,6 +152,36 @@ describe("noche: protecciones y ataques", () => {
     ]);
   });
 
+  it("el Crusader ataca a UN visitante al azar, no a todos (wiki: Crusader)", () => {
+    for (let seed = 1; seed <= 10; seed++) {
+      const s = game(["crusader", "investigator", "sheriff", "lookout", "godfather"]);
+      let t = step(s, night("p1", "protect", "p2"), seed).state;
+      t = step(t, night("p3", "interrogate", "p2"), seed).state;
+      t = step(t, night("p4", "watch", "p2"), seed).state;
+      const { events } = step(t, timer(), seed);
+      const killed = ofType(events, "player.killed").filter((e) => e.payload.cause === "crusade").map((e) => e.payload.playerId);
+      expect(killed).toHaveLength(1);
+      expect(["p3", "p4"]).toContain(killed[0]);
+    }
+  });
+
+  it("el Ambusher ataca a UN visitante al azar y nunca a la Mafia (wiki: Ambusher)", () => {
+    for (let seed = 1; seed <= 10; seed++) {
+      // p2 (Godfather) y p3 (Sheriff) visitan a p4; el Ambusher solo puede alcanzar al Sheriff.
+      const s = game(["ambusher", "godfather", "sheriff", "investigator"]);
+      let t = step(s, night("p1", "ambush", "p4"), seed).state;
+      t = step(t, night("p2", "kill", "p4"), seed).state;
+      t = step(t, night("p3", "interrogate", "p4"), seed).state;
+      const { events } = step(t, timer(), seed);
+      expect(ofType(events, "player.killed").filter((e) => e.payload.cause === "ambush").map((e) => e.payload.playerId), `seed ${seed}`).toEqual(["p3"]);
+    }
+  });
+
+  it("el Ambusher no puede tender emboscadas a la casa de un miembro de la Mafia", () => {
+    const s = game(["ambusher", "godfather", "investigator"]);
+    expect(rejected(s, night("p1", "ambush", "p2"))).toMatch(/Mafia/);
+  });
+
   it("el Crusader protege a su objetivo; su ataque Basic no mata al Godfather que lo visita", () => {
     const s = game(["crusader", "godfather", "investigator"]);
     const { events } = resolve(s, [night("p1", "protect", "p3"), night("p2", "kill", "p3")]);

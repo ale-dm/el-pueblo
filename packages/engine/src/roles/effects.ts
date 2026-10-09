@@ -12,8 +12,9 @@ export type Effect =
   | { kind: "protect"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; source: "doctor" | "bodyguard" | "crusader" }
   /** Ataque directo al objetivo. */
   | { kind: "attack"; actorId: PlayerId; targetId: PlayerId; power: 1 | 2; cause: string; unstoppable?: boolean }
-  /** Ataca a todo el que visite la casa `houseId` esta noche. */
-  | { kind: "attackVisitors"; actorId: PlayerId; houseId: PlayerId; power: 1 | 2; cause: string }
+  /** Ataca a los que visiten la casa `houseId` esta noche. `single`: a uno solo, al azar (Crusader, Ambusher).
+   * `spareMafia`: nunca a un miembro de la Mafia (Ambusher). */
+  | { kind: "attackVisitors"; actorId: PlayerId; houseId: PlayerId; power: 1 | 2; cause: string; single?: boolean; spareMafia?: boolean }
   /** Ataque de la Mafia. Solo el Godfather da órdenes: si actúa, su objetivo prevalece. */
   | { kind: "mafiaKill"; actorId: PlayerId; targetId: PlayerId; role: "godfather" | "mafioso" }
   /** Investigación. El resultado se calcula con el estado de la noche. */

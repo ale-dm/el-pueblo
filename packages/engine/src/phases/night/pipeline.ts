@@ -231,11 +231,16 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         case "attack":
           attacks.push({ attackerId: e.actorId, victimId: e.targetId, power: e.power, cause: e.cause, unstoppable: e.unstoppable });
           break;
-        case "attackVisitors":
-          for (const v of visitsTo(e.houseId, e.actorId)) {
+        case "attackVisitors": {
+          // Wiki (Crusader.md:214, Ambusher.md:216): un visitante al azar; el Ambusher no ataca a la Mafia.
+          let pool = visitsTo(e.houseId, e.actorId);
+          if (e.spareMafia) pool = pool.filter((v) => playerOf(s, v.visitorId)?.faction !== "mafia");
+          const chosen = e.single ? (pool.length > 0 ? [rng.shuffle(pool)[0]!] : []) : pool;
+          for (const v of chosen) {
             attacks.push({ attackerId: e.actorId, victimId: v.visitorId, power: e.power, cause: e.cause });
           }
           break;
+        }
         case "mafiaKill":
           // Se resuelve abajo: el Godfather prevalece si actúa.
           break;

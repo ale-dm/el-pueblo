@@ -11,7 +11,7 @@ export const handler: RoleHandler = {
   dayAbilities: [],
   resolveNight: ({ ability, actor, targetId, secondTargetId }): Effect[] => {
     switch (ability) {
-      case "protect": return targetId ? [{ kind: "protect", actorId: actor.id, targetId, power: 2, source: "crusader" }, { kind: "attackVisitors", actorId: actor.id, houseId: targetId, power: 1, cause: "crusade" }] : [];
+      case "protect": return targetId ? [{ kind: "protect", actorId: actor.id, targetId, power: 2, source: "crusader" }, { kind: "attackVisitors", actorId: actor.id, houseId: targetId, power: 1, cause: "crusade", single: true }] : [];
       default: return [];
     }
   },
