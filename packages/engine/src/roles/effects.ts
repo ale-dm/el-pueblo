@@ -25,7 +25,7 @@ export type Effect =
   /** Disfraz: el Mafioso `targetId` aparece como `asId` ante el Investigador y el Sheriff esta noche. */
   | { kind: "disguise"; actorId: PlayerId; targetId: PlayerId; asId: PlayerId }
   /** Mensaje falso que recibe `targetId` al terminar la noche (Hypnotist). */
-  | { kind: "hypnosis"; actorId: PlayerId; targetId: PlayerId; message: "attacked" | "protected" | "roleblocked" }
+  | { kind: "hypnosis"; actorId: PlayerId; targetId: PlayerId; message: "attacked" | "protected" | "roleblocked" | "transported" | "fought_off" | "trap_triggered" | "trap_saved" | "trap_healed" }
   /** Falsifica la última voluntad de `targetId`: al morir, se muestra como el rol `role`. */
   | { kind: "forge"; actorId: PlayerId; targetId: PlayerId; role: string; will: string }
   /** Coloca una trampa en la casa del objetivo; se activa al día siguiente. */

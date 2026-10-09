@@ -25,6 +25,16 @@ export const HYPNOSIS_TEXT: Record<string, string> = {
   protected: "Te atacaron, pero alguien te protegió.",
   roleblocked: "Alguien ocupó tu noche: ¡fuiste bloqueado!",
   roleblock_immune: "Alguien intentó bloquearte, pero eres inmune.",
+  // Wiki (Hypnotist.md:232): "You were Transported to another location."
+  transported: "Fuiste transportado a otro lugar.",
+  // Wiki (Hypnotist.md:238): "You were attacked but someone fought off your attacker!"
+  fought_off: "Te atacaron, pero alguien rechazó a tu atacante.",
+  // Wiki (Hypnotist.md:254): "You triggered a trap!"
+  trap_triggered: "¡Has activado una trampa!",
+  // Wiki (Hypnotist.md:256): "You were attacked but a trap saved you!"
+  trap_saved: "Te atacaron, pero una trampa te salvó.",
+  // Wiki (Hypnotist.md:258): "A trap attacked you but someone nursed you back to health!"
+  trap_healed: "Una trampa te atacó, pero alguien te curó.",
 };
 
 /** Opciones de elección de una habilidad: mensajes en español, roles en inglés. */
@@ -32,6 +42,11 @@ export const CHOICE_LABEL: Record<string, string> = {
   attacked: "Ser atacado",
   protected: "Ser protegido",
   roleblocked: "Ser bloqueado",
+  transported: "Ser transportado",
+  fought_off: "Ser atacado y que alguien rechace al atacante",
+  trap_triggered: "Activar una trampa",
+  trap_saved: "Ser atacado y que una trampa te salve",
+  trap_healed: "Ser atacado por una trampa y que alguien te cure",
 };
 
 const ABILITY_LABEL: Record<string, string> = {

@@ -374,7 +374,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const builders: string[] = [];
   const usesSpent: Array<{ playerId: string; ability: string }> = [];
   const disguises = new Map<string, string>();
-  const hypnoses: Array<{ targetId: string; message: "attacked" | "protected" | "roleblocked" }> = [];
+  const hypnoses: Array<{ targetId: string; message: "attacked" | "protected" | "roleblocked" | "transported" | "fought_off" | "trap_triggered" | "trap_saved" | "trap_healed" }> = [];
   const forges: Array<{ forgerId: string; targetId: string; role: string; will: string }> = [];
 
   for (const act of active) {

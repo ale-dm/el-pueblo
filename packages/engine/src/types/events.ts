@@ -29,7 +29,8 @@ export type GameEventPayloads = {
   /** roleKey: el rol de quien actúa (el Mafioso sabe cuándo es una orden del Godfather, Mafioso.md:225). */
   "night.action.submitted": { actorId: PlayerId; ability: string; targetId: PlayerId | null; secondTargetId: PlayerId | null; choice: string | null; mafiaTeam: boolean; roleKey?: string | null; note?: string; forgedWill?: string };
   /** roleblock_immune: el mensaje de bloqueo para un inmune al bloqueo (wiki: Hypnotist.md:262, 408). */
-  "hypnosis.message": { playerId: PlayerId; message: "attacked" | "protected" | "roleblocked" | "roleblock_immune" };
+  /** message: el mensaje falso de la Hypnotist (wiki: Hypnotist.md:232-258). transported, fought_off y las de trampa son del MVP. */
+  "hypnosis.message": { playerId: PlayerId; message: "attacked" | "protected" | "roleblocked" | "roleblock_immune" | "transported" | "fought_off" | "trap_triggered" | "trap_saved" | "trap_healed" };
   /** Lo ve solo quien falsificó (forgerId). */
   "will.forged": { playerId: PlayerId; role: string; forgerId: PlayerId };
   "night.action.cancelled": { actorId: PlayerId; mafiaTeam: boolean };
