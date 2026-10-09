@@ -6,7 +6,7 @@ export type PlayerStatus = "alive" | "dead" | "disconnected";
 
 /** Marcas que aplican las acciones. "alert", "jailed" y "blackmailed" duran solo hasta el final de la noche o del día. */
 /** "guilty": el Vigilante mató a un Town y se quita la vida la noche siguiente (wiki: Vigilante). */
-export type PlayerFlag = "framed" | "cleaned" | "blackmailed" | "jailed" | "alert" | "mayorRevealed" | "noExecute" | "zombied" | "guilty";
+export type PlayerFlag = "framed" | "cleaned" | "blackmailed" | "blackmailSpoke" | "jailed" | "alert" | "mayorRevealed" | "noExecute" | "zombied" | "guilty";
 
 export interface PlayerState {
   id: PlayerId;

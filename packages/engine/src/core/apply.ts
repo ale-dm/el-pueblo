@@ -1,4 +1,5 @@
 import type { GameEventEnvelope } from "../types/events.js";
+import { BLACKMAIL_LINE } from "../rules/chat.js";
 import type { GameState, PlayerFlag, PlayerState } from "../types/state.js";
 
 /**
@@ -61,7 +62,23 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
       return { ...s, votes: { ...s.votes, [e.payload.voterId]: e.payload.targetId } };
 
     case "trial.started":
-      return { ...s, defendantId: e.payload.defendantId, trialsToday: s.trialsToday + 1, verdicts: {} };
+      // Cada juicio empieza sin "I am blackmailed." dicho (wiki: Blackmailer.md:213).
+      return {
+        ...s,
+        defendantId: e.payload.defendantId,
+        trialsToday: s.trialsToday + 1,
+        verdicts: {},
+        players: s.players.map((p) => (p.flags.blackmailSpoke ? { ...p, flags: without(p.flags, "blackmailSpoke") } : p)),
+      };
+
+    case "chat.message": {
+      // El acusado silenciado ya dijo su frase en este juicio.
+      const sender = s.players.find((p) => p.id === e.payload.senderId);
+      if (e.payload.channel === "public" && e.payload.text === BLACKMAIL_LINE && sender?.flags.blackmailed) {
+        return setFlag(s, e.payload.senderId, "blackmailSpoke", true);
+      }
+      return s;
+    }
 
     case "judgement.cast":
       return { ...s, verdicts: { ...s.verdicts, [e.payload.voterId]: e.payload.verdict } };

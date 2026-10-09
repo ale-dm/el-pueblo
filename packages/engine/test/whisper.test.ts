@@ -4,7 +4,7 @@ import { decide } from "../src/core/decide.js";
 import { projectFor } from "../src/projection/visibility.js";
 import type { GameEventEnvelope } from "../src/types/events.js";
 import type { GameState } from "../src/types/state.js";
-import { ctx, game } from "./helpers/game.js";
+import { applyAll, ctx, game, rejected } from "./helpers/game.js";
 
 const whisper = (s: GameState, from: string, to: string, text = "hola") =>
   decide(s, { type: "chat.send", senderId: from, channel: "whisper", text, recipientId: to }, ctx());
@@ -99,5 +99,46 @@ describe("Blackmailer oye los susurros (wiki: Blackmailer.md:207, 227, 375)", ()
     if (!r.ok) return;
     expect(r.value).toHaveLength(2);
     expect(projectFor(r.value, s.players[0]!)).toHaveLength(1);
+  });
+});
+
+describe("Acusado silenciado: \"I am blackmailed.\" (wiki: Blackmailer.md:213)", () => {
+  const defending = (over: Partial<GameState["players"][number]["flags"]> = {}) => {
+    const s = game(["blackmailer", "doctor", "godfather"], { phase: "defense", dayNumber: 2, defendantId: "p2" });
+    s.players[1] = { ...s.players[1]!, flags: { blackmailed: true, ...over } };
+    return s;
+  };
+  const say = (s: GameState, senderId: string, text = "Soy inocente") =>
+    decide(s, { type: "chat.send", senderId, channel: "public", text }, ctx());
+
+  it("el acusado silenciado en su defensa dice \"I am blackmailed.\", aunque escriba otra cosa", () => {
+    const r = say(defending(), "p2");
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.value[0]).toMatchObject({ type: "chat.message", payload: { channel: "public", text: "I am blackmailed." } });
+  });
+
+  it("solo una vez por juicio", () => {
+    const s = defending();
+    const first = say(s, "p2");
+    expect(first.ok).toBe(true);
+    if (!first.ok) return;
+    const after = applyAll(s, first.value);
+    expect(after.players[1]!.flags.blackmailSpoke).toBe(true);
+    expect(rejected(after, { type: "chat.send", senderId: "p2", channel: "public", text: "otra vez" })).toMatch(/silenciado/);
+  });
+
+  it("un nuevo juicio el mismo día le deja decirlo otra vez", () => {
+    const s = defending({ blackmailSpoke: true });
+    const next = applyAll(s, [{ seq: 1, type: "trial.started", payload: { defendantId: "p2" }, visibility: "public", audiencePlayerId: null }] as GameEventEnvelope[]);
+    expect(next.players[1]!.flags.blackmailSpoke).toBeUndefined();
+    expect(say(next, "p2").ok).toBe(true);
+  });
+
+  it("fuera de su defensa, o si no es el acusado, sigue sin poder hablar", () => {
+    expect(rejected({ ...defending(), phase: "discussion" }, { type: "chat.send", senderId: "p2", channel: "public", text: "hola" })).toMatch(/silenciado/);
+    expect(rejected(defending(), { type: "chat.send", senderId: "p2", channel: "public", text: "hola" })).toBeNull();
+    const notDefendant = { ...defending(), defendantId: "p3" };
+    expect(rejected(notDefendant, { type: "chat.send", senderId: "p2", channel: "public", text: "hola" })).toMatch(/silenciado/);
   });
 });

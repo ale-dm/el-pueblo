@@ -61,6 +61,20 @@ describe("Mayor revelado y susurros (wiki: Mayor.md:203)", () => {
   });
 });
 
+describe("acusado silenciado (wiki: Blackmailer.md:213)", () => {
+  it("en su defensa, el silenciado puede decir \"I am blackmailed.\" una vez", () => {
+    const r = chatRights(view({ phase: "defense", defendantId: "a", flags: { blackmailed: true } }));
+    expect(r.channels).toEqual(["public"]);
+    expect(r.notice).toContain("I am blackmailed.");
+    expect(chatRights(view({ phase: "defense", defendantId: "a", flags: { blackmailed: true, blackmailSpoke: true } }))).toEqual({ channels: [], notice: "Estás silenciado durante el día." });
+  });
+
+  it("no es el acusado, o no es su defensa: sigue silenciado", () => {
+    expect(chatRights(view({ phase: "defense", defendantId: "b", flags: { blackmailed: true } })).channels).toEqual([]);
+    expect(chatRights(view({ phase: "discussion", defendantId: "a", flags: { blackmailed: true } })).channels).toEqual([]);
+  });
+});
+
 describe("quién aparece como autor", () => {
   const nick = (id: string) => ({ a: "Ana", b: "Bea" })[id] ?? "?";
   it("los muertos ven al Médium vivo como Medium, y el Médium se ve a sí mismo con su nick", () => {

@@ -40,6 +40,10 @@ export function chatRights(view: MatchView): { channels: Channel[]; notice: stri
     ];
     return open.length ? { channels: open, notice: null } : { channels: [], notice: "De noche solo habla la Mafia." };
   }
+  // Wiki (Blackmailer.md:213): el acusado silenciado solo dice "I am blackmailed." en su defensa, una vez por juicio.
+  if (me.flags.blackmailed && view.phase === "defense" && view.defendantId === me.id && !me.flags.blackmailSpoke) {
+    return { channels: ["public"], notice: "Estás silenciado: en tu defensa solo puedes decir «I am blackmailed.»." };
+  }
   if (me.flags.blackmailed) return { channels: [], notice: "Estás silenciado durante el día." };
   if ((view.phase === "defense" || view.phase === "last_words") && view.defendantId !== me.id) {
     return { channels: [], notice: "Solo habla el acusado." };

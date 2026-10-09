@@ -38,6 +38,14 @@ export function seanceHearers(state: GameState, senderId: string): string[] {
 
 const DAY_PHASES = new Set(["day_1", "discussion", "voting", "defense", "judgement", "last_words"]);
 
+/** Wiki (Blackmailer.md:213): el mensaje del acusado silenciado pasa a ser este, una vez por juicio. */
+export const BLACKMAIL_LINE = "I am blackmailed.";
+
+/** El acusado silenciado puede decir BLACKMAIL_LINE en su defensa, si aún no lo ha dicho en este juicio. */
+export function canSpeakBlackmailed(state: GameState, sender: GameState["players"][number]): boolean {
+  return state.phase === "defense" && state.defendantId === sender.id && !sender.flags.blackmailSpoke;
+}
+
 /**
  * ¿Puede escribir este jugador en este canal ahora? Devuelve el motivo si no.
  * - dead: solo muertos, en cualquier fase.
@@ -89,7 +97,7 @@ export function chatDenied(state: GameState, senderId: string, channel: ChatChan
     return sender.faction === "mafia" ? null : "Solo la Mafia habla en este canal";
   }
   if (!DAY_PHASES.has(state.phase)) return "El chat público está cerrado en esta fase";
-  if (sender.flags.blackmailed) return "Estás silenciado durante el día";
+  if (sender.flags.blackmailed && !canSpeakBlackmailed(state, sender)) return "Estás silenciado durante el día";
   if ((state.phase === "defense" || state.phase === "last_words") && state.defendantId !== senderId) {
     return "Solo habla el acusado en esta fase";
   }

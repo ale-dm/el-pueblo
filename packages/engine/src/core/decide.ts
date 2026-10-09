@@ -5,7 +5,7 @@ import type { GameState } from "../types/state.js";
 import type { Rng } from "./rng.js";
 import { err, ok, type Result } from "./result.js";
 import { emit } from "../events/emit.js";
-import { chatDenied, seanceHearers, seanceRecipient, type ChatChannel } from "../rules/chat.js";
+import { BLACKMAIL_LINE, chatDenied, seanceHearers, seanceRecipient, type ChatChannel } from "../rules/chat.js";
 import { castVote, dayAction, judgementVote } from "../phases/day.js";
 import { cancelNightAction, nightAction, writeWill } from "../phases/night/collect.js";
 import { onTimerExpired } from "../phases/machine.js";
@@ -101,7 +101,9 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
           ...listeners.map((m) => ({ type: "chat.message" as const, payload: { channel: "dead" as const, senderId: command.senderId, text, audienceId: m.id } })),
         ]);
       }
-      return ok([{ type: "chat.message", payload: { channel: command.channel, senderId: command.senderId, text } }]);
+      // Wiki (Blackmailer.md:213): un silenciado en su defensa solo dice "I am blackmailed.".
+      const blackmailed = state.players.find((p) => p.id === command.senderId)?.flags.blackmailed === true;
+      return ok([{ type: "chat.message", payload: { channel: command.channel, senderId: command.senderId, text: blackmailed ? BLACKMAIL_LINE : text } }]);
     }
     case "timer.expired":
       return onTimerExpired(state, ctx.catalog, ctx.rng);
