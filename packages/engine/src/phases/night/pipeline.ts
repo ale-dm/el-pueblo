@@ -319,7 +319,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         break;
       }
       case "role":
-        result = roleName(shownId);
+        // Wiki (Consigliere): el disfraz no cambia el rol que ve; siempre es el real.
+        result = roleName(target);
         break;
       case "visitors":
         result = visitsTo(target, inv.actorId).map((v) => nick(v.visitorId)).join(", ") || "nadie";

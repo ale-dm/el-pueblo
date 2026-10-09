@@ -72,6 +72,16 @@ describe("Disguiser: el disfraz engaña al Sheriff", () => {
   });
 });
 
+describe("Consigliere: el disfraz no le engaña", () => {
+  it("un Mafioso disfrazado de Town sigue mostrando su rol real al Consigliere (wiki: Consigliere)", () => {
+    let s = game(["disguiser", "mafioso", "consigliere", "investigator"]);
+    s = step(s, { type: "night.action", actorId: "p1", ability: "disguise", targetId: "p2", secondTargetId: "p4" }).state;
+    s = step(s, { type: "night.action", actorId: "p3", ability: "check", targetId: "p2", secondTargetId: null }).state;
+    const { events } = step(s, timer());
+    expect(ofType(events, "investigation.result").map((e) => e.payload.result)).toEqual(["Mafioso"]);
+  });
+});
+
 describe("Forger: testamentos falsificados", () => {
   it("al morir, el rol que se muestra es el que eligió el Forger (dos usos)", () => {
     let s = game(["forger", "investigator", "godfather", "sheriff"]);
