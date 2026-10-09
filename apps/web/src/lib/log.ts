@@ -151,6 +151,8 @@ const NOTICE_TEXT: Record<string, string> = {
   target_defense: "La defensa de tu objetivo fue demasiado fuerte para matarle.",
   // Wiki (Jailor.md:590; Messages_ToS.md:1723): "You were executed by the Jailor!" (el prisionero ejecutado)
   jailor_executed: "¡Te ha ejecutado el Jailor!",
+  // Wiki (Godfather.md:487; Mafioso.md:475; Ambusher.md:364): "You were attacked by a member of the Mafia!"
+  mafia_attacked_you: "¡Te ha atacado un miembro de la Mafia!",
   // Wiki (Messages_ToS.md:1861; Crusader.md:330): "You were attacked by a Crusader!"
   crusader_attacked_you: "¡Te ha atacado un Cruzado!",
   // Wiki (Messages_ToS.md:1869; Crusader.md:336): "You attacked someone visiting your target!"

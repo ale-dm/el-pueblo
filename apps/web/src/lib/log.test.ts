@@ -761,3 +761,15 @@ describe("Jailor: el prisionero ejecutado lo sabe (wiki: Jailor.md:590; Messages
     expect(text).toContain("¡Te ha ejecutado el Jailor!");
   });
 });
+
+describe("Mafia: el superviviente de un ataque de la Mafia lo sabe (wiki: Godfather.md:487; Mafioso.md:475; Ambusher.md:364)", () => {
+  it("el superviviente lee '¡Te ha atacado un miembro de la Mafia!' al amanecer", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "mafia_attacked_you" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    expect(text).toContain("¡Te ha atacado un miembro de la Mafia!");
+  });
+});
