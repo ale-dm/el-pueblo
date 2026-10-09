@@ -12,9 +12,9 @@ export const handler: RoleHandler = {
   nightAbilities: [{ key: "forge", target: "player", usesLimit: 2, choices: "roles", defaultChoice: "ambusher", writesWill: true }],
   dayAbilities: [],
   // Pendiente (wiki: Forger.md:240): si la noche acaba sin guardar, el rol por defecto es Forger; el motor no tiene
-  // borrador, así que una falsificación sin guardar no existe. Retributionist y Necromancer usan el rol real aunque el
-  // cadáver se muestre falsificado, y la wiki pide restringirlos (Forger.md:232, 234): no implementado.
-  gaps: "Sin borrador: no hay default a Forger si no se guarda (Forger.md:240). Retributionist/Necromancer sobre cadáver falsificado (Forger.md:232, 234): no implementado.",
+  // borrador, así que una falsificación sin guardar no existe. El Retributionist sí se limita con el rol falsificado
+  // (Forger.md:232, retributionist.ts). Necromancer (no MVP) no se implementa (Forger.md:234).
+  gaps: "Sin borrador: no hay default a Forger si no se guarda (Forger.md:240). Necromancer sobre cadáver falsificado (Forger.md:234): fuera de MVP.",
   resolveNight: ({ ability, actor, targetId, choice, forgedWill }): Effect[] => {
     if (ability !== "forge" || !targetId || !choice) return [];
     return [{ kind: "forge", actorId: actor.id, targetId, role: choice, will: forgedWill ?? "" }];

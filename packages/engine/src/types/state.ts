@@ -18,6 +18,8 @@ export interface PlayerState {
   status: PlayerStatus;
   connected: boolean;
   deathReason: string | null;
+  /** Rol que muestra la muerte: el falsificado por el Forger si lo hay (wiki: Forger.md:232). Null si lo limpió el Janitor. */
+  shownRoleKey?: string | null;
   /** Usos restantes de las habilidades limitadas (clave de habilidad → usos). */
   usesLeft: Record<string, number>;
   flags: Partial<Record<PlayerFlag, true>>;

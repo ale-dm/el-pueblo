@@ -11,6 +11,16 @@ export const zombieAbilityOf = (zombie: PlayerState | undefined): NightAbility |
   return zombieHandler?.nightAbilities.find((a) => a.target === "player" && a.usesLimit === null);
 };
 
+/**
+ * Wiki (Forger.md:232): el Retributionist no usa un cadáver falsificado con un rol que no sea Town visitante, aunque el
+ * rol real sea un Town visitante. "Visitante" es el criterio de las visitas (pipeline de noche): una habilidad que
+ * apunta a un jugador o a dos. Mayor, Medium, Psychic y Veteran (alerta) no visitan.
+ */
+export const shownRoleAllowsRaise = (shownKey: string): boolean => {
+  const shown = ROLE_HANDLERS.get(shownKey);
+  return shown !== undefined && shown.faction === "town" && shown.nightAbilities.some((a) => a.target !== "none");
+};
+
 export const handler: RoleHandler = {
   key: "retributionist",
   name: "Retributionist",

@@ -102,7 +102,13 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
     case "player.hanged":
     case "player.killed": {
       const cause = e.type === "player.hanged" ? "hanged" : e.payload.cause;
-      return updatePlayer(s, e.payload.playerId, (p) => ({ ...p, status: "dead", deathReason: cause }));
+      // Wiki (Forger.md:232): el rol que muestra la muerte (el falsificado, si lo hay) limita al Retributionist.
+      return updatePlayer(s, e.payload.playerId, (p) => ({
+        ...p,
+        status: "dead",
+        deathReason: cause,
+        ...(e.type === "player.killed" ? { shownRoleKey: e.payload.roleKey } : {}),
+      }));
     }
 
     case "night.action.submitted":
