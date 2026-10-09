@@ -60,3 +60,15 @@ describe("Trapper: la trampa solo daña a atacantes (wiki: Keyword_System.md:349
     }
   });
 });
+
+describe("Trapper: el Framer no muere a la trampa (wiki: Framer.md:252)", () => {
+  it("un Framer que visita al objetivo activa la trampa, pero no es atacante: no muere", () => {
+    // Wiki (Framer.md:252): "Since Framers don't die to Traps". Framer tiene ataque "None" en el catálogo (Keyword_System.md:349).
+    const s = game(["trapper", "framer", "sheriff", "godfather"], { dayNumber: 2, traps: { p1: { targetId: "p3", readyDay: 2 } } });
+    const framed = step(s, { type: "night.action", actorId: "p2", ability: "frame", targetId: "p3", secondTargetId: null }).state;
+    const { events } = step(framed, timer());
+    expect(ofType(events, "trap.removed").map((e) => e.payload.reason)).toEqual(["triggered"]);
+    expect(ofType(events, "player.killed").filter((e) => e.payload.cause === "trap")).toEqual([]);
+    expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).not.toContain("p2");
+  });
+});
