@@ -22,7 +22,7 @@ Contrastado con las fichas de `docs/roles/` (wiki de Town of Salem 1). Estados:
 | Retributionist | Parcial | Resucita a un Town muerto con rol conocido (una vez por zombi) y usa su primera habilidad de objetivo único sobre el segundo objetivo. Inmune a bloqueos. Simplificación: el zombi no usa habilidades de varios usos (p. ej. Vigilante) |
 | Sheriff | OK | Sospechoso / inocente. Excepciones de inmunidad a la detección sin verificar |
 | Spy | Parcial | Ve las visitas de la Mafia, sin ver la casa concreta |
-| Tavern Keeper | OK | Inmune a bloqueos |
+| Tavern Keeper | Sin verificar | Bloquea (no es inmune). La wiki se contradice: Tavern_Keeper.md:181 (no se bloquea a roles con habilidad de día) frente a :277 (bloquear al Mayor la noche 1 en Ranked). Sin cambios de código. |
 | Tracker | OK | Ve a quién visita el objetivo |
 | Transporter | OK | Intercambia dos jugadores; no hay protecciones de Guardian Angel en el MVP |
 | Trapper | OK | Trampa que activa la noche siguiente |
