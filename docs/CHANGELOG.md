@@ -5,28 +5,37 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
-## Exploración con criterio: 300 partidas de 10 humanos (azar frente a criterio)
+## Prueba de móvil (M3): una partida completa en un perfil de iPhone
 
-- Qué cambia: la exploración puede decidir votos, juicios, acciones de noche y de día con criterio (`EXPLORE_POLICY=criterio`) en lugar de al azar. La política está en `apps/server/test/helpers/criterio.ts`. Solo ve lo que vería un jugador real: su rol y compañeros de Mafia, los votos y muertes públicos, sus propios resultados de investigación y a quién encarceló. Chat, testamentos, Death Note y los comandos ilegales siguen al azar en las dos políticas, para la cobertura.
-- Mismas 300 semillas (1001 a 1300) en las dos políticas. Ninguna de las dos usa los bots de la mezcla de 5 humanos y 5 bots.
-- Comandos: `EXPLORE_POLICY=criterio EXPLORE_GAMES=300 EXPLORE_MIX=humanos EXPLORE_REPORT=<ruta>`. `EXPLORE_TRACE=<ruta>` vuelca el registro de la primera partida para leerla.
+- Qué: `apps/web/e2e/mobile-smoke.mjs`. Diez navegadores con el perfil de iPhone 13 (390 px, táctil) contra el servidor en marcha. Recorre sala, primer día (con la revelación del rol), chat público, discusión, los diez votos, el juicio y la noche.
+- Resultado: 11 de 11 comprobaciones. Ninguna pantalla se sale por la derecha (0 px en las siete pantallas medidas) y no hay errores de consola.
+- Lo que no cubre: un teléfono real, la Mafia y las acciones de noche de los roles, y las notificaciones push. La partida llega a la noche, no se juega más allá.
+- Dos fallos del propio script corregidos en el camino: el diálogo "Tu rol" tapaba la pantalla hasta pulsar "Entrar al pueblo", y la espera del juicio empezaba tarde (la defensa y el juicio duran 20 s cada uno). Ninguno era de la aplicación.
 
-| | Azar | Criterio |
-|---|---|---|
-| Ganan Mafia | 184 (61 %) | 284 (95 %) |
-| Ganan Pueblo | 116 (39 %) | 16 (5 %) |
-| Días (media / mediana) | 16,0 / 15 | 6,4 / 6 |
-| Pasos (media) | 54 | 27 |
-| Muertes (media) | 8,3 | 7,7 |
-| Ejecuciones (media) | 0,7 | 2,3 |
-| Votos del Pueblo (media) | 33,8 | 7,0 |
-| Votos de la Mafia (media) | 17,0 | 10,2 |
-| Abstenciones (media) | 12,8 | 8,5 |
-| Anomalías | 0 | 0 |
+## Exploración con criterio: 300 partidas de 10 humanos (azar, criterio y comunicado)
 
-- Lectura: con criterio las partidas son más cortas y las ejecuciones son más frecuentes, pero la Mafia gana casi siempre. No es un efecto del motor sino de la política, y se ve en la traza: la Mafia vota de forma coordinada (ve a sus compañeros) y mata a quien votó contra un compañero (en la traza, el Sheriff, la noche 2). El Pueblo no tiene canal para compartir lo que sabe (el chat de la exploración es al azar), así que cada uno vota solo cuando ya hay votos y se abstiene sin indicios. Por eso vota la mitad que la Mafia.
-- Sin anomalías en ninguna de las 600 partidas (azar y criterio). Los rechazos que quedan con criterio son de la política, no del motor: `night.action:trap` (494): el Trapper vuelve a poner trampa con una ya puesta, porque la política no recuerda sus trampas. Los de `will.write` y `death.note.write` vienen de la escritura al azar (muertos que escriben, fuera de ventana).
-- Pendiente: un Pueblo que comparta información (chat con criterio) cambiaría el resultado; no está hecho.
+- Qué cambia: la exploración puede decidir votos, juicios, acciones de noche y de día con criterio (`EXPLORE_POLICY=criterio` o `comunicado`) en lugar de al azar. La política está en `apps/server/test/helpers/criterio.ts`. Solo ve lo que vería un jugador real: su rol y compañeros de Mafia, los votos y muertes públicos, sus propios resultados de investigación, a quién encarceló y el estado de su propia trampa. Chat, testamentos, Death Note y los comandos ilegales siguen al azar en todas las políticas, para la cobertura.
+- Política `comunicado`: además, los investigadores declaran su resultado en el chat público (`Resultado: P3 es sospechoso`) y el Pueblo cree esas declaraciones. La Mafia no declara nada.
+- Mismas 300 semillas (1001 a 1300) en las tres políticas. Sin bots en la mezcla.
+- Comandos: `EXPLORE_POLICY=<azar|criterio|comunicado> EXPLORE_GAMES=300 EXPLORE_MIX=humanos EXPLORE_REPORT=<ruta>`. `EXPLORE_TRACE=<ruta>` vuelca el registro de la primera partida para leerla.
+
+| | Azar | Criterio | Comunicado |
+|---|---|---|---|
+| Ganan Mafia | 184 (61 %) | 285 (95 %) | 280 (93 %) |
+| Ganan Pueblo | 116 | 15 | 20 |
+| Días (media / mediana) | 16,0 / 15 | 6,6 / 6 | 6,8 / 6 |
+| Pasos (media) | 54 | 28 | 28 |
+| Muertes (media) | 8,3 | 7,7 | 7,8 |
+| Ejecuciones (media) | 0,7 | 2,4 | 2,2 |
+| Votos del Pueblo (media) | 33,8 | 7,4 | 8,2 |
+| Votos de la Mafia (media) | 17,0 | 10,8 | 10,1 |
+| Abstenciones (media) | 12,8 | 8,8 | 9,0 |
+| Anomalías | 0 | 0 | 0 |
+
+- Lectura: con criterio las partidas son más cortas y hay más ejecuciones, pero la Mafia gana casi siempre. No es un efecto del motor sino de la política: la Mafia vota de forma coordinada (ve a sus compañeros) y mata a quien votó contra un compañero. El Pueblo se abstiene sin indicios y vota la mitad que la Mafia.
+- Hipótesis descartada: pensaba que la causa era que el Pueblo no comparte información. Con declaraciones públicas (`comunicado`) el resultado apenas cambia (280 frente a 285 victorias de la Mafia). La causa está en otro sitio: no lo he medido todavía. Lo siguiente sería medir a quién ejecuta el Pueblo (cuántas ejecuciones son de la Mafia).
+- Pendiente de la política, ya corregido: el Trapper ponía trampa con una ya puesta (494 rechazos con criterio). Ahora solo pone cuando su registro privado dice "ready"; con criterio ya no hay rechazos de trampa.
+- Sin anomalías del motor en ninguna de las 900 partidas. Los rechazos que quedan con criterio vienen de la escritura al azar (testamentos y Death Note de muertos, fuera de ventana).
 
 ## Exploración de partidas completas (servidor)
 

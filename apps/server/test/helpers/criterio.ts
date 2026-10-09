@@ -15,8 +15,11 @@ import type { MatchView } from "../../src/application/use-cases/getView.js";
  * - Investigadores: investigan a quien no han investigado, con más votos en contra.
  * - Protectores: protegen al más votado; sin votos, a sí mismos si pueden.
  * - Ejecutor (Vigilante, Jailor): solo dispara a quien tiene sospecha clara (3 o más puntos) o a su preso.
- * Lo que no tiene regla de criterio (elecciones de rol del Forger, opciones del Hypnotist, chat) se elige al azar,
- * con el mismo generador que el resto de la exploración.
+ * - Trampero: pone la trampa solo cuando su propio registro dice "ready" (trampa construida y sin poner).
+ * - Modo comunicado: los investigadores declaran su resultado en el chat público ("Resultado: P3 es sospechoso") y el
+ *   Pueblo lo cree. La Mafia no declara nada, así que las declaraciones son ciertas en esta exploración.
+ * Lo que no tiene regla de criterio (elecciones de rol del Forger, opciones del Hypnotist, el resto del chat) se elige
+ * al azar, con el mismo generador que el resto de la exploración.
  */
 
 /** Memoria propia del jugador que el registro público no guarda: a quién encarceló (Jailor). */
@@ -33,7 +36,10 @@ function best<T>(items: readonly T[], score: (item: T) => number, rng: Rng): T |
   return pick(items.filter((item) => score(item) === top), rng);
 }
 
-export function criterioCommands(view: MatchView, log: readonly GameEventEnvelope[], jailed: JailMemory, rng: Rng): Command[] {
+/** Forma de la declaración pública de un resultado de investigación. */
+const CLAIM = /^Resultado: (\S+) es (sospechoso|inocente)$/;
+
+export function criterioCommands(view: MatchView, log: readonly GameEventEnvelope[], jailed: JailMemory, rng: Rng, comunicado = false): Command[] {
   const me = view.me;
   const meId = me.id;
   const mafia = me.faction === "mafia";
@@ -48,11 +54,30 @@ export function criterioCommands(view: MatchView, log: readonly GameEventEnvelop
   const investigated = new Set<string>();
   // Votos públicos de todas las mañanas: quién votó contra quién.
   const castAgainst = new Map<string, string[]>();
+  // Resultados propios que aún no ha declarado, y el último estado de su trampa.
+  const results: Array<{ id: string; word: "sospechoso" | "inocente" }> = [];
+  const declared = new Set<string>();
+  const nickOf = new Map(view.players.map((p) => [p.nick, p.id]));
+  let trapStatus: string | null = null;
   for (const e of log) {
     if (e.type === "investigation.result" && e.payload.investigatorId === meId) {
       investigated.add(e.payload.targetId);
       if (e.payload.result === "suspicious") suspicious.add(e.payload.targetId);
       if (e.payload.result === "innocent") innocent.add(e.payload.targetId);
+      if (e.payload.result === "suspicious" || e.payload.result === "innocent") {
+        results.push({ id: e.payload.targetId, word: e.payload.result === "suspicious" ? "sospechoso" : "inocente" });
+      }
+    }
+    if (e.type === "trap.status" && e.payload.trapperId === meId) trapStatus = e.payload.status;
+    // Declaraciones públicas: el Pueblo cree las de los demás (modo comunicado); las propias cuentan como ya hechas.
+    if (e.type === "chat.message" && e.payload.channel === "public") {
+      const match = CLAIM.exec(e.payload.text);
+      const id = match ? nickOf.get(match[1]!) : undefined;
+      if (match && id !== undefined) {
+        if (e.payload.senderId === meId) declared.add(`${id}:${match[2]}`);
+        if (comunicado && match[2] === "sospechoso") suspicious.add(id);
+        if (comunicado && match[2] === "inocente") innocent.add(id);
+      }
     }
     if (e.type === "vote.cast" && e.payload.targetId !== null) {
       castAgainst.set(e.payload.voterId, [...(castAgainst.get(e.payload.voterId) ?? []), e.payload.targetId]);
@@ -65,6 +90,12 @@ export function criterioCommands(view: MatchView, log: readonly GameEventEnvelop
 
   const commands: Command[] = [];
   const push = (command: Command) => commands.push(command);
+
+  if (comunicado && me.status === "alive" && (view.phase === "discussion" || view.phase === "day_1")) {
+    const pending = results.find((r) => !declared.has(`${r.id}:${r.word}`));
+    const nick = pending && view.players.find((p) => p.id === pending.id)?.nick;
+    if (pending && nick) push({ type: "chat.send", senderId: meId, channel: "public", text: `Resultado: ${nick} es ${pending.word}` });
+  }
 
   if (view.phase === "voting" && me.status === "alive") {
     const candidates = enemies(others).filter((p) => !innocent.has(p.id));
@@ -130,6 +161,10 @@ export function criterioCommands(view: MatchView, log: readonly GameEventEnvelop
         }
         case "shoot":
           target = best(others.filter((p) => threat(p.id) >= 3), (p) => threat(p.id), rng)?.id ?? null;
+          break;
+        case "trap":
+          // Solo con la trampa construida y sin poner (wiki: Trapper.md:213, 217; collect.ts).
+          target = trapStatus === "ready" ? best(enemies(others).filter((p) => !innocent.has(p.id)), (p) => threat(p.id), rng)?.id ?? null : null;
           break;
         case "forge":
           // Falsifica el testamento de un muerto (wiki: Forger.md:34); el objetivo no puede ser un vivo.

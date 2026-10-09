@@ -16,7 +16,7 @@ import { criterioCommands } from "../helpers/criterio.js";
  */
 const GAMES = Number(process.env.EXPLORE_GAMES ?? 25);
 /** "azar": decisiones al azar (como siempre). "criterio": votos, juicios, noche y día según lo que el jugador puede ver (test/helpers/criterio.ts). */
-type Policy = "azar" | "criterio";
+type Policy = "azar" | "criterio" | "comunicado";
 const POLICY = (process.env.EXPLORE_POLICY ?? "azar") as Policy;
 /** "humanos": solo partidas de 10 humanos. "ambas": también 5 humanos y 5 bots. */
 const MIX = process.env.EXPLORE_MIX ?? "ambas";
@@ -103,7 +103,7 @@ async function playGame(game: number, report: Report, bots = 0, policy: Policy =
       const actorId = seat.playerId;
       const legal = me.status === "alive";
 
-      if (policy === "criterio") commands.push(...criterioCommands(view, log, jailed, rng));
+      if (policy !== "azar") commands.push(...criterioCommands(view, log, jailed, rng, policy === "comunicado"));
       if (policy === "azar" && legal && view.phase === "voting") {
         commands.push({ type: "vote", voterId: actorId, targetId: rng.next() < 0.2 ? null : others.length ? pick(rng, others) : null });
       }
