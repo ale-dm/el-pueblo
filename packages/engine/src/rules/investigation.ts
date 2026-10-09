@@ -1,6 +1,6 @@
 /**
  * Resultados del Investigador en Classic: el grupo de roles en el que cae el objetivo.
- * Fuente: docs/wiki/Investigator.md, sección "Classic Investigator Results" (la tabla "Coven Expansion" no es MVP).
+ * Fuente: docs/roles/Investigator.md, sección "Classic Investigator Results" (la tabla "Coven Expansion" no es MVP).
  * Cada fila es una lista de claves de rol del catálogo, en el mismo orden que la wiki.
  *
  * Roles del MVP que no aparecen en la tabla Classic (solo en la Coven): crusader, psychic, tracker, trapper.
