@@ -581,6 +581,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       prevented.add(atk.victimId);
       if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(strongest.protectorId) } });
       if (strongest?.source === "trap") trapSpent.add(atk.victimId);
+      // Wiki (Veteran.md:486): "Someone tried to attack you but your defense while on alert was too strong!" Lo recibe el
+      // Veteran, cuando solo la alerta (Basic Defense) detuvo al atacante.
+      if (alerted.has(atk.victimId) && !strongest) out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "alert_blocked" } });
       // Wiki (Doctor.md:225, 253): el atacado recibe el aviso de curación, uno por ataque aunque haya varios Doctors.
       if (strongest?.source === "doctor") {
         out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "healed" } });

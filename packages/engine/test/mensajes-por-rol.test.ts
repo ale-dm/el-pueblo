@@ -36,6 +36,24 @@ describe("Vigilante y Veteran: cuántos usos les quedan (wiki: Vigilante, Vetera
   });
 });
 
+describe("Veteran: la alerta bloquea a un atacante Basic (wiki: Veteran.md:486)", () => {
+  it("el Veteran en alerta que detiene a un atacante Basic recibe el aviso de la wiki", () => {
+    const { events } = resolve(game(["veteran", "godfather", "investigator"]), [night("p1", "alert", null), night("p2", "kill", "p1")]);
+    expect(notices(events)).toContainEqual(["p1", "alert_blocked"]);
+    expect(ofType(events, "player.killed").map((e) => e.payload.playerId)).toEqual(["p2"]);
+  });
+
+  it("si la curación detiene el ataque, el Veteran no recibe el aviso de alerta", () => {
+    const { events } = resolve(game(["veteran", "godfather", "doctor"]), [night("p1", "alert", null), night("p2", "kill", "p1"), night("p3", "heal", "p1")]);
+    expect(notices(events).some(([, n]) => n === "alert_blocked")).toBe(false);
+  });
+
+  it("el Veteran sin alerta no recibe el aviso", () => {
+    const { events } = resolve(game(["veteran", "godfather", "investigator"]), [night("p2", "kill", "p1")]);
+    expect(notices(events).some(([, n]) => n === "alert_blocked")).toBe(false);
+  });
+});
+
 describe("Vigilante: mensajes de la culpa (wiki: Vigilante.md:362, 370)", () => {
   it("el Vigilante que mata a un Town recibe 'guardar la pistola' esa noche", () => {
     const { events } = resolve(game(["vigilante", "godfather", "investigator", "sheriff"], { dayNumber: 2 }), [night("p1", "shoot", "p3")]);
