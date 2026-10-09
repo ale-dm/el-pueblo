@@ -749,3 +749,15 @@ describe("Contadores de usos de todas las habilidades (wiki: Doctor.md:399; Jail
     expect(t("clean", 1)).toBe("Te queda 1 limpieza.");
   });
 });
+
+describe("Jailor: el prisionero ejecutado lo sabe (wiki: Jailor.md:590; Messages_ToS.md:1723)", () => {
+  it("el aviso de ejecución sale al amanecer, en español", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "jailor_executed" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    expect(text).toContain("¡Te ha ejecutado el Jailor!");
+  });
+});
