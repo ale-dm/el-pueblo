@@ -274,3 +274,38 @@ describe("Retributionist: el zombi trabaja para el Retributionist (wiki: Retribu
     expect(ofType(events, "attack.prevented")[0]?.payload).toEqual({ victimId: "p4", protectorId: "p1" });
   });
 });
+
+describe("Varios Médiums (wiki: Medium.md:207, 211)", () => {
+  // p1 y p2 son Médiums muertos que hablan con p3 (vivo).
+  const twoMediums = (): GameState => {
+    let s = game(["medium", "medium", "godfather", "investigator"], { phase: "night", dayNumber: 2 });
+    s.players[0] = { ...s.players[0]!, status: "dead" };
+    s.players[1] = { ...s.players[1]!, status: "dead" };
+    s = step(s, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null }).state;
+    return step(s, { type: "night.action", actorId: "p2", ability: "seance", targetId: "p3", secondTargetId: null }).state;
+  };
+
+  it("un Médium habla y lo oyen el vivo y el otro Médium", () => {
+    const events = step(twoMediums(), { type: "chat.send", senderId: "p1", channel: "seance", text: "¿Quién me mató?" }).events;
+    expect(events.map((e) => e.audiencePlayerId).sort()).toEqual(["p1", "p2", "p3"]);
+  });
+
+  it("el vivo que recibe a varios Médiums les responde a todos", () => {
+    const events = step(twoMediums(), { type: "chat.send", senderId: "p3", channel: "seance", text: "Sí." }).events;
+    expect(events.map((e) => e.audiencePlayerId).sort()).toEqual(["p1", "p2", "p3"]);
+  });
+
+  it("el vivo recibe un aviso por cada Médium que le habla", () => {
+    const { events } = step(twoMediums(), timer());
+    const notices = ofType(events, "night.notice").filter((e) => e.payload.notice === "medium_talking");
+    expect(notices.map((e) => e.payload.playerId)).toEqual(["p3", "p3"]);
+  });
+
+  it("con un solo Médium no cambia nada: dos copias, para él y para el vivo", () => {
+    const s = game(["medium", "godfather", "investigator"], { phase: "night", dayNumber: 2 });
+    s.players[0] = { ...s.players[0]!, status: "dead" };
+    const open = step(s, { type: "night.action", actorId: "p1", ability: "seance", targetId: "p3", secondTargetId: null }).state;
+    const events = step(open, { type: "chat.send", senderId: "p1", channel: "seance", text: "hola" }).events;
+    expect(events.map((e) => e.audiencePlayerId).sort()).toEqual(["p1", "p3"]);
+  });
+});

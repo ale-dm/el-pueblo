@@ -20,6 +20,22 @@ export function seanceRecipient(state: GameState, senderId: string): string | nu
   return medium ?? null;
 }
 
+/**
+ * Quién oye un mensaje de sesión de Médium: el vivo y todos los Médiums que le hablan esta noche, porque
+ * "If multiple dead Mediums Seance the same player, the Mediums will hear each other." (wiki: Medium.md:207).
+ * Vacío si no hay sesión abierta.
+ */
+export function seanceHearers(state: GameState, senderId: string): string[] {
+  const recipient = seanceRecipient(state, senderId);
+  if (!recipient) return [];
+  const target = state.nightActions[senderId]?.ability === "seance" ? recipient : senderId;
+  const mediums = Object.keys(state.nightActions).filter((id) => {
+    const action = state.nightActions[id]!;
+    return action.ability === "seance" && action.targetId === target;
+  });
+  return [...new Set([target, ...mediums])];
+}
+
 const DAY_PHASES = new Set(["day_1", "discussion", "voting", "defense", "judgement", "last_words"]);
 
 /**

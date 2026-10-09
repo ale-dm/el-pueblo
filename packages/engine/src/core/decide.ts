@@ -5,7 +5,7 @@ import type { GameState } from "../types/state.js";
 import type { Rng } from "./rng.js";
 import { err, ok, type Result } from "./result.js";
 import { emit } from "../events/emit.js";
-import { chatDenied, seanceRecipient, type ChatChannel } from "../rules/chat.js";
+import { chatDenied, seanceHearers, seanceRecipient, type ChatChannel } from "../rules/chat.js";
 import { castVote, dayAction, judgementVote } from "../phases/day.js";
 import { cancelNightAction, nightAction, writeWill } from "../phases/night/collect.js";
 import { onTimerExpired } from "../phases/machine.js";
@@ -57,13 +57,12 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
       const denied = chatDenied(state, command.senderId, command.channel as ChatChannel, command.recipientId);
       if (denied) return err("invalid_command", denied);
       if (command.channel === "seance") {
-        // Médium: el destinatario sale del estado (el vivo con quien habla esta noche).
+        // Médium: el destinatario sale del estado (el vivo con quien habla esta noche). Lo oyen el vivo y
+        // todos los Médiums que le hablan (wiki: Medium.md:207); una copia para cada uno.
         const recipientId = seanceRecipient(state, command.senderId);
-        if (!recipientId) return err("invalid_command", "No tienes ninguna sesión abierta esta noche");
-        return ok([
-          { type: "chat.message", payload: { channel: "seance", senderId: command.senderId, text, recipientId, audienceId: recipientId } },
-          { type: "chat.message", payload: { channel: "seance", senderId: command.senderId, text, recipientId, audienceId: command.senderId } },
-        ]);
+        const hearers = seanceHearers(state, command.senderId);
+        if (!recipientId || hearers.length === 0) return err("invalid_command", "No tienes ninguna sesión abierta esta noche");
+        return ok(hearers.map((audienceId) => ({ type: "chat.message", payload: { channel: "seance", senderId: command.senderId, text, recipientId, audienceId } })));
       }
       if (command.channel === "jail") {
         // El destinatario sale del estado: el Jailor habla con su prisionero y al revés.

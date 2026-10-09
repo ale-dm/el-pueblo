@@ -16,7 +16,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Jailor | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | Death Note (SKIPPED: la wiki contradictoria, ver lote 3 D4); aviso al equipo de Mafia encarcelada (pendiente; el aviso al prisionero está hecho) |
 | Lookout | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | texto en inglés de la wiki |
 | Mayor | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Susurros con Mayor revelado: hecho (lote 4, E1, Mayor.md:203). Vampiro convertido que recupera susurros (Mayor.md:211): sin Vampiros en el MVP |
-| Medium | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Varios Mediums que se oyen entre sí (Medium.md:207, 277: pendiente); la sesión se elige de Día (Medium.md:203), el motor la tiene de noche |
+| Medium | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Varios Mediums que se oyen entre sí y aviso por cada uno: hecho (lote 4, E2, Medium.md:207, 211); la sesión se elige de Día (Medium.md:203), el motor la tiene de noche |
 | Psychic | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED |
 | Retributionist | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Zombi limitado a una habilidad de un objetivo; exclusiones de roles |
 | Sheriff | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Investigador hecho; Framer: persistencia del encuadre (SKIPPED, contradicción wiki) |
@@ -52,5 +52,5 @@ Notas:
   - *Vigilante (resuelto):* la ficha (Especial, Vigilante.md:44 y :98) y el texto completo (:190) dicen "matar a un Town"; el "shoot" de las líneas 39 y 144 es el resumen. Se queda como está (muerte).
   - *Framer (decisión pendiente):* Framer.md:344 (versión 3.3.0) dice que el encuadre dura hasta que un rol investigador apunta al objetivo; Sheriff.md:275 es consejo antiguo. Implementar la versión 3.3.0 requiere decidir qué roles cuentan como "investigativos".
   - *Tavern Keeper (decisión pendiente):* Tavern_Keeper.md:181 dice que no se pueden bloquear roles con habilidad de día; :277 aconseja bloquear al Mayor la noche 1 en Ranked. La regla es 181; el consejo de :277 contradice la regla.
-  - *Medium (pendiente, no contradicción):* Medium.md:207 y :277 dicen que varios Mediums se oyen entre sí; el motor solo toma al primero. La fase de la sesión (:203) también difiere.
+  - *Medium (lote 4, E2):* Medium.md:207 dice que varios Mediums se oyen entre sí; hecho. Medium.md:277 es consejo de estrategia, no regla. La fase de la sesión (:203) sigue pendiente (lote 4, E3).
   - *Trapper (decisión tomada):* elige al visitante al azar, porque la wiki no dice cómo elegir.
