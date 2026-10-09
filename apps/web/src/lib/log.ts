@@ -100,6 +100,10 @@ const NOTICE_TEXT: Record<string, string> = {
   vigilante_wait_day: "Decides esperar un día antes de usar tu pistola.",
   // Wiki (Vigilante.md:366): "You were shot by a Vigilante!"
   vigilante_shot_you: "¡Te ha disparado un Vigilante!",
+  // Wiki (Jailor.md:562): "You dragged your target off to jail!"
+  jailor_dragged: "Has arrastrado a tu objetivo a la cárcel.",
+  // Wiki (Jailor.md:550): "You must wait a day before executing."
+  jailor_wait_day: "Debes esperar un día antes de ejecutar.",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */
@@ -318,11 +322,14 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
         line(e, p.cause === "jail" ? "Tu acción fue bloqueada esta noche." : "Alguien ocupó tu noche. ¡Has sido bloqueado!", "private");
         break;
       case "player.jailed":
-        line(e, "Has sido encarcelado.", "private");
+        // Wiki (Jailor.md:558): "You were hauled off to jail!" (la wiki lo muestra al empezar la noche; aquí, al encarcelar)
+        line(e, "Fuiste arrastrado a la cárcel.", "private");
         break;
       case "night.notice":
+        // Wiki (Jailor.md:566): "(Player) was hauled off to jail"
+        if (p.notice === "team_jailed") line(e, `${ctx.nick(p.subjectId)} fue arrastrado a la cárcel.`, "private");
         // Wiki (Jailor.md:252): el visitante sabe que su objetivo estaba encarcelado; el prisionero, de los atacantes.
-        line(e, NOTICE_TEXT[p.notice] ?? "Algo ocurrió anoche.", "private");
+        else line(e, NOTICE_TEXT[p.notice] ?? "Algo ocurrió anoche.", "private");
         break;
       case "uses.left": {
         // Wiki (Vigilante, Veteran): "You have (#) bullet(s) left" / "You have (#) alert(s) left."

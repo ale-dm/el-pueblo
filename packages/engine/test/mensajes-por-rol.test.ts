@@ -289,3 +289,23 @@ describe("Vigilante: avisos de primera noche y de disparo (wiki: Vigilante.md:35
     expect(sent(events)).toContainEqual(["p2", "vigilante_shot_you"]);
   });
 });
+
+describe("Jailor: avisos de encarcelado (wiki: Jailor.md:550, 562, 566)", () => {
+  const sent = (events: ReturnType<typeof step>["events"]) =>
+    ofType(events, "night.notice").map((e) => [e.payload.playerId, e.payload.notice, e.payload.subjectId ?? null]);
+
+  it("al empezar la noche, la Mafia y el Coven vivos ven \"(Player) was hauled off to jail\"; el Jailor, \"You dragged your target off to jail!\"", () => {
+    // p1 Jailor encarceló a p3 (Town). p2 Godfather (Mafia) lo ve; p4 Investigator (Town) no.
+    const s = game(["jailor", "godfather", "investigator"], { phase: "voting", dayNumber: 2, jailedBy: { p3: "p1" } });
+    const { events } = step(s, timer());
+    const n = sent(events);
+    expect(n).toContainEqual(["p2", "team_jailed", "p3"]);
+    expect(n).toContainEqual(["p1", "jailor_dragged", "p3"]);
+    expect(n.filter(([who, notice]) => notice === "team_jailed" && who === "p3")).toEqual([]);
+  });
+
+  it("en la primera noche, el Jailor recibe \"You must wait a day before executing.\" (Jailor.md:550, 552)", () => {
+    const { events } = resolve(game(["jailor", "godfather"]), []);
+    expect(sent(events)).toContainEqual(["p1", "jailor_wait_day", null]);
+  });
+});

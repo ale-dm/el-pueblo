@@ -22,7 +22,26 @@ function nightStart(s: GameState): EventInput[] {
   const notices = Object.entries(s.nightActions)
     .filter(([, a]) => a.ability === "seance" && a.targetId !== null && isAlive(playerOf(s, a.targetId)))
     .map(([, a]): EventInput => ({ type: "night.notice", payload: { playerId: a.targetId!, notice: "medium_talking" } }));
-  return [phaseStarted("night", s.dayNumber), ...notices, ...trapStatus(s)];
+  return [phaseStarted("night", s.dayNumber), ...notices, ...trapStatus(s), ...jailNotices(s)];
+}
+
+/**
+ * Avisos del Jailor al empezar la noche (wiki: Jailor.md:562, 566). El Jailor sabe a quién arrastró. La Mafia y el
+ * Coven vivos ven "(Player) was hauled off to jail" por cada encarcelado (Jailor.md:566: cuando es de los suyos y
+ * cuando el Jailor encarcela a alguien).
+ */
+function jailNotices(s: GameState): EventInput[] {
+  const prisoners = Object.entries(s.jailedBy).filter(([prisonerId]) => isAlive(playerOf(s, prisonerId)));
+  const out: EventInput[] = [];
+  for (const [prisonerId, jailorId] of prisoners) {
+    if (isAlive(playerOf(s, jailorId))) out.push({ type: "night.notice", payload: { playerId: jailorId, notice: "jailor_dragged", subjectId: prisonerId } });
+    for (const m of s.players) {
+      if (isAlive(m) && (m.faction === "mafia" || m.faction === "coven")) {
+        out.push({ type: "night.notice", payload: { playerId: m.id, notice: "team_jailed", subjectId: prisonerId } });
+      }
+    }
+  }
+  return out;
 }
 
 /**

@@ -491,3 +491,15 @@ describe("mensajes del Vigilante (wiki: Vigilante.md:358, 366)", () => {
     expect(items).toEqual(["Decides esperar un día antes de usar tu pistola.", "¡Te ha disparado un Vigilante!"]);
   });
 });
+
+describe("mensajes del Jailor (wiki: Jailor.md:550, 558, 562, 566)", () => {
+  it("el encarcelado de los suyos, el arrastre y la primera noche tienen su frase", () => {
+    seq = 0;
+    const items = texts(buildLog([
+      ev("night.notice", { playerId: "a", subjectId: "c", notice: "team_jailed" }, "private"),
+      ev("night.notice", { playerId: "b", subjectId: "c", notice: "jailor_dragged" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "jailor_wait_day" }, "private"),
+    ], ctx({ meId: "a" })));
+    expect(items).toEqual(["Caro fue arrastrado a la cárcel.", "Has arrastrado a tu objetivo a la cárcel.", "Debes esperar un día antes de ejecutar."]);
+  });
+});

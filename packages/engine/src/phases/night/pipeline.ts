@@ -466,9 +466,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     out.push({ type: "trap.built", payload: { trapperId: id, readyDay: s.dayNumber + 1 } });
   }
   // Wiki (Vigilante.md:358, 360): "You decide to wait a day before using your gun." en la primera noche.
+  // Wiki (Jailor.md:550, 552): "You must wait a day before executing." en la primera noche.
   if (s.dayNumber === 1) {
     for (const p of s.players) {
       if (p.roleKey === "vigilante" && isAlive(p)) out.push({ type: "night.notice", payload: { playerId: p.id, notice: "vigilante_wait_day" } });
+      if (p.roleKey === "jailor" && isAlive(p)) out.push({ type: "night.notice", payload: { playerId: p.id, notice: "jailor_wait_day" } });
     }
   }
   // Wiki (Transporter.md:208): los dos transportados reciben el aviso al terminar la noche.
