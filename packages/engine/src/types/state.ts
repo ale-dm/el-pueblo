@@ -20,6 +20,8 @@ export interface PlayerState {
   deathReason: string | null;
   /** Rol que muestra la muerte: el falsificado por el Forger si lo hay (wiki: Forger.md:232). Null si lo limpió el Janitor. */
   shownRoleKey?: string | null;
+  /** Nota de muerte que dejó el asesino de este jugador (wiki: Death_Note_ToS.md:5, 17). dayNumber: la mañana que la anuncia. */
+  deathNote?: { authorId: PlayerId; dayNumber: number; note: string };
   /** Usos restantes de las habilidades limitadas (clave de habilidad → usos). */
   usesLeft: Record<string, number>;
   flags: Partial<Record<PlayerFlag, true>>;

@@ -86,6 +86,10 @@ function applyBody(s: GameState, e: GameEventEnvelope): GameState {
     case "will.forged":
       return { ...s, forgeries: { ...s.forgeries, [e.payload.playerId]: e.payload.role } };
 
+    case "death.note.authored":
+      return updatePlayer(s, e.payload.victimId, (p) => ({ ...p, deathNote: { authorId: e.payload.authorId, dayNumber: e.payload.dayNumber, note: e.payload.note } }));
+    case "death.note.written":
+      return updatePlayer(s, e.payload.victimId, (p) => (p.deathNote ? { ...p, deathNote: { ...p.deathNote, note: e.payload.note } } : p));
     case "will.written": {
       const wills = { ...s.wills };
       if (e.payload.text) wills[e.payload.playerId] = e.payload.text;

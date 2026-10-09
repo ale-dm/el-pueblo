@@ -44,6 +44,8 @@ interface Attack {
   reasons?: string[];
   /** Nota de muerte del asesino de la Mafia que mata (wiki: Death_Note_ToS.md:5, Godfather.md:235). */
   note?: string;
+  /** Autor de la nota de muerte: quien hace la muerte (wiki: Godfather.md:36, Mafioso.md:23). Solo el ataque de la Mafia lo lleva. */
+  noteAuthorId?: string;
 }
 
 interface Act {
@@ -394,9 +396,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
 
   // 5. Mafia: el ejecutor decidido arriba.
   if (mafiaExecutor) {
-    // Wiki (Godfather.md:36, Mafioso.md:23): solo quien hace la muerte deja su nota, sea el Mafioso o el Godfather.
+    // Wiki (Godfather.md:235, Mafioso.md:279): quien hace la muerte deja su nota, sea el Mafioso o el Godfather.
     const note = s.nightActions[mafiaExecutor.attackerId]?.note;
-    attacks.push({ attackerId: mafiaExecutor.attackerId, victimId: mafiaExecutor.victimId, power: 1, cause: "mafia", ...(note ? { note } : {}) });
+    attacks.push({ attackerId: mafiaExecutor.attackerId, victimId: mafiaExecutor.victimId, power: 1, cause: "mafia", ...(note ? { note } : {}), noteAuthorId: mafiaExecutor.attackerId });
   }
 
   // Alerta del Veteran: ataca a todos los que le visitan.
@@ -650,6 +652,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Vigilante: si su disparo mata a un Town, la culpa le quitará la vida la noche siguiente (wiki: Vigilante).
     const killVictim = (cause: string) => {
       if (!kill(atk.victimId, cause, atk.reasons, atk.note)) return;
+      // Wiki (Death_Note_ToS.md:17): la nota del asesino se puede cambiar la mañana en que se anuncia la víctima.
+      if (atk.noteAuthorId !== undefined) {
+        out.push({ type: "death.note.authored", payload: { victimId: atk.victimId, authorId: atk.noteAuthorId, dayNumber: s.dayNumber + 1, note: atk.note ?? "" } });
+      }
       if (atk.cause === "shot" && victim?.faction === "town" && !dead.has(atk.attackerId)) {
         out.push({ type: "effect.applied", payload: { actorId: atk.attackerId, targetId: atk.attackerId, flag: "guilty" } });
         // Wiki (Vigilante.md:362): "You have put away your gun for killing a town member." (al matar a un Town).

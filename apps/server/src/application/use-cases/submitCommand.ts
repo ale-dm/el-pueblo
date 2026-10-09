@@ -34,6 +34,8 @@ function actorOf(command: Command): string | undefined {
       return command.actorId;
     case "will.write":
       return command.playerId;
+    case "death.note.write":
+      return command.actorId;
     case "day.action":
     case "night.action":
       return command.actorId;

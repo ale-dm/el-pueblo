@@ -36,6 +36,17 @@ describe("autorización de comandos", () => {
     ).rejects.toMatchObject({ code: "forbidden" });
   });
 
+  it("no se puede cambiar la nota de muerte de otro asesino (wiki: Death_Note_ToS.md:17)", async () => {
+    const { app, host, guest } = await startedGame();
+    await expect(
+      app.services.submitCommand({
+        matchId: host.matchId,
+        token: guest.token,
+        command: { type: "death.note.write", actorId: host.playerId, victimId: guest.playerId, note: "x" },
+      }),
+    ).rejects.toMatchObject({ code: "forbidden" });
+  });
+
   it("un jugador sí puede hablar con su propio nombre", async () => {
     const { app, host, guest } = await startedGame();
     const sent = await app.services.submitCommand({

@@ -187,6 +187,24 @@ export function writeWill(s: GameState, playerId: string, text: string): Result<
   return ok([{ type: "will.written", payload: { playerId, text: trimmed } }]);
 }
 
+/**
+ * Cambia la nota de muerte del asesino durante el anuncio de la mañana (wiki: Death_Note_ToS.md:17: "you can change your
+ * Death Note while the victims are being announced in the morning"). Ventana: la mañana en que la víctima aparece
+ * (`dayNumber` de la muerte + 1), en day_1 o discussion. El motor no tiene fase de anuncio, así que la ventana es la
+ * charla de esa mañana (wiki: Phases; ver docs/ENGINE.md). Solo escribe la nota su autor. Máximo 400 caracteres
+ * (wiki: Death_Note_ToS.md:15). Un texto vacío quita la nota.
+ */
+export function writeDeathNote(s: GameState, actorId: string, victimId: string, note: string): Result<EventInput[]> {
+  const victim = playerOf(s, victimId);
+  const record = victim?.deathNote;
+  if (!victim || !record || record.authorId !== actorId) return err("invalid_command", "Solo el asesino puede cambiar esa nota de muerte");
+  if (s.phase !== "day_1" && s.phase !== "discussion") return err("wrong_phase", "La nota de muerte solo se cambia durante el anuncio de la mañana");
+  if (s.dayNumber !== record.dayNumber) return err("wrong_phase", "La nota de muerte solo se cambia la mañana en que se anuncia la víctima");
+  const text = note.trim();
+  if (text.length > MAX_DEATH_NOTE_LENGTH) return err("invalid_command", `La nota de muerte tiene como máximo ${MAX_DEATH_NOTE_LENGTH} caracteres`);
+  return ok([{ type: "death.note.written", payload: { victimId, note: text } }]);
+}
+
 export const MAX_WILL_LENGTH = 400;
 
 /** Nota de muerte: hasta 400 caracteres (wiki: Death_Note_ToS.md:15). */

@@ -33,6 +33,10 @@ export type GameEventPayloads = {
   "will.forged": { playerId: PlayerId; role: string; forgerId: PlayerId };
   "night.action.cancelled": { actorId: PlayerId; mafiaTeam: boolean };
   "will.written": { playerId: PlayerId; text: string };
+  /** Nota de muerte del asesino que hizo la muerte. Privada para él (su autor, no se revela a los demás). dayNumber: la mañana que la anuncia (wiki: Death_Note_ToS.md:17). */
+  "death.note.authored": { victimId: PlayerId; authorId: PlayerId; dayNumber: number; note: string };
+  /** Cambio de la nota de muerte durante el anuncio de la mañana (wiki: Death_Note_ToS.md:17). Pública: la nota es pública. */
+  "death.note.written": { victimId: PlayerId; note: string };
   /** cause: "jail" si la cárcel le impide actuar; "roleblock" si le bloquearon (wiki: Tavern_Keeper.md:347). */
   "night.action.blocked": { actorId: PlayerId; ability: string; cause?: "jail" | "roleblock" };
   /**

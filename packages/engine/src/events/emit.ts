@@ -26,6 +26,10 @@ export function visibilityOf(event: EventInput): { visibility: Visibility; audie
       return priv(event.payload.playerId);
     case "will.written":
       return priv(event.payload.playerId);
+    case "death.note.authored":
+      return priv(event.payload.authorId);
+    case "death.note.written":
+      return pub;
     case "hypnosis.message":
       return priv(event.payload.playerId);
     case "will.forged":

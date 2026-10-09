@@ -21,5 +21,7 @@ export type Command =
     }
   | { type: "night.action.cancel"; actorId: PlayerId }
   | { type: "will.write"; playerId: PlayerId; text: string }
+  /** Cambia la nota de muerte del asesino durante el anuncio de la mañana de la víctima (wiki: Death_Note_ToS.md:17). */
+  | { type: "death.note.write"; actorId: PlayerId; victimId: PlayerId; note: string }
   | { type: "chat.send"; senderId: PlayerId; channel: "public" | "mafia" | "dead" | "whisper" | "jail" | "seance"; text: string; recipientId?: PlayerId }
   | { type: "timer.expired" };

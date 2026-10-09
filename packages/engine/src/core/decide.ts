@@ -7,7 +7,7 @@ import { err, ok, type Result } from "./result.js";
 import { emit } from "../events/emit.js";
 import { BLACKMAIL_LINE, chatDenied, seanceHearers, seanceRecipient, type ChatChannel } from "../rules/chat.js";
 import { castVote, dayAction, judgementVote } from "../phases/day.js";
-import { cancelNightAction, nightAction, writeWill } from "../phases/night/collect.js";
+import { cancelNightAction, nightAction, writeDeathNote, writeWill } from "../phases/night/collect.js";
 import { onTimerExpired } from "../phases/machine.js";
 import { startGame } from "../setup/startGame.js";
 
@@ -49,6 +49,8 @@ function dispatch(state: GameState, command: Command, ctx: EngineContext): Resul
       return cancelNightAction(state, command.actorId);
     case "will.write":
       return writeWill(state, command.playerId, command.text);
+    case "death.note.write":
+      return writeDeathNote(state, command.actorId, command.victimId, command.note);
     case "chat.send": {
       const text = command.text.trim();
       if (text.length === 0 || text.length > MAX_CHAT_LENGTH) {
