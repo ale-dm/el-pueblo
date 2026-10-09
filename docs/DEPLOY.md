@@ -51,7 +51,7 @@ La configuración (`.env`) se guarda en el propio stack de Portainer.
    Personal access tokens → **Fine-grained tokens** → Generate. Repository access: *Only select repositories* →
    `el-pueblo`. Permissions → Repository → **Contents: Read-only**.
 2. **Carpetas:** `mkdir -p /compose/el-pueblo/{postgres,backups,logs}`.
-3. **Red `proxy`:** debe existir (la crea el stack de Nginx Proxy Manager). El servidor se publica hacia ella.
+3. **Puerto 3000:** no hace falta crear ninguna red. Anota la IP del NAS para configurar Nginx Proxy Manager.
 4. Portainer → Stacks → **Add stack** → nombre `el-pueblo` → **Repository**:
    - Repository URL: `https://github.com/ale-dm/el-pueblo`
    - Repository reference: `refs/heads/main`
