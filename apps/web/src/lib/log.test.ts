@@ -785,3 +785,22 @@ describe("Mafioso: aviso de defensa al ejecutar la orden (wiki: Mafioso.md:235)"
     expect(text).toContain("La defensa de tu objetivo fue demasiado fuerte para matarle.");
   });
 });
+
+describe("Ambusher: nombre revelado y avisos en el registro (wiki: Ambusher.md:222; Messages_ToS.md:2109, 2117)", () => {
+  it("el visitante ve el nombre del Ambusher y el Ambusher lee su aviso, al amanecer", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", subjectId: "b", notice: "ambusher_seen" }, "private"),
+      ev("night.notice", { playerId: "c", notice: "ambush_attacked_visitor" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    expect(text).toContain("Viste a Bea preparar una emboscada mientras visitabas a tu objetivo.");
+    const log = buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "c", notice: "ambush_attacked_visitor" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx({ meId: "c" }));
+    expect(texts(log)).toContain("¡Emboscaste a alguien que visitó a tu objetivo anoche!");
+  });
+});

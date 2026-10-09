@@ -405,6 +405,17 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           for (const v of chosen) {
             attacks.push({ attackerId: e.actorId, victimId: v.visitorId, power: e.power, cause: e.cause });
           }
+          // Wiki (Ambusher.md:222; Messages_ToS.md:2117): cada visitante que no es de la Mafia ve el nombre del Ambusher, aunque
+          // no muera ni esté disfrazado: "You saw (Player) prepare an ambush while visiting your target."
+          if (e.cause === "ambush") {
+            for (const id of new Set(visitsTo(e.houseId, e.actorId).map((v) => v.visitorId))) {
+              if (playerOf(s, id)?.faction === "mafia") continue;
+              out.push({ type: "night.notice", payload: { playerId: id, subjectId: e.actorId, notice: "ambusher_seen" } });
+            }
+          }
+          // Wiki (Ambusher.md:216; Messages_ToS.md:2109): "You ambushed someone who visited your target last night!" al Ambusher
+          // que elige a un visitante.
+          if (e.cause === "ambush" && chosen.length > 0) out.push({ type: "night.notice", payload: { playerId: routed(e.actorId), notice: "ambush_attacked_visitor" } });
           // Wiki (Crusader.md:336; Messages_ToS.md:1869): el Crusader que ataca a un visitante de su objetivo recibe
           // "You attacked someone visiting your target!". Solo el Crusader (cause "crusade"); el Ambusher no lo recibe.
           if (e.cause === "crusade" && chosen.length > 0) out.push({ type: "night.notice", payload: { playerId: routed(e.actorId), notice: "crusader_attacked_visitor" } });

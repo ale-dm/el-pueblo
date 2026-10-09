@@ -153,6 +153,8 @@ const NOTICE_TEXT: Record<string, string> = {
   jailor_executed: "¡Te ha ejecutado el Jailor!",
   // Wiki (Godfather.md:487; Mafioso.md:475; Ambusher.md:364): "You were attacked by a member of the Mafia!"
   mafia_attacked_you: "¡Te ha atacado un miembro de la Mafia!",
+  // Wiki (Messages_ToS.md:2109): "You ambushed someone who visited your target last night!"
+  ambush_attacked_visitor: "¡Emboscaste a alguien que visitó a tu objetivo anoche!",
   // Wiki (Messages_ToS.md:1861; Crusader.md:330): "You were attacked by a Crusader!"
   crusader_attacked_you: "¡Te ha atacado un Cruzado!",
   // Wiki (Messages_ToS.md:1869; Crusader.md:336): "You attacked someone visiting your target!"
@@ -429,6 +431,8 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "night.notice":
         // Wiki (Jailor.md:566): "(Player) was hauled off to jail"
         if (p.notice === "team_jailed") line(e, `${ctx.nick(p.subjectId)} fue arrastrado a la cárcel.`, "private");
+        // Wiki (Ambusher.md:222; Messages_ToS.md:2117): "You saw (Player) prepare an ambush while visiting your target."
+        else if (p.notice === "ambusher_seen") line(e, `Viste a ${ctx.nick(p.subjectId)} preparar una emboscada mientras visitabas a tu objetivo.`, "private");
         // Wiki (Jailor.md:252): el visitante sabe que su objetivo estaba encarcelado; el prisionero, de los atacantes.
         else line(e, NOTICE_TEXT[p.notice] ?? "Algo ocurrió anoche.", "private");
         break;
