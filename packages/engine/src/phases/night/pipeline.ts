@@ -28,7 +28,7 @@ interface Visit {
 interface Protection {
   protectorId: string;
   power: 1 | 2;
-  source: "doctor" | "bodyguard" | "crusader" | "jail" | "trap";
+  source: "doctor" | "bodyguard" | "crusader" | "jail" | "trap" | "vest";
 }
 
 interface Attack {
@@ -69,6 +69,9 @@ const remapEffect = (e: Effect, remap: (id: string) => string): Effect => {
     case "transport":
       return e;
     case "protect":
+      // El chaleco protege a quien lo lleva, esté donde esté: no se redirige con el transporte (wiki: Bodyguard.md:246).
+      if (e.source === "vest") return e;
+      return { ...e, targetId: remap(e.targetId) };
     case "attack":
     case "mark":
     case "trap":
@@ -277,6 +280,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   const prevented = new Set<string>();
   // Doctor: un solo aviso de "atacado" por Doctor y noche (wiki: Doctor.md:251).
   const healersNotified = new Set<string>();
+  // Chaleco: un solo aviso por Bodyguard y noche (supuesto: la wiki no dice cuántas veces).
+  const vestNotified = new Set<string>();
   const traps: Array<{ trapperId: string; targetId: string }> = [];
   const dismantles: string[] = [];
   const usesSpent: Array<{ playerId: string; ability: string }> = [];
@@ -581,6 +586,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       prevented.add(atk.victimId);
       if (strongest) out.push({ type: "attack.prevented", payload: { victimId: atk.victimId, protectorId: routed(strongest.protectorId) } });
       if (strongest?.source === "trap") trapSpent.add(atk.victimId);
+      // Wiki (Bodyguard.md:250, 444): "You were attacked but your bulletproof vest saved you!" al Bodyguard que usó el chaleco.
+      if (strongest?.source === "vest" && !vestNotified.has(atk.victimId)) {
+        vestNotified.add(atk.victimId);
+        out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "vest_saved" } });
+      }
       // Wiki (Veteran.md:486): "Someone tried to attack you but your defense while on alert was too strong!" Lo recibe el
       // Veteran, cuando solo la alerta (Basic Defense) detuvo al atacante.
       if (alerted.has(atk.victimId) && !strongest) out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "alert_blocked" } });

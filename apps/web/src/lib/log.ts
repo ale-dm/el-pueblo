@@ -65,6 +65,8 @@ const NOTICE_TEXT: Record<string, string> = {
   vigilante_guilt_suicide: "No pudiste superar la culpa de matar a un miembro del pueblo. ¡Te has disparado!",
   // Wiki (Veteran.md:486): "Someone tried to attack you but your defense while on alert was too strong!"
   alert_blocked: "Alguien intentó atacarte, pero tu defensa en alerta fue demasiado fuerte.",
+  // Wiki (Bodyguard.md:250): "You were attacked but your bulletproof vest saved you!"
+  vest_saved: "Te atacaron, pero tu chaleco antibalas te salvó.",
   // Wiki (Jailor.md:282, 284): "The jailor has decided to Execute you." / "The jailor has changed his mind."
   jailor_execute: "El Jailor ha decidido ejecutarte.",
   jailor_changed_mind: "El Jailor ha cambiado de opinión.",

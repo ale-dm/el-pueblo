@@ -40,6 +40,6 @@ const ABILITY_LABEL: Record<string, string> = {
   interrogate: "Interrogar", investigate: "Investigar", watch: "Vigilar", track: "Rastrear", bug: "Espiar",
   vision: "Ver visión", heal: "Curar", protect: "Proteger", execute: "Ejecutar", jail: "Encarcelar",
   seance: "Sesión", reveal: "Revelarme", raise: "Alzar", alert: "Ponerme en alerta", transport: "Transportar",
-  trap: "Colocar trampa", shoot: "Disparar",
+  trap: "Colocar trampa", shoot: "Disparar", vest: "Chaleco antibalas",
 };
 export const abilityLabel = (key: string) => ABILITY_LABEL[key] ?? key;

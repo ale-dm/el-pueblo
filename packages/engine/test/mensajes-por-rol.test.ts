@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { game, ofType, step, timer } from "./helpers/game.js";
+import { game, ofType, rejected, step, timer } from "./helpers/game.js";
 import type { GameState } from "../src/types/state.js";
 
 const night = (actorId: string, ability: string, targetId: string | null, secondTargetId: string | null = null) =>
@@ -33,6 +33,27 @@ describe("Vigilante y Veteran: cuántos usos les quedan (wiki: Vigilante, Vetera
   it("quien no gasta uso no recibe el aviso", () => {
     const { events } = resolve(game(["vigilante", "godfather"], { dayNumber: 2 }), [night("p2", "kill", "p1")]);
     expect(ofType(events, "uses.left")).toHaveLength(0);
+  });
+});
+
+describe("Bodyguard: chaleco antibalas (wiki: Bodyguard.md:240-250, 444)", () => {
+  it("el chaleco detiene un ataque Basic, sin contraataque, y el Bodyguard recibe el aviso", () => {
+    const { events, state } = resolve(game(["bodyguard", "godfather", "investigator"]), [night("p1", "vest", null), night("p2", "kill", "p1")]);
+    expect(ofType(events, "player.killed")).toHaveLength(0);
+    expect(state.players.find((p) => p.id === "p2")?.status).toBe("alive");
+    expect(notices(events)).toContainEqual(["p1", "vest_saved"]);
+  });
+
+  it("el chaleco se usa una sola vez por partida", () => {
+    const first = resolve(game(["bodyguard", "godfather", "investigator"]), [night("p1", "vest", null)]);
+    expect(rejected({ ...first.state, phase: "night", dayNumber: 3 }, { type: "night.action", actorId: "p1", ability: "vest", targetId: null, secondTargetId: null })).toMatch(/usos/);
+  });
+
+  it("el chaleco sigue al Bodyguard si lo transportan", () => {
+    // p2 transporta a p1 con p3; el Godfather ataca a p3, que ahora está en la casa de p1, y el chaleco de p1 lo para.
+    const { events } = resolve(game(["bodyguard", "transporter", "investigator", "godfather"]), [night("p1", "vest", null), night("p2", "transport", "p1", "p3"), night("p4", "kill", "p3")]);
+    expect(ofType(events, "player.killed")).toHaveLength(0);
+    expect(notices(events)).toContainEqual(["p1", "vest_saved"]);
   });
 });
 

@@ -152,6 +152,22 @@ describe("registro estilo Town of Salem", () => {
     expect(text).toContain("Tu objetivo fue atacado anoche.");
   });
 
+  it("avisos de culpa, alerta y chaleco (wiki: Vigilante, Veteran, Bodyguard)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "vigilante_put_away_gun" }, "private"),
+      ev("night.notice", { playerId: "a", notice: "vigilante_guilt_suicide" }, "private"),
+      ev("night.notice", { playerId: "b", notice: "alert_blocked" }, "private"),
+      ev("night.notice", { playerId: "c", notice: "vest_saved" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Has guardado tu pistola por matar a un miembro del pueblo.");
+    expect(text).toContain("No pudiste superar la culpa de matar a un miembro del pueblo. ¡Te has disparado!");
+    expect(text).toContain("Alguien intentó atacarte, pero tu defensa en alerta fue demasiado fuerte.");
+    expect(text).toContain("Te atacaron, pero tu chaleco antibalas te salvó.");
+  });
+
   it("avisos de la noche por rol: curado, Jailor, Psíquica (wiki: Doctor, Jailor, Psychic)", () => {
     seq = 0;
     const text = texts(buildLog([

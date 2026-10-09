@@ -9,7 +9,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 
 | Rol | a | b | c | d | e | f | g | h | Pendiente principal |
 |---|---|---|---|---|---|---|---|---|---|
-| Bodyguard | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | vest (autoprotección) no implementado |
+| Bodyguard | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Chaleco antibalas (lote 4, E7: Bodyguard.md:240-250): hecho, sin contraataque, una vez, sigue al transporte. Pendiente: contador "You have (#) bulletproof vest(s) left." (Bodyguard.md:426) y el caso "transported into yourself" (Bodyguard.md:248) |
 | Crusader | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Crusader es solo Coven en la wiki (alcance MVP sin decidir) |
 | Doctor | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Aviso "Your target was attacked last night!": hecho (lote 4, E4, Doctor.md:223, 251); Doctor.md:249 dice "attacked in any way", no fija el caso letal: se sigue :223 |
 | Investigator | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | ◐ | Texto de ayuda y narración (f, h) |
