@@ -125,10 +125,20 @@ describe("Vigilante: mensajes de la culpa (wiki: Vigilante.md:362, 370)", () => 
 describe("Janitor: el rol del limpiado (wiki: Janitor.md:214)", () => {
   it("el Janitor sabe al amanecer el rol real de su objetivo si muere esa noche, en privado", () => {
     const { events } = resolve(game(["janitor", "godfather", "investigator"]), [night("p1", "clean", "p3"), night("p2", "kill", "p3")]);
-    expect(ofType(events, "clean.revealed").map((e) => e.payload)).toEqual([{ janitorId: "p1", playerId: "p3", roleKey: "investigator" }]);
+    expect(ofType(events, "clean.revealed").map((e) => e.payload)).toEqual([{ janitorId: "p1", playerId: "p3", roleKey: "investigator", will: null }]);
     const reveal = events.find((e) => e.type === "clean.revealed")!;
     expect(reveal.visibility).toBe("private");
     expect(reveal.audiencePlayerId).toBe("p1");
+  });
+
+  it("el Janitor lee el testamento original de quien limpió, y el resto no lo ve (wiki: Janitor.md:222-228)", () => {
+    const s0 = game(["janitor", "godfather", "investigator"]);
+    s0.wills = { p3: "Sospecho de P2." };
+    const { events } = resolve(s0, [night("p1", "clean", "p3"), night("p2", "kill", "p3")]);
+    const reveal = events.find((e) => e.type === "clean.revealed")!;
+    expect(reveal.payload).toMatchObject({ janitorId: "p1", will: "Sospecho de P2." });
+    expect(reveal.visibility).toBe("private");
+    expect(ofType(events, "player.killed").find((e) => e.payload.playerId === "p3")?.payload.will).toBeNull();
   });
 
   it("si el limpiado no muere esa noche, no hay aviso de rol", () => {

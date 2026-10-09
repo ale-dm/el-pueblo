@@ -36,7 +36,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Framer | ? | ? | ? | ◐ | ◐ | ? | ◐ | ? | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Auditoría no terminada; persistencia del encuadre (SKIPPED) |
 | Godfather | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Transporter (Victory ToS, SKIPPED) y frente a Tavern Keeper o Jailor; Death Note (SKIPPED: texto libre de la Death Note común a los roles asesinos, `docs/wiki/Death_Note_ToS.md:15`); aviso de la orden |
 | Hypnotist | ✓ | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ✓ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Spy (Bug no revela mensajes) |
-| Janitor | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ✓ | testamento del limpiado (pendiente; el rol está hecho) |
+| Janitor | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ✓ | Testamento del limpiado: hecho (lote 4, E10, Janitor.md:222-228), solo para el Janitor |
 | Mafioso | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Death Note (SKIPPED, ver Godfather) |
 
 Notas:

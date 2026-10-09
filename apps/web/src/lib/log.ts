@@ -299,7 +299,13 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       }
       case "clean.revealed":
         // Wiki (Janitor.md:214): "You secretly know that your target's role was [Role]."
-        line(e, `Sabes en secreto que el rol de ${ctx.nick(p.playerId)} era ${p.roleKey ? roleNameEn(p.roleKey) : "desconocido"}.`, "private");
+        // Wiki (Janitor.md:224): "You secretly know your targets last will." Solo si había testamento (Janitor.md:222).
+        line(
+          e,
+          `Sabes en secreto que el rol de ${ctx.nick(p.playerId)} era ${p.roleKey ? roleNameEn(p.roleKey) : "desconocido"}.` +
+            (p.will ? ` Sabes en secreto el testamento de ${ctx.nick(p.playerId)}: «${p.will}»` : ""),
+          "private",
+        );
         break;
       case "player.blackmailed":
         line(e, "Estás silenciado durante el día.", "private");

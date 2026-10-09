@@ -45,7 +45,7 @@ export type GameEventPayloads = {
   /** Usos que le quedan tras disparar o ponerse en alerta (wiki: Vigilante y Veteran, "You have (#) bullet(s) left"). Solo lo ve el jugador. */
   "uses.left": { playerId: PlayerId; ability: string; left: number };
   /** El Janitor limpió a un jugador que murió esta noche: ve su rol real al amanecer (wiki: Janitor.md:214). */
-  "clean.revealed": { janitorId: PlayerId; playerId: PlayerId; roleKey: string | null };
+  "clean.revealed": { janitorId: PlayerId; playerId: PlayerId; roleKey: string | null; will: string | null };
   /** check: tipo de comprobación (suspicious, group, role, visitors, targets, mafiaVisits, vision). group: claves de rol del grupo (wiki: Investigator). */
   /** side: en la visión de la Psíquica, el bando del que hay al menos uno (wiki: Psychic).
    * more: el Lookout sabe que hubo más visitantes de los tres que identifica (wiki: Lookout). */

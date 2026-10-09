@@ -208,6 +208,16 @@ describe("registro estilo Town of Salem", () => {
     expect(text).toContain("Sabes en secreto que el rol de Bea era Tavern Keeper.");
   });
 
+  it("el Janitor también lee el testamento de quien limpió, si lo había (wiki: Janitor.md:224)", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("clean.revealed", { janitorId: "a", playerId: "b", roleKey: "tavern_keeper", will: "Sospecho de Ana." }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx())).join(" | ");
+    expect(text).toContain("Sabes en secreto el testamento de Bea: «Sospecho de Ana.»");
+  });
+
   it("la hipnosis llega al amanecer; la falsificación y el ascenso se cuentan al momento", () => {
     seq = 0;
     const text = texts(buildLog([

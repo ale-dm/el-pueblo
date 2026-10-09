@@ -540,7 +540,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     // Wiki (Janitor.md:214): el Janitor que lo limpió sabe su rol real al amanecer.
     const janitorId = marks.find((m) => m.flag === "cleaned" && m.targetId === playerId)?.actorId;
     if (cleaned.has(playerId) && janitorId !== undefined) {
-      out.push({ type: "clean.revealed", payload: { janitorId, playerId, roleKey: playerOf(s, playerId)?.roleKey ?? null } });
+      // Wiki (Janitor.md:222-228): el Janitor lee el testamento original; a los demás no les llega (will: null arriba).
+      out.push({ type: "clean.revealed", payload: { janitorId, playerId, roleKey: playerOf(s, playerId)?.roleKey ?? null, will: s.wills[playerId] ?? null } });
     }
     return true;
   };
