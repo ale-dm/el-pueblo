@@ -130,6 +130,8 @@ const NOTICE_TEXT: Record<string, string> = {
   jailor_slain_town: "Has matado a un miembro del pueblo, así que no puedes volver a atacar.",
   // Wiki (Messages_ToS.md:1731): "You could not attack your target because they were in jail." (Godfather.md:233; Mafioso.md:235)
   attack_jailed: "No pudiste atacar a tu objetivo porque estaba encarcelado.",
+  // Wiki (Messages_ToS.md:1873; Crusader.md:216): "You were attacked but someone protected you!"
+  crusader_protected: "Te atacaron, pero alguien te protegió.",
 };
 
 /** Estado de la trampa al empezar la noche (wiki: Trapper.md:340, 342, 344). */

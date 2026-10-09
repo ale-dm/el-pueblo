@@ -695,3 +695,20 @@ describe("varias causas de muerte, forma singular y plural (wiki: Messages_ToS.m
     expect(text).toBe("Bea murió anoche: ha sido asesinado por un Veterano. Era Doctor.");
   });
 });
+
+describe("Crusader: avisos en el registro (wiki: Crusader.md:216, 330, 336)", () => {
+  it("el protegido, el visitante que sobrevive y el Crusader ven su aviso al amanecer", () => {
+    seq = 0;
+    const text = texts(buildLog([
+      ev("phase.started", { phase: "night", dayNumber: 2 }),
+      ev("night.notice", { playerId: "a", notice: "crusader_protected" }, "private"),
+      ev("night.notice", { playerId: "a", notice: "target_attacked" }, "private"),
+      ev("phase.started", { phase: "discussion", dayNumber: 3 }),
+    ], ctx()));
+    const day = text.indexOf("== Día 3");
+    expect(text.slice(day + 1)).toEqual([
+      "Te atacaron, pero alguien te protegió.",
+      "Tu objetivo fue atacado anoche.",
+    ]);
+  });
+});

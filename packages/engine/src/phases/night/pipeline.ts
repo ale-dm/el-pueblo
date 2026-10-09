@@ -721,8 +721,9 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
     if (dead.has(id)) return undefined;
     return (protections.get(id) ?? []).find((p) => (p.source === "doctor" || p.source === "crusader") && p.power === 2);
   };
-  /** Doctor que cura con éxito a un atacado recibe "Your target was attacked last night!", una vez por noche (wiki: Doctor.md:223, 251). */
-  const noteHealer = (protectorId: string) => {
+  /** Doctor que cura con éxito a un atacado, o Crusader cuyo objetivo es atacado, recibe "Your target was attacked last night!",
+   * una vez por noche (wiki: Doctor.md:223, 251; Crusader.md:216; Messages_ToS.md:1865). */
+  const noteTargetAttacked = (protectorId: string) => {
     const healer = routed(protectorId);
     if (healersNotified.has(healer)) return;
     healersNotified.add(healer);
@@ -730,6 +731,11 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   };
   for (let i = 0; i < attacks.length; i++) {
     const atk = attacks[i]!;
+    // Wiki (Crusader.md:216; Messages_ToS.md:1865): "Your target was attacked last night!" cuando alguien intenta atacar
+    // a su objetivo, lo logre o no. Va antes de las muertes: el intento cuenta aunque la víctima ya haya muerto.
+    for (const p of protections.get(atk.victimId) ?? []) {
+      if (p.source === "crusader") noteTargetAttacked(p.protectorId);
+    }
     if (dead.has(atk.victimId)) {
       // Wiki (Messages_ToS.md:151, 154): un segundo asesino que también habría matado añade su causa; no cambia nada más
       // (la culpa, el chaleco y las protecciones se resuelven igual que antes).
@@ -784,7 +790,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       // attacked last night!". El protegido no recibe "healed" (ver arriba). Doctor.md:263 dice lo contrario y se marca
       // como bug: errata no replicada (ROLES_STATUS.md).
       const victimDoctor = (protections.get(atk.victimId) ?? []).find((p) => p.source === "doctor");
-      if (victimDoctor) noteHealer(victimDoctor.protectorId);
+      if (victimDoctor) noteTargetAttacked(victimDoctor.protectorId);
       // Wiki (Bodyguard.md:210): el contraataque es un ataque Powerful contra el atacante y contra el Bodyguard.
       // Wiki (Bodyguard.md:304; Doctor.md:217): Doctor, Crusader, Potion Master o Guardian Angel pueden impedir que
       // muera el atacante, o el Bodyguard, cada uno por su lado. Aquí solo Doctor y Crusader (MVP); la defensa de la
@@ -797,7 +803,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
           out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "healed" } });
           // Wiki (Spy.md:255): "A Bodyguard attacked your target but someone nursed them back to health!"
           tagSpy(atk.attackerId, "bodyguard_attack_healed");
-          noteHealer(attackerCure.protectorId);
+          noteTargetAttacked(attackerCure.protectorId);
         }
       } else if (kill(atk.attackerId, "bodyguard")) {
         // Wiki (Bodyguard.md:434, 430): avisos de muerte del atacante y del Bodyguard, solo si de verdad mueren.
@@ -811,7 +817,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         out.push({ type: "attack.prevented", payload: { victimId: bodyguard.protectorId, protectorId: routed(guardCure.protectorId) } });
         if (guardCure.source === "doctor") {
           out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "healed" } });
-          noteHealer(guardCure.protectorId);
+          noteTargetAttacked(guardCure.protectorId);
         }
       } else if (kill(bodyguard.protectorId, "guarding")) {
         out.push({ type: "night.notice", payload: { playerId: bodyguard.protectorId, notice: "bodyguard_killed_protecting" } });
@@ -828,6 +834,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       // Wiki (Godfather.md:233): el Godfather que ataca recibe aviso si el objetivo tiene defensa; el texto es el de
       // Messages_ToS.md:383 ("Your target's defense was too strong to kill."), también si el objetivo fue curado.
       if (atk.godfatherDirect) out.push({ type: "night.notice", payload: { playerId: atk.attackerId, notice: "godfather_target_defense" } });
+      // Wiki (Messages_ToS.md:1873; Crusader.md:216): "You were attacked but someone protected you!" al protegido por un Crusader.
+      if (strongest?.source === "crusader") out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "crusader_protected" } });
       if (strongest?.source === "trap") {
         trapSpent.add(atk.victimId);
         // Wiki (Trapper.md:352): "You were attacked but a trap saved you!" al objetivo que la trampa protegió.
@@ -853,7 +861,7 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         out.push({ type: "night.notice", payload: { playerId: atk.victimId, notice: "healed" } });
         // Wiki (Doctor.md:223, 251): el Doctor que cura con éxito a un atacado recibe "Your target was attacked last night!",
         // una sola vez por noche aunque sean varios ataques. Si el ataque es letal y no se evita, no hay aviso.
-        noteHealer(strongest.protectorId);
+        noteTargetAttacked(strongest.protectorId);
       }
     }
   }
