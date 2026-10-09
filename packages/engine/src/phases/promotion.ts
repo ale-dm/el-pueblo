@@ -2,8 +2,11 @@ import type { EventInput } from "../types/events.js";
 import type { GameState, PlayerState } from "../types/state.js";
 import { ROLE_HANDLERS } from "../roles/registry.js";
 
-/** Roles de la Mafia que matan (wiki: Godfather, Mafioso, Ambusher: "Mafia Killing"). */
-const KILLER_ROLES = new Set(["godfather", "mafioso", "ambusher"]);
+/**
+ * Roles que matan por orden de la Mafia. El Ambusher no está aquí: la wiki dice que asciende a Mafioso
+ * cuando mueren los demás Mafia Killing (Ambusher.md:228), así que no bloquea el ascenso de otros.
+ */
+const KILLER_ROLES = new Set(["godfather", "mafioso"]);
 
 /** Usos iniciales de un rol (para el evento role.promoted). */
 const usesOf = (roleKey: string): Record<string, number> => {
@@ -18,8 +21,8 @@ const usesOf = (roleKey: string): Record<string, number> => {
 /**
  * Ascensos de la Mafia tras las muertes (`dead` incluye a quien acaba de morir):
  * - Sin Godfather vivo y con Mafioso vivo, el Mafioso pasa a Godfather (wiki: Godfather, Mafioso).
- * - Si no queda ningún rol que mate (Godfather, Mafioso, Ambusher), asciende a Mafioso el Bootlegger vivo
- *   si lo hay ("always the first Mafia member to be promoted", wiki: Bootlegger); si no, el de menor asiento.
+ * - Si no queda ningún Godfather ni Mafioso, asciende a Mafioso el Bootlegger vivo si lo hay ("always the first
+ *   Mafia member to be promoted", wiki: Bootlegger); después el Ambusher (Ambusher.md:228); si no, el de menor asiento.
  * Devuelve [] si no hace falta ningún ascenso.
  */
 export function promotionEvents(s: GameState, dead: ReadonlySet<string>): EventInput[] {
@@ -34,7 +37,7 @@ export function promotionEvents(s: GameState, dead: ReadonlySet<string>): EventI
   }
 
   if (mafiaAlive.some((p) => KILLER_ROLES.has(p.roleKey!))) return [];
-  const successor = withRole("bootlegger")[0] ?? [...mafiaAlive].sort(bySeat)[0];
+  const successor = withRole("bootlegger")[0] ?? withRole("ambusher")[0] ?? [...mafiaAlive].sort(bySeat)[0];
   if (!successor) return [];
   return [{ type: "role.promoted", payload: { playerId: successor.id, roleKey: "mafioso", uses: usesOf("mafioso") } }];
 }

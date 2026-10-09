@@ -225,10 +225,18 @@ describe("Ascenso a Mafioso (wiki: Hypnotist, Forger, Disguiser)", () => {
     expect(next.state.nightActions["p2"]?.targetId).toBe("p4");
   });
 
-  it("un Ambusher vivo impide el ascenso de los apoyos (wiki: Ambusher es Mafia Killing)", () => {
+  it("cuando mueren los demás asesinos, el Ambusher asciende a Mafioso (wiki: Ambusher.md:228)", () => {
+    const s = game(["godfather", "ambusher", "sheriff", "investigator"]);
+    s.players[0] = { ...s.players[0]!, status: "dead" };
+    const { events } = step(s, timer());
+    expect(ofType(events, "role.promoted").map((e) => [e.payload.playerId, e.payload.roleKey])).toEqual([["p2", "mafioso"]]);
+  });
+
+  it("un Ambusher vivo no impide que el Bootlegger ascienda antes que él", () => {
     const s = game(["godfather", "ambusher", "bootlegger", "sheriff", "investigator"]);
     s.players[0] = { ...s.players[0]!, status: "dead" };
-    expect(ofType(step(s, timer()).events, "role.promoted")).toHaveLength(0);
+    const { events } = step(s, timer());
+    expect(ofType(events, "role.promoted").map((e) => [e.payload.playerId, e.payload.roleKey])).toEqual([["p3", "mafioso"]]);
   });
 
   it("sin Godfather ni Mafioso que mate, asciende primero el Bootlegger (wiki: Bootlegger)", () => {

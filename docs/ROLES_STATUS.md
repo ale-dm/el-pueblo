@@ -16,7 +16,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Jailor | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | Death Note (SKIPPED: la wiki contradictoria, ver lote 3 D4); aviso al equipo de Mafia encarcelada (pendiente; el aviso al prisionero está hecho) |
 | Lookout | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | texto en inglés de la wiki |
 | Mayor | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Restricción de susurros con Mayor revelado (sin implementar) |
-| Medium | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Varios Mediums (SKIPPED: fuentes contradictorias); fase de la sesión (wiki dice Día) |
+| Medium | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Varios Mediums que se oyen entre sí (Medium.md:207, 277: pendiente); la sesión se elige de Día (Medium.md:203), el motor la tiene de noche |
 | Psychic | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED |
 | Retributionist | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | Zombi limitado a una habilidad de un objetivo; exclusiones de roles |
 | Sheriff | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Investigador hecho; Framer: persistencia del encuadre (SKIPPED, contradicción wiki) |
@@ -27,7 +27,7 @@ a. definido en el motor con prioridad y facción · b. acción nocturna validada
 | Trapper | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | ◐ | Sin fila en la tabla Classic (solo Coven): Investigador SKIPPED. Visitante al azar (lote 3, D6; la wiki dice "one attacker" pero no cómo se elige); fase de construcción (SKIPPED, wiki exige noche de construcción) |
 | Veteran | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | mensaje de atacante bloqueado por la alerta (pendiente; las alertas están hechas) |
 | Vigilante | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ◐ | ◐ | mensajes de culpa por disparar a un Town y de la primera noche (pendientes; las balas están hechas) |
-| Ambusher | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Ascenso a Mafioso (SKIPPED: wiki contradictoria con su categoría) |
+| Ambusher | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); ascenso a Mafioso cuando mueren los demás asesinos (Ambusher.md:228, hecho en la revisión) |
 | Blackmailer | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Susurros que el Blackmailer oye (no implementado); aviso de bloqueo en cárcel |
 | Bootlegger | ✓ | ✓ | ✓ | ◐ | ✓ | ◐ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); orden de ascenso aplicado |
 | Consigliere | ✓ | ✓ | ✓ | ◐ | ✓ | ✓ | ◐ | ◐ | 1 contra 1 frente a Tavern Keeper o Jailor (Victory ToS, SKIPPED); Rol real aun con disfraz (hecho) |
@@ -47,4 +47,10 @@ Notas:
 - **Icono y arte (g):** los iconos son arte de la wiki. No hay ilustración propia.
 - **Mensajes (h, lote 3, D5):** hechos los avisos de curado (Doctor), balas y alertas que quedan (Vigilante, Veteran), rol del limpiado (Janitor), prisionero (Jailor) y los dos de la Psíquica (pocos vivos y sin Town/Neutral Benign). Cada uno tiene test en `packages/engine/test/mensajes-por-rol.test.ts` o `apps/web/src/lib/log.test.ts`. Timing elegido: los avisos de usos y de rol salen al amanecer (la wiki no fija la hora de "You have (#) bullet(s) left").
 - **Narración (h):** textos del registro por causa y por rol en `apps/web/src/lib/log.ts`; faltan los mensajes exactos de la wiki donde no se han añadido.
-- **Contradicciones de la wiki** (no implementadas, se decide con el equipo): Framer (encuadre), Tavern Keeper (bloqueo de solo día), Ambusher (ascenso), Medium (varios Mediums y fase de la sesión), Vigilante (culpa por cualquier Town o solo por muerte).
+- **Revisión de las contradicciones de la wiki** (ver `docs/roles/`):
+  - *Ambusher (resuelto):* Ambusher.md:228 dice que asciende cuando mueren los demás asesinos. El código lo contaba como asesino y no ascendía; corregido.
+  - *Vigilante (resuelto):* la ficha (Especial, Vigilante.md:44 y :98) y el texto completo (:190) dicen "matar a un Town"; el "shoot" de las líneas 39 y 144 es el resumen. Se queda como está (muerte).
+  - *Framer (decisión pendiente):* Framer.md:344 (versión 3.3.0) dice que el encuadre dura hasta que un rol investigador apunta al objetivo; Sheriff.md:275 es consejo antiguo. Implementar la versión 3.3.0 requiere decidir qué roles cuentan como "investigativos".
+  - *Tavern Keeper (decisión pendiente):* Tavern_Keeper.md:181 dice que no se pueden bloquear roles con habilidad de día; :277 aconseja bloquear al Mayor la noche 1 en Ranked. La regla es 181; el consejo de :277 contradice la regla.
+  - *Medium (pendiente, no contradicción):* Medium.md:207 y :277 dicen que varios Mediums se oyen entre sí; el motor solo toma al primero. La fase de la sesión (:203) también difiere.
+  - *Trapper (decisión tomada):* elige al visitante al azar, porque la wiki no dice cómo elegir.
