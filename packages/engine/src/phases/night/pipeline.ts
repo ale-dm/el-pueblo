@@ -690,7 +690,8 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
             return asId === undefined || playerOf(s, asId)?.faction === "mafia";
           })
           .map((v) => nick(v.houseId));
-        result = houses.join(", ") || "nadie";
+        // Wiki (Spy.md:179): "The order is randomized." Orden del rng del motor (determinista por semilla).
+        result = rng.shuffle(houses).join(", ") || "nadie";
         break;
       }
       case "vision": {

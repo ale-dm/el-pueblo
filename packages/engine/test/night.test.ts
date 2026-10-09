@@ -530,7 +530,8 @@ describe("noche: el Spy espía a su objetivo (wiki: Spy)", () => {
     // Las visitas del Disguiser (p3 y p4) sí se ven; la del Godfather a p5 no.
     const { events } = resolve(s, [night("p1", "bug", "p6"), night("p2", "disguise", "p3", "p4"), night("p3", "kill", "p5")]);
     const mafia = ofType(events, "investigation.result").find((e) => e.payload.investigatorId === "p1" && e.payload.check === "mafiaVisits");
-    expect(mafia?.payload.result).toBe("P3, P4");
+    // Wiki (Spy.md:179): "The order is randomized." Se comprueba el conjunto, no el orden (ver spy-orden.test.ts).
+    expect(String(mafia?.payload.result).split(", ").sort()).toEqual(["P3", "P4"]);
   });
 });
 
