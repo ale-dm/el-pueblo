@@ -193,6 +193,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
         out.push({ type: "night.notice", payload: { playerId: jailed, notice: "jailed_transport_attempt" } });
         continue;
       }
+      // Wiki (Transporter.md:228): "You cannot Transport targets who left the game before the Night ends (You will receive
+      // no Transport message)." Quien abandonó sigue vivo con connected=false (ver Tavern_Keeper.md:183 en tavern-keeper-avisos.test.ts).
+      // El intercambio no se hace y no hay aviso.
+      if ([e.firstId, e.secondId].some((id) => playerOf(s, id)?.connected === false)) continue;
       const { firstId, secondId } = e;
       swaps.push([firstId, secondId]);
       // Wiki (Transporter.md:272): si la derecha es la misma que la de un Transporter anterior, se marca el nombre elegido.
