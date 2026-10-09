@@ -319,8 +319,9 @@ describe("noche: jailor y trampero", () => {
     expect(placed.state.traps["p1"]).toEqual({ targetId: "p2", readyDay: 3 });
     s = step(placed.state, timer()).state; // discusión → votación
     s = step(s, timer()).state; // votación → noche 3
-    const { events } = resolve(s, [night("p3", "interrogate", "p2")]);
-    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p3", "trap"]]);
+    // Wiki (Keyword_System.md:349): solo daña a un atacante. El Godfather (p4) ataca a p2 y muere por la trampa.
+    const { events } = resolve(s, [night("p4", "kill", "p2")]);
+    expect(ofType(events, "player.killed").map((e) => [e.payload.playerId, e.payload.cause])).toEqual([["p4", "trap"]]);
   });
 
   it("no se puede colocar la trampa la noche en que se construye: aún no está lista (wiki: Trapper.md:252)", () => {
@@ -580,12 +581,13 @@ describe("noche: la trampa defiende de un ataque (wiki: Trapper)", () => {
     expect(ofType(events, "attack.prevented")).toContainEqual(expect.objectContaining({ payload: { victimId: "p2", protectorId: "p1" } }));
   });
 
-  it("la trampa defiende de un solo ataque: el segundo sí mata", () => {
-    // Godfather (p3) y Vigilante (p4) atacan a p2: uno lo para la trampa, el otro le mata.
+  it("la trampa defiende solo del atacante que hiere: el otro sí mata (wiki: Keyword_System.md:349, Trapper.md:225)", () => {
+    // Godfather (p3) y Vigilante (p4) atacan a p2. La trampa hiere a uno de los dos, al azar, y solo a ese defiende.
     const { events } = resolve(trapped(["trapper", "investigator", "godfather", "vigilante", "sheriff"]), [night("p3", "kill", "p2"), night("p4", "shoot", "p2")]);
-    const onTarget = ofType(events, "attack.prevented").filter((e) => e.payload.victimId === "p2");
-    expect(onTarget).toHaveLength(1);
     expect(ofType(events, "player.killed").filter((e) => e.payload.playerId === "p2")).toHaveLength(1);
+    const trapKills = ofType(events, "player.killed").filter((e) => e.payload.cause === "trap").map((e) => e.payload.playerId);
+    expect(trapKills).toHaveLength(1);
+    expect(["p3", "p4"]).toContain(trapKills[0]);
   });
 });
 

@@ -29,6 +29,8 @@ interface Protection {
   protectorId: string;
   power: 1 | 2;
   source: "doctor" | "bodyguard" | "crusader" | "jail" | "trap" | "vest";
+  /** Solo vale contra este atacante. Wiki (Keyword_System.md:349): la defensa de la trampa es solo para el atacante herido. */
+  onlyAgainst?: string;
 }
 
 interface Attack {
@@ -380,21 +382,32 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
   // Wiki (Trapper.md:223): la trampa es poderosa; se activa con una visita y entonces se retira (Trapper.md:227).
   /** Trampas que se activan esta noche. */
   const triggered = new Set<string>();
+  /** Wiki (Keyword_System.md:349): solo cuentan como atacantes los visitantes cuyo rol ataca (ataque distinto de "None"). */
+  const attacksOnVisit = (id: string): boolean => {
+    const roleKey = playerOf(s, id)?.roleKey;
+    const attack = roleKey ? catalog.roles.get(roleKey)?.attack : undefined;
+    if (attack === undefined) return false;
+    return attack !== "None" && !(attack?.startsWith("None (") ?? false);
+  };
   for (const [trapperId, trap] of Object.entries(s.traps)) {
     // Una trampa construida y no colocada (targetId null) no se activa.
     if (trap.targetId === null) continue;
     if (!isAlive(playerOf(s, trapperId)) || trap.readyDay > s.dayNumber || dismantles.includes(trapperId)) continue;
     const visitors = visitsTo(trap.targetId, trapperId);
     if (visitors.length === 0) continue;
-    // Wiki (Trapper.md:223): un ataque Powerful a "one attacker visiting them". La wiki no dice cómo se elige:
-    // se elige al azar, como el visitante del Crusader y del Ambusher (Crusader.md:214, Ambusher.md:216).
-    const attacker = visitors.length === 1 ? visitors[0]! : rng.shuffle(visitors)[0]!;
-    attacks.push({ attackerId: trapperId, victimId: attacker.visitorId, power: 2, cause: "trap" });
+    // Wiki (Trapper.md:219): cualquier visitante activa la trampa (y la gasta), aunque no ataque.
+    // Wiki (Keyword_System.md:349): solo daña a los atacantes; si hay varios, a uno solo, elegido al azar, como el
+    // visitante del Crusader y del Ambusher (Crusader.md:214, Ambusher.md:216). Trapper.md:223: ataque Powerful.
+    const attackers = visitors.filter((v) => attacksOnVisit(v.visitorId));
+    if (attackers.length > 0) {
+      const attacker = attackers.length === 1 ? attackers[0]! : rng.shuffle(attackers)[0]!;
+      attacks.push({ attackerId: trapperId, victimId: attacker.visitorId, power: 2, cause: "trap" });
+      // Wiki (Keyword_System.md:349, Trapper.md:223, 225): la defensa Poderosa vale una vez y solo contra ese atacante.
+      const list = protections.get(trap.targetId) ?? [];
+      list.push({ protectorId: trapperId, power: 2, source: "trap", onlyAgainst: attacker.visitorId });
+      protections.set(trap.targetId, list);
+    }
     triggered.add(trapperId);
-    // Wiki (Trapper.md:223, 225): la trampa defiende a su objetivo de un ataque directo esta noche, y solo de uno.
-    const list = protections.get(trap.targetId) ?? [];
-    list.push({ protectorId: trapperId, power: 2, source: "trap" });
-    protections.set(trap.targetId, list);
     out.push({ type: "trap.removed", payload: { trapperId, reason: "triggered" } });
   }
 
@@ -612,7 +625,10 @@ export function resolveNight(s: GameState, catalog: Catalog, rng: Rng): EventInp
       kill(bodyguard.protectorId, "bodyguard");
       continue;
     }
-    const medical = prots.filter((p) => p.source !== "bodyguard" && !(p.source === "trap" && trapSpent.has(atk.victimId)));
+    // La defensa de la trampa solo cuenta contra su atacante (Keyword_System.md:349) y una vez por noche.
+    const medical = prots.filter(
+      (p) => p.source !== "bodyguard" && (p.onlyAgainst === undefined || p.onlyAgainst === atk.attackerId) && !(p.source === "trap" && trapSpent.has(atk.victimId)),
+    );
     const strongest = medical.reduce<Protection | undefined>((best, p) => (!best || p.power > best.power ? p : best), undefined);
     // Wiki (Godfather): Basic Defense permanente; un ataque Basic no le mata.
     const baseDefense = victim?.roleKey === "godfather" ? 1 : 0;
