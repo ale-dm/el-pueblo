@@ -5,6 +5,16 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Diseño: móvil como la mesa de Wolvesville (referencia: juego principal)
+
+- Referencia: las capturas oficiales de Wolvesville en la App Store (no Classic, que es de pasar el móvil). Lo que se toma: una cuadrícula de jugadores como mesa, una línea de estado, la acción abajo y el resto fuera de la pantalla. No se copia arte ni colores: se usan los iconos de rol que ya tenemos.
+- Móvil (vertical y horizontal, `PHONE_QUERY` en `lib/useMediaQuery.ts`): cabecera con fase, temporizador y dos botones (tu rol, chat y registro). En medio, la mesa (`game/Table.tsx`): una casilla por jugador con número, nombre, rol si se conoce, Mafia, acusado, tu voto, objetivo y votos. Abajo, la línea de estado y la acción (`ActionDock` en línea). Rol y chat van en hojas (`game/Sheet.tsx`).
+- Horizontal en móvil: mesa a la izquierda (5 columnas), estado y acción a la derecha.
+- Escritorio: sin cambios de distribución. Se quitan las clases `short-*`, los `order-*` y la hoja de estilos de horizontal, que ya no hacían falta: el móvil tiene su propia disposición.
+- Prueba de móvil: el chat se abre desde su botón y la votación dice "Toca a alguien para votarle".
+- Pendiente: la hoja de rol en horizontal muestra poco texto; los avisos de fase y el juicio se ven solo en la línea de estado; la mesa no separa vivos y muertos (los muertos van apagados y con ✝).
+- Comprobado: `pnpm check` (engine 591, web 139, server 114); prueba de móvil 11 de 11; capturas de móvil 390×844, horizontal 844×390 y escritorio 1366×768 con un jugador de la Mafia, sin desbordes ni errores de consola.
+
 ## Diseño: séptima vuelta, Mafia ve a sus compañeros y votar en la lista
 
 - Mafia: en la lista, cada compañero vivo muestra su rol y una etiqueta "Mafia". Lo ve solo otra Mafia: `getView` manda `allyRoleKey` solo al compañero de Mafia que mira (`apps/server/test/application/getView.test.ts`, prueba nueva). El muerto ya se veía con `revealedRoleKey`. También se ve en horizontal.

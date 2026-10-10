@@ -8,7 +8,11 @@ import { secondsLeft as secondsUntil } from "../lib/countdown.js";
 import { trialsLeftToday } from "../lib/trials.js";
 import { RoleReveal } from "../game/RoleReveal.js";
 import { ActionDock } from "../game/ActionDock.js";
+import { Table } from "../game/Table.js";
+import { Sheet } from "../game/Sheet.js";
 import { voteCommand } from "../lib/quickAction.js";
+import { usePhoneLayout } from "../lib/useMediaQuery.js";
+import { roleIconUrl } from "../lib/roleImages.js";
 import { Plaza } from "../game/Plaza.js";
 import { PushButton } from "../game/PushButton.js";
 import { TopBar } from "../game/TopBar.js";
@@ -78,6 +82,8 @@ export function Game({ view }: { view: MatchView }) {
   const [muted, setMutedState] = useState(isMuted);
   const [sideTab, setSideTab] = useState<SideTab>("role");
   const [liveTab, setLiveTab] = useState<LiveTab>("live");
+  const phone = usePhoneLayout();
+  const [sheet, setSheet] = useState<"role" | "chat" | null>(null);
   const [banner, setBanner] = useState<{ text: string; tone: "night" | "day" | "trial" } | null>(null);
   const defendantSeen = useRef<string | null>(null);
   const [death, setDeath] = useState<GameEvent | null>(null);
@@ -208,9 +214,11 @@ export function Game({ view }: { view: MatchView }) {
   const me = view.me;
   const vote = voteStatus(view);
   const subtitle = view.phase === "voting"
-    ? `Hacen falta ${vote.needed} votos. ${vote.leader ? `Más votado: ${vote.leader.nick} (${vote.leader.count}).` : "Nadie tiene votos todavía."}${voting ? " Toca a alguien en la lista para votarle; otra vez, para quitar tu voto." : ""}`
+    ? `Hacen falta ${vote.needed} votos. ${vote.leader ? `Más votado: ${vote.leader.nick} (${vote.leader.count}).` : "Nadie tiene votos todavía."}${voting ? " Toca a alguien para votarle; otra vez, para quitar tu voto." : ""}`
     : phaseBanner(view);
-  return (
+  const closeSheet = () => setSheet(null);
+  // Avisos a pantalla completa: iguales en móvil y escritorio.
+  const overlays = (
     <>
       <RoleReveal view={view} />
       <ScreenBanner text={banner?.text ?? null} tone={banner?.tone} />
@@ -221,11 +229,65 @@ export function Game({ view }: { view: MatchView }) {
           {error} <span className="opacity-80">(toca para cerrar)</span>
         </button>
       )}
-      {/* Tres zonas. Izquierda: cabecera, pestañas de rol y chat. Centro: la plaza (fase, votos, juicio, muertes).
-          Derecha: la lista de jugadores, la única superficie de selección. Móvil: el orden de siempre (order-*). */}
-      <main className="game-grid flex min-h-dvh flex-col gap-3 p-3 md:grid">
-        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-1 md:row-start-1">
-          <Card className="short-head order-1 flex items-center justify-between gap-2 p-2">
+    </>
+  );
+
+  if (phone) {
+    // Móvil (vertical y horizontal): la cuadrícula de jugadores es la mesa. Rol y chat, en hojas que se abren desde arriba.
+    return (
+      <>
+        {overlays}
+        <main className="phone-main flex min-h-dvh flex-col gap-2 p-3">
+          <header className="phone-head flex items-center justify-between gap-2">
+            <SettingsMenu muted={muted} onToggleMute={toggleMute} />
+            <div className="min-w-0 text-center">
+              <p className="font-display text-xl leading-tight">
+                {PHASE_LABEL[view.phase]}{left !== null ? ` · ${left} s` : ""}
+              </p>
+              <p className="text-xs font-semibold">Día {view.dayNumber} · ⚖ {trialsLeft} · Sala {view.roomCode}</p>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              <button type="button" aria-label="Tu rol" onClick={() => setSheet("role")} className="cartoon-btn flex size-10 items-center justify-center px-0 py-0">
+                {roleIconUrl(me.roleKey) ? <img src={roleIconUrl(me.roleKey) ?? ""} alt="" className="size-7 object-contain" /> : <span aria-hidden="true">✦</span>}
+              </button>
+              <button type="button" aria-label="Chat y registro" onClick={() => setSheet("chat")} className="cartoon-btn flex size-10 items-center justify-center px-0 py-0 text-xl">
+                <span aria-hidden="true">💬</span>
+              </button>
+            </div>
+          </header>
+          <div className="phone-table-wrap flex min-h-0 flex-1 flex-col overflow-y-auto">
+            <Table view={view} selected={selected} isPickable={isPickable} onPick={pick} />
+          </div>
+          <footer className="phone-foot flex flex-col gap-2">
+            <p role="status" className="rounded-xl border-2 border-ink bg-paper px-3 py-2 text-center text-sm font-semibold text-ink">{subtitle}</p>
+            <ActionDock inline view={view} targets={targets} clearTargets={() => setTargets([])} />
+          </footer>
+        </main>
+        {sheet === "role" && (
+          <Sheet title={`Tu rol · ${me.nick}`} onClose={closeSheet}>
+            <div className="flex h-full min-h-0 flex-col gap-2">
+              <PushButton />
+              <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="min-h-0 flex-1" />
+            </div>
+          </Sheet>
+        )}
+        {sheet === "chat" && (
+          <Sheet title="Chat y registro" onClose={closeSheet}>
+            <BottomLeft view={view} log={log} className="h-full" />
+          </Sheet>
+        )}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {overlays}
+      {/* Escritorio, tres zonas. Izquierda: cabecera, pestañas de rol y chat. Centro: la plaza (fase, votos, juicio, muertes).
+          Derecha: la lista de jugadores, la única superficie de selección. */}
+      <main className="game-grid md:grid">
+        <div className="md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-1 md:row-start-1">
+          <Card className="flex items-center justify-between gap-2 p-2">
             <div className="flex min-w-0 items-center gap-2">
               <SettingsMenu muted={muted} onToggleMute={toggleMute} />
               <div className="min-w-0">
@@ -246,30 +308,29 @@ export function Game({ view }: { view: MatchView }) {
               </button>
             </div>
           </Card>
-          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="short-side order-2 md:min-h-0 md:max-h-[55%] md:flex-none" />
-          <BottomLeft view={view} log={log} className="short-chatbox order-8 md:min-h-0 md:flex-[1_1_0]" />
+          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="md:min-h-0 md:max-h-[55%] md:flex-none" />
+          <BottomLeft view={view} log={log} className="md:min-h-0 md:flex-[1_1_0]" />
         </div>
 
-        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-2 md:row-start-1">
+        <div className="md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-2 md:row-start-1">
           <TopBar
             view={view}
             trialsLeft={trialsLeft}
             secondsLeft={left}
             muted={muted}
             onToggleMute={toggleMute}
-            className="short-top order-3"
           />
-          <section className="short-pueblo order-4 md:min-h-0 md:flex-1">
+          <section className="md:min-h-0 md:flex-1">
             <Plaza view={view} log={log} subtitle={subtitle} />
           </section>
         </div>
 
-        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-1">
+        <div className="md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-1">
           <LiveList
             view={view}
             tab={liveTab}
             onTab={setLiveTab}
-            className="short-list order-5 md:min-h-0 md:flex-1"
+            className="md:min-h-0 md:flex-1"
             selected={selected}
             isPickable={isPickable}
             onPick={pick}

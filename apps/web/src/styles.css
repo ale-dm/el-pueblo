@@ -75,36 +75,25 @@ body.night {
   }
 }
 
-/* Pantallas bajas en apaisado (móvil de lado): columnas más estrechas, menos texto y el pueblo más pequeño. */
-@media (max-height: 540px) and (min-width: 768px) {
-  /* Proporciones de la pantalla de referencia en horizontal: pestañas y chat a la izquierda, pueblo al centro, lista a la derecha. */
-  /* Texto base de 13 px: el de 16 px dejaba los paneles ilegibles en un móvil de lado. */
-  html { font-size: 13px; }
-  .game-grid { grid-template-columns: minmax(0, 27fr) minmax(0, 46fr) minmax(0, 27fr); gap: 0.3rem; padding: 0.3rem; }
-  .short-hide { display: none !important; }
-  .short-title { display: none; }
-  .short-chat { max-height: none; }
-  .short-actions { max-height: 6.5rem; overflow-y: auto; }
-  .short-round { width: 3.5rem !important; height: 3.5rem !important; }
-  .short-ability { width: 4.5rem !important; }
-  .short-ability img { width: 2rem !important; height: 2rem !important; }
-  .short-tab { font-size: 0.7rem; padding: 0.2rem 0.3rem; white-space: nowrap; }
-  .short-row { padding-top: 0.15rem !important; padding-bottom: 0.15rem !important; font-size: 0.75rem; }
-  .short-avisos { display: none; }
-  /* Chat en horizontal: márgenes, botones y campo más pequeños para que quepa la barra de escribir. */
-  .short-chatbox .mb-2, .short-chatbox .mt-2 { margin-top: 0.2rem; margin-bottom: 0.2rem; }
-  .short-chatbox .cartoon-btn { padding: 0.1rem 0.45rem; font-size: 0.7rem; }
-  .short-chatbox .cartoon-input { padding: 0.15rem 0.4rem; font-size: 0.8rem; }
-  /* Horizontal: cada bloque en su celda. Izquierda: cabecera, pestañas de rol y chat. Centro: fase y pueblo. Derecha: lista. */
-  .game-grid { grid-template-rows: auto minmax(0, 1.2fr) minmax(0, 1fr); }
-  .short-head { padding: 0.2rem 0.4rem !important; }
-  .short-head .font-display { font-size: 0.95rem; line-height: 1.1; }
-  .game-grid > .contents { display: contents !important; }
-  .short-head { grid-column: 1; grid-row: 1; }
-  .short-top { grid-column: 2; grid-row: 1; }
-  .short-pueblo { grid-column: 2; grid-row: 2 / span 2; min-height: 0; overflow-y: auto; }
-  .short-side { grid-column: 1; grid-row: 2; max-height: none !important; min-height: 0; }
-  .short-chatbox { grid-column: 1; grid-row: 3; }
-  .short-list { grid-column: 3; grid-row: 1 / span 3; }
-}
 
+
+/* Móvil (ver PHONE_QUERY en lib/useMediaQuery.ts): la mesa de jugadores llena el centro y la acción va abajo. */
+.phone-main { min-height: 100dvh; }
+.phone-table { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* Móvil en horizontal: la mesa a la izquierda, con la acción y el estado a la derecha. Cabe en 390 px de alto. */
+@media (max-height: 540px) {
+  html { font-size: 13px; }
+  .phone-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14rem;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100dvh;
+    overflow: hidden;
+    gap: 0.4rem;
+    padding: 0.4rem;
+  }
+  .phone-head { grid-column: 1 / span 2; grid-row: 1; }
+  .phone-table-wrap { grid-column: 1; grid-row: 2; min-height: 0; overflow-y: auto; }
+  .phone-table { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .phone-foot { grid-column: 2; grid-row: 2; min-height: 0; overflow-y: auto; }
+}

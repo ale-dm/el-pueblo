@@ -61,8 +61,7 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
           </div>
         )}
         {me.roleKey && ROLE_BLURB[me.roleKey] && (
-          // En horizontal no cabe: las habilidades ya dicen lo mismo.
-          <div className="short-hide">
+          <div>
             <dt className="font-display text-base md:text-[11px]">Descripción</dt>
             <dd>{ROLE_BLURB[me.roleKey]}</dd>
           </div>

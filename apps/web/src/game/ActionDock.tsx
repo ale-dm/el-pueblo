@@ -10,6 +10,8 @@ interface Props {
   view: MatchView;
   targets: string[];
   clearTargets: () => void;
+  /** En móvil va en línea, dentro de la pantalla; en escritorio flota sobre la lista. */
+  inline?: boolean;
 }
 
 /** Más de estas opciones, se muestran en una lista desplegable en vez de botones (el rol del Forger). */
@@ -23,9 +25,10 @@ const choiceText = (c: string) => CHOICE_LABEL[c] ?? ROLE_NAMES[c] ?? c;
  * (wiki). Se usa sobre lo elegido en la lista lateral. Si la habilidad pide una opción (mensaje, rol), aparecen
  * las opciones junto al botón.
  */
-export function ActionDock({ view, targets, clearTargets }: Props) {
+export function ActionDock({ view, targets, clearTargets, inline = false }: Props) {
   const send = useGame((s) => s.send);
   const busy = useGame((s) => s.busy);
+  const place = inline ? "" : " md:fixed md:bottom-4 md:right-[calc(23vw+1rem)] md:z-40";
   // Habilidad que está pidiendo su opción (mensaje o rol).
   const [choosing, setChoosing] = useState<string | null>(null);
   useEffect(() => setChoosing(null), [view.phase, view.dayNumber]);
@@ -42,11 +45,11 @@ export function ActionDock({ view, targets, clearTargets }: Props) {
   // Juicio: dos botones redondos.
   if (view.phase === "judgement" && alive && view.defendantId !== me.id) {
     return (
-      <div className="relative flex items-end justify-end gap-3 md:fixed md:bottom-4 md:right-[calc(23vw+1rem)] md:z-40">
-        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "guilty" })} className="cartoon-btn danger flex short-round size-20 items-center justify-center rounded-full text-sm">
+      <div className={`relative flex items-end justify-end gap-3${place}`}>
+        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "guilty" })} className="cartoon-btn danger flex size-20 items-center justify-center rounded-full text-sm">
           Culpable
         </button>
-        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "innocent" })} className="cartoon-btn town flex short-round size-20 items-center justify-center rounded-full text-sm">
+        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "innocent" })} className="cartoon-btn town flex size-20 items-center justify-center rounded-full text-sm">
           Inocente
         </button>
       </div>
@@ -60,7 +63,7 @@ export function ActionDock({ view, targets, clearTargets }: Props) {
   if (abilities.length === 0) return null;
 
   return (
-    <div className="relative flex flex-col items-end gap-3 md:fixed md:bottom-4 md:right-[calc(23vw+1rem)] md:z-40">
+    <div className={`relative flex flex-col items-end gap-3${place}`}>
       {abilities.map((ability) => (
         <AbilityButton
           key={ability.key}
@@ -132,7 +135,7 @@ function AbilityButton({ ability, icon, view, targets, busy, choosing, onTap, on
         title={label}
         disabled={busy || needs !== null}
         onClick={onTap}
-        className="cartoon-btn short-ability flex w-28 flex-col items-center gap-1 rounded-2xl px-2 py-1 text-xs"
+        className="cartoon-btn flex w-28 flex-col items-center gap-1 rounded-2xl px-2 py-1 text-xs"
       >
         {icon ? <img src={icon} alt="" className="size-12 object-contain" /> : <span aria-hidden="true" className="text-3xl">⭐</span>}
         <span className="leading-tight">{label}</span>

@@ -78,9 +78,14 @@ await host.screenshot({ path: `${shots}/movil-dia.png`, fullPage: true });
 
 // Discusión: el chat público llega al anfitrión.
 await pages[1].getByText("Discusión").first().waitFor({ timeout: 60000 });
+// En móvil el chat está en una hoja: se abre desde la barra y se cierra al terminar.
+await pages[1].getByRole("button", { name: "Chat y registro" }).click();
 await pages[1].locator("textarea, input[placeholder='Escribe…']").first().fill("¡hola pueblo!");
 await pages[1].getByRole("button", { name: "Enviar" }).click();
+await host.getByRole("button", { name: "Chat y registro" }).click();
 await host.getByText("¡hola pueblo!").waitFor({ timeout: 10000 });
+await host.getByRole("button", { name: "Cerrar", exact: true }).click();
+await pages[1].getByRole("button", { name: "Cerrar", exact: true }).click();
 comprobar("el chat público llega al anfitrión", true);
 await sinDesborde("discusión");
 
@@ -89,7 +94,7 @@ await sinDesborde("discusión");
 // Votar se hace tocando a alguien en la lista (no hay botón de votar ni de abstenerse). La subtítulo de la plaza lo dice.
 // La fila marcada (aria-pressed) es la señal de que el voto llegó del servidor.
 const fila = (page, nick, marcada) => page.locator(`ul li button[aria-pressed="${marcada}"]`, { hasText: nick }).first();
-await pages[0].getByText("Toca a alguien en la lista para votarle").waitFor({ timeout: 120000 });
+await pages[0].getByText("Toca a alguien para votarle").waitFor({ timeout: 120000 });
 for (let i = 0; i < 10; i++) {
   const objetivo = i === 1 ? "Ana" : "Jugador2";
   await pages[i].locator("ul li button", { hasText: objetivo }).first().click();
