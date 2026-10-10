@@ -21,8 +21,11 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Reglas del nombre (wiki: Name): hasta 16 caracteres, solo letras y espacios entre palabras, sin dos mayúsculas seguidas, sin repetir uno ya elegido (sin distinguir mayúsculas) y sin nombres por defecto. La entrada a la sala sigue con su validación de antes.
 - Servidor: `beginNaming`, `chooseName` y `finishNaming` (`application/use-cases`); `startMatch` completa los nombres por defecto. El plazo vive en `matches.naming_ends_at` y se reprograma al reiniciar. Migraciones `0004_naming` y `0005_naming_nicks` (el índice de nombres ignora el vacío).
 - Eventos de socket nuevos: `match:naming` (anfitrión) y `match:name` (jugador).
-- Pendiente: el sexo del nombre según el personaje (la wiki da un nombre de su mismo sexo); el filtro de insultos; el aviso "X se ha unido al pueblo".
-- Comprobado: pruebas nuevas de la elección (6, en `test/application/eleccion-nombres.test.ts`); `pnpm check`; prueba de móvil con nombres solo con letras.
+- Revisión visual: el panel de elegir nombre va encima del círculo mientras dura la elección; en horizontal, formulario a la izquierda y lista a la derecha. El centro del círculo dice "Nombres" en la sala de espera, no "Primer día".
+- Novedades en la sala de espera: "X ha entrado en la sala" y "X se ha unido al pueblo" cuando alguien pone o cambia su nombre. Se calculan en la web entre refrescos; el servidor no las envía.
+- Descartado por decisión del equipo: el sexo del nombre según el personaje, y el filtro de insultos.
+- Pendiente: la licencia del arte; que la partida LWP4FL reanude tras el despliegue.
+- Comprobado: pruebas nuevas de la elección (6, en `test/application/eleccion-nombres.test.ts`); `pnpm check`; prueba de móvil; capturas de la elección y de la votación en vertical y horizontal.
 
 ## Personajes por defecto en las cartas de los jugadores
 

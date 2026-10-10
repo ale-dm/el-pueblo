@@ -34,8 +34,14 @@ export function Ring({ view, selected, isPickable, onPick }: Props) {
       {/* De noche el centro ya dice "Cae la noche": aquí no se repite la fase. */}
       {!defendant && view.phase !== "night" && (
         <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center">
-          <span className="font-display text-3xl">{PHASE_LABEL[view.phase]}</span>
-          <span className="text-sm font-semibold">Día {view.dayNumber}</span>
+          {view.status === "lobby" ? (
+            <span className="font-display text-3xl">{view.namingEndsAt ? "Nombres" : "Sala"}</span>
+          ) : (
+            <>
+              <span className="font-display text-3xl">{PHASE_LABEL[view.phase]}</span>
+              <span className="text-sm font-semibold">Día {view.dayNumber}</span>
+            </>
+          )}
         </div>
       )}
 

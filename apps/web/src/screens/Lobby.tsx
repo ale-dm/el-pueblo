@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGame } from "../state/store.js";
 import type { MatchView } from "../types.js";
 import { Button, Card, Pill, TextField } from "../ui/primitives.js";
@@ -24,6 +24,9 @@ export function Lobby({ view }: { view: MatchView }) {
     return () => clearInterval(timer);
   }, [refresh]);
 
+  // Avisos de la sala (wiki: Name): quien entra, y quien pone o cambia su nombre. Se calculan entre refrescos.
+  const notes = useNotes(view);
+
   return (
     <main className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-4 p-4 md:p-6">
       {!connected && <p role="status" className="rounded-2xl bg-sunset p-2 text-center font-semibold">Sin conexión. Reconectando…</p>}
@@ -32,6 +35,9 @@ export function Lobby({ view }: { view: MatchView }) {
         <h1 className="font-display text-6xl tracking-widest drop-shadow-[4px_4px_0_var(--color-ink)]">{view.roomCode}</h1>
         <p className="mt-1">Compártelo con tus amigos. Cuando estéis, el anfitrión reparte los roles.</p>
       </header>
+
+      {/* Mientras se eligen nombres, lo primero es escribir el tuyo y ver la cuenta atrás. */}
+      {naming && <NamingPanel view={view} isHost={isHost} busy={busy} onStart={() => void startMatch()} onChoose={(nick) => void chooseName(nick)} />}
 
       <div className="grid gap-4 md:grid-cols-[1fr_300px]">
         <Card className="min-h-[22rem]">
@@ -42,12 +48,18 @@ export function Lobby({ view }: { view: MatchView }) {
         </Card>
 
         <div className="space-y-4">
-          {naming ? (
-            <NamingPanel view={view} isHost={isHost} busy={busy} onStart={() => void startMatch()} onChoose={(nick) => void chooseName(nick)} />
-          ) : (
+          {!naming && (
             <Card>
               <h2 className="mb-2 font-display text-2xl">Jugadores ({count}/{MAX_PLAYERS})</h2>
               <PlayerList view={view} />
+            </Card>
+          )}
+          {notes.length > 0 && (
+            <Card className="p-3">
+              <h2 className="mb-1 font-display text-lg">Novedades</h2>
+              <ul className="space-y-1 text-sm">
+                {notes.map((n) => <li key={n.key}>• {n.text}</li>)}
+              </ul>
             </Card>
           )}
 
@@ -102,24 +114,29 @@ function NamingPanel({ view, isHost, busy, onStart, onChoose }: { view: MatchVie
   const [name, setName] = useState("");
   const chosen = view.me.nick.trim() !== "";
   return (
-    <Card className="space-y-3">
-      <h2 className="font-display text-2xl">Elige tu nombre</h2>
-      <p className="text-sm">
-        Quedan <strong>{left} s</strong>. Si no eliges, te tocará un nombre por defecto de los juicios de Salem.
-      </p>
-      <form
-        className="flex gap-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (name.trim()) onChoose(name);
-        }}
-      >
-        <TextField id="name" aria-label="Tu nombre en la partida" value={name} maxLength={MAX_NAME} placeholder="Solo letras, hasta 16" onChange={(e) => setName(e.target.value)} />
-        <Button type="submit" disabled={busy || name.trim() === "" || left === 0}>{chosen ? "Cambiar" : "Guardar"}</Button>
-      </form>
-      {chosen && <p className="text-sm">Tu nombre en la partida: <strong>{view.me.nick}</strong></p>}
-      <PlayerList view={view} />
-      {isHost && <Button className="w-full" disabled={busy} onClick={onStart}>Empezar ya</Button>}
+    <Card>
+      {/* En horizontal, el formulario a la izquierda y la lista de jugadores a la derecha. */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-3">
+          <h2 className="font-display text-2xl">Elige tu nombre</h2>
+          <p className="text-sm">
+            Quedan <strong>{left} s</strong>. Si no eliges, te tocará un nombre por defecto de los juicios de Salem.
+          </p>
+          <form
+            className="flex gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (name.trim()) onChoose(name);
+            }}
+          >
+            <TextField id="name" aria-label="Tu nombre en la partida" value={name} maxLength={MAX_NAME} placeholder="Solo letras, hasta 16" onChange={(e) => setName(e.target.value)} />
+            <Button type="submit" disabled={busy || name.trim() === "" || left === 0}>{chosen ? "Cambiar" : "Guardar"}</Button>
+          </form>
+          {chosen && <p className="text-sm">Tu nombre en la partida: <strong>{view.me.nick}</strong></p>}
+          {isHost && <Button className="w-full" disabled={busy} onClick={onStart}>Empezar ya</Button>}
+        </div>
+        <PlayerList view={view} />
+      </div>
     </Card>
   );
 }
@@ -132,4 +149,33 @@ function useNow(): number {
     return () => clearInterval(tick);
   }, []);
   return now;
+}
+
+interface Note {
+  key: number;
+  text: string;
+}
+
+/**
+ * Avisos de la sala de espera: "X ha entrado en la sala" y "X se ha unido al pueblo" cuando alguien pone o cambia su
+ * nombre (wiki: Name). No vienen del servidor: se deducen de dos vistas seguidas. La primera vista no avisa.
+ */
+function useNotes(view: MatchView): Note[] {
+  const previous = useRef<Map<string, string> | null>(null);
+  const counter = useRef(0);
+  const [notes, setNotes] = useState<Note[]>([]);
+  useEffect(() => {
+    const before = previous.current;
+    const now = new Map(view.players.map((p) => [p.id, p.nick]));
+    previous.current = now;
+    if (!before) return;
+    const fresh: Note[] = [];
+    for (const p of view.players) {
+      const old = before.get(p.id);
+      if (old === undefined) fresh.push({ key: counter.current++, text: `${p.nick || "Alguien"} ha entrado en la sala` });
+      else if (p.nick && p.nick !== old) fresh.push({ key: counter.current++, text: `${p.nick} se ha unido al pueblo` });
+    }
+    if (fresh.length > 0) setNotes((list) => [...fresh, ...list].slice(0, 4));
+  }, [view.players]);
+  return notes;
 }
