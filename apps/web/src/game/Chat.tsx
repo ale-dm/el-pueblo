@@ -7,6 +7,13 @@ import { chatRights, chatSenderLabel, whisperTarget } from "../lib/chatRights.js
 import { buildLog, logContext } from "../lib/log.js";
 import { copyBlocked } from "../lib/copyRights.js";
 
+/** Color de un aviso del sistema en la plaza. */
+const LINE_TONE: Record<string, string> = {
+  info: "text-ink/80",
+  danger: "font-semibold text-blood",
+  good: "font-semibold text-town",
+};
+
 export function Chat({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
   const { channels, readOnly, notice } = chatRights(view);
   const [channel, setChannel] = useState<Channel | null>(null);
@@ -32,10 +39,13 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
           </p>
         ) };
       }),
+    // Avisos del sistema (votos, juicios, muertes), con el color de su tono: rojo peligro, verde bueno.
     ...(active === "public"
-      ? buildLog(log, logContext(view))
-          .filter((i) => i.kind === "line" && i.tone !== "private")
-          .map((i) => ({ seq: i.seq, key: i.key, node: <p key={i.key} className="italic opacity-80">• {i.kind === "line" ? i.text : ""}</p> }))
+      ? buildLog(log, logContext(view)).flatMap((i) =>
+          i.kind === "line" && i.tone !== "private"
+            ? [{ seq: i.seq, key: i.key, node: <p key={i.key} className={LINE_TONE[i.tone]}>• {i.text}</p> }]
+            : [],
+        )
       : []),
   ].sort((a, b) => a.seq - b.seq);
 

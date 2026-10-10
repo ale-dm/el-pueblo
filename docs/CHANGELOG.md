@@ -27,7 +27,8 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Cabecera de la fase más pequeña en escritorio.
 - Móvil: el orden de siempre (`order-*`), comprobado con la prueba de móvil (11/11).
 - Segunda vuelta: los jugadores son tarjetas (número, inicial, nombre y píldoras), no casas. En escritorio, el centro son las tarjetas y el óvalo queda solo en la sala de espera. El chat llega hasta abajo; la carta del rol y la lista de vivos suben hasta arriba.
-- Pendiente: el aviso grande de juicio, los eventos de votación en el chat con colores y el mapa de fondo. No se copian las ilustraciones ni los iconos de ToS.
+- Tercera vuelta: aviso a pantalla completa cuando alguien va a juicio (tono rojo); avisos del sistema en la plaza con color (votos, juicios y muertes); barra de votos en cada tarjeta, en rojo al llegar al umbral, con quién ha votado en el tooltip; cabecera de fase más fina en escritorio; carta del rol al 36 % de la columna.
+- Pendiente: el mapa de fondo. No se copian las ilustraciones ni los iconos de ToS.
 
 ## Diseño: columna izquierda en escritorio
 

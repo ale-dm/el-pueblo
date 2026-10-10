@@ -79,7 +79,8 @@ export function Game({ view }: { view: MatchView }) {
   const [muted, setMutedState] = useState(isMuted);
   const [sideTab, setSideTab] = useState<SideTab>("role");
   const [liveTab, setLiveTab] = useState<LiveTab>("live");
-  const [banner, setBanner] = useState<{ text: string; tone: "night" | "day" } | null>(null);
+  const [banner, setBanner] = useState<{ text: string; tone: "night" | "day" | "trial" } | null>(null);
+  const defendantSeen = useRef<string | null>(null);
   const [death, setDeath] = useState<GameEvent | null>(null);
   const seen = useRef<number | null>(null);
   const prevNight = useRef<boolean | null>(null);
@@ -115,6 +116,13 @@ export function Game({ view }: { view: MatchView }) {
     }
     prevNight.current = night;
   }, [view.phase]);
+
+  // Un acusado nuevo: aviso a pantalla completa, como "X va a juicio" en Town of Salem.
+  useEffect(() => {
+    const d = view.defendantId;
+    if (d && d !== defendantSeen.current) setBanner({ text: `${nickOf(d)} va a juicio por conspiración contra el pueblo`, tone: "trial" });
+    defendantSeen.current = d;
+  }, [view.defendantId]);
 
   useEffect(() => {
     if (!banner) return;
@@ -243,7 +251,7 @@ export function Game({ view }: { view: MatchView }) {
         </div>
 
         <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-1">
-          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="order-2 md:max-h-[42%] md:min-h-0" />
+          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="order-2 md:max-h-[36%] md:min-h-0" />
           <LiveList
             view={view}
             tab={liveTab}

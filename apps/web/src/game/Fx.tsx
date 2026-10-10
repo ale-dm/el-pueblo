@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "motion/react";
 
 /** Aviso a pantalla completa que se va solo: cae la noche, amanece, o alguien muere. */
-export function ScreenBanner({ text, tone = "night" }: { text: string | null; tone?: "night" | "day" | "death" }) {
-  const bg = tone === "night" ? "bg-midnight" : tone === "day" ? "bg-sun" : "bg-ink";
+export function ScreenBanner({ text, tone = "night" }: { text: string | null; tone?: "night" | "day" | "death" | "trial" }) {
+  const bg = tone === "night" ? "bg-midnight" : tone === "day" ? "bg-sun" : tone === "trial" ? "bg-blood" : "bg-ink";
   const ink = tone === "day" ? "text-ink" : "text-paper";
   return (
     <AnimatePresence>

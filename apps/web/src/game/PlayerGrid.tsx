@@ -20,6 +20,10 @@ const tint = (seat: number) => `hsl(${(seat * 47) % 360} 65% 82%)`;
  */
 export function PlayerGrid({ view, selected, isPickable, onPick }: Props) {
   const votesFor = (id: string) => Object.values(view.votes).filter((t) => t === id).length;
+  // Mismo umbral que el aviso de la votación: la mitad de los vivos y conectados, redondeada hacia arriba.
+  const need = Math.ceil(view.players.filter((p) => p.status === "alive" && p.connected).length / 2);
+  const nickOf = (id: string) => view.players.find((p) => p.id === id)?.nick ?? "?";
+  const votersOf = (id: string) => Object.entries(view.votes).filter(([, t]) => t === id).map(([v]) => nickOf(v));
   const myTarget = view.me.nightAction?.targetId ?? null;
   const myVote = view.votes[view.me.id];
 
@@ -30,6 +34,9 @@ export function PlayerGrid({ view, selected, isPickable, onPick }: Props) {
         const isSelected = selected.includes(p.id);
         const isMe = p.id === view.me.id;
         const canPick = isPickable(p) && !isMe;
+        const votes = votesFor(p.id);
+        const reached = !dead && votes >= need;
+        const voters = votersOf(p.id);
         return (
           <motion.button
             key={p.id}
@@ -38,10 +45,11 @@ export function PlayerGrid({ view, selected, isPickable, onPick }: Props) {
             onClick={() => onPick(p.id)}
             aria-label={`${p.nick}${dead ? ", muerto" : ""}`}
             aria-pressed={isSelected}
+            title={voters.length ? `Votado por: ${voters.join(", ")}` : undefined}
             initial={{ y: 8, opacity: 0 }}
             animate={{ y: 0, opacity: dead ? 0.85 : 1 }}
             transition={{ delay: i * 0.02 }}
-            className={`relative flex min-w-0 items-start gap-2 rounded-2xl border-4 border-ink p-2 text-left ${dead ? "bg-stone-200 grayscale" : "bg-paper"} ${isSelected ? "target-ring" : ""} ${canPick ? "cursor-pointer" : "cursor-default"}`}
+            className={`relative flex min-w-0 items-start gap-2 rounded-2xl border-4 border-ink p-2 text-left ${dead ? "bg-stone-200 grayscale" : "bg-paper"} ${reached ? "ring-4 ring-blood ring-offset-2" : ""} ${isSelected ? "target-ring" : ""} ${canPick ? "cursor-pointer" : "cursor-default"}`}
           >
             <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-sun font-display text-sm">
               {p.seat}
@@ -68,6 +76,11 @@ export function PlayerGrid({ view, selected, isPickable, onPick }: Props) {
                 {p.isBot && <Tag>Bot</Tag>}
                 {!p.connected && <Tag>Desconectado</Tag>}
               </span>
+              {!dead && (
+                <span aria-hidden="true" className="mt-1.5 block h-2 w-full overflow-hidden rounded-full border-2 border-ink bg-white">
+                  <span className={`block h-full ${reached ? "bg-blood" : "bg-sun"}`} style={{ width: `${Math.min(100, (votes / Math.max(1, need)) * 100)}%` }} />
+                </span>
+              )}
             </span>
           </motion.button>
         );
