@@ -19,7 +19,7 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 
 - Qué: los personajes por defecto de la wiki (Avatars (ToS), "Default Skins") no son roles; son el aspecto de cada jugador. Cada asiento tiene el suyo (`lib/avatars.ts`, estable entre recargas). Se usan en la mesa del móvil (el centro de la casilla) y en la lista de escritorio (sustituye al círculo del asiento).
 - El icono del rol, si se conoce, va en la esquina de la casilla. Los muertos van apagados con ✝.
-- Imágenes: cinco copias en `apps/web/public/avatars/` (John Hathorne y Random Townie no están en el índice de imágenes de la wiki).
+- Imágenes: siete copias en `apps/web/public/avatars/`, tal cual están en la wiki. John Hathorne y Random Townie no estaban en el índice de imágenes; se sacaron de la ruta de MediaWiki.
 - Pendiente: la licencia de este arte. La de la wiki es CC-BY-SA según `data/README.md`, y hay que confirmarla antes de publicar.
 - Comprobado: `pnpm check` (engine 592, web 141, server 114); prueba de móvil 11 de 11; capturas de móvil y escritorio.
 

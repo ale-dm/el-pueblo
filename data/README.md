@@ -12,7 +12,7 @@ Alcance actual: facción **Mafia** y **Town**. Se incluyen también los roles **
 - `roles/img/` — iconos `*_icon.png` (49/49) y skins `*_skin.png` (45/49). Ambusher, Blackmailer, Framer y Survivor no tienen skin en la wiki.
   Son arte de la wiki y la web lo reutiliza **con permiso del equipo**. Solo se copian a `apps/web/public/roles/img/` los 55 archivos de los roles del MVP
   (`data/roles/img` está excluido de la imagen Docker). El mapa rol → archivo está en `apps/web/src/lib/roleImages.ts`.
-- Personajes por defecto (Avatars (ToS), "Default Skins"): cinco copias en `apps/web/public/avatars/` (GilesCorey, JohnProctor, MaryWarren, AbigailWilliams, BettyParris). John Hathorne y Random Townie no están en `image_index.json`. Mismo permiso que los roles; ver la nota de licencia abajo.
+- Personajes por defecto (Avatars (ToS), "Default Skins"): siete copias en `apps/web/public/avatars/` (JohnHathorne, GilesCorey, JohnProctor, MaryWarren, AbigailWilliams, BettyParris, RandomTownie). Las de `image_index.json` se bajaron con su URL; John Hathorne y Random Townie no están ahí y se copiaron con la ruta de MediaWiki (MD5 del nombre de archivo). Mismo permiso que los roles; ver la nota de licencia abajo.
   Aviso: los `.png` son en realidad WebP (`file`); los navegadores los leen por contenido, así que no se han renombrado.
 - `game_config.json` — fases y tiempos por modo, reglas de votación, modos de Mafia y restricciones del modo Custom.
 - `reference/wiki/` — clases de alineamiento (las 12 categorías de rol: Mafia Killing, Town Protective...), `Alignments (ToS)`,
