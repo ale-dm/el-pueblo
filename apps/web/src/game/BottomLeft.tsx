@@ -4,7 +4,7 @@ import { Chat } from "./Chat.js";
 import { LogPanel } from "./LogPanel.js";
 
 /** Chat y registro juntos abajo a la izquierda: pestañas, como el chat de Town of Salem. */
-export function BottomLeft({ view, log, className = "" }: { view: MatchView; log: GameEvent[]; className?: string }) {
+export function BottomLeft({ view, log, className = "", fill = false }: { view: MatchView; log: GameEvent[]; className?: string; fill?: boolean }) {
   const [tab, setTab] = useState<"chat" | "log">("chat");
   return (
     <div className={`flex min-h-0 flex-col gap-1 ${className}`}>
@@ -23,7 +23,7 @@ export function BottomLeft({ view, log, className = "" }: { view: MatchView; log
         ))}
       </div>
       <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-        {tab === "chat" ? <Chat view={view} log={log} compact /> : <LogPanel view={view} log={log} compact />}
+        {tab === "chat" ? <Chat view={view} log={log} compact={!fill} fill={fill} /> : <LogPanel view={view} log={log} compact={!fill} fill={fill} />}
       </div>
     </div>
   );

@@ -16,7 +16,9 @@ interface Props {
  */
 export function Table({ view, selected, isPickable, onPick }: Props) {
   const votesFor = (id: string) => Object.values(view.votes).filter((t) => t === id).length;
-  const myVote = view.votes[view.me.id] ?? null;
+  // Los votos son del día de la votación: fuera de ella, el mapa de votos guarda los del último día y no se enseña.
+  const voting = view.phase === "voting";
+  const myVote = voting ? view.votes[view.me.id] ?? null : null;
 
   return (
     <ul className="phone-table grid gap-2">
@@ -25,7 +27,7 @@ export function Table({ view, selected, isPickable, onPick }: Props) {
         const roleKey = p.id === view.me.id ? view.me.roleKey : p.revealedRoleKey ?? p.allyRoleKey;
         const icon = roleIconUrl(roleKey);
         const picked = selected.includes(p.id);
-        const votes = votesFor(p.id);
+        const votes = voting ? votesFor(p.id) : 0;
         const pickable = isPickable(p);
         const body = (
           <>

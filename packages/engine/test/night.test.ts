@@ -237,6 +237,13 @@ describe("noche: investigaciones", () => {
     expect(ofType(events, "effect.applied")[0]?.payload).toEqual({ actorId: "p1", targetId: "p3", flag: "framed" });
   });
 
+  it("cuando termina el encuadre, el evento es privado para el encuadrado (lo privado siempre tiene destinatario)", () => {
+    const first = resolve(game(["framer", "sheriff", "investigator"]), [night("p1", "frame", "p3")]);
+    const second = resolve(nextNight(first.state, first.state.dayNumber + 1), [night("p2", "interrogate", "p3")]);
+    const cleared = ofType(second.events, "effect.cleared");
+    expect(cleared.map((e) => [e.visibility, e.audiencePlayerId, e.payload.targetId])).toEqual([["private", "p3", "p3"]]);
+  });
+
   it("el Lookout ve a quién visita su objetivo", () => {
     const s = game(["lookout", "sheriff", "godfather"]);
     const { events } = resolve(s, [night("p1", "watch", "p3"), night("p2", "interrogate", "p3"), night("p3", "kill", "p1")]);

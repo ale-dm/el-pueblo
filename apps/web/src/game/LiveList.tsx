@@ -23,7 +23,9 @@ export function LiveList({ view, tab, onTab, className = "", selected = [], isPi
   const live = view.players.filter((p) => p.status === "alive");
   const dead = view.players.filter((p) => p.status !== "alive");
   const shown = tab === "live" ? live : dead;
-  const votesFor = (id: string) => Object.values(view.votes).filter((t) => t === id).length;
+  // Los votos solo cuentan en la votación; fuera de ella, el mapa guarda los del último día.
+  const voting = view.phase === "voting";
+  const votesFor = (id: string) => (voting ? Object.values(view.votes).filter((t) => t === id).length : 0);
 
   return (
     <Card className={`flex min-h-0 flex-col p-0 ${className}`}>
@@ -60,9 +62,9 @@ export function LiveList({ view, tab, onTab, className = "", selected = [], isPi
               </span>
               <span className="flex shrink-0 flex-col items-end gap-0.5 text-[10px] font-semibold">
                 {p.ally && <Tag className="bg-mafia text-paper">Mafia</Tag>}
-                {picked && view.votes[view.me.id] !== p.id && <Tag className="bg-blood text-paper">Objetivo</Tag>}
+                {picked && !(voting && view.votes[view.me.id] === p.id) && <Tag className="bg-blood text-paper">Objetivo</Tag>}
                 {view.defendantId === p.id && <Tag className="bg-blood text-paper">Acusado</Tag>}
-                {view.votes[view.me.id] === p.id && <Tag className="bg-sunset">Tu voto</Tag>}
+                {voting && view.votes[view.me.id] === p.id && <Tag className="bg-sunset">Tu voto</Tag>}
                 {votes > 0 && p.status === "alive" && <Tag>{votes} {votes === 1 ? "voto" : "votos"}</Tag>}
                 {p.isBot && <Tag>BOT</Tag>}
               </span>

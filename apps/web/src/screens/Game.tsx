@@ -247,10 +247,10 @@ export function Game({ view }: { view: MatchView }) {
               <p className="text-xs font-semibold">Día {view.dayNumber} · ⚖ {trialsLeft} · Sala {view.roomCode}</p>
             </div>
             <div className="flex shrink-0 gap-2">
-              <button type="button" aria-label="Tu rol" onClick={() => setSheet("role")} className="cartoon-btn flex size-10 items-center justify-center px-0 py-0">
+              <button type="button" aria-label="Tu rol" onClick={() => setSheet("role")} className="cartoon-btn flex size-10 items-center justify-center !p-0">
                 {roleIconUrl(me.roleKey) ? <img src={roleIconUrl(me.roleKey) ?? ""} alt="" className="size-7 object-contain" /> : <span aria-hidden="true">✦</span>}
               </button>
-              <button type="button" aria-label="Chat y registro" onClick={() => setSheet("chat")} className="cartoon-btn flex size-10 items-center justify-center px-0 py-0 text-xl">
+              <button type="button" aria-label="Chat y registro" onClick={() => setSheet("chat")} className="cartoon-btn flex size-10 items-center justify-center !p-0 text-xl">
                 <span aria-hidden="true">💬</span>
               </button>
             </div>
@@ -276,7 +276,7 @@ export function Game({ view }: { view: MatchView }) {
         )}
         {sheet === "chat" && (
           <Sheet title="Chat y registro" onClose={closeSheet}>
-            <BottomLeft view={view} log={log} className="h-full" />
+            <BottomLeft view={view} log={log} className="h-full" fill />
           </Sheet>
         )}
       </>

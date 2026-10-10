@@ -40,7 +40,7 @@ export interface MatchView {
   phaseEndsAt: string | null;
   /** Roles que hay en la partida, con su grupo (alineamiento). Público. */
   rolesInGame: Array<{ key: string; alignment: string | null }>;
-  rolePool: Array<{ key: string; alignment: string | null }>;
+  rolePool: Array<{ key: string; alignment: string | null; attack: string | null; defense: string | null }>;
   players: PublicPlayer[];
   votes: Record<string, string | null>;
   verdicts: Record<string, "guilty" | "innocent">;

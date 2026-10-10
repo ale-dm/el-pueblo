@@ -13,7 +13,7 @@ export function SettingsMenu({ muted, onToggleMute }: { muted: boolean; onToggle
         aria-label="Ajustes"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="cartoon-btn flex size-10 items-center justify-center px-0 py-0 text-xl"
+        className="cartoon-btn flex size-10 items-center justify-center !p-0 text-xl"
       >
         ☰
       </button>

@@ -63,7 +63,7 @@ export interface MatchView {
   /** Roles que hay en la partida, con su grupo (alineamiento). Público, como la lista de roles de ToS. */
   rolesInGame: Array<{ key: string; alignment: string | null }>;
   /** Todos los roles del MVP con su grupo: para ver el resto de roles de cada grupo que hay en la partida. Público y fijo. */
-  rolePool: Array<{ key: string; alignment: string | null }>;
+  rolePool: Array<{ key: string; alignment: string | null; attack: string | null; defense: string | null }>;
   players: PublicPlayer[];
   votes: Record<string, string | null>;
   verdicts: Record<string, "guilty" | "innocent">;
@@ -135,7 +135,7 @@ export function getView(deps: GetViewDeps) {
       .map((key) => ({ key, alignment: catalog.roles.get(key)?.alignmentKey ?? null }));
     const rolePool = [...catalog.roles.values()]
       .filter((r) => r.mvp)
-      .map((r) => ({ key: r.key, alignment: r.alignmentKey }))
+      .map((r) => ({ key: r.key, alignment: r.alignmentKey, attack: r.attack, defense: r.defense }))
       .sort((a, b) => a.key.localeCompare(b.key));
 
     const revealed = new Map<string, string>();

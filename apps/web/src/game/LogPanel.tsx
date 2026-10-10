@@ -11,7 +11,8 @@ const TONE: Record<LogTone, string> = {
 };
 
 /** Registro de la partida en orden, con separadores de día y noche. Se sigue la última línea. */
-export function LogPanel({ view, log, compact = false }: { view: MatchView; log: GameEvent[]; compact?: boolean }) {
+/** `fill`: ocupa toda la altura que le den (la hoja del móvil). */
+export function LogPanel({ view, log, compact = false, fill = false }: { view: MatchView; log: GameEvent[]; compact?: boolean; fill?: boolean }) {
   const end = useRef<HTMLLIElement>(null);
   const items = useMemo(() => buildLog(log, logContext(view)), [log, view]);
 
@@ -20,9 +21,9 @@ export function LogPanel({ view, log, compact = false }: { view: MatchView; log:
   }, [items.length]);
 
   return (
-    <Card className={compact ? "p-2" : ""}>
-      {!compact && <h3 className="mb-2 font-display text-xl">Registro</h3>}
-      <ul className={`${compact ? "max-h-24" : "max-h-72"} space-y-1 overflow-y-auto pr-1 text-sm`}>
+    <Card className={fill ? "flex min-h-0 flex-1 flex-col p-2" : compact ? "p-2" : ""}>
+      {!compact && !fill && <h3 className="mb-2 font-display text-xl">Registro</h3>}
+      <ul className={`${fill ? "min-h-0 flex-1" : compact ? "max-h-24" : "max-h-72"} space-y-1 overflow-y-auto pr-1 text-sm`}>
         {items.length === 0 && <li>La partida acaba de empezar.</li>}
         {items.map((item) =>
           item.kind === "separator" ? (
