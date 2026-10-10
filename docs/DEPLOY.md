@@ -100,6 +100,9 @@ Generar las claves VAPID una vez: `npx web-push generate-vapid-keys`.
 3. Portainer → Stacks → `el-pueblo` → **Pull and redeploy**. Reconstruye la imagen (`pull_policy: build`).
    (`docker restart` no sirve: seguiría con la imagen anterior.)
 4. `docker logs -f elpueblo-server` y probar en el navegador.
+   La app instalada (PWA) guarda su versión en el service worker. Desde la versión que trae el cambio de
+   `main.tsx` y `sw.ts`, la página se recarga sola al entrar en la versión nueva. Antes de eso, el móvil que ya
+   tenía la app instalada necesita dos aperturas (o cerrar la app del todo y volver a abrirla) para ver el cambio.
 
 Las migraciones de BD se aplican solas al arrancar, desde `apps/server/drizzle/`.
 

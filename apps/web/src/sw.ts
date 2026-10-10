@@ -7,6 +7,7 @@ interface SwScope {
   __WB_MANIFEST: Array<{ url: string; revision: string | null }>;
   registration: { showNotification(title: string, options: Record<string, unknown>): Promise<void> };
   clients: {
+    claim(): Promise<unknown>;
     matchAll(options: { type: "window" }): Promise<Array<{ focus(): Promise<unknown> }>>;
     openWindow(url: string): Promise<unknown>;
   };
@@ -21,6 +22,10 @@ cleanupOutdatedCaches();
 precacheAndRoute(self.__WB_MANIFEST);
 registerRoute(new NavigationRoute(createHandlerBoundToURL("/index.html"), { denylist: [/^\/socket\.io/] }));
 sw.skipWaiting();
+// Al activarse, toma las pestañas abiertas: así la página ve la versión nueva sin esperar a una segunda visita.
+sw.addEventListener("activate", (event) => {
+  event.waitUntil(sw.clients.claim());
+});
 
 // Aviso de fase. El texto llega ya genérico desde el servidor: aquí solo se muestra.
 sw.addEventListener("push", (event) => {

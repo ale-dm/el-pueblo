@@ -5,6 +5,13 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Despliegue: la PWA muestra la versión nueva sin dos recargas
+
+- Síntoma: tras redesplegar, el móvil seguía con la versión anterior hasta la segunda recarga. Causa: el service worker
+  nuevo se activaba sin tomar la página abierta (`clients.claim`), y nada recargaba la página.
+- Arreglo: `sw.ts` toma las pestañas al activarse; `main.tsx` recarga una vez al cambiar el service worker que controla la página (solo si ya había uno al cargar).
+- Probado en Chromium con dos builds: la versión anterior pasa a la corregida con una recarga automática (`controllerchange`). La versión anterior, que no tiene el arreglo, necesita dos recargas una sola vez.
+
 ## Diseño: móvil como la mesa de Wolvesville (referencia: juego principal)
 
 - Referencia: las capturas oficiales de Wolvesville en la App Store (no Classic, que es de pasar el móvil). Lo que se toma: una cuadrícula de jugadores como mesa, una línea de estado, la acción abajo y el resto fuera de la pantalla. No se copia arte ni colores: se usan los iconos de rol que ya tenemos.
