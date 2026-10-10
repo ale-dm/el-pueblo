@@ -9,7 +9,7 @@ export function PushButton() {
   const [message, setMessage] = useState<string | null>(null);
   if (!session) return null;
   return (
-    <div className="flex flex-col items-start gap-1">
+    <div className="short-avisos flex flex-col items-start gap-1">
       <Button
         className="whitespace-nowrap px-3 py-1 text-sm"
         onClick={async () => {

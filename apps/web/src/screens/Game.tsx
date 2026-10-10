@@ -217,7 +217,7 @@ export function Game({ view }: { view: MatchView }) {
           Móvil: el orden de siempre (order-*). */}
       <main className="game-grid flex min-h-dvh flex-col gap-3 p-3 md:grid">
         <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-1 md:row-start-1">
-          <Card className="short-hide order-1 flex items-center justify-between gap-2 p-2">
+          <Card className="short-head order-1 flex items-center justify-between gap-2 p-2">
             <div className="flex min-w-0 items-center gap-2">
               <SettingsMenu muted={muted} onToggleMute={toggleMute} />
               <div className="min-w-0">
@@ -227,11 +227,11 @@ export function Game({ view }: { view: MatchView }) {
             </div>
             <PushButton />
           </Card>
-          <div className="order-6 hidden gap-2 md:flex md:h-[42%] md:min-h-0">
+          <div className="short-hide order-6 hidden gap-2 md:flex md:h-[42%] md:min-h-0">
             <Graveyard view={view} className="min-w-0 flex-1" />
             <RolesInGame roles={view.rolesInGame} className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto" />
           </div>
-          <BottomLeft view={view} log={log} className="order-8 md:min-h-0 md:flex-1" />
+          <BottomLeft view={view} log={log} className="short-chatbox order-8 md:min-h-0 md:flex-1" />
         </div>
 
         <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-2 md:row-start-1">
@@ -242,21 +242,21 @@ export function Game({ view }: { view: MatchView }) {
             subtitle={subtitle}
             muted={muted}
             onToggleMute={toggleMute}
-            className="order-3"
+            className="short-top order-3"
           />
-          <section className="order-4 md:min-h-0 md:flex-1 md:overflow-y-auto">
+          <section className="short-pueblo order-4 md:min-h-0 md:flex-1 md:overflow-y-auto">
             {/* Los objetivos se eligen en la lista lateral: aquí solo se ve quién es quién. */}
             <PlayerGrid view={view} selected={targets} isPickable={noPick} onPick={noPickAction} />
           </section>
         </div>
 
         <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-1">
-          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="order-2 md:max-h-[44%] md:min-h-0" />
+          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="short-side order-2 md:max-h-[44%] md:min-h-0" />
           <LiveList
             view={view}
             tab={liveTab}
             onTab={setLiveTab}
-            className="order-5 md:min-h-0 md:flex-1"
+            className="short-list order-5 md:min-h-0 md:flex-1"
             selected={targets}
             isPickable={isPickable}
             onPick={pick}

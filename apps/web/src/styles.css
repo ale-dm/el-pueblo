@@ -77,11 +77,34 @@ body.night {
 
 /* Pantallas bajas en apaisado (móvil de lado): columnas más estrechas, menos texto y el pueblo más pequeño. */
 @media (max-height: 540px) and (min-width: 768px) {
-  .game-grid { grid-template-columns: 210px minmax(0, 1fr) 190px; gap: 0.4rem; padding: 0.4rem; }
+  /* Proporciones de la pantalla de referencia en horizontal: pestañas y chat a la izquierda, pueblo al centro, lista a la derecha. */
+  .game-grid { grid-template-columns: minmax(0, 27fr) minmax(0, 46fr) minmax(0, 27fr); gap: 0.3rem; padding: 0.3rem; }
   .short-hide { display: none !important; }
-  .short-title { font-size: 1.5rem; line-height: 1.1; }
-  .short-chat { max-height: 6.5rem; }
+  .short-title { display: none; }
+  .short-chat { max-height: none; }
   .short-actions { max-height: 6.5rem; overflow-y: auto; }
-  .ring-compact { min-height: 0 !important; transform: scale(0.7); transform-origin: center; }
+  .short-round { width: 3.5rem !important; height: 3.5rem !important; }
+  .short-ability { width: 4.5rem !important; }
+  .short-ability img { width: 2rem !important; height: 2rem !important; }
+  .short-tab { font-size: 0.7rem; padding: 0.2rem 0.3rem; white-space: nowrap; }
+  .short-row { padding-top: 0.15rem !important; padding-bottom: 0.15rem !important; font-size: 0.75rem; }
+  .short-card-avatar { display: none; }
+  .short-avisos { display: none; }
+  /* Chat en horizontal: márgenes, botones y campo más pequeños para que quepa la barra de escribir. */
+  .short-chatbox .mb-2, .short-chatbox .mt-2 { margin-top: 0.2rem; margin-bottom: 0.2rem; }
+  .short-chatbox .cartoon-btn { padding: 0.1rem 0.45rem; font-size: 0.7rem; }
+  .short-chatbox .cartoon-input { padding: 0.15rem 0.4rem; font-size: 0.8rem; }
+  /* Horizontal: cada bloque en su celda. Izquierda: cabecera, pestañas de rol y chat. Centro: fase y pueblo. Derecha: lista. */
+  .game-grid { grid-template-rows: auto minmax(0, 1fr) minmax(0, 1.15fr); }
+  .short-head { padding: 0.2rem 0.4rem !important; }
+  .short-head .font-display { font-size: 0.95rem; line-height: 1.1; }
+  .game-grid > .contents { display: contents !important; }
+  .short-head { grid-column: 1; grid-row: 1; }
+  .short-top { grid-column: 2; grid-row: 1; }
+  .short-pueblo { grid-column: 2; grid-row: 2 / span 2; min-height: 0; overflow-y: auto; }
+  .short-pueblo > div { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .short-side { grid-column: 1; grid-row: 2; max-height: none !important; min-height: 0; }
+  .short-chatbox { grid-column: 1; grid-row: 3; }
+  .short-list { grid-column: 3; grid-row: 1 / span 3; }
 }
 

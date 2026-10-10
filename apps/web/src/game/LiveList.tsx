@@ -33,7 +33,7 @@ export function LiveList({ view, tab, onTab, footer, className = "", selected = 
             aria-selected={tab === t}
             type="button"
             onClick={() => onTab(t)}
-            className={`px-2 py-2 font-display text-base uppercase ${tab === t ? "bg-sun" : "bg-paper opacity-70"}`}
+            className={`short-tab px-2 py-2 font-display text-base uppercase ${tab === t ? "bg-sun" : "bg-paper opacity-70"}`}
           >
             {t === "live" ? `Vivos (${live.length})` : `Muertos (${dead.length})`}
           </button>
@@ -57,7 +57,7 @@ export function LiveList({ view, tab, onTab, footer, className = "", selected = 
               {p.isBot && <span className="text-[10px] font-semibold">BOT</span>}
             </>
           );
-          const base = "flex w-full items-center gap-2 rounded-xl border-2 border-ink bg-white/70 px-2 py-1 text-left";
+          const base = "short-row flex w-full items-center gap-2 rounded-xl border-2 border-ink bg-white/70 px-2 py-1 text-left";
           return (
             <li key={p.id}>
               {pickable ? (

@@ -43,10 +43,10 @@ export function ActionDock({ view, targets, clearTargets }: Props) {
   if (view.phase === "judgement" && alive && view.defendantId !== me.id) {
     return (
       <div className="relative flex items-end justify-end gap-3 md:fixed md:bottom-4 md:right-[calc(23vw+1rem)] md:z-40">
-        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "guilty" })} className="cartoon-btn danger flex size-20 items-center justify-center rounded-full text-sm">
+        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "guilty" })} className="cartoon-btn danger flex short-round size-20 items-center justify-center rounded-full text-sm">
           Culpable
         </button>
-        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "innocent" })} className="cartoon-btn town flex size-20 items-center justify-center rounded-full text-sm">
+        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "innocent" })} className="cartoon-btn town flex short-round size-20 items-center justify-center rounded-full text-sm">
           Inocente
         </button>
       </div>
@@ -68,7 +68,7 @@ export function ActionDock({ view, targets, clearTargets }: Props) {
           aria-label="Votar"
           disabled={busy || plan.kind !== "command"}
           onClick={() => plan.kind === "command" && fire(plan.command)}
-          className="cartoon-btn flex size-20 items-center justify-center rounded-full"
+          className="cartoon-btn flex short-round size-20 items-center justify-center rounded-full"
         >
           <span aria-hidden="true" className="text-4xl">🗳️</span>
         </button>
@@ -152,7 +152,7 @@ function AbilityButton({ ability, icon, view, targets, busy, choosing, onTap, on
         title={label}
         disabled={busy || needs !== null}
         onClick={onTap}
-        className="cartoon-btn flex w-28 flex-col items-center gap-1 rounded-2xl px-2 py-1 text-xs"
+        className="cartoon-btn short-ability flex w-28 flex-col items-center gap-1 rounded-2xl px-2 py-1 text-xs"
       >
         {icon ? <img src={icon} alt="" className="size-12 object-contain" /> : <span aria-hidden="true" className="text-3xl">⭐</span>}
         <span className="leading-tight">{label}</span>

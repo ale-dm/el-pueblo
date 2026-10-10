@@ -58,7 +58,7 @@ export function PlayerGrid({ view, selected, isPickable, onPick }: Props) {
               <span className="flex items-center gap-2">
                 <span
                   aria-hidden="true"
-                  className="flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-ink font-display text-base text-ink"
+                  className="short-card-avatar flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-ink font-display text-base text-ink"
                   style={dead ? undefined : { background: tint(p.seat) }}
                 >
                   {dead ? "✝" : p.nick.charAt(0).toUpperCase()}
