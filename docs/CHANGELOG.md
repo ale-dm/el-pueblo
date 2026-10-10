@@ -18,6 +18,16 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Lo que se pierde al quitar el panel: escribir la nota de muerte al matar (la nota queda vacía; el autor la escribe en la mañana con la tarjeta de la Death Note) y el testamento falsificado (va vacío).
 - Pendiente: los avatares siguen siendo letras (decisión de arte pendiente en la GDD); con diez jugadores, dos casas del óvalo se pisan.
 
+## Diseño: distribución de pantalla como Town of Salem (escritorio)
+
+- Proporciones tomadas de las capturas de referencia: izquierda 34 %, centro 43 %, derecha 23 % del ancho. Solo la distribución; el estilo, los iconos y las ilustraciones son los nuestros.
+- Izquierda: cementerio y lista de roles lado a lado (44 % de la altura), y el chat a todo el ancho debajo. Cementerio nuevo (`game/Graveyard.tsx`).
+- Centro: el óvalo ocupa el espacio disponible; sin tope de tamaño en escritorio.
+- Derecha: carta del rol arriba (58 %), lista de vivos debajo (42 %). Los seis botones de la lista van en una fila de iconos.
+- Cabecera de la fase más pequeña en escritorio.
+- Móvil: el orden de siempre (`order-*`), comprobado con la prueba de móvil (11/11).
+- Pendiente: el aviso grande de juicio, los eventos de votación en el chat con colores y el mapa de fondo. No se copian las ilustraciones ni los iconos de ToS.
+
 ## Diseño: columna izquierda en escritorio
 
 - El chat tiene una parte fija de la altura (36 % del viewport, tercera fila de la rejilla) y la carta del rol se queda con el resto. Antes, el chat quedaba en unas pocas líneas.

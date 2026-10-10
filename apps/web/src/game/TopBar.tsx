@@ -42,7 +42,7 @@ export function TopBar({ view, trialsLeft, secondsLeft, subtitle, muted = false,
           </button>
         )}
       </div>
-      <h1 className="short-title font-display text-3xl drop-shadow-[3px_3px_0_var(--color-ink)] md:text-4xl">{PHASE_PROMPT[view.phase]}</h1>
+      <h1 className="short-title font-display text-3xl drop-shadow-[3px_3px_0_var(--color-ink)] md:text-3xl">{PHASE_PROMPT[view.phase]}</h1>
       <p className="short-hide text-sm font-semibold">{subtitle}</p>
     </header>
   );

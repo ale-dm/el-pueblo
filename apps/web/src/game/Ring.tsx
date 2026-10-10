@@ -26,7 +26,7 @@ export function Ring({ view, selected, isPickable, onPick }: Props) {
   const defendant = view.players.find((p) => p.id === view.defendantId);
 
   return (
-    <div className="ring-compact relative mx-auto h-full min-h-[14rem] w-full max-h-[34rem] max-w-[46rem]" aria-label="El pueblo">
+    <div className="ring-compact relative mx-auto h-full min-h-[14rem] w-full max-h-[34rem] max-w-[46rem] md:max-h-none md:max-w-none" aria-label="El pueblo">
       {/* Plaza */}
       <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-ink bg-[radial-gradient(circle,#fff8e7,#f3d9a4)] opacity-70" />
 

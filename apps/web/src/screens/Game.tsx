@@ -17,6 +17,8 @@ import { SideTabs, type SideTab } from "../game/SideTabs.js";
 import { ActionBar } from "../game/ActionBar.js";
 import { SettingsMenu } from "../game/SettingsMenu.js";
 import { BottomLeft } from "../game/BottomLeft.js";
+import { Graveyard } from "../game/Graveyard.js";
+import { RolesInGame } from "../game/RolesInGame.js";
 import { ScreenBanner, DeathFx } from "../game/Fx.js";
 import { isMuted, playCue, setMuted } from "../lib/sound.js";
 import { voteStatus } from "../lib/votes.js";
@@ -203,20 +205,19 @@ export function Game({ view }: { view: MatchView }) {
         </button>
       )}
       {/* Horizontal en pantallas anchas y apaisado (como el juego original); vertical en móvil. */}
+      {/* Escritorio: cabecera arriba; a la izquierda, cementerio y roles con el chat debajo; al centro, el pueblo;
+          a la derecha, la carta del rol y la lista de vivos. Móvil: el orden de siempre (order-*). */}
       <main className="game-grid flex min-h-dvh flex-col gap-3 p-3 md:grid">
-        <aside className="flex min-h-0 flex-col gap-2 md:col-start-1 md:row-span-2 md:row-start-1">
-          <Card className="short-hide flex items-center justify-between gap-2 p-2">
-            <div className="flex min-w-0 items-center gap-2">
-              <SettingsMenu muted={muted} onToggleMute={toggleMute} />
-              <div className="min-w-0">
-                <p className="truncate font-display text-xl">{me.nick}</p>
-                <p className="whitespace-nowrap text-xs font-semibold">Sala {view.roomCode}</p>
-              </div>
+        <Card className="short-hide order-1 flex items-center justify-between gap-2 p-2 md:col-start-1 md:row-start-1">
+          <div className="flex min-w-0 items-center gap-2">
+            <SettingsMenu muted={muted} onToggleMute={toggleMute} />
+            <div className="min-w-0">
+              <p className="truncate font-display text-xl">{me.nick}</p>
+              <p className="whitespace-nowrap text-xs font-semibold">Sala {view.roomCode}</p>
             </div>
-            <PushButton />
-          </Card>
-          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="md:min-h-0 md:flex-1" />
-        </aside>
+          </div>
+          <PushButton />
+        </Card>
 
         <TopBar
           view={view}
@@ -225,10 +226,20 @@ export function Game({ view }: { view: MatchView }) {
           subtitle={subtitle}
           muted={muted}
           onToggleMute={toggleMute}
-          className="md:col-start-2 md:row-start-1"
+          className="order-3 md:col-span-2 md:col-start-2 md:row-start-1"
         />
 
-        <section className="md:col-start-2 md:row-start-2 md:min-h-0">
+        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-1 md:row-start-2">
+          <div className="order-6 hidden gap-2 md:flex md:h-[44%] md:min-h-0">
+            <Graveyard view={view} className="min-w-0 flex-1" />
+            <div className="min-w-0 flex-1 overflow-y-auto">
+              <RolesInGame roles={view.rolesInGame} />
+            </div>
+          </div>
+          <BottomLeft view={view} log={log} className="order-8 md:min-h-0 md:flex-1" />
+        </div>
+
+        <section className="order-4 md:col-start-2 md:row-start-2 md:min-h-0">
           <div className="md:hidden">
             {/* El tablero solo muestra: los objetivos se eligen en la lista lateral. */}
             <PlayerGrid view={view} selected={targets} isPickable={noPick} onPick={noPickAction} />
@@ -238,29 +249,29 @@ export function Game({ view }: { view: MatchView }) {
           </div>
         </section>
 
-
-        <LiveList
-          view={view}
-          tab={liveTab}
-          onTab={setLiveTab}
-          className="md:col-start-3 md:row-span-3 md:row-start-1 md:min-h-0"
-          selected={targets}
-          isPickable={isPickable}
-          onPick={pick}
-          footer={
-            <ActionBar
-              onRole={() => setSideTab("role")}
-              onRoles={() => setSideTab("roles")}
-              onWill={() => setSideTab("will")}
-              onLive={() => setLiveTab("live")}
-              onGraveyard={() => setLiveTab("dead")}
-            />
-          }
-        />
+        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-2">
+          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="order-2 md:min-h-0 md:flex-[58_1_0]" />
+          <LiveList
+            view={view}
+            tab={liveTab}
+            onTab={setLiveTab}
+            className="order-5 md:min-h-0 md:flex-[42_1_0]"
+            selected={targets}
+            isPickable={isPickable}
+            onPick={pick}
+            footer={
+              <ActionBar
+                onRole={() => setSideTab("role")}
+                onRoles={() => setSideTab("roles")}
+                onWill={() => setSideTab("will")}
+                onLive={() => setLiveTab("live")}
+                onGraveyard={() => setLiveTab("dead")}
+              />
+            }
+          />
+        </div>
 
         <ActionDock view={view} targets={targets} clearTargets={() => setTargets([])} />
-        {/* En escritorio el chat tiene una parte fija de la columna; la carta del rol se queda con el resto. */}
-        <BottomLeft view={view} log={log} className="md:col-start-1 md:row-start-3" />
       </main>
     </>
   );

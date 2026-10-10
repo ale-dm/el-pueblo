@@ -42,7 +42,7 @@ export function ActionDock({ view, targets, clearTargets }: Props) {
   // Juicio: dos botones redondos.
   if (view.phase === "judgement" && alive && view.defendantId !== me.id) {
     return (
-      <div className="relative flex items-end justify-end gap-3 md:fixed md:bottom-4 md:right-[17.5rem] md:z-40">
+      <div className="relative flex items-end justify-end gap-3 md:fixed md:bottom-4 md:right-[calc(23vw+1rem)] md:z-40">
         <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "guilty" })} className="cartoon-btn danger flex size-20 items-center justify-center rounded-full text-sm">
           Culpable
         </button>
@@ -58,7 +58,7 @@ export function ActionDock({ view, targets, clearTargets }: Props) {
     if (!alive) return null;
     const plan = votePlan(view, targets);
     return (
-      <div className="relative flex flex-col items-end gap-2 md:fixed md:bottom-4 md:right-[17.5rem] md:z-40">
+      <div className="relative flex flex-col items-end gap-2 md:fixed md:bottom-4 md:right-[calc(23vw+1rem)] md:z-40">
         {plan.kind === "needs" && <Hint text={plan.hint} />}
         <button type="button" disabled={busy} onClick={() => void send({ type: "vote", voterId: me.id, targetId: null })} className="cartoon-btn px-3 py-1 text-sm">
           Abstenerse
@@ -80,7 +80,7 @@ export function ActionDock({ view, targets, clearTargets }: Props) {
   if (abilities.length === 0) return null;
 
   return (
-    <div className="relative flex flex-col items-end gap-3 md:fixed md:bottom-4 md:right-[17.5rem] md:z-40">
+    <div className="relative flex flex-col items-end gap-3 md:fixed md:bottom-4 md:right-[calc(23vw+1rem)] md:z-40">
       {abilities.map((ability) => (
         <AbilityButton
           key={ability.key}
