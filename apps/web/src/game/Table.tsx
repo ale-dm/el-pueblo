@@ -1,5 +1,6 @@
 import type { MatchView, PublicPlayer } from "../types.js";
 import { roleIconUrl } from "../lib/roleImages.js";
+import { avatarUrl } from "../lib/avatars.js";
 
 interface Props {
   view: MatchView;
@@ -26,22 +27,19 @@ export function Table({ view, selected, isPickable, onPick }: Props) {
         const dead = p.status !== "alive";
         const roleKey = p.id === view.me.id ? view.me.roleKey : p.revealedRoleKey ?? p.allyRoleKey;
         const icon = roleIconUrl(roleKey);
+        const avatar = avatarUrl(p.seat);
         const picked = selected.includes(p.id);
         const votes = voting ? votesFor(p.id) : 0;
         const pickable = isPickable(p);
         const body = (
           <>
             <span className="block truncate text-[11px] font-semibold leading-tight">
-              {p.seat}. {p.nick}{p.id === view.me.id ? " (tú)" : ""}
+              {p.seat}. {p.nick}{p.id === view.me.id ? " (tú)" : ""}{dead ? " ✝" : ""}
             </span>
-            <span className="flex min-h-0 flex-1 items-center justify-center py-0.5">
-              {icon ? (
-                <img src={icon} alt="" className="max-h-full max-w-full flex-1 object-contain" />
-              ) : dead ? (
-                <span aria-hidden="true" className="font-display text-2xl">✝</span>
-              ) : (
-                <span aria-hidden="true" className="font-display text-2xl">{p.seat}</span>
-              )}
+            {/* El personaje de la wiki es su aspecto; el rol, si se conoce, va en la esquina. */}
+            <span className="relative flex min-h-0 flex-1 items-center justify-center py-0.5">
+              <img src={avatar} alt="" className="max-h-full max-w-full flex-1 object-contain" />
+              {icon && <img src={icon} alt="" className="absolute right-0 top-0 size-7 rounded-full border-2 border-ink bg-paper object-contain" />}
             </span>
             <span className="flex min-h-4 flex-wrap items-center justify-center gap-0.5 text-[10px] font-semibold">
               {p.ally && <Tag className="bg-mafia text-paper">Mafia</Tag>}

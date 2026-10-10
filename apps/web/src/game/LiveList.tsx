@@ -1,5 +1,6 @@
 import type { MatchView, PublicPlayer } from "../types.js";
 import { roleName } from "../lib/roles.js";
+import { avatarUrl } from "../lib/avatars.js";
 import { Card } from "../ui/primitives.js";
 
 export type LiveTab = "live" | "dead";
@@ -52,11 +53,9 @@ export function LiveList({ view, tab, onTab, className = "", selected = [], isPi
           const votes = votesFor(p.id);
           const body = (
             <>
-              <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-sun font-display text-sm">
-                {p.seat}
-              </span>
+              <img src={avatarUrl(p.seat)} alt="" className="size-9 shrink-0 rounded-full border-2 border-ink bg-sun object-contain" />
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-semibold">{p.nick}{p.id === view.me.id ? " (tú)" : ""}</span>
+                <span className="block truncate font-semibold">{p.seat}. {p.nick}{p.id === view.me.id ? " (tú)" : ""}</span>
                 {/* El rol del compañero de Mafia se ve también en horizontal: es lo que se pidió saber. */}
                 {role && <span className={`block truncate text-xs ${p.ally ? "text-mafia" : "opacity-80"}`}>{role}</span>}
               </span>

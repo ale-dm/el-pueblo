@@ -15,6 +15,14 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Pendiente: el filtro del Forger no tiene prueba automática (la lógica está en la pantalla, no en el motor); se comprobó leyendo el código.
 - Verificado a continuación: el voto en escritorio (1366×768) y la ficha de rol en horizontal (844×390). El voto en horizontal no se pudo capturar: el script llegó tarde a la votación; el voto está cubierto en vertical por la prueba de móvil.
 
+## Personajes por defecto en las cartas de los jugadores
+
+- Qué: los personajes por defecto de la wiki (Avatars (ToS), "Default Skins") no son roles; son el aspecto de cada jugador. Cada asiento tiene el suyo (`lib/avatars.ts`, estable entre recargas). Se usan en la mesa del móvil (el centro de la casilla) y en la lista de escritorio (sustituye al círculo del asiento).
+- El icono del rol, si se conoce, va en la esquina de la casilla. Los muertos van apagados con ✝.
+- Imágenes: cinco copias en `apps/web/public/avatars/` (John Hathorne y Random Townie no están en el índice de imágenes de la wiki).
+- Pendiente: la licencia de este arte. La de la wiki es CC-BY-SA según `data/README.md`, y hay que confirmarla antes de publicar.
+- Comprobado: `pnpm check` (engine 592, web 141, server 114); prueba de móvil 11 de 11; capturas de móvil y escritorio.
+
 ## Partida atascada, chat y registro, roles al alcance
 
 - Motor: el fin del encuadre (`effect.cleared`) salía como privado sin destinatario. La base de datos lo rechaza (`events_private_needs_audience`), así que la noche no cerraba y la partida se quedaba en "0 s". Ahora lo recibe el jugador encuadrado (`events/emit.ts`). Test de regresión en `packages/engine/test/night.test.ts`.
