@@ -13,6 +13,7 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Plaza del primer día y de la discusión: juicios posibles hoy y los votos que hacen falta para uno. Ya no queda vacía.
 - Comprobado: `pnpm check` (engine 592, web 139, server 114); prueba de móvil 11 de 11; captura de chat y del primer día.
 - Pendiente: el filtro del Forger no tiene prueba automática (la lógica está en la pantalla, no en el motor); se comprobó leyendo el código.
+- Verificado a continuación: el voto en escritorio (1366×768) y la ficha de rol en horizontal (844×390). El voto en horizontal no se pudo capturar: el script llegó tarde a la votación; el voto está cubierto en vertical por la prueba de móvil.
 
 ## Partida atascada, chat y registro, roles al alcance
 
