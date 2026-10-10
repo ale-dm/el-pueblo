@@ -155,8 +155,11 @@ export function Game({ view }: { view: MatchView }) {
   const selected = voting ? (myVote ? [myVote] : []) : targets;
 
   /** Con Retributionist, el primer objetivo es un Town muerto (zombi) y el segundo un vivo. */
+  // Forger: su falsificación es para alguien que no es de la Mafia (wiki: Forger.md:204), y sus compañeros son de la Mafia.
+  const onlyForges = view.phase === "night" && view.me.nightAbilities.length > 0 && view.me.nightAbilities.every((a) => a.key === "forge");
   const isPickable = (p: PublicPlayer) => {
     if (!need.selectable || p.id === view.me.id) return false;
+    if (onlyForges && p.ally) return false;
     if (voting) return p.status === "alive";
     if (!need.raise) return p.status === "alive";
     if (p.status === "alive") return targets.length > 0;
@@ -261,7 +264,7 @@ export function Game({ view }: { view: MatchView }) {
           <footer className="phone-foot flex flex-col gap-2">
             {/* La plaza lleva la frase de la fase y el estado: el recuento de votos, el acusado y los muertos. */}
             <div className="phone-plaza">
-              <Plaza view={view} log={log} subtitle={subtitle} />
+              <Plaza view={view} log={log} subtitle={subtitle} trialsLeft={trialsLeft} />
             </div>
             <ActionDock inline view={view} targets={targets} clearTargets={() => setTargets([])} />
           </footer>
@@ -324,7 +327,7 @@ export function Game({ view }: { view: MatchView }) {
             onToggleMute={toggleMute}
           />
           <section className="md:min-h-0 md:flex-1">
-            <Plaza view={view} log={log} subtitle={subtitle} />
+            <Plaza view={view} log={log} subtitle={subtitle} trialsLeft={trialsLeft} />
           </section>
         </div>
 

@@ -5,6 +5,15 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Chat con avisos, Forger sin compañeros, plaza del primer día
+
+- Chat: los avisos del sistema (votos, juicios, muertes) van en el mismo flujo que los mensajes en cualquier canal, en orden. El registro completo sigue en su pestaña para leerlo con calma.
+- Forger: no puede elegir a un compañero de Mafia como objetivo (Forger.md:204). Si su única habilidad es falsificar, los compañeros no se pueden elegir.
+- Mesa: un jugador muerto muestra su rol revelado, apagado. ✝ solo si no se sabe.
+- Plaza del primer día y de la discusión: juicios posibles hoy y los votos que hacen falta para uno. Ya no queda vacía.
+- Comprobado: `pnpm check` (engine 592, web 139, server 114); prueba de móvil 11 de 11; captura de chat y del primer día.
+- Pendiente: el filtro del Forger no tiene prueba automática (la lógica está en la pantalla, no en el motor); se comprobó leyendo el código.
+
 ## Partida atascada, chat y registro, roles al alcance
 
 - Motor: el fin del encuadre (`effect.cleared`) salía como privado sin destinatario. La base de datos lo rechaza (`events_private_needs_audience`), así que la noche no cerraba y la partida se quedaba en "0 s". Ahora lo recibe el jugador encuadrado (`events/emit.ts`). Test de regresión en `packages/engine/test/night.test.ts`.

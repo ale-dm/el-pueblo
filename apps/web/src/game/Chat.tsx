@@ -40,14 +40,13 @@ export function Chat({ view, log, compact = false, fill = false }: { view: Match
           </p>
         ) };
       }),
-    // Avisos del sistema (votos, juicios, muertes), con el color de su tono: rojo peligro, verde bueno.
-    ...(active === "public"
-      ? buildLog(log, logContext(view)).flatMap((i) =>
-          i.kind === "line" && i.tone !== "private"
-            ? [{ seq: i.seq, key: i.key, node: <p key={i.key} className={LINE_TONE[i.tone]}>• {i.text}</p> }]
-            : [],
-        )
-      : []),
+    // Avisos del sistema (votos, juicios, muertes): son públicos, así que van en el mismo flujo en cualquier canal,
+    // en su orden. El registro completo está en su pestaña para leerlo con calma.
+    ...buildLog(log, logContext(view)).flatMap((i) =>
+      i.kind === "line" && i.tone !== "private"
+        ? [{ seq: i.seq, key: i.key, node: <p key={i.key} className={LINE_TONE[i.tone]}>• {i.text}</p> }]
+        : [],
+    ),
   ].sort((a, b) => a.seq - b.seq);
 
   return (

@@ -35,10 +35,10 @@ export function Table({ view, selected, isPickable, onPick }: Props) {
               {p.seat}. {p.nick}{p.id === view.me.id ? " (tú)" : ""}
             </span>
             <span className="flex min-h-0 flex-1 items-center justify-center py-0.5">
-              {dead ? (
-                <span aria-hidden="true" className="font-display text-2xl">✝</span>
-              ) : icon ? (
+              {icon ? (
                 <img src={icon} alt="" className="max-h-full max-w-full flex-1 object-contain" />
+              ) : dead ? (
+                <span aria-hidden="true" className="font-display text-2xl">✝</span>
               ) : (
                 <span aria-hidden="true" className="font-display text-2xl">{p.seat}</span>
               )}

@@ -7,13 +7,15 @@ interface Props {
   log: GameEvent[];
   /** Qué está pasando ahora, en una frase (votos necesarios, más votado, o el aviso de la fase). */
   subtitle: string;
+  /** Juicios que quedan hoy (máximo tres por día). */
+  trialsLeft: number;
 }
 
 /**
  * La plaza: el centro del pueblo. Muestra lo que pasa ahora: el recuento de votos, el acusado en juicio y quién ha
  * muerto por la mañana. No repite la lista de jugadores; la selección y el estado están a la derecha.
  */
-export function Plaza({ view, log, subtitle }: Props) {
+export function Plaza({ view, log, subtitle, trialsLeft }: Props) {
   const nick = (id: string | null | undefined) => view.players.find((p) => p.id === id)?.nick ?? "?";
   const alive = view.players.filter((p) => p.status === "alive");
   // Mismo umbral que el aviso de votación: la mitad de los vivos y conectados, redondeada hacia arriba.
@@ -43,6 +45,13 @@ export function Plaza({ view, log, subtitle }: Props) {
         <p className="text-xs opacity-80">
           Vivos: {alive.length} · Muertos: {view.players.length - alive.length}
         </p>
+      )}
+
+      {(view.phase === "day_1" || view.phase === "discussion") && (
+        <div className="rounded-2xl border-2 border-ink bg-white/70 px-3 py-2 text-sm">
+          <p className="font-display text-base">⚖ {trialsLeft} {trialsLeft === 1 ? "juicio posible" : "juicios posibles"} hoy</p>
+          <p className="text-xs opacity-80">Un juicio empieza con {Math.ceil(alive.length / 2)} votos.</p>
+        </div>
       )}
 
       {view.phase !== "night" && deaths.length > 0 && (
