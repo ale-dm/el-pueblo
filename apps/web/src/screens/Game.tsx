@@ -8,7 +8,6 @@ import { secondsLeft as secondsUntil } from "../lib/countdown.js";
 import { trialsLeftToday } from "../lib/trials.js";
 import { RoleReveal } from "../game/RoleReveal.js";
 import { PlayerGrid } from "../game/PlayerGrid.js";
-import { Ring } from "../game/Ring.js";
 import { ActionDock } from "../game/ActionDock.js";
 import { PushButton } from "../game/PushButton.js";
 import { TopBar } from "../game/TopBar.js";
@@ -205,57 +204,51 @@ export function Game({ view }: { view: MatchView }) {
         </button>
       )}
       {/* Horizontal en pantallas anchas y apaisado (como el juego original); vertical en móvil. */}
-      {/* Escritorio: cabecera arriba; a la izquierda, cementerio y roles con el chat debajo; al centro, el pueblo;
-          a la derecha, la carta del rol y la lista de vivos. Móvil: el orden de siempre (order-*). */}
+      {/* Escritorio: tres columnas de arriba abajo. Izquierda: cabecera, cementerio y roles, y el chat hasta abajo.
+          Centro: la pregunta de la fase y los jugadores como tarjetas. Derecha: la carta del rol y la lista de vivos.
+          Móvil: el orden de siempre (order-*). */}
       <main className="game-grid flex min-h-dvh flex-col gap-3 p-3 md:grid">
-        <Card className="short-hide order-1 flex items-center justify-between gap-2 p-2 md:col-start-1 md:row-start-1">
-          <div className="flex min-w-0 items-center gap-2">
-            <SettingsMenu muted={muted} onToggleMute={toggleMute} />
-            <div className="min-w-0">
-              <p className="truncate font-display text-xl">{me.nick}</p>
-              <p className="whitespace-nowrap text-xs font-semibold">Sala {view.roomCode}</p>
+        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-1 md:row-start-1">
+          <Card className="short-hide order-1 flex items-center justify-between gap-2 p-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <SettingsMenu muted={muted} onToggleMute={toggleMute} />
+              <div className="min-w-0">
+                <p className="truncate font-display text-xl">{me.nick}</p>
+                <p className="whitespace-nowrap text-xs font-semibold">Sala {view.roomCode}</p>
+              </div>
             </div>
-          </div>
-          <PushButton />
-        </Card>
-
-        <TopBar
-          view={view}
-          trialsLeft={trialsLeft}
-          secondsLeft={left}
-          subtitle={subtitle}
-          muted={muted}
-          onToggleMute={toggleMute}
-          className="order-3 md:col-span-2 md:col-start-2 md:row-start-1"
-        />
-
-        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-1 md:row-start-2">
-          <div className="order-6 hidden gap-2 md:flex md:h-[44%] md:min-h-0">
+            <PushButton />
+          </Card>
+          <div className="order-6 hidden gap-2 md:flex md:h-[34%] md:min-h-0">
             <Graveyard view={view} className="min-w-0 flex-1" />
-            <div className="min-w-0 flex-1 overflow-y-auto">
-              <RolesInGame roles={view.rolesInGame} />
-            </div>
+            <RolesInGame roles={view.rolesInGame} className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto" />
           </div>
           <BottomLeft view={view} log={log} className="order-8 md:min-h-0 md:flex-1" />
         </div>
 
-        <section className="order-4 md:col-start-2 md:row-start-2 md:min-h-0">
-          <div className="md:hidden">
-            {/* El tablero solo muestra: los objetivos se eligen en la lista lateral. */}
+        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-2 md:row-start-1">
+          <TopBar
+            view={view}
+            trialsLeft={trialsLeft}
+            secondsLeft={left}
+            subtitle={subtitle}
+            muted={muted}
+            onToggleMute={toggleMute}
+            className="order-3"
+          />
+          <section className="order-4 md:min-h-0 md:flex-1 md:overflow-y-auto">
+            {/* Los objetivos se eligen en la lista lateral: aquí solo se ve quién es quién. */}
             <PlayerGrid view={view} selected={targets} isPickable={noPick} onPick={noPickAction} />
-          </div>
-          <div className="hidden h-full md:block">
-            <Ring view={view} selected={targets} isPickable={noPick} onPick={noPickAction} />
-          </div>
-        </section>
+          </section>
+        </div>
 
-        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-2">
-          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="order-2 md:min-h-0 md:flex-[58_1_0]" />
+        <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-1">
+          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="order-2 md:max-h-[42%] md:min-h-0" />
           <LiveList
             view={view}
             tab={liveTab}
             onTab={setLiveTab}
-            className="order-5 md:min-h-0 md:flex-[42_1_0]"
+            className="order-5 md:min-h-0 md:flex-1"
             selected={targets}
             isPickable={isPickable}
             onPick={pick}

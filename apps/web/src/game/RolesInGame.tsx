@@ -3,7 +3,7 @@ import { ALIGNMENT_NAMES, ALIGNMENT_ORDER, ROLE_NAMES, alignmentLabel } from "..
 import { Card, Pill } from "../ui/primitives.js";
 
 /** Roles de la partida agrupados por bando y tipo, como la lista de roles de ToS. */
-export function RolesInGame({ roles }: { roles: MatchView["rolesInGame"] }) {
+export function RolesInGame({ roles, className = "" }: { roles: MatchView["rolesInGame"]; className?: string }) {
   const groups = ALIGNMENT_ORDER.map((alignment) => {
     const counts = new Map<string, number>();
     for (const r of roles) if (r.alignment === alignment) counts.set(r.key, (counts.get(r.key) ?? 0) + 1);
@@ -12,7 +12,7 @@ export function RolesInGame({ roles }: { roles: MatchView["rolesInGame"] }) {
   const others = roles.filter((r) => !ALIGNMENT_ORDER.includes(r.alignment ?? ""));
 
   return (
-    <Card>
+    <Card className={className}>
       <h3 className="mb-2 font-display text-xl">Roles en la partida</h3>
       <div className="space-y-3">
         {groups.map((g) => (

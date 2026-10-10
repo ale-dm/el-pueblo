@@ -40,7 +40,7 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
   ].sort((a, b) => a.seq - b.seq);
 
   return (
-    <Card className={compact ? "p-2" : ""}>
+    <Card className={compact ? "flex min-h-0 flex-1 flex-col p-2" : ""}>
       <div className="mb-2 flex flex-wrap gap-2">
         {channels.map((c) => (
           <Button key={c} tone={c === "mafia" ? "mafia" : c === "dead" ? "danger" : "sun"} className={active === c ? "" : "opacity-60"} onClick={() => setChannel(c)}>
@@ -48,7 +48,7 @@ export function Chat({ view, log, compact = false }: { view: MatchView; log: Gam
           </Button>
         ))}
       </div>
-      <div className={`${compact ? "max-h-24" : "max-h-56"} space-y-1 overflow-y-auto rounded-2xl border-2 border-ink bg-white/60 p-2 text-ink`}>
+      <div className={`${compact ? "max-h-24 md:min-h-0 md:max-h-none md:flex-1" : "max-h-56"} space-y-1 overflow-y-auto rounded-2xl border-2 border-ink bg-white/60 p-2 text-ink`}>
         {stream.length === 0 && <p className="text-sm">Aún no hay mensajes.</p>}
         {stream.map((m) => m.node)}
       </div>

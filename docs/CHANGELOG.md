@@ -26,6 +26,7 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Derecha: carta del rol arriba (58 %), lista de vivos debajo (42 %). Los seis botones de la lista van en una fila de iconos.
 - Cabecera de la fase más pequeña en escritorio.
 - Móvil: el orden de siempre (`order-*`), comprobado con la prueba de móvil (11/11).
+- Segunda vuelta: los jugadores son tarjetas (número, inicial, nombre y píldoras), no casas. En escritorio, el centro son las tarjetas y el óvalo queda solo en la sala de espera. El chat llega hasta abajo; la carta del rol y la lista de vivos suben hasta arriba.
 - Pendiente: el aviso grande de juicio, los eventos de votación en el chat con colores y el mapa de fondo. No se copian las ilustraciones ni los iconos de ToS.
 
 ## Diseño: columna izquierda en escritorio
