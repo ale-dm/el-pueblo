@@ -49,28 +49,28 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
         <p className="mt-2 inline-block -rotate-3 rounded-lg border-4 border-ink bg-paper px-3 py-1 font-display text-lg text-blood">✝ Has muerto</p>
       )}
 
-      <dl className="mt-3 space-y-3 text-sm">
+      <dl className="mt-3 space-y-3 text-sm md:mt-2 md:space-y-1.5 md:text-xs">
         {alignmentLabel(me.alignment) && (
           <div>
-            <dt className="font-display text-base">Alineamiento</dt>
+            <dt className="font-display text-base md:text-sm">Alineamiento</dt>
             <dd className="font-semibold">{alignmentLabel(me.alignment)}</dd>
           </div>
         )}
         {me.faction && (
           <div>
-            <dt className="font-display text-base">Objetivo</dt>
+            <dt className="font-display text-base md:text-sm">Objetivo</dt>
             <dd>{GOAL[me.faction]}</dd>
           </div>
         )}
         {me.roleKey && ROLE_BLURB[me.roleKey] && (
           <div>
-            <dt className="font-display text-base">Descripción</dt>
+            <dt className="font-display text-base md:text-sm">Descripción</dt>
             <dd>{ROLE_BLURB[me.roleKey]}</dd>
           </div>
         )}
         {abilities.length > 0 && (
           <div>
-            <dt className="font-display text-base">Habilidades</dt>
+            <dt className="font-display text-base md:text-sm">Habilidades</dt>
             <dd>
               <ul className="list-inside list-disc">
                 {abilities.map((a, i) => <li key={`${a.key}-${i}`}>{abilityLabel(a.key)}</li>)}
@@ -80,7 +80,7 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
         )}
         {(attack || defense) && (
           <div>
-            <dt className="font-display text-base">Atributos</dt>
+            <dt className="font-display text-base md:text-sm">Atributos</dt>
             <dd>
               {attack && <span className="mr-3">Ataque: <strong>{attack}</strong></span>}
               {defense && <span>Defensa: <strong>{defense}</strong></span>}

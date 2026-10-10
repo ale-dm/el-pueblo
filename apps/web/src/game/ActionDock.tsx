@@ -152,7 +152,7 @@ function AbilityButton({ ability, icon, view, targets, busy, choosing, onTap, on
         title={label}
         disabled={busy || needs !== null}
         onClick={onTap}
-        className="cartoon-btn flex w-24 flex-col items-center gap-1 rounded-2xl px-2 py-1 text-sm"
+        className="cartoon-btn flex w-28 flex-col items-center gap-1 rounded-2xl px-2 py-1 text-xs"
       >
         {icon ? <img src={icon} alt="" className="size-12 object-contain" /> : <span aria-hidden="true" className="text-3xl">⭐</span>}
         <span className="leading-tight">{label}</span>

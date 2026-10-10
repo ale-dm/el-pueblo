@@ -18,6 +18,12 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Lo que se pierde al quitar el panel: escribir la nota de muerte al matar (la nota queda vacía; el autor la escribe en la mañana con la tarjeta de la Death Note) y el testamento falsificado (va vacío).
 - Pendiente: los avatares siguen siendo letras (decisión de arte pendiente en la GDD); con diez jugadores, dos casas del óvalo se pisan.
 
+## Diseño: columna izquierda en escritorio
+
+- El chat tiene una parte fija de la altura (36 % del viewport, tercera fila de la rejilla) y la carta del rol se queda con el resto. Antes, el chat quedaba en unas pocas líneas.
+- Texto y espacios de la carta del rol más pequeños en escritorio; cabecera más compacta y botón de avisos en una línea. Se ve nombre, bando, alineamiento y objetivo sin desplazar.
+- Revisado en 1280×720 y 1366×768. La carta sigue con desplazamiento para la descripción larga.
+
 ## Prueba de móvil (M3): una partida completa en un perfil de iPhone
 
 - Qué: `apps/web/e2e/mobile-smoke.mjs`. Diez navegadores con el perfil de iPhone 13 (390 px, táctil) contra el servidor en marcha. Recorre sala, primer día (con la revelación del rol), chat público, discusión, los diez votos, el juicio y la noche.

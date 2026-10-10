@@ -11,6 +11,7 @@ export function PushButton() {
   return (
     <div className="flex flex-col items-start gap-1">
       <Button
+        className="whitespace-nowrap px-3 py-1 text-sm"
         onClick={async () => {
           try {
             setMessage(PUSH_MESSAGE[await enablePush(session.matchId, session.token)]);

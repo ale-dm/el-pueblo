@@ -205,12 +205,12 @@ export function Game({ view }: { view: MatchView }) {
       {/* Horizontal en pantallas anchas y apaisado (como el juego original); vertical en móvil. */}
       <main className="game-grid flex min-h-dvh flex-col gap-3 p-3 md:grid">
         <aside className="flex min-h-0 flex-col gap-2 md:col-start-1 md:row-span-2 md:row-start-1">
-          <Card className="short-hide flex items-center justify-between gap-2 p-3">
+          <Card className="short-hide flex items-center justify-between gap-2 p-2">
             <div className="flex min-w-0 items-center gap-2">
               <SettingsMenu muted={muted} onToggleMute={toggleMute} />
               <div className="min-w-0">
-                <p className="truncate font-display text-2xl">{me.nick}</p>
-                <p className="text-xs font-semibold">Sala {view.roomCode}</p>
+                <p className="truncate font-display text-xl">{me.nick}</p>
+                <p className="whitespace-nowrap text-xs font-semibold">Sala {view.roomCode}</p>
               </div>
             </div>
             <PushButton />
@@ -259,7 +259,8 @@ export function Game({ view }: { view: MatchView }) {
         />
 
         <ActionDock view={view} targets={targets} clearTargets={() => setTargets([])} />
-        <BottomLeft view={view} log={log} className="md:col-start-1 md:row-start-3 md:max-h-[19rem]" />
+        {/* En escritorio el chat tiene una parte fija de la columna; la carta del rol se queda con el resto. */}
+        <BottomLeft view={view} log={log} className="md:col-start-1 md:row-start-3" />
       </main>
     </>
   );

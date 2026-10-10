@@ -68,7 +68,8 @@ body.night {
     height: 100dvh;
     overflow: hidden;
     grid-template-columns: 260px minmax(0, 1fr) 250px;
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    /* Tercera fila: el chat de la columna izquierda, con una parte fija de la altura. */
+    grid-template-rows: auto minmax(0, 1fr) minmax(0, 36dvh);
     gap: 0.75rem;
     padding: 0.75rem;
   }
