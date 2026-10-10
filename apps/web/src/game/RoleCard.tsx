@@ -35,12 +35,12 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
   const skin = roleSkinUrl(me.roleKey);
 
   return (
-    <Card className={`w-full transition-colors ${dead ? "bg-red-100" : ""}`}>
-      {skin && <img src={skin} alt={`Ilustración de ${name}`} className="mb-3 h-40 w-full rounded-xl border-4 border-ink object-cover md:h-24" />}
+    <Card className={`w-full p-3 transition-colors md:p-2 ${dead ? "bg-red-100" : ""}`}>
+      {skin && <img src={skin} alt={`Ilustración de ${name}`} className="mb-2 h-40 w-full rounded-xl border-4 border-ink object-cover md:hidden" />}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
-          {icon && <img src={icon} alt="" className="size-10 shrink-0" />}
-          <h2 className={`min-w-0 font-display text-xl ${dead ? "line-through decoration-blood decoration-4" : ""}`}>{name}</h2>
+          {icon && <img src={icon} alt="" className="size-10 shrink-0 md:size-6" />}
+          <h2 className={`min-w-0 font-display text-xl md:text-sm ${dead ? "line-through decoration-blood decoration-4" : ""}`}>{name}</h2>
         </div>
         {faction && <Pill className={me.faction === "mafia" ? "bg-mafia text-paper" : "bg-town text-paper"}>{faction}</Pill>}
       </div>
@@ -49,28 +49,28 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
         <p className="mt-2 inline-block -rotate-3 rounded-lg border-4 border-ink bg-paper px-3 py-1 font-display text-lg text-blood">✝ Has muerto</p>
       )}
 
-      <dl className="mt-3 space-y-3 text-sm md:mt-2 md:space-y-1.5 md:text-xs">
+      <dl className="mt-3 space-y-3 text-sm md:mt-1 md:space-y-0.5 md:text-[11px] md:leading-tight">
         {alignmentLabel(me.alignment) && (
           <div>
-            <dt className="font-display text-base md:text-sm">Alineamiento</dt>
+            <dt className="font-display text-base md:text-[11px]">Alineamiento</dt>
             <dd className="font-semibold">{alignmentLabel(me.alignment)}</dd>
           </div>
         )}
         {me.faction && (
           <div>
-            <dt className="font-display text-base md:text-sm">Objetivo</dt>
+            <dt className="font-display text-base md:text-[11px]">Objetivo</dt>
             <dd>{GOAL[me.faction]}</dd>
           </div>
         )}
         {me.roleKey && ROLE_BLURB[me.roleKey] && (
           <div>
-            <dt className="font-display text-base md:text-sm">Descripción</dt>
+            <dt className="font-display text-base md:text-[11px]">Descripción</dt>
             <dd>{ROLE_BLURB[me.roleKey]}</dd>
           </div>
         )}
         {abilities.length > 0 && (
           <div>
-            <dt className="font-display text-base md:text-sm">Habilidades</dt>
+            <dt className="font-display text-base md:text-[11px]">Habilidades</dt>
             <dd>
               <ul className="list-inside list-disc">
                 {abilities.map((a, i) => <li key={`${a.key}-${i}`}>{abilityLabel(a.key)}</li>)}
@@ -80,7 +80,7 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
         )}
         {(attack || defense) && (
           <div>
-            <dt className="font-display text-base md:text-sm">Atributos</dt>
+            <dt className="font-display text-base md:text-[11px]">Atributos</dt>
             <dd>
               {attack && <span className="mr-3">Ataque: <strong>{attack}</strong></span>}
               {defense && <span>Defensa: <strong>{defense}</strong></span>}

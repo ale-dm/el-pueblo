@@ -89,6 +89,8 @@ export function PlayerGrid({ view, selected, isPickable, onPick }: Props) {
   );
 }
 
+/** Etiqueta de estado. El fondo blanco solo si el caso no pone el suyo: si no, el blanco ganaba y el texto claro desaparecía. */
 function Tag({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <span className={`rounded-full border-2 border-ink bg-white px-1.5 leading-tight ${className}`}>{children}</span>;
+  const ownBg = /\bbg-/.test(className);
+  return <span className={`rounded-full border-2 border-ink px-1.5 leading-tight ${ownBg ? "" : "bg-white"} ${className}`}>{children}</span>;
 }

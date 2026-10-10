@@ -28,6 +28,7 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Móvil: el orden de siempre (`order-*`), comprobado con la prueba de móvil (11/11).
 - Segunda vuelta: los jugadores son tarjetas (número, inicial, nombre y píldoras), no casas. En escritorio, el centro son las tarjetas y el óvalo queda solo en la sala de espera. El chat llega hasta abajo; la carta del rol y la lista de vivos suben hasta arriba.
 - Tercera vuelta: aviso a pantalla completa cuando alguien va a juicio (tono rojo); avisos del sistema en la plaza con color (votos, juicios y muertes); barra de votos en cada tarjeta, en rojo al llegar al umbral, con quién ha votado en el tooltip; cabecera de fase más fina en escritorio; carta del rol al 36 % de la columna.
+- Cuarta vuelta: panel de roles con píldoras pequeñas y todos a la vista; carta del rol compacta en escritorio (sin imagen, texto de 11 px) para que quepan alineamiento, objetivo, habilidades y atributos. Etiquetas de estado de las tarjetas: el fondo de color ya no se pierde.
 - Pendiente: el mapa de fondo. No se copian las ilustraciones ni los iconos de ToS.
 
 ## Diseño: columna izquierda en escritorio

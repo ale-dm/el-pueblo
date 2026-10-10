@@ -227,7 +227,7 @@ export function Game({ view }: { view: MatchView }) {
             </div>
             <PushButton />
           </Card>
-          <div className="order-6 hidden gap-2 md:flex md:h-[34%] md:min-h-0">
+          <div className="order-6 hidden gap-2 md:flex md:h-[42%] md:min-h-0">
             <Graveyard view={view} className="min-w-0 flex-1" />
             <RolesInGame roles={view.rolesInGame} className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto" />
           </div>
@@ -251,7 +251,7 @@ export function Game({ view }: { view: MatchView }) {
         </div>
 
         <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-1">
-          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="order-2 md:max-h-[36%] md:min-h-0" />
+          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="order-2 md:max-h-[44%] md:min-h-0" />
           <LiveList
             view={view}
             tab={liveTab}

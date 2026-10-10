@@ -1,6 +1,11 @@
 import type { MatchView } from "../types.js";
 import { ALIGNMENT_NAMES, ALIGNMENT_ORDER, ROLE_NAMES, alignmentLabel } from "../lib/roles.js";
-import { Card, Pill } from "../ui/primitives.js";
+import { Card } from "../ui/primitives.js";
+
+/** Un rol en la lista: píldora pequeña para que quepan todos en la columna. */
+function Chip({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <span className={`rounded-full border-2 border-ink px-1.5 font-display text-[11px] leading-5 ${className || "bg-sun"}`}>{children}</span>;
+}
 
 /** Roles de la partida agrupados por bando y tipo, como la lista de roles de ToS. */
 export function RolesInGame({ roles, className = "" }: { roles: MatchView["rolesInGame"]; className?: string }) {
@@ -12,24 +17,24 @@ export function RolesInGame({ roles, className = "" }: { roles: MatchView["roles
   const others = roles.filter((r) => !ALIGNMENT_ORDER.includes(r.alignment ?? ""));
 
   return (
-    <Card className={className}>
-      <h3 className="mb-2 font-display text-xl">Roles en la partida</h3>
-      <div className="space-y-3">
+    <Card className={`p-2 ${className}`}>
+      <h3 className="mb-1 font-display text-sm">Roles en la partida</h3>
+      <div className="space-y-1.5">
         {groups.map((g) => (
           <div key={g.alignment}>
-            <p className="text-sm font-semibold">{alignmentLabel(g.alignment)}</p>
-            <div className="mt-1 flex flex-wrap gap-2">
+            <p className="text-[11px] font-semibold leading-tight">{alignmentLabel(g.alignment)}</p>
+            <div className="mt-0.5 flex flex-wrap gap-1">
               {g.counts.map(([key, n]) => (
-                <Pill key={key} className={ALIGNMENT_NAMES[g.alignment]!.faction === "Mafia" ? "bg-mafia text-paper" : ""}>
+                <Chip key={key} className={ALIGNMENT_NAMES[g.alignment]!.faction === "Mafia" ? "bg-mafia text-paper" : ""}>
                   {ROLE_NAMES[key] ?? key}{n > 1 ? ` ×${n}` : ""}
-                </Pill>
+                </Chip>
               ))}
             </div>
           </div>
         ))}
         {others.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {others.map((r, i) => <Pill key={`${r.key}-${i}`}>{ROLE_NAMES[r.key] ?? r.key}</Pill>)}
+          <div className="flex flex-wrap gap-1">
+            {others.map((r, i) => <Chip key={`${r.key}-${i}`}>{ROLE_NAMES[r.key] ?? r.key}</Chip>)}
           </div>
         )}
       </div>
