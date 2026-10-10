@@ -14,7 +14,9 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Móvil: el botón va entre la lista y el chat, para no tapar el botón de enviar.
 - Arreglos de la revisión: el círculo de la ruleta cabe dentro del borde; los botones desactivados se leen; las pestañas laterales no desbordan; la insignia "Mafia" ya no choca con el texto de la casa de al lado; la barra de abajo tiene etiquetas legibles y "Salir" aparte.
 - Pruebas: web 128, `pnpm check` en verde; la prueba de móvil (11/11) recorre ahora la selección desde la lista y el botón de acción.
-- Pendiente: el panel de la acción sigue apareciendo sobre el óvalo al abrirse; los avatares siguen siendo letras (decisión de arte pendiente en la GDD).
+- Sin panel de acción: cada habilidad es un botón con el icono de su rol. Una habilidad con elección (mensaje del Hypnotist, rol del Forger) muestra las opciones junto al botón: botones, o una lista si son muchas. Votar y juzgar siguen con sus botones abajo a la derecha.
+- Lo que se pierde al quitar el panel: escribir la nota de muerte al matar (la nota queda vacía; el autor la escribe en la mañana con la tarjeta de la Death Note) y el testamento falsificado (va vacío).
+- Pendiente: los avatares siguen siendo letras (decisión de arte pendiente en la GDD); con diez jugadores, dos casas del óvalo se pisan.
 
 ## Prueba de móvil (M3): una partida completa en un perfil de iPhone
 
