@@ -38,6 +38,8 @@ export interface MatchView {
   winner: "town" | "mafia" | null;
   /** Fin del temporizador de la fase actual (ISO), o null. */
   phaseEndsAt: string | null;
+  /** Fin de la elección de nombres (sala de espera), o null. */
+  namingEndsAt: string | null;
   /** Roles que hay en la partida, con su grupo (alineamiento). Público. */
   rolesInGame: Array<{ key: string; alignment: string | null }>;
   rolePool: Array<{ key: string; alignment: string | null; attack: string | null; defense: string | null }>;

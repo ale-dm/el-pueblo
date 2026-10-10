@@ -60,6 +60,8 @@ export interface MatchView {
   winner: string | null;
   /** Cuándo termina el temporizador de la fase actual (ISO), o null si no tiene. */
   phaseEndsAt: string | null;
+  /** Fin de la elección de nombres (sala de espera), o null. */
+  namingEndsAt: string | null;
   /** Roles que hay en la partida, con su grupo (alineamiento). Público, como la lista de roles de ToS. */
   rolesInGame: Array<{ key: string; alignment: string | null }>;
   /** Todos los roles del MVP con su grupo: para ver el resto de roles de cada grupo que hay en la partida. Público y fijo. */
@@ -166,6 +168,7 @@ export function getView(deps: GetViewDeps) {
       defendantId: state.defendantId,
       winner: state.winner,
       phaseEndsAt,
+      namingEndsAt: match.namingEndsAt ? match.namingEndsAt.toISOString() : null,
       rolesInGame,
       rolePool,
       players: state.players.map((p) => {

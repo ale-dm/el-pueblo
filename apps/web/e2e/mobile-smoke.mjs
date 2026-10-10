@@ -48,7 +48,9 @@ const sinDesborde = async (nombre) => {
   const valores = await Promise.all(pages.map(desborde));
   comprobar(`sin desbordamiento horizontal: ${nombre}`, Math.max(...valores) === 0, `máximo ${Math.max(...valores)} px`);
 };
-const nickOf = (i) => (i === 0 ? "Ana" : `Jugador${i + 1}`);
+// Nombres solo con letras (wiki: Name). El jugador 2 es Bruno: a él votan los demás.
+const NOMBRES = ["Ana", "Bruno", "Carla", "Diego", "Elena", "Fermin", "Gloria", "Hector", "Irene", "Jorge"];
+const nickOf = (i) => NOMBRES[i];
 
 await host.goto(BASE_URL);
 await host.fill("#nick", "Ana");
@@ -64,8 +66,14 @@ for (let i = 1; i < 10; i++) {
   await pages[i].fill("#code", code);
   await pages[i].getByRole("button", { name: "Unirme" }).click();
 }
-await host.getByRole("button", { name: "Repartir roles y empezar" }).waitFor({ timeout: 15000 });
-await host.getByRole("button", { name: "Repartir roles y empezar" }).click();
+// Elección de nombres: cada jugador escribe el suyo y lo guarda; el anfitrión empieza cuando están todos.
+await host.getByRole("button", { name: "Elegir nombres y empezar" }).waitFor({ timeout: 15000 });
+await host.getByRole("button", { name: "Elegir nombres y empezar" }).click();
+for (let i = 0; i < 10; i++) {
+  await pages[i].locator("#name").fill(nickOf(i));
+  await pages[i].getByRole("button", { name: "Guardar", exact: true }).click();
+}
+await host.getByRole("button", { name: "Empezar ya" }).click();
 for (const p of pages) await p.getByText("Primer día").first().waitFor({ timeout: 15000 });
 comprobar("los diez jugadores llegan al primer día", true);
 // Revelación del rol: un diálogo que tapa la pantalla hasta que el jugador entra al pueblo.
@@ -89,27 +97,27 @@ await pages[1].getByRole("button", { name: "Cerrar", exact: true }).click();
 comprobar("el chat público llega al anfitrión", true);
 await sinDesborde("discusión");
 
-// Votación: cada jugador toca a un objetivo y confirma. Todos votan a Jugador2 salvo Jugador2, que vota a Ana.
+// Votación: cada jugador toca a un objetivo y confirma. Todos votan a Bruno salvo Bruno, que vota a Ana.
 // "Aún no has votado" solo sale en votación; "Votación" aparece antes en otros textos y adelantaba la espera.
 // Votar se hace tocando a alguien en la lista (no hay botón de votar ni de abstenerse). La subtítulo de la plaza lo dice.
 // La fila marcada (aria-pressed) es la señal de que el voto llegó del servidor.
 const fila = (page, nick, marcada) => page.locator(`ul li button[aria-pressed="${marcada}"]`, { hasText: nick }).first();
 await pages[0].getByText("Toca a alguien para votarle").waitFor({ timeout: 120000 });
 for (let i = 0; i < 10; i++) {
-  const objetivo = i === 1 ? "Ana" : "Jugador2";
+  const objetivo = i === 1 ? "Ana" : nickOf(1);
   await pages[i].locator("ul li button", { hasText: objetivo }).first().click();
   await fila(pages[i], objetivo, "true").waitFor({ timeout: 10000 });
 }
 // Tocar al votado otra vez retira el voto (la fila deja de estar marcada), y volver a tocarlo lo vuelve a votar.
-await pages[0].locator("ul li button", { hasText: "Jugador2" }).first().click();
-await fila(pages[0], "Jugador2", "false").waitFor({ timeout: 10000 });
-await pages[0].locator("ul li button", { hasText: "Jugador2" }).first().click();
-await fila(pages[0], "Jugador2", "true").waitFor({ timeout: 10000 });
+await pages[0].locator("ul li button", { hasText: nickOf(1) }).first().click();
+await fila(pages[0], nickOf(1), "false").waitFor({ timeout: 10000 });
+await pages[0].locator("ul li button", { hasText: nickOf(1) }).first().click();
+await fila(pages[0], nickOf(1), "true").waitFor({ timeout: 10000 });
 comprobar("los diez votos se registran tocando la lista, y tocar otra vez retira el voto", true);
 await sinDesborde("votación");
 await pages[0].screenshot({ path: `${shots}/movil-votacion.png`, fullPage: true });
 
-// Juicio: el acusado (Jugador2) no vota; los demás condenan.
+// Juicio: el acusado (Bruno) no vota; los demás condenan.
 // La defensa dura 20 s y el juicio otros 20 s: el botón aparece en esa ventana (el texto "Defensa" también sale en la tarjeta del rol).
 const juicios = await Promise.all(pages.map(async (p, i) => {
   if (i === 1) return true;

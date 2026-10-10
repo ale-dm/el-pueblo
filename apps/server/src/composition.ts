@@ -10,7 +10,10 @@ import { getView } from "./application/use-cases/getView.js";
 import { narrate } from "./application/use-cases/narrate.js";
 import { notifyPhases, subscribePush } from "./application/use-cases/push.js";
 import { purgeExpired, type RetentionPolicy } from "./application/use-cases/retention.js";
-import { startMatch } from "./application/use-cases/startMatch.js";
+import { startGame, startMatch } from "./application/use-cases/startMatch.js";
+import { beginNaming } from "./application/use-cases/beginNaming.js";
+import { chooseName } from "./application/use-cases/chooseName.js";
+import { finishNaming } from "./application/use-cases/finishNaming.js";
 import { submitCommand, type SubmitCommandDeps } from "./application/use-cases/submitCommand.js";
 import type { NarrationStore, Narrator, PushSender, PushSubscriptionStore, Scheduler } from "./application/ports.js";
 import type { GameEventEnvelope } from "@el-pueblo/engine";
@@ -61,10 +64,15 @@ export function createServices(deps: Deps) {
   const advance = advanceOnTimeout({ ...deps, queue, afterEvents });
   const submit = submitCommand({ ...deps, queue, advance, afterEvents });
   const runBots = botTurn({ ...deps, submit });
+  // La elección de nombres cierra en la misma cola que la partida, con el mismo arranque.
+  const startDeps = { ...deps, queue, advance, afterEvents };
+  const finishNamingUseCase = finishNaming({ matches: deps.matches, players: deps.players, queue, game: startGame(startDeps) });
   return {
     createRoom: createRoom(deps),
     joinRoom: joinRoom(deps),
-    startMatch: startMatch({ ...deps, queue, advance, afterEvents }),
+    startMatch: startMatch(startDeps),
+    beginNaming: beginNaming({ ...deps, queue, finish: finishNamingUseCase }),
+    chooseName: chooseName({ ...deps, queue }),
     submitCommand: submit,
     /** Espera a que terminen las narraciones pendientes (para tests y para apagar el servidor). */
     drainNarrations: async () => {
@@ -75,7 +83,7 @@ export function createServices(deps: Deps) {
     pushPublicKey: () => deps.pushSender.publicKey(),
     getView: getView(deps),
     setConnection: setConnection(deps),
-    recoverTimers: recoverTimers({ ...deps, scheduleBots }),
+    recoverTimers: recoverTimers({ ...deps, scheduleBots, finishNaming: finishNamingUseCase }),
     /** Borra partidas y salas fuera de plazo (ver RetentionPolicy). Se ejecuta al arrancar y cada hora. */
     purgeExpired: purgeExpired({ matches: deps.matches, push: deps.push, clock: deps.clock, policy: deps.retention }),
     advance,

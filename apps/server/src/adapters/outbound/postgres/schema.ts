@@ -222,6 +222,8 @@ export const matches = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     startedAt: timestamp("started_at", { withTimezone: true }),
     endedAt: timestamp("ended_at", { withTimezone: true }),
+    // Fin de la elección de nombres antes de repartir (solo en la sala de espera). Null fuera de esa fase.
+    namingEndsAt: timestamp("naming_ends_at", { withTimezone: true }),
   },
   (t) => [
     // Un código de sala solo puede estar en uso por una partida activa a la vez.
@@ -257,7 +259,8 @@ export const matchPlayers = pgTable(
   },
   (t) => [
     uniqueIndex("match_players_seat_uidx").on(t.matchId, t.seat),
-    uniqueIndex("match_players_nick_uidx").on(t.matchId, t.nick),
+    // Sin repetidos entre los nombres ya elegidos; el vacío (esperando elegir nombre) no cuenta.
+    uniqueIndex("match_players_nick_uidx").on(t.matchId, t.nick).where(sql`${t.nick} <> ''`),
     check("match_players_seat_range", sql`${t.seat} between 1 and 15`),
   ],
 );

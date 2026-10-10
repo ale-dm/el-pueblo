@@ -15,6 +15,8 @@ export interface MatchRecord {
   createdAt: Date;
   /** Cuándo terminó la partida. Null mientras no termina. */
   endedAt?: Date | null;
+  /** Fin de la elección de nombres antes de repartir (sala de espera). Null fuera de esa fase. */
+  namingEndsAt?: Date | null;
 }
 
 /** Estado del jugador en el motor, más lo que solo necesita la aplicación. */

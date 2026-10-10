@@ -28,6 +28,7 @@ export function joinRoom(deps: JoinRoomDeps) {
     const match = await deps.matches.findActiveByRoomCode(input.roomCode.toUpperCase());
     if (!match) throw new AppError("not_found", "No existe ninguna sala con ese código");
     if (match.status !== "lobby") throw new AppError("invalid_state", "La partida ya ha empezado");
+    if (match.namingEndsAt) throw new AppError("invalid_state", "Se están eligiendo los nombres: espera a la próxima sala");
 
     const current = await deps.players.listByMatch(match.id);
     if (current.length >= LIMITS.maxPlayers) throw new AppError("invalid_state", "La sala está llena");

@@ -20,6 +20,7 @@ const toMatch = (row: MatchRow): MatchRecord => ({
   engineVersion: row.engineVersion,
   createdAt: row.createdAt,
   endedAt: row.endedAt ?? null,
+  namingEndsAt: row.namingEndsAt ?? null,
 });
 
 /** Los jugadores no guardan usos ni marcas: se reconstruyen desde los eventos. */
@@ -51,6 +52,7 @@ export class PgMatchStore implements MatchStore {
       config: match.config,
       engineVersion: match.engineVersion,
       createdAt: match.createdAt,
+      namingEndsAt: match.namingEndsAt ?? null,
     });
   }
 
@@ -76,7 +78,12 @@ export class PgMatchStore implements MatchStore {
   async update(match: MatchRecord) {
     await this.db
       .update(s.matches)
-      .set({ status: match.status, config: match.config, endedAt: match.status === "finished" ? new Date() : null })
+      .set({
+        status: match.status,
+        config: match.config,
+        endedAt: match.status === "finished" ? new Date() : null,
+        namingEndsAt: match.namingEndsAt ?? null,
+      })
       .where(eq(s.matches.id, match.id));
   }
 
@@ -127,6 +134,7 @@ export class PgPlayerStore implements PlayerStore {
     await this.db
       .update(s.matchPlayers)
       .set({
+        nick: player.nick,
         roleKey: player.roleKey,
         faction: player.faction,
         status: player.status,

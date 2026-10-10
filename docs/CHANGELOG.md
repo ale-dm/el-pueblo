@@ -15,6 +15,15 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Pendiente: el filtro del Forger no tiene prueba automática (la lógica está en la pantalla, no en el motor); se comprobó leyendo el código.
 - Verificado a continuación: el voto en escritorio (1366×768) y la ficha de rol en horizontal (844×390). El voto en horizontal no se pudo capturar: el script llegó tarde a la votación; el voto está cubierto en vertical por la prueba de móvil.
 
+## Elección de nombre antes de repartir
+
+- Flujo: el anfitrión pulsa "Elegir nombres y empezar". Durante 30 s cada jugador escribe su nombre; los nombres de entrada se borran (la sala de espera ya no los usa). Quien no elige recibe un nombre por defecto de los juicios de Salem, que no esté en uso. El anfitrión puede empezar antes con "Empezar ya".
+- Reglas del nombre (wiki: Name): hasta 16 caracteres, solo letras y espacios entre palabras, sin dos mayúsculas seguidas, sin repetir uno ya elegido (sin distinguir mayúsculas) y sin nombres por defecto. La entrada a la sala sigue con su validación de antes.
+- Servidor: `beginNaming`, `chooseName` y `finishNaming` (`application/use-cases`); `startMatch` completa los nombres por defecto. El plazo vive en `matches.naming_ends_at` y se reprograma al reiniciar. Migraciones `0004_naming` y `0005_naming_nicks` (el índice de nombres ignora el vacío).
+- Eventos de socket nuevos: `match:naming` (anfitrión) y `match:name` (jugador).
+- Pendiente: el sexo del nombre según el personaje (la wiki da un nombre de su mismo sexo); el filtro de insultos; el aviso "X se ha unido al pueblo".
+- Comprobado: pruebas nuevas de la elección (6, en `test/application/eleccion-nombres.test.ts`); `pnpm check`; prueba de móvil con nombres solo con letras.
+
 ## Personajes por defecto en las cartas de los jugadores
 
 - Qué: los personajes por defecto de la wiki (Avatars (ToS), "Default Skins") no son roles; son el aspecto de cada jugador. Cada asiento tiene el suyo (`lib/avatars.ts`, estable entre recargas). Se usan en la mesa del móvil (el centro de la casilla) y en la lista de escritorio (sustituye al círculo del asiento).

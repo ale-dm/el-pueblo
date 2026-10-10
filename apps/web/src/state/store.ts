@@ -16,6 +16,8 @@ interface GameState {
   createRoom: (nick: string, bots?: number) => Promise<void>;
   joinRoom: (roomCode: string, nick: string) => Promise<void>;
   startMatch: () => Promise<void>;
+  beginNaming: () => Promise<void>;
+  chooseName: (nick: string) => Promise<void>;
   send: (command: Record<string, unknown>) => Promise<void>;
   refresh: () => Promise<void>;
   leave: () => void;
@@ -115,6 +117,22 @@ export const useGame = create<GameState>((set, get) => {
         const session = get().session;
         if (!session) return;
         await call("match:start", { matchId: session.matchId, token: session.token });
+        await refresh();
+      }),
+
+    beginNaming: () =>
+      run(async () => {
+        const session = get().session;
+        if (!session) return;
+        await call("match:naming", { matchId: session.matchId, token: session.token });
+        await refresh();
+      }),
+
+    chooseName: (nick) =>
+      run(async () => {
+        const session = get().session;
+        if (!session) return;
+        await call("match:name", { matchId: session.matchId, token: session.token, nick });
         await refresh();
       }),
 

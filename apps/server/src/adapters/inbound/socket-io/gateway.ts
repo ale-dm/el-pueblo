@@ -87,6 +87,21 @@ export function attachGateway(io: Server, deps: GatewayDeps) {
       }),
     );
 
+    // Elección de nombres: el anfitrión la abre; cada jugador escribe el suyo mientras dura.
+    socket.on("match:naming", (payload: unknown, ack?: Ack) =>
+      respond(ack, deps, async () => {
+        const body = isObject(payload) ? payload : {};
+        return services.beginNaming({ matchId: str(body.matchId, "partida"), token: str(body.token, "token") });
+      }),
+    );
+
+    socket.on("match:name", (payload: unknown, ack?: Ack) =>
+      respond(ack, deps, async () => {
+        const body = isObject(payload) ? payload : {};
+        return services.chooseName({ matchId: str(body.matchId, "partida"), token: str(body.token, "token"), nick: str(body.nick, "nombre") });
+      }),
+    );
+
     socket.on("match:command", (payload: unknown, ack?: Ack) =>
       respond(ack, deps, async () => {
         const body = isObject(payload) ? payload : {};

@@ -2,8 +2,11 @@ import { replay, type Catalog } from "@el-pueblo/engine";
 import { initialState } from "../state/initialState.js";
 import type { CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler } from "../ports.js";
 import { modeOf, phaseDelayFor } from "../timing.js";
+import { namingTimerKey } from "./beginNaming.js";
 
 export interface RecoverDeps {
+  /** Cierra una elección de nombres que estaba abierta al reiniciar (ver finishNaming). */
+  finishNaming?: (matchId: string) => Promise<void>;
   matches: MatchStore;
   players: PlayerStore;
   events: EventLog;
@@ -23,6 +26,11 @@ export function recoverTimers(deps: RecoverDeps) {
   return async (advance: (matchId: string) => Promise<void>): Promise<number> => {
     const catalog: Catalog = await deps.catalog.load();
     const now = deps.clock.now();
+    for (const match of await deps.matches.listByStatus("lobby")) {
+      if (!match.namingEndsAt || !deps.finishNaming) continue;
+      const delay = Math.max(0, match.namingEndsAt.getTime() - now.getTime());
+      deps.scheduler.schedule(namingTimerKey(match.id), delay, () => void deps.finishNaming!(match.id).catch(() => undefined));
+    }
     const playing = await deps.matches.listByStatus("playing");
     for (const match of playing) {
       const roster = await deps.players.listByMatch(match.id);
