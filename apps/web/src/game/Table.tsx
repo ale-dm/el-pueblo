@@ -19,7 +19,7 @@ export function Table({ view, selected, isPickable, onPick }: Props) {
   const myVote = view.votes[view.me.id] ?? null;
 
   return (
-    <ul className="phone-table grid content-start gap-2">
+    <ul className="phone-table grid gap-2">
       {view.players.map((p) => {
         const dead = p.status !== "alive";
         const roleKey = p.id === view.me.id ? view.me.roleKey : p.revealedRoleKey ?? p.allyRoleKey;
@@ -32,11 +32,11 @@ export function Table({ view, selected, isPickable, onPick }: Props) {
             <span className="block truncate text-[11px] font-semibold leading-tight">
               {p.seat}. {p.nick}{p.id === view.me.id ? " (tú)" : ""}
             </span>
-            <span className="flex flex-1 items-center justify-center py-0.5">
+            <span className="flex min-h-0 flex-1 items-center justify-center py-0.5">
               {dead ? (
                 <span aria-hidden="true" className="font-display text-2xl">✝</span>
               ) : icon ? (
-                <img src={icon} alt="" className="size-12 object-contain" />
+                <img src={icon} alt="" className="max-h-full max-w-full flex-1 object-contain" />
               ) : (
                 <span aria-hidden="true" className="font-display text-2xl">{p.seat}</span>
               )}
@@ -51,9 +51,9 @@ export function Table({ view, selected, isPickable, onPick }: Props) {
             </span>
           </>
         );
-        const base = `flex min-h-24 w-full flex-col gap-0.5 rounded-xl border-2 border-ink bg-white/70 p-1 text-left ${dead ? "opacity-60 grayscale" : ""}`;
+        const base = `flex h-full min-h-0 w-full flex-col gap-0.5 rounded-xl border-2 border-ink bg-white/70 p-1 text-left ${dead ? "opacity-60 grayscale" : ""}`;
         return (
-          <li key={p.id}>
+          <li key={p.id} className="min-h-0">
             {pickable ? (
               <button
                 type="button"

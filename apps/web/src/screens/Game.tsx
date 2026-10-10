@@ -255,11 +255,14 @@ export function Game({ view }: { view: MatchView }) {
               </button>
             </div>
           </header>
-          <div className="phone-table-wrap flex min-h-0 flex-1 flex-col overflow-y-auto">
+          <div className="phone-table-wrap flex min-h-0 flex-1 flex-col">
             <Table view={view} selected={selected} isPickable={isPickable} onPick={pick} />
           </div>
           <footer className="phone-foot flex flex-col gap-2">
-            <p role="status" className="rounded-xl border-2 border-ink bg-paper px-3 py-2 text-center text-sm font-semibold text-ink">{subtitle}</p>
+            {/* La plaza lleva la frase de la fase y el estado: el recuento de votos, el acusado y los muertos. */}
+            <div className="phone-plaza">
+              <Plaza view={view} log={log} subtitle={subtitle} />
+            </div>
             <ActionDock inline view={view} targets={targets} clearTargets={() => setTargets([])} />
           </footer>
         </main>

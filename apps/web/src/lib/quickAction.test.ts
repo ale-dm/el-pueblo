@@ -42,8 +42,8 @@ describe("abilityPlan: qué se envía al pulsar una habilidad", () => {
     });
   });
 
-  it("sin objetivo, pide elegir en la lista", () => {
-    expect(abilityPlan(view("night", {}), night("protect", "player"), [], null)).toEqual({ kind: "needs", hint: "Elige a alguien en la lista" });
+  it("sin objetivo, pide elegir", () => {
+    expect(abilityPlan(view("night", {}), night("protect", "player"), [], null)).toEqual({ kind: "needs", hint: "Elige a alguien" });
   });
 
   it("sin objetivo y sin elección, una habilidad sin objetivo se envía", () => {
@@ -55,7 +55,7 @@ describe("abilityPlan: qué se envía al pulsar una habilidad", () => {
 
   it("dos objetivos: espera a los dos, en el orden en que se eligieron", () => {
     const a = night("disguise", "two");
-    expect(abilityPlan(view("night", {}), a, ["p1"], null)).toEqual({ kind: "needs", hint: "Elige dos en la lista" });
+    expect(abilityPlan(view("night", {}), a, ["p1"], null)).toEqual({ kind: "needs", hint: "Elige dos" });
     expect(abilityPlan(view("night", {}), a, ["p1", "p4"], null)).toEqual({
       kind: "command",
       command: { type: "night.action", actorId: "me", ability: "disguise", targetId: "p1", secondTargetId: "p4" },

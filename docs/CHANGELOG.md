@@ -12,7 +12,9 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Horizontal en móvil: mesa a la izquierda (5 columnas), estado y acción a la derecha.
 - Escritorio: sin cambios de distribución. Se quitan las clases `short-*`, los `order-*` y la hoja de estilos de horizontal, que ya no hacían falta: el móvil tiene su propia disposición.
 - Prueba de móvil: el chat se abre desde su botón y la votación dice "Toca a alguien para votarle".
-- Pendiente: la hoja de rol en horizontal muestra poco texto; los avisos de fase y el juicio se ven solo en la línea de estado; la mesa no separa vivos y muertos (los muertos van apagados y con ✝).
+- Más contenido en móvil: la plaza (frase de la fase, recuento de votos con el umbral, acusado, muertos y juicio) va debajo de la mesa, en panel fijo; en horizontal, a la derecha, con la acción abajo. Las casillas de la mesa reparten la altura que queda, así no hay hueco vacío.
+- Las pistas de habilidad dicen "Elige a alguien" (sin "en la lista"), que en móvil la lista es la mesa.
+- Pendiente: la hoja de rol en horizontal muestra poco texto; la mesa no separa vivos y muertos (los muertos van apagados y con ✝); el registro de sucesos sigue solo en la hoja de chat.
 - Comprobado: `pnpm check` (engine 591, web 139, server 114); prueba de móvil 11 de 11; capturas de móvil 390×844, horizontal 844×390 y escritorio 1366×768 con un jugador de la Mafia, sin desbordes ni errores de consola.
 
 ## Diseño: séptima vuelta, Mafia ve a sus compañeros y votar en la lista

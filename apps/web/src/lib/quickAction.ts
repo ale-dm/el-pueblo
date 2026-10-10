@@ -40,8 +40,8 @@ export function dockAbilities(view: MatchView): DockAbility[] {
 /** Plan de una habilidad con los objetivos de la lista y la opción elegida (si la pide). */
 export function abilityPlan(view: MatchView, ability: DockAbility, targets: readonly string[], choice: string | null): Plan {
   const [first, second] = targets;
-  if (ability.target === "player" && !first) return { kind: "needs", hint: "Elige a alguien en la lista" };
-  if (ability.target === "two" && !(first && second)) return { kind: "needs", hint: "Elige dos en la lista" };
+  if (ability.target === "player" && !first) return { kind: "needs", hint: "Elige a alguien" };
+  if (ability.target === "two" && !(first && second)) return { kind: "needs", hint: "Elige dos" };
   if (ability.choices && choice === null) return { kind: "choose", options: ability.choices };
   const base = { actorId: view.me.id, ability: ability.key, targetId: ability.target === "none" ? null : first! };
   const extra = choice === null ? {} : { choice };

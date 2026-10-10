@@ -78,8 +78,10 @@ body.night {
 
 
 /* Móvil (ver PHONE_QUERY en lib/useMediaQuery.ts): la mesa de jugadores llena el centro y la acción va abajo. */
-.phone-main { min-height: 100dvh; }
-.phone-table { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.phone-main { height: 100dvh; overflow: hidden; }
+.phone-table { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); height: 100%; }
+.phone-plaza { height: 36dvh; min-height: 0; display: flex; flex-direction: column; }
+.phone-plaza > section { flex: 1; min-height: 0; }
 /* Móvil en horizontal: la mesa a la izquierda, con la acción y el estado a la derecha. Cabe en 390 px de alto. */
 @media (max-height: 540px) {
   html { font-size: 13px; }
@@ -95,5 +97,8 @@ body.night {
   .phone-head { grid-column: 1 / span 2; grid-row: 1; }
   .phone-table-wrap { grid-column: 1; grid-row: 2; min-height: 0; overflow-y: auto; }
   .phone-table { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .phone-foot { grid-column: 2; grid-row: 2; min-height: 0; overflow-y: auto; }
+  .phone-plaza { height: auto; flex: 1 1 0; }
+  /* La plaza cede el sitio; la acción no se encoge (si no, su pastilla de aviso se queda sin texto). */
+  .phone-foot > :not(.phone-plaza) { flex-shrink: 0; }
+  .phone-foot { grid-column: 2; grid-row: 2; min-height: 0; overflow: hidden; }
 }
