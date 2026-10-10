@@ -5,6 +5,17 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Diseño: elegir desde la lista, acción abajo a la derecha, iconos de la wiki
+
+- Los objetivos se eligen en la lista lateral (vivos), no en el tablero. El óvalo y las casas solo muestran; más pequeño, con el nombre de la fase en el centro (salvo de noche, donde ya dice "Cae la noche").
+- La acción está en un botón redondo abajo a la derecha. Solo aparece en la fase en que se puede usar: noche (habilidad de noche), día (habilidad de día), votación y juicio. Al pulsarlo abre el panel de la acción con los objetivos ya elegidos.
+- Cada acción lleva el icono de la wiki de su rol (`data/wiki/img/RoleIcon_*`). La wiki no tiene iconos por habilidad: todas las habilidades de un jugador son de su rol. Votar y juzgar siguen con emoji (no son habilidades de rol).
+- La vista ya filtra las habilidades según vivo o muerto, así que el botón no necesita reglas propias por estado.
+- Móvil: el botón va entre la lista y el chat, para no tapar el botón de enviar.
+- Arreglos de la revisión: el círculo de la ruleta cabe dentro del borde; los botones desactivados se leen; las pestañas laterales no desbordan; la insignia "Mafia" ya no choca con el texto de la casa de al lado; la barra de abajo tiene etiquetas legibles y "Salir" aparte.
+- Pruebas: web 128, `pnpm check` en verde; la prueba de móvil (11/11) recorre ahora la selección desde la lista y el botón de acción.
+- Pendiente: el panel de la acción sigue apareciendo sobre el óvalo al abrirse; los avatares siguen siendo letras (decisión de arte pendiente en la GDD).
+
 ## Prueba de móvil (M3): una partida completa en un perfil de iPhone
 
 - Qué: `apps/web/e2e/mobile-smoke.mjs`. Diez navegadores con el perfil de iPhone 13 (390 px, táctil) contra el servidor en marcha. Recorre sala, primer día (con la revelación del rol), chat público, discusión, los diez votos, el juicio y la noche.

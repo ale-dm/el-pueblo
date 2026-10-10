@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import type { MatchView, PublicPlayer } from "../types.js";
 import { Pill } from "../ui/primitives.js";
+import { PHASE_LABEL } from "../lib/text.js";
 
 interface Props {
   view: MatchView;
@@ -25,9 +26,18 @@ export function Ring({ view, selected, isPickable, onPick }: Props) {
   const defendant = view.players.find((p) => p.id === view.defendantId);
 
   return (
-    <div className="ring-compact relative h-full min-h-[14rem] w-full" aria-label="El pueblo">
+    <div className="ring-compact relative mx-auto h-full min-h-[14rem] w-full max-h-[34rem] max-w-[46rem]" aria-label="El pueblo">
       {/* Plaza */}
       <div aria-hidden="true" className="absolute left-1/2 top-1/2 size-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-ink bg-[radial-gradient(circle,#fff8e7,#f3d9a4)] opacity-70" />
+
+      {/* Fuera de un juicio, el centro dice en qué fase estamos, para que el óvalo vacío tenga sentido. */}
+      {/* De noche el centro ya dice "Cae la noche": aquí no se repite la fase. */}
+      {!defendant && view.phase !== "night" && (
+        <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center">
+          <span className="font-display text-3xl">{PHASE_LABEL[view.phase]}</span>
+          <span className="text-sm font-semibold">Día {view.dayNumber}</span>
+        </div>
+      )}
 
       {/* Horca: solo durante un juicio */}
       {defendant && (
@@ -67,7 +77,8 @@ export function Ring({ view, selected, isPickable, onPick }: Props) {
             {/* Casa */}
             <span aria-hidden="true" className="h-0 w-0 border-x-[24px] border-b-[15px] border-x-transparent border-b-ink" />
             <span
-              className={`relative flex w-14 flex-col items-center rounded-b-lg border-4 border-ink px-1 pb-1 pt-2 ${isSelected ? "target-ring" : ""} ${dead ? "bg-stone-300 grayscale" : ""}`}
+              title={p.ally ? `${p.nick} · compañero de Mafia` : p.nick}
+              className={`relative flex w-14 flex-col items-center rounded-b-lg border-4 border-ink px-1 pb-1 pt-2 ${isSelected ? "target-ring" : ""} ${dead ? "bg-stone-300 grayscale" : ""} ${p.ally ? "ring-4 ring-mafia ring-offset-2 ring-offset-paper" : ""}`}
               style={dead ? undefined : { background: houseColor(p.seat) }}
             >
               <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-full border-2 border-ink bg-paper font-display text-sm">
@@ -78,7 +89,6 @@ export function Ring({ view, selected, isPickable, onPick }: Props) {
               {isMe && <Pill>Tú</Pill>}
               {myTarget === p.id && <Pill className="bg-blood text-paper">Objetivo</Pill>}
               {myVote === p.id && <Pill className="bg-sunset">Voto</Pill>}
-              {p.ally && <Pill className="bg-mafia text-paper">Mafia</Pill>}
               {dead && <Pill className="bg-ink text-paper">Muerto</Pill>}
               {!dead && votesFor(p.id) > 0 && <Pill>{votesFor(p.id)}</Pill>}
             </span>

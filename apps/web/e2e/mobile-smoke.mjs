@@ -85,12 +85,17 @@ comprobar("el chat público llega al anfitrión", true);
 await sinDesborde("discusión");
 
 // Votación: cada jugador toca a un objetivo y confirma. Todos votan a Jugador2 salvo Jugador2, que vota a Ana.
-await pages[0].getByText("Votación").first().waitFor({ timeout: 120000 });
+// "Aún no has votado" solo sale en votación; "Votación" aparece antes en otros textos y adelantaba la espera.
+// El botón de votar (abajo a la derecha) solo aparece en la votación.
+await pages[0].getByRole("button", { name: "Votar", exact: true }).waitFor({ timeout: 120000 });
 for (let i = 0; i < 10; i++) {
   const objetivo = i === 1 ? "Ana" : "Jugador2";
-  await pages[i].getByRole("button", { name: objetivo, exact: true }).click();
+  // Los objetivos se eligen en la lista lateral; luego el botón de acción abajo a la derecha.
+  await pages[i].locator("ul li button", { hasText: objetivo }).first().click();
+  await pages[i].getByRole("button", { name: "Votar", exact: true }).click();
   await pages[i].getByRole("button", { name: /^Votar a / }).click();
-  await pages[i].getByText("Tu voto:").first().waitFor({ timeout: 10000 });
+  // Al votar, el panel de acción se cierra: esa es la señal de que el voto se envió.
+  await pages[i].waitForFunction(() => document.querySelector('button[aria-label="Votar"]')?.getAttribute("aria-expanded") === "false", null, { timeout: 10000 });
 }
 comprobar("los diez votos se registran en el móvil", true);
 await sinDesborde("votación");
@@ -100,6 +105,7 @@ await pages[0].screenshot({ path: `${shots}/movil-votacion.png`, fullPage: true 
 // La defensa dura 20 s y el juicio otros 20 s: el botón aparece en esa ventana (el texto "Defensa" también sale en la tarjeta del rol).
 const juicios = await Promise.all(pages.map(async (p, i) => {
   if (i === 1) return true;
+  await p.getByRole("button", { name: "Juzgar", exact: true }).click({ timeout: 90000 });
   const culpable = p.getByRole("button", { name: "Culpable", exact: true });
   try {
     await culpable.waitFor({ timeout: 90000 });

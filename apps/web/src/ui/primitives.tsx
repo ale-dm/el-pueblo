@@ -14,8 +14,11 @@ export function Card({ children, className = "" }: { children: ReactNode; classN
 }
 
 export function Pill({ children, className = "" }: { children: ReactNode; className?: string }) {
+  // El tono por defecto solo se pone si quien usa la píldora no pinta su propio fondo o texto (si no, los dos chocaban y ganaba el amarillo).
+  const ownBg = /\bbg-/.test(className);
+  const ownText = /\btext-(paper|ink|blood)\b/.test(className);
   return (
-    <span className={`inline-block rounded-full border-2 border-ink bg-sun px-3 py-0.5 font-display text-sm text-ink ${className}`}>
+    <span className={`inline-block rounded-full border-2 border-ink px-3 py-0.5 font-display text-sm ${ownBg ? "" : "bg-sun"} ${ownText ? "" : "text-ink"} ${className}`}>
       {children}
     </span>
   );

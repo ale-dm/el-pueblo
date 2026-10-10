@@ -24,7 +24,7 @@ function markSeen(matchId: string) {
   }
 }
 
-const RADIUS = 138;
+const RADIUS = 106;
 const SPINS = 5;
 
 /**
@@ -48,7 +48,7 @@ function RoleWheel({ names, target, onDone }: { names: string[]; target: number;
         {names.map((name, i) => (
           <span
             key={`${name}-${i}`}
-            className="absolute left-1/2 top-1/2 whitespace-nowrap font-display text-xs text-ink"
+            className="absolute left-1/2 top-1/2 whitespace-nowrap font-display text-[11px] text-ink"
             style={{ transform: `translate(-50%, -50%) rotate(${i * step}deg) translateY(-${RADIUS}px) rotate(${-i * step}deg)` }}
           >
             {name}

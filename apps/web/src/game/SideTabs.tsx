@@ -11,10 +11,10 @@ export function SideTabs({ view, tab, onTab, className = "" }: { view: MatchView
   const tabs = [
     { key: "role", label: "Rol" },
     { key: "roles", label: "Roles" },
-    { key: "will", label: "Testamento" },
+    { key: "will", label: "Testam." },
   ] as const;
   return (
-    <div className={`flex min-h-0 flex-col gap-2 ${className}`}>
+    <div className={`relative flex min-h-0 flex-col gap-2 ${className}`}>
       <div role="tablist" className="grid grid-cols-3 gap-1">
         {tabs.map((t) => (
           <button
@@ -26,7 +26,7 @@ export function SideTabs({ view, tab, onTab, className = "" }: { view: MatchView
             className={`cartoon-btn px-1 py-1 ${tab === t.key ? "" : "opacity-60"}`}
           >
             {/* El tamaño va en el texto: la clase de botón de la marca fija el suyo. */}
-            <span className="block truncate text-[12px] leading-tight" title={t.label}>{t.label}</span>
+            <span className="whitespace-nowrap text-[11px] leading-tight">{t.label}</span>
           </button>
         ))}
       </div>
@@ -37,6 +37,8 @@ export function SideTabs({ view, tab, onTab, className = "" }: { view: MatchView
         {tab === "roles" && <RolesInGame roles={view.rolesInGame} />}
         {tab === "will" && <WillCard me={view.me} />}
       </div>
+      {/* Degradado al pie: avisa de que la carta sigue por debajo, detrás del chat. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-paper to-transparent md:block" />
     </div>
   );
 }

@@ -9,7 +9,7 @@ import { trialsLeftToday } from "../lib/trials.js";
 import { RoleReveal } from "../game/RoleReveal.js";
 import { PlayerGrid } from "../game/PlayerGrid.js";
 import { Ring } from "../game/Ring.js";
-import { ActionPanel } from "../game/ActionPanel.js";
+import { ActionDock } from "../game/ActionDock.js";
 import { PushButton } from "../game/PushButton.js";
 import { TopBar } from "../game/TopBar.js";
 import { LiveList, type LiveTab } from "../game/LiveList.js";
@@ -141,6 +141,9 @@ export function Game({ view }: { view: MatchView }) {
     return targets.length === 0 && canBeResurrected(p);
   };
 
+  const noPick = (_p: PublicPlayer) => false;
+  const noPickAction = (_id: string) => undefined;
+
   const pick = (id: string) =>
     setTargets((current) => {
       if (current.includes(id)) return current.filter((x) => x !== id);
@@ -227,20 +230,23 @@ export function Game({ view }: { view: MatchView }) {
 
         <section className="md:col-start-2 md:row-start-2 md:min-h-0">
           <div className="md:hidden">
-            <PlayerGrid view={view} selected={targets} isPickable={isPickable} onPick={pick} />
+            {/* El tablero solo muestra: los objetivos se eligen en la lista lateral. */}
+            <PlayerGrid view={view} selected={targets} isPickable={noPick} onPick={noPickAction} />
           </div>
           <div className="hidden h-full md:block">
-            <Ring view={view} selected={targets} isPickable={isPickable} onPick={pick} />
+            <Ring view={view} selected={targets} isPickable={noPick} onPick={noPickAction} />
           </div>
         </section>
 
-        <ActionPanel view={view} targets={targets} clearTargets={() => setTargets([])} className="md:col-start-2 md:row-start-3 md:self-start" />
 
         <LiveList
           view={view}
           tab={liveTab}
           onTab={setLiveTab}
           className="md:col-start-3 md:row-span-3 md:row-start-1 md:min-h-0"
+          selected={targets}
+          isPickable={isPickable}
+          onPick={pick}
           footer={
             <ActionBar
               onRole={() => setSideTab("role")}
@@ -252,6 +258,7 @@ export function Game({ view }: { view: MatchView }) {
           }
         />
 
+        <ActionDock view={view} targets={targets} clearTargets={() => setTargets([])} />
         <BottomLeft view={view} log={log} className="md:col-start-1 md:row-start-3 md:max-h-[19rem]" />
       </main>
     </>

@@ -36,7 +36,7 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
 
   return (
     <Card className={`w-full transition-colors ${dead ? "bg-red-100" : ""}`}>
-      {skin && <img src={skin} alt={`Ilustración de ${name}`} className="mb-3 h-40 w-full rounded-xl border-4 border-ink object-cover" />}
+      {skin && <img src={skin} alt={`Ilustración de ${name}`} className="mb-3 h-40 w-full rounded-xl border-4 border-ink object-cover md:h-24" />}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
           {icon && <img src={icon} alt="" className="size-10 shrink-0" />}

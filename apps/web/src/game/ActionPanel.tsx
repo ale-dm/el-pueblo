@@ -4,11 +4,31 @@ import type { MatchView } from "../types.js";
 import { Button, Card } from "../ui/primitives.js";
 import { CHOICE_LABEL, abilityLabel } from "../lib/text.js";
 import { ROLE_NAMES } from "../lib/roles.js";
+import { roleIconUrl } from "../lib/roleImages.js";
 
 const DAY_PHASES = ["day_1", "discussion", "voting"];
 
 /** Nota de muerte: hasta 400 caracteres (wiki: Death_Note_ToS.md:15). Debe coincidir con el motor. */
 const MAX_DEATH_NOTE = 400;
+
+/** Contenido de un botón de habilidad: el icono del rol (de la wiki) y el nombre de la acción. Sin icono, solo el texto. */
+function AbilityFace({ icon, label, compact = false }: { icon: string | null; label: string; compact?: boolean }) {
+  if (!icon) return <>{label}</>;
+  if (compact) {
+    return (
+      <span className="flex flex-col items-center gap-0.5">
+        <img src={icon} alt="" className="size-9 object-contain" />
+        <span>{label}</span>
+      </span>
+    );
+  }
+  return (
+    <span className="flex items-center gap-2">
+      <img src={icon} alt="" className="size-8 shrink-0 object-contain" />
+      <span>{label}</span>
+    </span>
+  );
+}
 
 /** Texto de un uso restante, como en ToS: "te quedan 2". */
 const usesText = (n: number | null) => (n === null ? "" : ` (te quedan ${n})`);
@@ -16,7 +36,7 @@ const usesText = (n: number | null) => (n === null ? "" : ` (te quedan ${n})`);
 /** Nombre de una opción: mensajes en español, roles en inglés. */
 const choiceText = (c: string) => CHOICE_LABEL[c] ?? ROLE_NAMES[c] ?? c;
 
-/** Acciones disponibles según la fase, el rol y los usos restantes. Los objetivos llegan desde el tablero. */
+/** Acciones disponibles según la fase, el rol y los usos restantes. Los objetivos se eligen en la lista lateral. */
 export function ActionPanel({ view, targets, clearTargets, className = "" }: { view: MatchView; targets: string[]; clearTargets: () => void; className?: string }) {
   const send = useGame((s) => s.send);
   const busy = useGame((s) => s.busy);
@@ -26,6 +46,8 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
   const [notes, setNotes] = useState<Record<string, string>>({});
   const me = view.me;
   const alive = me.status === "alive";
+  // Cada acción lleva el icono de su rol en la wiki (todas las habilidades de un jugador son de su rol).
+  const roleIcon = roleIconUrl(me.roleKey);
   const target = targets[0] ?? null;
   const second = targets[1] ?? null;
   const nick = (id: string | null | undefined) => (id ? view.players.find((p) => p.id === id)?.nick ?? "?" : "");
@@ -54,7 +76,7 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
     status = myVote === undefined ? "Aún no has votado." : myVote === null ? "Te has abstenido." : `Tu voto: ${nick(myVote)}.`;
     actions.push(
       <Button key="vote" tone="danger" disabled={busy || !target} onClick={() => dispatch({ type: "vote", voterId: me.id, targetId: target })}>
-        Votar {target ? `a ${nick(target)}` : "(elige en el tablero)"}
+        Votar {target ? `a ${nick(target)}` : "(elige en la lista)"}
       </Button>,
       <Button key="abstain" disabled={busy} onClick={() => dispatch({ type: "vote", voterId: me.id, targetId: null })}>
         Abstenerme
@@ -131,12 +153,12 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
       };
       // La habilidad se usa desde un botón redondo, como el amuleto de Town of Salem.
       if (ab.target === "none") {
-        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: null, ...withChoice })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: null, ...withChoice })}><AbilityFace icon={roleIcon} label={label} compact /></Button>);
       } else if (ab.target === "player") {
-        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, ...withChoice })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, ...withChoice })}><AbilityFace icon={roleIcon} label={label} compact /></Button>);
       } else {
         // Dos objetivos: el primero es el que tocaste primero (Retributionist: el Town muerto; Disguiser: el Mafioso).
-        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || !second || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, secondTargetId: second, ...withChoice })}>{label}</Button>);
+        actions.push(<Button key={ab.key} className="ability-btn" disabled={busy || !target || !second || needsChoice} onClick={() => dispatch({ type: "night.action", actorId: me.id, ability: ab.key, targetId: target, secondTargetId: second, ...withChoice })}><AbilityFace icon={roleIcon} label={label} compact /></Button>);
       }
     }
   }
@@ -152,9 +174,9 @@ export function ActionPanel({ view, targets, clearTargets, className = "" }: { v
       if (ab.usesLeft === 0) continue;
       const label = `${abilityLabel(ab.key)}${usesText(ab.usesLeft)}`;
       if (ab.target === "none") {
-        actions.push(<Button key={ab.key} disabled={busy} onClick={() => dispatch({ type: "day.action", actorId: me.id, ability: ab.key, targetId: null })}>{label}</Button>);
+        actions.push(<Button key={ab.key} disabled={busy} onClick={() => dispatch({ type: "day.action", actorId: me.id, ability: ab.key, targetId: null })}><AbilityFace icon={roleIcon} label={label} /></Button>);
       } else {
-        actions.push(<Button key={ab.key} disabled={busy || !target} onClick={() => dispatch({ type: "day.action", actorId: me.id, ability: ab.key, targetId: target })}>{label}</Button>);
+        actions.push(<Button key={ab.key} disabled={busy || !target} onClick={() => dispatch({ type: "day.action", actorId: me.id, ability: ab.key, targetId: target })}><AbilityFace icon={roleIcon} label={label} /></Button>);
       }
     }
   }

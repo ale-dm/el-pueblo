@@ -86,8 +86,8 @@ body.night {
 
 /* Habilidad: botón redondo, como el amuleto de la barra de Town of Salem. */
 .ability-btn {
-  width: 5.5rem;
-  height: 5.5rem;
+  width: 6.5rem;
+  height: 6.5rem;
   border-radius: 9999px;
   padding: 0.25rem;
   font-size: 0.8rem;
