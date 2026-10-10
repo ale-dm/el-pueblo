@@ -52,9 +52,11 @@ export function abilityPlan(view: MatchView, ability: DockAbility, targets: read
   };
 }
 
-/** Votar: el voto va al jugador elegido en la lista. */
-export function votePlan(view: MatchView, targets: readonly string[]): Plan {
-  const first = targets[0];
-  if (!first) return { kind: "needs", hint: "Elige en la lista" };
-  return { kind: "command", command: { type: "vote", voterId: view.me.id, targetId: first } };
+/**
+ * Votar se hace tocando a alguien en la lista. Tocar al que ya tienes votado retira el voto (`targetId: null`,
+ * que el motor registra como voto nulo). No hay botón de votar ni de abstenerse.
+ */
+export function voteCommand(view: MatchView, playerId: string): Record<string, unknown> {
+  const current = view.votes[view.me.id] ?? null;
+  return { type: "vote", voterId: view.me.id, targetId: current === playerId ? null : playerId };
 }

@@ -43,7 +43,8 @@ export function LiveList({ view, tab, onTab, className = "", selected = [], isPi
       </div>
       <ul className="min-h-0 flex-1 space-y-1 overflow-y-auto p-2">
         {shown.map((p) => {
-          const role = p.id === view.me.id ? roleName(view.me.roleKey) : p.revealedRoleKey ? roleName(p.revealedRoleKey) : null;
+          // Tu rol; el de un muerto (revelado); y, si eres Mafia, el de tus compañeros vivos.
+          const role = p.id === view.me.id ? roleName(view.me.roleKey) : roleName(p.revealedRoleKey ?? p.allyRoleKey);
           const picked = selected.includes(p.id);
           const pickable = Boolean(onPick && isPickable?.(p));
           const votes = votesFor(p.id);
@@ -54,10 +55,12 @@ export function LiveList({ view, tab, onTab, className = "", selected = [], isPi
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-semibold">{p.nick}{p.id === view.me.id ? " (tú)" : ""}</span>
-                {role && <span className={`short-hide block truncate text-xs ${p.ally ? "text-mafia" : "opacity-80"}`}>{role}</span>}
+                {/* El rol del compañero de Mafia se ve también en horizontal: es lo que se pidió saber. */}
+                {role && <span className={`${p.ally ? "" : "short-hide"} block truncate text-xs ${p.ally ? "text-mafia" : "opacity-80"}`}>{role}</span>}
               </span>
               <span className="flex shrink-0 flex-col items-end gap-0.5 text-[10px] font-semibold">
-                {picked && <Tag className="bg-blood text-paper">Objetivo</Tag>}
+                {p.ally && <Tag className="bg-mafia text-paper">Mafia</Tag>}
+                {picked && view.votes[view.me.id] !== p.id && <Tag className="bg-blood text-paper">Objetivo</Tag>}
                 {view.defendantId === p.id && <Tag className="bg-blood text-paper">Acusado</Tag>}
                 {view.votes[view.me.id] === p.id && <Tag className="bg-sunset">Tu voto</Tag>}
                 {votes > 0 && p.status === "alive" && <Tag>{votes} {votes === 1 ? "voto" : "votos"}</Tag>}

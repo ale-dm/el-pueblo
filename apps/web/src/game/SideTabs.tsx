@@ -34,7 +34,7 @@ export function SideTabs({ view, tab, onTab, className = "" }: { view: MatchView
         {/* La nota de muerte se cambia en la mañana del anuncio, sea cual sea la pestaña abierta (Death_Note_ToS.md:17). */}
         <DeathNoteCard view={view} />
         {tab === "role" && <RoleCard me={view.me} />}
-        {tab === "roles" && <RolesInGame roles={view.rolesInGame} />}
+        {tab === "roles" && <RolesInGame roles={view.rolesInGame} pool={view.rolePool} />}
         {tab === "will" && <WillCard me={view.me} />}
       </div>
       {/* Degradado al pie: avisa de que la carta sigue por debajo, detrás del chat. */}

@@ -39,6 +39,21 @@ describe("vista por jugador", () => {
     expect(mafiaView.me.faction).toBe("mafia");
   });
 
+  it("la Mafia ve el rol de sus compañeros; el pueblo no ve el de nadie de la Mafia", async () => {
+    const { app, players } = await startedGame();
+    const matchId = players[0]!.matchId;
+    const roster = await app.players.listByMatch(matchId);
+    const [a, b] = roster.filter((p) => p.faction === "mafia");
+    expect(b).toBeDefined();
+    const tokenOf = (id: string) => players.find((p) => p.playerId === id)!.token;
+    const mafiaView = await app.services.getView({ matchId, token: tokenOf(a!.id) });
+    expect(mafiaView.players.find((p) => p.id === b!.id)?.allyRoleKey).toBe(b!.roleKey);
+    expect(mafiaView.players.find((p) => p.id === a!.id)?.allyRoleKey).toBeNull();
+    const town = roster.find((p) => p.faction === "town")!;
+    const townView = await app.services.getView({ matchId, token: tokenOf(town.id) });
+    expect(townView.players.every((p) => p.allyRoleKey === null)).toBe(true);
+  });
+
   it("un token de otra partida o falso se rechaza", async () => {
     const { app, players } = await startedGame();
     await expect(app.services.getView({ matchId: players[0]!.matchId, token: "falso" })).rejects.toMatchObject({ code: "forbidden" });

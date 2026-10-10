@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { MatchView } from "../types.js";
-import { abilityPlan, dockAbilities, votePlan, type DockAbility } from "./quickAction.js";
+import { abilityPlan, dockAbilities, voteCommand, type DockAbility } from "./quickAction.js";
 
 /** Vista mínima: solo lo que miran las funciones de acción. */
 function view(phase: string, me: Partial<MatchView["me"]>): MatchView {
@@ -79,9 +79,12 @@ describe("abilityPlan: qué se envía al pulsar una habilidad", () => {
   });
 });
 
-describe("votePlan", () => {
-  it("vota al jugador elegido; sin elegir, pide elegir", () => {
-    expect(votePlan(view("voting", {}), ["p2"])).toEqual({ kind: "command", command: { type: "vote", voterId: "me", targetId: "p2" } });
-    expect(votePlan(view("voting", {}), [])).toEqual({ kind: "needs", hint: "Elige en la lista" });
+describe("voteCommand: votar tocando la lista", () => {
+  it("tocar a alguien lo vota; tocar al que ya tienes votado retira el voto (null)", () => {
+    const sinVoto = view("voting", {});
+    expect(voteCommand(sinVoto, "p2")).toEqual({ type: "vote", voterId: "me", targetId: "p2" });
+    const votando = { ...view("voting", {}), votes: { me: "p2" } } as unknown as MatchView;
+    expect(voteCommand(votando, "p2")).toEqual({ type: "vote", voterId: "me", targetId: null });
+    expect(voteCommand(votando, "p3")).toEqual({ type: "vote", voterId: "me", targetId: "p3" });
   });
 });

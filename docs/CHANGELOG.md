@@ -5,6 +5,17 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Diseño: séptima vuelta, Mafia ve a sus compañeros y votar en la lista
+
+- Mafia: en la lista, cada compañero vivo muestra su rol y una etiqueta "Mafia". Lo ve solo otra Mafia: `getView` manda `allyRoleKey` solo al compañero de Mafia que mira (`apps/server/test/application/getView.test.ts`, prueba nueva). El muerto ya se veía con `revealedRoleKey`. También se ve en horizontal.
+- Votación: se vota tocando a alguien en la lista; tocar al que ya tienes votado retira el voto (`vote` con `targetId: null`, que el motor ya registraba). Se quitan los botones "Votar" y "Abstenerse" (`voteCommand` en `apps/web/src/lib/quickAction.ts`). Abstenerse es no votar.
+- Error corregido: lo elegido para un día (el Jailor encarcela en la discusión) se arrastraba a la votación y a la noche. Ahora lo elegido se limpia en cada fase.
+- Roles: la pestaña "Roles" muestra todos los roles del MVP de cada grupo que hay en la partida (`rolePool` en la vista, público y fijo). Los que están en la partida van rellenos, con cuántos; los demás, apagados. Antes solo salían los de la partida.
+- Carta del rol: se quita la ilustración grande del rol. Queda el icono pequeño.
+- Horizontal: la descripción del rol se oculta (las habilidades dicen lo mismo) y el panel izquierdo tiene algo más de altura que el chat.
+- Pendiente: en horizontal, el registro del chat se queda en una línea a 390 px de alto. Hace falta decidir si el chat se pliega en horizontal.
+- Comprobado: `pnpm check` (engine 591, web 139, server 114); prueba de móvil 11 de 11 con los votos, el retirar y el juicio; capturas de escritorio 1366×768 y horizontal 844×390 con un jugador de la Mafia, sin desbordes ni errores de consola.
+
 ## Diseño: elegir desde la lista, acción abajo a la derecha, iconos de la wiki
 
 - Los objetivos se eligen en la lista lateral (vivos), no en el tablero. El óvalo y las casas solo muestran; más pequeño, con el nombre de la fase en el centro (salvo de noche, donde ya dice "Cae la noche").

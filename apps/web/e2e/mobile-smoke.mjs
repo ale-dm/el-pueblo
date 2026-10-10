@@ -86,17 +86,21 @@ await sinDesborde("discusión");
 
 // Votación: cada jugador toca a un objetivo y confirma. Todos votan a Jugador2 salvo Jugador2, que vota a Ana.
 // "Aún no has votado" solo sale en votación; "Votación" aparece antes en otros textos y adelantaba la espera.
-// El botón de votar (abajo a la derecha) solo aparece en la votación.
-await pages[0].getByRole("button", { name: "Votar", exact: true }).waitFor({ timeout: 120000 });
+// Votar se hace tocando a alguien en la lista (no hay botón de votar ni de abstenerse). La subtítulo de la plaza lo dice.
+// La fila marcada (aria-pressed) es la señal de que el voto llegó del servidor.
+const fila = (page, nick, marcada) => page.locator(`ul li button[aria-pressed="${marcada}"]`, { hasText: nick }).first();
+await pages[0].getByText("Toca a alguien en la lista para votarle").waitFor({ timeout: 120000 });
 for (let i = 0; i < 10; i++) {
   const objetivo = i === 1 ? "Ana" : "Jugador2";
-  // Los objetivos se eligen en la lista lateral; luego el botón de acción abajo a la derecha.
   await pages[i].locator("ul li button", { hasText: objetivo }).first().click();
-  await pages[i].getByRole("button", { name: "Votar", exact: true }).click();
-  // Al votar, el panel de acción se cierra: esa es la señal de que el voto se envió.
-  await pages[i].getByText(/tu voto/i).first().waitFor({ timeout: 10000 });
+  await fila(pages[i], objetivo, "true").waitFor({ timeout: 10000 });
 }
-comprobar("los diez votos se registran en el móvil", true);
+// Tocar al votado otra vez retira el voto (la fila deja de estar marcada), y volver a tocarlo lo vuelve a votar.
+await pages[0].locator("ul li button", { hasText: "Jugador2" }).first().click();
+await fila(pages[0], "Jugador2", "false").waitFor({ timeout: 10000 });
+await pages[0].locator("ul li button", { hasText: "Jugador2" }).first().click();
+await fila(pages[0], "Jugador2", "true").waitFor({ timeout: 10000 });
+comprobar("los diez votos se registran tocando la lista, y tocar otra vez retira el voto", true);
 await sinDesborde("votación");
 await pages[0].screenshot({ path: `${shots}/movil-votacion.png`, fullPage: true });
 

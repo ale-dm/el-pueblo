@@ -41,6 +41,8 @@ export interface PublicPlayer {
   isBot: boolean;
   /** Compañero de Mafia visible para quien mira (la Mafia se conoce entre sí). */
   ally: boolean;
+  /** Rol del compañero de Mafia: solo lo ve otra Mafia (si está vivo; un muerto ya tiene revealedRoleKey). */
+  allyRoleKey: string | null;
   /** Rol revelado tras morir (si el registro lo muestra). */
   revealedRoleKey: string | null;
   /** Mayor que se ha revelado (público: el evento mayor.revealed es para todos). Limita los susurros. */
@@ -60,6 +62,8 @@ export interface MatchView {
   phaseEndsAt: string | null;
   /** Roles que hay en la partida, con su grupo (alineamiento). Público, como la lista de roles de ToS. */
   rolesInGame: Array<{ key: string; alignment: string | null }>;
+  /** Todos los roles del MVP con su grupo: para ver el resto de roles de cada grupo que hay en la partida. Público y fijo. */
+  rolePool: Array<{ key: string; alignment: string | null }>;
   players: PublicPlayer[];
   votes: Record<string, string | null>;
   verdicts: Record<string, "guilty" | "innocent">;
@@ -129,6 +133,10 @@ export function getView(deps: GetViewDeps) {
       .filter((k): k is string => k !== null)
       .sort()
       .map((key) => ({ key, alignment: catalog.roles.get(key)?.alignmentKey ?? null }));
+    const rolePool = [...catalog.roles.values()]
+      .filter((r) => r.mvp)
+      .map((r) => ({ key: r.key, alignment: r.alignmentKey }))
+      .sort((a, b) => a.key.localeCompare(b.key));
 
     const revealed = new Map<string, string>();
     for (const e of history) {
@@ -159,17 +167,22 @@ export function getView(deps: GetViewDeps) {
       winner: state.winner,
       phaseEndsAt,
       rolesInGame,
-      players: state.players.map((p) => ({
-        id: p.id,
-        seat: p.seat,
-        nick: p.nick,
-        status: p.status,
-        connected: p.connected,
-        isBot: roster.find((r) => r.id === p.id)?.isBot ?? false,
-        ally: me.faction === "mafia" && p.faction === "mafia" && p.id !== me.id,
-        revealedRoleKey: revealed.get(p.id) ?? null,
-        mayorRevealed: p.flags.mayorRevealed === true,
-      })),
+      rolePool,
+      players: state.players.map((p) => {
+        const ally = me.faction === "mafia" && p.faction === "mafia" && p.id !== me.id;
+        return {
+          id: p.id,
+          seat: p.seat,
+          nick: p.nick,
+          status: p.status,
+          connected: p.connected,
+          isBot: roster.find((r) => r.id === p.id)?.isBot ?? false,
+          ally,
+          allyRoleKey: ally ? p.roleKey : null,
+          revealedRoleKey: revealed.get(p.id) ?? null,
+          mayorRevealed: p.flags.mayorRevealed === true,
+        };
+      }),
       votes: state.votes,
       verdicts: state.verdicts,
       me: {

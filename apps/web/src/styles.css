@@ -96,7 +96,7 @@ body.night {
   .short-chatbox .cartoon-btn { padding: 0.1rem 0.45rem; font-size: 0.7rem; }
   .short-chatbox .cartoon-input { padding: 0.15rem 0.4rem; font-size: 0.8rem; }
   /* Horizontal: cada bloque en su celda. Izquierda: cabecera, pestañas de rol y chat. Centro: fase y pueblo. Derecha: lista. */
-  .game-grid { grid-template-rows: auto minmax(0, 1fr) minmax(0, 1.15fr); }
+  .game-grid { grid-template-rows: auto minmax(0, 1.2fr) minmax(0, 1fr); }
   .short-head { padding: 0.2rem 0.4rem !important; }
   .short-head .font-display { font-size: 0.95rem; line-height: 1.1; }
   .game-grid > .contents { display: contents !important; }

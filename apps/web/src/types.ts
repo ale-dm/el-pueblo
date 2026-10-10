@@ -21,6 +21,8 @@ export interface PublicPlayer {
   isBot: boolean;
   /** Compañero de Mafia visible para quien mira. */
   ally: boolean;
+  /** Rol del compañero de Mafia (solo para otra Mafia, y vivo; el muerto va en revealedRoleKey). */
+  allyRoleKey: string | null;
   revealedRoleKey: string | null;
   /** Mayor revelado: público. Ni él susurra ni le susurran. */
   mayorRevealed: boolean;
@@ -38,6 +40,7 @@ export interface MatchView {
   phaseEndsAt: string | null;
   /** Roles que hay en la partida, con su grupo (alineamiento). Público. */
   rolesInGame: Array<{ key: string; alignment: string | null }>;
+  rolePool: Array<{ key: string; alignment: string | null }>;
   players: PublicPlayer[];
   votes: Record<string, string | null>;
   verdicts: Record<string, "guilty" | "innocent">;

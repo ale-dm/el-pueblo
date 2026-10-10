@@ -8,6 +8,7 @@ import { secondsLeft as secondsUntil } from "../lib/countdown.js";
 import { trialsLeftToday } from "../lib/trials.js";
 import { RoleReveal } from "../game/RoleReveal.js";
 import { ActionDock } from "../game/ActionDock.js";
+import { voteCommand } from "../lib/quickAction.js";
 import { Plaza } from "../game/Plaza.js";
 import { PushButton } from "../game/PushButton.js";
 import { TopBar } from "../game/TopBar.js";
@@ -72,6 +73,7 @@ export function Game({ view }: { view: MatchView }) {
   const error = useGame((s) => s.error);
   const connected = useGame((s) => s.connected);
   const clearError = useGame((s) => s.clearError);
+  const send = useGame((s) => s.send);
   const [targets, setTargets] = useState<string[]>([]);
   const [muted, setMutedState] = useState(isMuted);
   const [sideTab, setSideTab] = useState<SideTab>("role");
@@ -133,25 +135,39 @@ export function Game({ view }: { view: MatchView }) {
     return () => clearTimeout(timer);
   }, [death]);
 
+  // Lo elegido no sobrevive a la fase: un objetivo de día no se arrastra a la votación ni a la noche.
+  useEffect(() => setTargets([]), [view.phase, view.dayNumber]);
+
   const toggleMute = () => {
     setMuted(!muted);
     setMutedState(!muted);
   };
 
+  // Votación: la lista es el voto. Lo marcado es tu voto actual; tocar a alguien lo vota, y tocar al votado lo retira.
+  const voting = view.phase === "voting" && view.me.status === "alive";
+  const myVote = view.votes[view.me.id] ?? null;
+  const selected = voting ? (myVote ? [myVote] : []) : targets;
+
   /** Con Retributionist, el primer objetivo es un Town muerto (zombi) y el segundo un vivo. */
   const isPickable = (p: PublicPlayer) => {
     if (!need.selectable || p.id === view.me.id) return false;
+    if (voting) return p.status === "alive";
     if (!need.raise) return p.status === "alive";
     if (p.status === "alive") return targets.length > 0;
     // Wiki (Retributionist.md:236): no se ofrecen los roles que no se pueden resucitar (lib/resurrect.ts).
     return targets.length === 0 && canBeResurrected(p);
   };
 
-  const pick = (id: string) =>
+  const pick = (id: string) => {
+    if (voting) {
+      void send(voteCommand(view, id));
+      return;
+    }
     setTargets((current) => {
       if (current.includes(id)) return current.filter((x) => x !== id);
       return [...current, id].slice(-need.max);
     });
+  };
 
   if (view.phase === "ended") {
     const won = view.winner === view.me.faction;
@@ -192,7 +208,7 @@ export function Game({ view }: { view: MatchView }) {
   const me = view.me;
   const vote = voteStatus(view);
   const subtitle = view.phase === "voting"
-    ? `Hacen falta ${vote.needed} votos. ${vote.leader ? `Más votado: ${vote.leader.nick} (${vote.leader.count}).` : "Nadie tiene votos todavía."}`
+    ? `Hacen falta ${vote.needed} votos. ${vote.leader ? `Más votado: ${vote.leader.nick} (${vote.leader.count}).` : "Nadie tiene votos todavía."}${voting ? " Toca a alguien en la lista para votarle; otra vez, para quitar tu voto." : ""}`
     : phaseBanner(view);
   return (
     <>
@@ -254,7 +270,7 @@ export function Game({ view }: { view: MatchView }) {
             tab={liveTab}
             onTab={setLiveTab}
             className="short-list order-5 md:min-h-0 md:flex-1"
-            selected={targets}
+            selected={selected}
             isPickable={isPickable}
             onPick={pick}
           />

@@ -1,6 +1,6 @@
 import type { MatchView } from "../types.js";
 import { ROLE_BLURB, alignmentLabel, levelEs, roleName } from "../lib/roles.js";
-import { roleIconUrl, roleSkinUrl } from "../lib/roleImages.js";
+import { roleIconUrl } from "../lib/roleImages.js";
 import { abilityLabel } from "../lib/text.js";
 import { Card, Pill } from "../ui/primitives.js";
 
@@ -32,11 +32,9 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
   const attack = levelEs(me.attack);
   const defense = levelEs(me.defense);
   const icon = roleIconUrl(me.roleKey);
-  const skin = roleSkinUrl(me.roleKey);
 
   return (
     <Card className={`w-full p-3 transition-colors md:p-2 ${dead ? "bg-red-100" : ""}`}>
-      {skin && <img src={skin} alt={`Ilustración de ${name}`} className="mb-2 h-40 w-full rounded-xl border-4 border-ink object-cover md:hidden" />}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
           {icon && <img src={icon} alt="" className="size-10 shrink-0 md:size-6" />}
@@ -63,7 +61,8 @@ export function RoleCard({ me }: { me: MatchView["me"] }) {
           </div>
         )}
         {me.roleKey && ROLE_BLURB[me.roleKey] && (
-          <div>
+          // En horizontal no cabe: las habilidades ya dicen lo mismo.
+          <div className="short-hide">
             <dt className="font-display text-base md:text-[11px]">Descripción</dt>
             <dd>{ROLE_BLURB[me.roleKey]}</dd>
           </div>

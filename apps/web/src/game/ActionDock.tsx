@@ -4,7 +4,7 @@ import type { MatchView } from "../types.js";
 import { roleIconUrl } from "../lib/roleImages.js";
 import { abilityLabel, CHOICE_LABEL } from "../lib/text.js";
 import { ROLE_NAMES } from "../lib/roles.js";
-import { abilityPlan, dockAbilities, votePlan, type DockAbility } from "../lib/quickAction.js";
+import { abilityPlan, dockAbilities, type DockAbility } from "../lib/quickAction.js";
 
 interface Props {
   view: MatchView;
@@ -53,28 +53,8 @@ export function ActionDock({ view, targets, clearTargets }: Props) {
     );
   }
 
-  // Votación: votar al elegido en la lista, o abstenerse.
-  if (view.phase === "voting") {
-    if (!alive) return null;
-    const plan = votePlan(view, targets);
-    return (
-      <div className="relative flex flex-col items-end gap-2 md:fixed md:bottom-4 md:right-[calc(23vw+1rem)] md:z-40">
-        {plan.kind === "needs" && <Hint text={plan.hint} />}
-        <button type="button" disabled={busy} onClick={() => void send({ type: "vote", voterId: me.id, targetId: null })} className="cartoon-btn px-3 py-1 text-sm">
-          Abstenerse
-        </button>
-        <button
-          type="button"
-          aria-label="Votar"
-          disabled={busy || plan.kind !== "command"}
-          onClick={() => plan.kind === "command" && fire(plan.command)}
-          className="cartoon-btn flex short-round size-20 items-center justify-center rounded-full"
-        >
-          <span aria-hidden="true" className="text-4xl">🗳️</span>
-        </button>
-      </div>
-    );
-  }
+  // Votación: no hay botones. Se vota tocando a alguien en la lista (Game.tsx).
+  if (view.phase === "voting") return null;
 
   const abilities = dockAbilities(view);
   if (abilities.length === 0) return null;
