@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import type { MatchView, PublicPlayer } from "../types.js";
 import { roleName } from "../lib/roles.js";
 import { Card } from "../ui/primitives.js";
@@ -9,19 +8,22 @@ interface Props {
   view: MatchView;
   tab: LiveTab;
   onTab: (t: LiveTab) => void;
-  footer?: ReactNode;
   className?: string;
-  /** Objetivos elegidos ahora. Los jugadores se eligen desde esta lista, no desde el tablero (como en Town of Salem). */
+  /** Objetivos elegidos ahora. Esta lista es la única superficie de selección: no hay jugadores en el centro. */
   selected?: string[];
   isPickable?: (p: PublicPlayer) => boolean;
   onPick?: (playerId: string) => void;
 }
 
-/** Lista de vivos (y cementerio), con su número de asiento: "All Live Townies" en Town of Salem. Aquí se eligen los objetivos. */
-export function LiveList({ view, tab, onTab, footer, className = "", selected = [], isPickable, onPick }: Props) {
+/**
+ * Lista de jugadores: vivos y muertos. Aquí se eligen los objetivos, y cada fila muestra su número, su rol si se
+ * conoce, sus votos y si es el acusado.
+ */
+export function LiveList({ view, tab, onTab, className = "", selected = [], isPickable, onPick }: Props) {
   const live = view.players.filter((p) => p.status === "alive");
   const dead = view.players.filter((p) => p.status !== "alive");
   const shown = tab === "live" ? live : dead;
+  const votesFor = (id: string) => Object.values(view.votes).filter((t) => t === id).length;
 
   return (
     <Card className={`flex min-h-0 flex-col p-0 ${className}`}>
@@ -44,6 +46,7 @@ export function LiveList({ view, tab, onTab, footer, className = "", selected = 
           const role = p.id === view.me.id ? roleName(view.me.roleKey) : p.revealedRoleKey ? roleName(p.revealedRoleKey) : null;
           const picked = selected.includes(p.id);
           const pickable = Boolean(onPick && isPickable?.(p));
+          const votes = votesFor(p.id);
           const body = (
             <>
               <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-sun font-display text-sm">
@@ -51,10 +54,15 @@ export function LiveList({ view, tab, onTab, footer, className = "", selected = 
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-semibold">{p.nick}{p.id === view.me.id ? " (tú)" : ""}</span>
-                {role && <span className={`block truncate text-xs ${p.ally ? "text-mafia" : "opacity-80"}`}>{role}</span>}
+                {role && <span className={`short-hide block truncate text-xs ${p.ally ? "text-mafia" : "opacity-80"}`}>{role}</span>}
               </span>
-              {picked && <span className="shrink-0 rounded-full border-2 border-ink bg-blood px-2 text-[11px] font-display text-paper">Objetivo</span>}
-              {p.isBot && <span className="text-[10px] font-semibold">BOT</span>}
+              <span className="flex shrink-0 flex-col items-end gap-0.5 text-[10px] font-semibold">
+                {picked && <Tag className="bg-blood text-paper">Objetivo</Tag>}
+                {view.defendantId === p.id && <Tag className="bg-blood text-paper">Acusado</Tag>}
+                {view.votes[view.me.id] === p.id && <Tag className="bg-sunset">Tu voto</Tag>}
+                {votes > 0 && p.status === "alive" && <Tag>{votes} {votes === 1 ? "voto" : "votos"}</Tag>}
+                {p.isBot && <Tag>BOT</Tag>}
+              </span>
             </>
           );
           const base = "short-row flex w-full items-center gap-2 rounded-xl border-2 border-ink bg-white/70 px-2 py-1 text-left";
@@ -77,7 +85,12 @@ export function LiveList({ view, tab, onTab, footer, className = "", selected = 
         })}
         {shown.length === 0 && <li className="text-sm">Nadie por aquí.</li>}
       </ul>
-      {footer}
     </Card>
   );
+}
+
+/** Etiqueta pequeña de una fila: el fondo blanco solo si el caso no pone el suyo. */
+function Tag({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ownBg = /\bbg-/.test(className);
+  return <span className={`rounded-full border-2 border-ink px-1 leading-4 ${ownBg ? "" : "bg-white"} ${className}`}>{children}</span>;
 }

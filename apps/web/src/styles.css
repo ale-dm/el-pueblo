@@ -78,6 +78,8 @@ body.night {
 /* Pantallas bajas en apaisado (móvil de lado): columnas más estrechas, menos texto y el pueblo más pequeño. */
 @media (max-height: 540px) and (min-width: 768px) {
   /* Proporciones de la pantalla de referencia en horizontal: pestañas y chat a la izquierda, pueblo al centro, lista a la derecha. */
+  /* Texto base de 13 px: el de 16 px dejaba los paneles ilegibles en un móvil de lado. */
+  html { font-size: 13px; }
   .game-grid { grid-template-columns: minmax(0, 27fr) minmax(0, 46fr) minmax(0, 27fr); gap: 0.3rem; padding: 0.3rem; }
   .short-hide { display: none !important; }
   .short-title { display: none; }
@@ -88,7 +90,6 @@ body.night {
   .short-ability img { width: 2rem !important; height: 2rem !important; }
   .short-tab { font-size: 0.7rem; padding: 0.2rem 0.3rem; white-space: nowrap; }
   .short-row { padding-top: 0.15rem !important; padding-bottom: 0.15rem !important; font-size: 0.75rem; }
-  .short-card-avatar { display: none; }
   .short-avisos { display: none; }
   /* Chat en horizontal: márgenes, botones y campo más pequeños para que quepa la barra de escribir. */
   .short-chatbox .mb-2, .short-chatbox .mt-2 { margin-top: 0.2rem; margin-bottom: 0.2rem; }
@@ -102,7 +103,6 @@ body.night {
   .short-head { grid-column: 1; grid-row: 1; }
   .short-top { grid-column: 2; grid-row: 1; }
   .short-pueblo { grid-column: 2; grid-row: 2 / span 2; min-height: 0; overflow-y: auto; }
-  .short-pueblo > div { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   .short-side { grid-column: 1; grid-row: 2; max-height: none !important; min-height: 0; }
   .short-chatbox { grid-column: 1; grid-row: 3; }
   .short-list { grid-column: 3; grid-row: 1 / span 3; }

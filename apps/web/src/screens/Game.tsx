@@ -7,17 +7,14 @@ import { ROLE_NAMES, roleName } from "../lib/roles.js";
 import { secondsLeft as secondsUntil } from "../lib/countdown.js";
 import { trialsLeftToday } from "../lib/trials.js";
 import { RoleReveal } from "../game/RoleReveal.js";
-import { PlayerGrid } from "../game/PlayerGrid.js";
 import { ActionDock } from "../game/ActionDock.js";
+import { Plaza } from "../game/Plaza.js";
 import { PushButton } from "../game/PushButton.js";
 import { TopBar } from "../game/TopBar.js";
 import { LiveList, type LiveTab } from "../game/LiveList.js";
 import { SideTabs, type SideTab } from "../game/SideTabs.js";
-import { ActionBar } from "../game/ActionBar.js";
 import { SettingsMenu } from "../game/SettingsMenu.js";
 import { BottomLeft } from "../game/BottomLeft.js";
-import { Graveyard } from "../game/Graveyard.js";
-import { RolesInGame } from "../game/RolesInGame.js";
 import { ScreenBanner, DeathFx } from "../game/Fx.js";
 import { isMuted, playCue, setMuted } from "../lib/sound.js";
 import { voteStatus } from "../lib/votes.js";
@@ -150,9 +147,6 @@ export function Game({ view }: { view: MatchView }) {
     return targets.length === 0 && canBeResurrected(p);
   };
 
-  const noPick = (_p: PublicPlayer) => false;
-  const noPickAction = (_id: string) => undefined;
-
   const pick = (id: string) =>
     setTargets((current) => {
       if (current.includes(id)) return current.filter((x) => x !== id);
@@ -211,10 +205,8 @@ export function Game({ view }: { view: MatchView }) {
           {error} <span className="opacity-80">(toca para cerrar)</span>
         </button>
       )}
-      {/* Horizontal en pantallas anchas y apaisado (como el juego original); vertical en móvil. */}
-      {/* Escritorio: tres columnas de arriba abajo. Izquierda: cabecera, cementerio y roles, y el chat hasta abajo.
-          Centro: la pregunta de la fase y los jugadores como tarjetas. Derecha: la carta del rol y la lista de vivos.
-          Móvil: el orden de siempre (order-*). */}
+      {/* Tres zonas. Izquierda: cabecera, pestañas de rol y chat. Centro: la plaza (fase, votos, juicio, muertes).
+          Derecha: la lista de jugadores, la única superficie de selección. Móvil: el orden de siempre (order-*). */}
       <main className="game-grid flex min-h-dvh flex-col gap-3 p-3 md:grid">
         <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-1 md:row-start-1">
           <Card className="short-head order-1 flex items-center justify-between gap-2 p-2">
@@ -225,13 +217,21 @@ export function Game({ view }: { view: MatchView }) {
                 <p className="whitespace-nowrap text-xs font-semibold">Sala {view.roomCode}</p>
               </div>
             </div>
-            <PushButton />
+            <div className="flex shrink-0 items-center gap-2">
+              <PushButton />
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.confirm("¿Salir de la partida? No podrás volver a entrar en esta sesión.")) leave();
+                }}
+                className="cartoon-btn danger px-2 py-1 text-xs"
+              >
+                Salir
+              </button>
+            </div>
           </Card>
-          <div className="short-hide order-6 hidden gap-2 md:flex md:h-[42%] md:min-h-0">
-            <Graveyard view={view} className="min-w-0 flex-1" />
-            <RolesInGame roles={view.rolesInGame} className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto" />
-          </div>
-          <BottomLeft view={view} log={log} className="short-chatbox order-8 md:min-h-0 md:flex-1" />
+          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="short-side order-2 md:min-h-0 md:max-h-[55%] md:flex-none" />
+          <BottomLeft view={view} log={log} className="short-chatbox order-8 md:min-h-0 md:flex-[1_1_0]" />
         </div>
 
         <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-2 md:row-start-1">
@@ -239,19 +239,16 @@ export function Game({ view }: { view: MatchView }) {
             view={view}
             trialsLeft={trialsLeft}
             secondsLeft={left}
-            subtitle={subtitle}
             muted={muted}
             onToggleMute={toggleMute}
             className="short-top order-3"
           />
-          <section className="short-pueblo order-4 md:min-h-0 md:flex-1 md:overflow-y-auto">
-            {/* Los objetivos se eligen en la lista lateral: aquí solo se ve quién es quién. */}
-            <PlayerGrid view={view} selected={targets} isPickable={noPick} onPick={noPickAction} />
+          <section className="short-pueblo order-4 md:min-h-0 md:flex-1">
+            <Plaza view={view} log={log} subtitle={subtitle} />
           </section>
         </div>
 
         <div className="contents md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-3 md:row-start-1">
-          <SideTabs view={view} tab={sideTab} onTab={setSideTab} className="short-side order-2 md:max-h-[44%] md:min-h-0" />
           <LiveList
             view={view}
             tab={liveTab}
@@ -260,15 +257,6 @@ export function Game({ view }: { view: MatchView }) {
             selected={targets}
             isPickable={isPickable}
             onPick={pick}
-            footer={
-              <ActionBar
-                onRole={() => setSideTab("role")}
-                onRoles={() => setSideTab("roles")}
-                onWill={() => setSideTab("will")}
-                onLive={() => setLiveTab("live")}
-                onGraveyard={() => setLiveTab("dead")}
-              />
-            }
           />
         </div>
 
