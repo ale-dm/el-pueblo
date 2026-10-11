@@ -1,6 +1,10 @@
 import { fileURLToPath } from "node:url";
 import { startServer } from "./server.js";
 
+// Red de seguridad: un fallo en una partida no debe tumbar todas las salas. Se registra con su traza; los temporizadores
+// ya registran sus errores con la partida (ver application/events/timerTask.ts). Revisar cada error que llegue aquí.
+process.on("unhandledRejection", (reason) => console.error("[server] rechazo sin manejar (el proceso sigue):", reason));
+
 const env = process.env;
 const databaseUrl = env.DATABASE_URL;
 if (!databaseUrl) {

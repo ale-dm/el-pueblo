@@ -1,3 +1,4 @@
+import { assertStorable } from "../../../application/events/storable.js";
 import { and, asc, eq, inArray, max } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
 import type { FactionKey, GameEventEnvelope } from "@el-pueblo/engine";
@@ -186,6 +187,7 @@ export class PgEventLog implements EventLog {
 
   async append(matchId: string, expectedLastSeq: number, events: GameEventEnvelope[]) {
     if (events.length === 0) return;
+    assertStorable(events);
     await this.db.transaction(async (tx) => {
       // Bloquea la fila de la partida: las escrituras de una misma partida quedan en serie.
       await tx.select({ id: s.matches.id }).from(s.matches).where(eq(s.matches.id, matchId)).for("update");

@@ -3,6 +3,7 @@ import { initialState } from "../state/initialState.js";
 import type { CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler } from "../ports.js";
 import { modeOf, phaseDelayFor } from "../timing.js";
 import { namingTimerKey } from "./beginNaming.js";
+import { timerTask } from "../events/timerTask.js";
 
 export interface RecoverDeps {
   /** Cierra una elección de nombres que estaba abierta al reiniciar (ver finishNaming). */
@@ -29,7 +30,7 @@ export function recoverTimers(deps: RecoverDeps) {
     for (const match of await deps.matches.listByStatus("lobby")) {
       if (!match.namingEndsAt || !deps.finishNaming) continue;
       const delay = Math.max(0, match.namingEndsAt.getTime() - now.getTime());
-      deps.scheduler.schedule(namingTimerKey(match.id), delay, () => void deps.finishNaming!(match.id).catch(() => undefined));
+      deps.scheduler.schedule(namingTimerKey(match.id), delay, timerTask("elección de nombres", match.id, () => deps.finishNaming!(match.id)));
     }
     const playing = await deps.matches.listByStatus("playing");
     for (const match of playing) {
@@ -37,7 +38,7 @@ export function recoverTimers(deps: RecoverDeps) {
       const timed = await deps.events.readTimed(match.id);
       const state = replay(initialState(match, roster), timed.map((t) => t.event));
       const delay = phaseDelayFor(catalog, modeOf(match.config), state.phase, state.dayNumber, timed, now);
-      if (delay !== null) deps.scheduler.schedule(match.id, delay, () => void advance(match.id));
+      if (delay !== null) deps.scheduler.schedule(match.id, delay, timerTask("fase", match.id, () => advance(match.id)));
       deps.scheduleBots?.(match.id);
     }
     return playing.length;

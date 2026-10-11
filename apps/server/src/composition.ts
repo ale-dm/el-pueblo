@@ -1,3 +1,4 @@
+import { timerTask } from "./application/events/timerTask.js";
 import { KeyedQueue } from "./application/concurrency/keyedQueue.js";
 import { advanceOnTimeout } from "./application/use-cases/advanceOnTimeout.js";
 import { botTurn } from "./application/use-cases/botTurn.js";
@@ -45,7 +46,7 @@ export function createServices(deps: Deps) {
   // Los bots tienen su propio temporizador (otra clave del planificador) para no pisar el de la fase.
   const scheduleBots = (matchId: string) => {
     const delay = BOT_DELAY_MS.min + Math.floor(Math.random() * BOT_DELAY_MS.spread);
-    deps.scheduler.schedule(botKey(matchId), delay, () => void runBots(matchId).catch(() => undefined));
+    deps.scheduler.schedule(botKey(matchId), delay, timerTask("bots", matchId, () => runBots(matchId)));
   };
 
   const afterEvents = (matchId: string, events: GameEventEnvelope[]) => {

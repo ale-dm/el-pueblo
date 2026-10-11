@@ -5,6 +5,7 @@ import { initialState } from "../state/initialState.js";
 import { recordDeaths } from "../state/recordDeaths.js";
 import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler } from "../ports.js";
 import { modeOf, phaseDelayFor } from "../timing.js";
+import { timerTask } from "../events/timerTask.js";
 
 export interface AdvanceDeps {
   matches: MatchStore;
@@ -17,6 +18,8 @@ export interface AdvanceDeps {
   scheduler: Scheduler;
   /** Narración asíncrona de los eventos publicados. No se espera. */
   afterEvents?: (matchId: string, events: GameEventEnvelope[]) => void;
+  /** Registro de errores de los temporizadores. Por defecto, consola. */
+  log?: (message: string, detail: unknown) => void;
 }
 
 /**
@@ -57,7 +60,7 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
       const next = decision.value.filter((e) => e.type === "phase.started").at(-1);
       if (next?.type === "phase.started" && !ended) {
         const delay = phaseDelayFor(catalog, modeOf(match.config), next.payload.phase, next.payload.dayNumber, timed);
-        if (delay !== null) deps.scheduler.schedule(matchId, delay, () => void advance(matchId));
+        if (delay !== null) deps.scheduler.schedule(matchId, delay, timerTask("fase", matchId, () => advance(matchId), deps.log));
       }
     });
 

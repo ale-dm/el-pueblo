@@ -15,6 +15,16 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Pendiente: el filtro del Forger no tiene prueba automática (la lógica está en la pantalla, no en el motor); se comprobó leyendo el código.
 - Verificado a continuación: el voto en escritorio (1366×768) y la ficha de rol en horizontal (844×390). El voto en horizontal no se pudo capturar: el script llegó tarde a la votación; el voto está cubierto en vertical por la prueba de móvil.
 
+## Incidente: partida parada al vencer un temporizador
+
+- Síntoma: una partida se quedó en "Noche · 0 s" y no avanzó.
+- Causa raíz (cadena verificada): (1) el motor emitió `effect.cleared` como privado sin destinatario; (2) la base de datos lo rechazó (`events_private_needs_audience`); (3) el almacén de pruebas en memoria lo aceptaba, así que ni las 900 partidas del explorador ni las pruebas lo vieron; (4) el temporizador llama a `advance` sin manejar el error, y el siguiente temporizador solo se programa tras un guardado correcto, así que la partida se queda sin reloj.
+- Efecto agravante (verificado en Node 22): un rechazo sin manejar dentro de un temporizador termina el proceso. Como no hay manejador global, un solo fallo de guardado tumbaría todas las salas, y al reiniciar `recoverTimers` volvería a disparar el mismo temporizador: bucle de caídas.
+- Arreglos aplicados: (a) el motor ya no emite lo privado sin destinatario (arreglo anterior); (b) `assertStorable` en el almacén de memoria y en PostgreSQL, así que el fallo aparece en pruebas; (c) todos los temporizadores pasan por `timerTask`, que registra el error con la partida; (d) red de seguridad en `main.ts` para rechazos sin manejar, que registra y no tumba el proceso.
+- Pruebas de regresión: `test/application/fallo-temporizador.test.ts` e `invariante-almacenamiento.test.ts`.
+- Pendiente de decidir: qué hacer con una partida que falla de forma repetida. Propuesta: reintento con espera creciente para fallos transitorios (red, conexión a la BD) y, para fallos deterministas, un vigilante que avise de las partidas en "playing" sin temporizador. Un reintento sin límite no arregla un fallo del motor.
+- Verificado sin fallo: `usesLeft` no se guarda en la base, pero el motor lo reconstruye desde `roles.assigned` y `ability.used`, así que tras un reinicio sale bien.
+
 ## Elección de nombre antes de repartir
 
 - Flujo: el anfitrión pulsa "Elegir nombres y empezar". Durante 30 s cada jugador escribe su nombre; los nombres de entrada se borran (la sala de espera ya no los usa). Quien no elige recibe un nombre por defecto de los juicios de Salem, que no esté en uso. El anfitrión puede empezar antes con "Empezar ya".

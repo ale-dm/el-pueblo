@@ -7,6 +7,7 @@ import { initialState } from "../state/initialState.js";
 import type { Broadcaster, CatalogSource, Clock, EventLog, MatchRecord, MatchStore, PlayerRecord, PlayerStore, Scheduler, Security } from "../ports.js";
 import { modeOf, phaseDelayMs } from "../timing.js";
 import { namingTimerKey } from "./beginNaming.js";
+import { timerTask } from "../events/timerTask.js";
 
 export interface StartMatchDeps {
   matches: MatchStore;
@@ -68,7 +69,7 @@ export function startGame(deps: StartMatchDeps) {
     await deps.broadcaster.publish(match.id, decision.value);
     deps.afterEvents?.(match.id, decision.value);
     const delay = phaseDelayMs(await cachedCatalog, modeOf(match.config), "day_1");
-    if (delay !== null) deps.scheduler.schedule(match.id, delay, () => void deps.advance(match.id));
+    if (delay !== null) deps.scheduler.schedule(match.id, delay, timerTask("fase", match.id, () => deps.advance(match.id)));
     return decision.value.length;
   };
 }

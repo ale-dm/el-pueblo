@@ -1,3 +1,4 @@
+import { assertStorable } from "../../../application/events/storable.js";
 import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { ConcurrencyError } from "../../../application/errors.js";
 import type { Clock, EventLog, MatchRecord, MatchStore, NarrationRecord, NarrationStore, PlayerRecord, PlayerStore, PushSubscriptionRecord, PushSubscriptionStore, TimedEvent } from "../../../application/ports.js";
@@ -85,6 +86,7 @@ export class InMemoryEventLog implements EventLog {
     const log = this.logs.get(matchId) ?? [];
     const last = log.at(-1)?.seq ?? 0;
     if (last !== expectedLastSeq) throw new ConcurrencyError();
+    assertStorable(events);
     this.logs.set(matchId, [...log, ...events]);
     const now = this.clock.now();
     this.times.set(matchId, [...(this.times.get(matchId) ?? []), ...events.map(() => now)]);

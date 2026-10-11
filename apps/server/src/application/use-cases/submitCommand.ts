@@ -1,3 +1,4 @@
+import { timerTask } from "../events/timerTask.js";
 import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { createRng, decide, replay, type Catalog, type Command } from "@el-pueblo/engine";
 import { AppError, ConcurrencyError } from "../errors.js";
@@ -104,7 +105,7 @@ export function submitCommand(deps: SubmitCommandDeps) {
         const delay = phaseDelayFor(
           await loadCatalog(), modeOf(match.config), phaseStart.payload.phase, phaseStart.payload.dayNumber, timed,
         );
-        if (delay !== null) deps.scheduler.schedule(match.id, delay, () => void deps.advance(match.id));
+        if (delay !== null) deps.scheduler.schedule(match.id, delay, timerTask("fase", match.id, () => deps.advance(match.id)));
       }
       return { events: decision.value };
     });
