@@ -1,6 +1,6 @@
 import type { KeyedQueue } from "../concurrency/keyedQueue.js";
 import { AppError } from "../errors.js";
-import { timerTask } from "../events/timerTask.js";
+import { armTimer } from "../events/timers.js";
 import { LIMITS } from "../limits.js";
 import type { Clock, MatchStore, PlayerStore, Scheduler, Security } from "../ports.js";
 
@@ -49,7 +49,7 @@ export function beginNaming(deps: BeginNamingDeps) {
 
       const endsAt = new Date(deps.clock.now().getTime() + LIMITS.namingSeconds * 1000);
       await deps.matches.update({ ...match, namingEndsAt: endsAt });
-      deps.scheduler.schedule(namingTimerKey(match.id), LIMITS.namingSeconds * 1000, timerTask("elección de nombres", match.id, () => deps.finish(match.id)));
+      armTimer(deps.scheduler, { key: namingTimerKey(match.id), matchId: match.id, label: "elección de nombres" }, LIMITS.namingSeconds * 1000, () => deps.finish(match.id));
       return { namingEndsAt: endsAt.toISOString() };
     });
 }

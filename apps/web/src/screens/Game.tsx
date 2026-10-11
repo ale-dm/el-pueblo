@@ -23,28 +23,10 @@ import { BottomLeft } from "../game/BottomLeft.js";
 import { ScreenBanner, DeathFx } from "../game/Fx.js";
 import { isMuted, playCue, setMuted } from "../lib/sound.js";
 import { voteStatus } from "../lib/votes.js";
-import { canBeResurrected } from "../lib/resurrect.js";
+import { isPickableTarget, targetsNeeded } from "../lib/targets.js";
 import type { GameEvent } from "../types.js";
 
 /** Cuántos objetivos pide la fase actual: votación y noche con dos objetivos. `raise`: el primero es un muerto. */
-function targetsNeeded(view: MatchView): { selectable: boolean; max: number; raise: boolean } {
-  const me = view.me;
-  if (view.phase === "voting" && me.status === "alive") return { selectable: true, max: 1, raise: false };
-  if (view.phase === "night") {
-    const usable = me.nightAbilities.filter((a) => a.target !== "none" && a.usesLeft !== 0);
-    return {
-      selectable: usable.length > 0,
-      max: usable.some((a) => a.target === "two") ? 2 : 1,
-      raise: usable.some((a) => a.key === "raise"),
-    };
-  }
-  // Vivos y Médiums muertos eligen objetivo de día (las habilidades de día ya salen filtradas por vida).
-  if (["day_1", "discussion"].includes(view.phase) && me.dayAbilities.some((a) => a.target === "player")) {
-    return { selectable: true, max: 1, raise: false };
-  }
-  return { selectable: false, max: 0, raise: false };
-}
-
 /** Lo que dice el pueblo en cada fase, como el texto de ToS sobre el juego. */
 function phaseBanner(view: MatchView): string {
   const alive = view.players.filter((p) => p.status === "alive" && p.connected).length;
@@ -155,17 +137,7 @@ export function Game({ view }: { view: MatchView }) {
   const selected = voting ? (myVote ? [myVote] : []) : targets;
 
   /** Con Retributionist, el primer objetivo es un Town muerto (zombi) y el segundo un vivo. */
-  // Forger: su falsificación es para alguien que no es de la Mafia (wiki: Forger.md:204), y sus compañeros son de la Mafia.
-  const onlyForges = view.phase === "night" && view.me.nightAbilities.length > 0 && view.me.nightAbilities.every((a) => a.key === "forge");
-  const isPickable = (p: PublicPlayer) => {
-    if (!need.selectable || p.id === view.me.id) return false;
-    if (onlyForges && p.ally) return false;
-    if (voting) return p.status === "alive";
-    if (!need.raise) return p.status === "alive";
-    if (p.status === "alive") return targets.length > 0;
-    // Wiki (Retributionist.md:236): no se ofrecen los roles que no se pueden resucitar (lib/resurrect.ts).
-    return targets.length === 0 && canBeResurrected(p);
-  };
+  const isPickable = (p: PublicPlayer) => isPickableTarget(view, targets, p);
 
   const pick = (id: string) => {
     if (voting) {

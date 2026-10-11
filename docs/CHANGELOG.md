@@ -22,8 +22,15 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Efecto agravante (verificado en Node 22): un rechazo sin manejar dentro de un temporizador termina el proceso. Como no hay manejador global, un solo fallo de guardado tumbaría todas las salas, y al reiniciar `recoverTimers` volvería a disparar el mismo temporizador: bucle de caídas.
 - Arreglos aplicados: (a) el motor ya no emite lo privado sin destinatario (arreglo anterior); (b) `assertStorable` en el almacén de memoria y en PostgreSQL, así que el fallo aparece en pruebas; (c) todos los temporizadores pasan por `timerTask`, que registra el error con la partida; (d) red de seguridad en `main.ts` para rechazos sin manejar, que registra y no tumba el proceso.
 - Pruebas de regresión: `test/application/fallo-temporizador.test.ts` e `invariante-almacenamiento.test.ts`.
-- Pendiente de decidir: qué hacer con una partida que falla de forma repetida. Propuesta: reintento con espera creciente para fallos transitorios (red, conexión a la BD) y, para fallos deterministas, un vigilante que avise de las partidas en "playing" sin temporizador. Un reintento sin límite no arregla un fallo del motor.
+- Corregido en esta vuelta:
+  - Reintentos: un fallo transitorio (conflicto de escritura, conexión caída, clases 08 y 57 de PostgreSQL) se reintenta 4 veces con espera 1, 2, 4 y 8 s (`application/events/timers.ts`). Un fallo del motor no se reintenta.
+  - Fase obsoleta: cada temporizador lleva la fase para la que se armó; si la partida ya está en otra, no avanza nada. Así un reintento no adelanta una fase.
+  - Vigilante: cada minuto, `recoverTimers` rearma las partidas en juego y las elecciones de nombre que se hayan quedado sin temporizador. No toca las que tienen temporizador o están ocupadas con un comando.
+  - Planificador: `has()` en la interfaz y en sus dos implementaciones; `busy()` en la cola de partidas.
+  - Votación sin votantes conectados (fallo real del motor, encontrado con el vigilante): el umbral se calculaba con 0 votantes y lanzaba `RangeError`; la votación de esa partida se quedaba parada. Ahora no hay juicio y empieza la noche (SUPUESTO: la wiki no cubre una sala sin votantes). Prueba en `packages/engine/test/voting-sin-votantes.test.ts`.
+- Regla del Forger movida a `lib/targets.ts` con pruebas (antes solo estaba en la pantalla).
 - Verificado sin fallo: `usesLeft` no se guarda en la base, pero el motor lo reconstruye desde `roles.assigned` y `ability.used`, así que tras un reinicio sale bien.
+- Pruebas: `vigilante-temporizadores.test.ts` (5), `fallo-temporizador.test.ts`, `invariante-almacenamiento.test.ts`, `lib/targets.test.ts` (7), `voting-sin-votantes.test.ts`. Total: engine 593, web 148, server 127.
 
 ## Elección de nombre antes de repartir
 

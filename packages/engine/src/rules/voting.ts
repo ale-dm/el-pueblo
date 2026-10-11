@@ -38,6 +38,9 @@ export function trialCandidate(
   aliveCount: number,
   weightOf: VoteWeight = UNIT,
 ): PlayerId | null {
+  // SUPUESTO (la wiki no cubre una sala sin votantes): si ningún vivo puede votar, nadie llega al umbral y no hay juicio.
+  // Antes lanzaba un error y la votación de esa partida se quedaba parada.
+  if (aliveCount < 1) return null;
   const counts = tallyVotes(votes, weightOf);
   const required = votesRequired(aliveCount);
   let best: PlayerId | null = null;

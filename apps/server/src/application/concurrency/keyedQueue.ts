@@ -5,6 +5,11 @@
 export class KeyedQueue {
   private readonly tails = new Map<string, Promise<unknown>>();
 
+  /** Hay una tarea en curso o en cola para esa clave. */
+  busy(key: string): boolean {
+    return this.tails.has(key);
+  }
+
   run<T>(key: string, task: () => Promise<T>): Promise<T> {
     const previous = this.tails.get(key) ?? Promise.resolve();
     const current = previous.catch(() => undefined).then(task);

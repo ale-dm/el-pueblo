@@ -99,11 +99,17 @@ export async function startServer(config: ServerConfig) {
   const purge = () => services.purgeExpired().catch((error: unknown) => console.error("[server] retención:", error));
   void purge();
   const purgeTimer = setInterval(() => void purge(), 60 * 60 * 1000);
+  // Vigilante: cada minuto rearma las partidas que se hayan quedado sin temporizador (ver recoverTimers).
+  const watchdog = setInterval(
+    () => void services.recoverTimers(services.advance, { bots: false }).catch((error: unknown) => console.error("[server] vigilante:", error)),
+    60 * 1000,
+  );
 
   return {
     recovered,
     close: async () => {
       clearInterval(purgeTimer);
+      clearInterval(watchdog);
       await services.drainNarrations();
       io.close();
       await app.close();

@@ -8,6 +8,10 @@ export class ManualScheduler implements Scheduler {
     this.pending.set(matchId, { delayMs, onFire });
   }
 
+  has(matchId: string) {
+    return this.pending.has(matchId);
+  }
+
   cancel(matchId: string) {
     this.pending.delete(matchId);
   }

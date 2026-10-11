@@ -1,4 +1,4 @@
-import { timerTask } from "../events/timerTask.js";
+import { armTimer, type ArmedPhase } from "../events/timers.js";
 import type { GameEventEnvelope } from "@el-pueblo/engine";
 import { createRng, decide, replay, type Catalog, type Command } from "@el-pueblo/engine";
 import { AppError, ConcurrencyError } from "../errors.js";
@@ -18,7 +18,7 @@ export interface SubmitCommandDeps {
   security: Security;
   queue: KeyedQueue;
   scheduler: Scheduler;
-  advance: (matchId: string) => Promise<void>;
+  advance: (matchId: string, armed?: ArmedPhase) => Promise<void>;
   /** Narración asíncrona de los eventos publicados. No se espera. */
   afterEvents?: (matchId: string, events: GameEventEnvelope[]) => void;
 }
@@ -105,7 +105,8 @@ export function submitCommand(deps: SubmitCommandDeps) {
         const delay = phaseDelayFor(
           await loadCatalog(), modeOf(match.config), phaseStart.payload.phase, phaseStart.payload.dayNumber, timed,
         );
-        if (delay !== null) deps.scheduler.schedule(match.id, delay, timerTask("fase", match.id, () => deps.advance(match.id)));
+        const armed: ArmedPhase = { phase: phaseStart.payload.phase, dayNumber: phaseStart.payload.dayNumber };
+        if (delay !== null) armTimer(deps.scheduler, { key: match.id, matchId: match.id, label: "fase" }, delay, () => deps.advance(match.id, armed));
       }
       return { events: decision.value };
     });

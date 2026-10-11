@@ -1,4 +1,4 @@
-import { timerTask } from "./application/events/timerTask.js";
+import { armTimer } from "./application/events/timers.js";
 import { KeyedQueue } from "./application/concurrency/keyedQueue.js";
 import { advanceOnTimeout } from "./application/use-cases/advanceOnTimeout.js";
 import { botTurn } from "./application/use-cases/botTurn.js";
@@ -46,7 +46,7 @@ export function createServices(deps: Deps) {
   // Los bots tienen su propio temporizador (otra clave del planificador) para no pisar el de la fase.
   const scheduleBots = (matchId: string) => {
     const delay = BOT_DELAY_MS.min + Math.floor(Math.random() * BOT_DELAY_MS.spread);
-    deps.scheduler.schedule(botKey(matchId), delay, timerTask("bots", matchId, () => runBots(matchId)));
+    armTimer(deps.scheduler, { key: botKey(matchId), matchId, label: "bots" }, delay, () => runBots(matchId));
   };
 
   const afterEvents = (matchId: string, events: GameEventEnvelope[]) => {
@@ -84,7 +84,7 @@ export function createServices(deps: Deps) {
     pushPublicKey: () => deps.pushSender.publicKey(),
     getView: getView(deps),
     setConnection: setConnection(deps),
-    recoverTimers: recoverTimers({ ...deps, scheduleBots, finishNaming: finishNamingUseCase }),
+    recoverTimers: recoverTimers({ ...deps, queue, scheduleBots, finishNaming: finishNamingUseCase }),
     /** Borra partidas y salas fuera de plazo (ver RetentionPolicy). Se ejecuta al arrancar y cada hora. */
     purgeExpired: purgeExpired({ matches: deps.matches, push: deps.push, clock: deps.clock, policy: deps.retention }),
     advance,

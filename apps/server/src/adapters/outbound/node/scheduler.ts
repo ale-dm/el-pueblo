@@ -13,6 +13,10 @@ export class NodeScheduler implements Scheduler {
     this.timers.set(matchId, timer);
   }
 
+  has(matchId: string) {
+    return this.timers.has(matchId);
+  }
+
   cancel(matchId: string) {
     const timer = this.timers.get(matchId);
     if (timer) clearTimeout(timer);

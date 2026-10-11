@@ -5,7 +5,7 @@ import { initialState } from "../state/initialState.js";
 import { recordDeaths } from "../state/recordDeaths.js";
 import type { Broadcaster, CatalogSource, Clock, EventLog, MatchStore, PlayerStore, Scheduler } from "../ports.js";
 import { modeOf, phaseDelayFor } from "../timing.js";
-import { timerTask } from "../events/timerTask.js";
+import { armTimer, type ArmedPhase } from "../events/timers.js";
 
 export interface AdvanceDeps {
   matches: MatchStore;
@@ -18,8 +18,6 @@ export interface AdvanceDeps {
   scheduler: Scheduler;
   /** Narración asíncrona de los eventos publicados. No se espera. */
   afterEvents?: (matchId: string, events: GameEventEnvelope[]) => void;
-  /** Registro de errores de los temporizadores. Por defecto, consola. */
-  log?: (message: string, detail: unknown) => void;
 }
 
 /**
@@ -30,7 +28,8 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
   let cachedCatalog: Promise<Catalog> | null = null;
   const loadCatalog = () => (cachedCatalog ??= deps.catalog.load());
 
-  const advance = (matchId: string): Promise<void> =>
+  /** `armed`: la fase para la que se armó el temporizador. Si la partida ya está en otra, el temporizador es viejo y no hace nada. */
+  const advance = (matchId: string, armed?: ArmedPhase): Promise<void> =>
     deps.queue.run(matchId, async () => {
       const match = await deps.matches.findById(matchId);
       if (!match || match.status !== "playing") return;
@@ -39,6 +38,7 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
       const timed = await deps.events.readTimed(matchId);
       const catalog = await loadCatalog();
       const state = replay(initialState(match, roster), timed.map((t) => t.event));
+      if (armed && (state.phase !== armed.phase || state.dayNumber !== armed.dayNumber)) return;
 
       const decision = decide(state, { type: "timer.expired" }, {
         catalog,
@@ -60,7 +60,10 @@ export function advanceOnTimeout(deps: AdvanceDeps) {
       const next = decision.value.filter((e) => e.type === "phase.started").at(-1);
       if (next?.type === "phase.started" && !ended) {
         const delay = phaseDelayFor(catalog, modeOf(match.config), next.payload.phase, next.payload.dayNumber, timed);
-        if (delay !== null) deps.scheduler.schedule(matchId, delay, timerTask("fase", matchId, () => advance(matchId), deps.log));
+        if (delay !== null) {
+          const armedNext: ArmedPhase = { phase: next.payload.phase, dayNumber: next.payload.dayNumber };
+          armTimer(deps.scheduler, { key: matchId, matchId, label: "fase" }, delay, () => advance(matchId, armedNext));
+        }
       }
     });
 

@@ -7,7 +7,7 @@ import { initialState } from "../state/initialState.js";
 import type { Broadcaster, CatalogSource, Clock, EventLog, MatchRecord, MatchStore, PlayerRecord, PlayerStore, Scheduler, Security } from "../ports.js";
 import { modeOf, phaseDelayMs } from "../timing.js";
 import { namingTimerKey } from "./beginNaming.js";
-import { timerTask } from "../events/timerTask.js";
+import { armTimer, type ArmedPhase } from "../events/timers.js";
 
 export interface StartMatchDeps {
   matches: MatchStore;
@@ -20,7 +20,7 @@ export interface StartMatchDeps {
   queue: KeyedQueue;
   scheduler: Scheduler;
   /** Avance por tiempo (ver advanceOnTimeout). Se inyecta al componer. */
-  advance: (matchId: string) => Promise<void>;
+  advance: (matchId: string, armed?: ArmedPhase) => Promise<void>;
   /** Narración asíncrona de los eventos publicados. No se espera. */
   afterEvents?: (matchId: string, events: GameEventEnvelope[]) => void;
 }
@@ -69,7 +69,8 @@ export function startGame(deps: StartMatchDeps) {
     await deps.broadcaster.publish(match.id, decision.value);
     deps.afterEvents?.(match.id, decision.value);
     const delay = phaseDelayMs(await cachedCatalog, modeOf(match.config), "day_1");
-    if (delay !== null) deps.scheduler.schedule(match.id, delay, timerTask("fase", match.id, () => deps.advance(match.id)));
+    const armed: ArmedPhase = { phase: "day_1", dayNumber: 1 };
+    if (delay !== null) armTimer(deps.scheduler, { key: match.id, matchId: match.id, label: "fase" }, delay, () => deps.advance(match.id, armed));
     return decision.value.length;
   };
 }

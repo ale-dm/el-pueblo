@@ -130,6 +130,8 @@ export interface Security {
 export interface Scheduler {
   schedule(matchId: string, delayMs: number, onFire: () => void): void;
   cancel(matchId: string): void;
+  /** Hay un temporizador pendiente con esa clave. */
+  has(matchId: string): boolean;
 }
 
 /** Suscripción de un dispositivo (PushSubscription del navegador). */
