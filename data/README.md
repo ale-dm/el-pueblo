@@ -31,4 +31,5 @@ Alcance actual: facción **Mafia** y **Town**. Se incluyen también los roles **
 ## Licencia y uso
 
 - El contenido de Fandom suele ser CC-BY-SA. Confirmar la licencia en la wiki antes de publicar.
-- Nombres, iconos y arte de Town of Salem son propiedad de sus creadores. Para amigos en privado el riesgo es bajo; para publicar en tiendas hay que sustituir arte y nombres.
+- Nombres, iconos y arte de Town of Salem son propiedad de sus creadores.
+- **Decisión del proyecto:** El Pueblo es privado (partidas en persona con amigos, jugado desde la app). No se publica. Las imágenes de la wiki se quedan. Si algún día se publicara, habría que confirmar la licencia y sustituir arte y nombres antes.

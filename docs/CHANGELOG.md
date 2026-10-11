@@ -41,7 +41,7 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Revisión visual: el panel de elegir nombre va encima del círculo mientras dura la elección; en horizontal, formulario a la izquierda y lista a la derecha. El centro del círculo dice "Nombres" en la sala de espera, no "Primer día".
 - Novedades en la sala de espera: "X ha entrado en la sala" y "X se ha unido al pueblo" cuando alguien pone o cambia su nombre. Se calculan en la web entre refrescos; el servidor no las envía.
 - Descartado por decisión del equipo: el sexo del nombre según el personaje, y el filtro de insultos.
-- Pendiente: la licencia del arte; que la partida LWP4FL reanude tras el despliegue.
+- Pendiente: que la partida LWP4FL reanude tras el despliegue. La licencia del arte queda resuelta (ver más abajo).
 - Comprobado: pruebas nuevas de la elección (6, en `test/application/eleccion-nombres.test.ts`); `pnpm check`; prueba de móvil; capturas de la elección y de la votación en vertical y horizontal.
 
 ## Personajes por defecto en las cartas de los jugadores
@@ -49,7 +49,7 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Qué: los personajes por defecto de la wiki (Avatars (ToS), "Default Skins") no son roles; son el aspecto de cada jugador. Cada asiento tiene el suyo (`lib/avatars.ts`, estable entre recargas). Se usan en la mesa del móvil (el centro de la casilla) y en la lista de escritorio (sustituye al círculo del asiento).
 - El icono del rol, si se conoce, va en la esquina de la casilla. Los muertos van apagados con ✝.
 - Imágenes: siete copias en `apps/web/public/avatars/`, tal cual están en la wiki. John Hathorne y Random Townie no estaban en el índice de imágenes; se sacaron de la ruta de MediaWiki.
-- Pendiente: la licencia de este arte. La de la wiki es CC-BY-SA según `data/README.md`, y hay que confirmarla antes de publicar.
+- Licencia: decisión del proyecto. El Pueblo es privado (partidas en persona entre amigos) y no se publica; el arte se queda. Nota en `data/README.md`.
 - Comprobado: `pnpm check` (engine 592, web 141, server 114); prueba de móvil 11 de 11; capturas de móvil y escritorio.
 
 ## Partida atascada, chat y registro, roles al alcance
