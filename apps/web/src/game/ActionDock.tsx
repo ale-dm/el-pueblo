@@ -46,10 +46,10 @@ export function ActionDock({ view, targets, clearTargets, inline = false }: Prop
   if (view.phase === "judgement" && alive && view.defendantId !== me.id) {
     return (
       <div className={`relative flex items-end justify-end gap-3${place}`}>
-        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "guilty" })} className="cartoon-btn danger flex size-20 items-center justify-center rounded-full text-sm">
+        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "guilty" })} className="cartoon-btn danger flex h-16 w-28 items-center justify-center rounded-2xl text-base">
           Culpable
         </button>
-        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "innocent" })} className="cartoon-btn town flex size-20 items-center justify-center rounded-full text-sm">
+        <button type="button" disabled={busy} onClick={() => void send({ type: "judgement.vote", voterId: me.id, verdict: "innocent" })} className="cartoon-btn town flex h-16 w-28 items-center justify-center rounded-2xl text-base">
           Inocente
         </button>
       </div>

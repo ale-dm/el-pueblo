@@ -15,6 +15,17 @@ Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E
 - Pendiente: el filtro del Forger no tiene prueba automática (la lógica está en la pantalla, no en el motor); se comprobó leyendo el código.
 - Verificado a continuación: el voto en escritorio (1366×768) y la ficha de rol en horizontal (844×390). El voto en horizontal no se pudo capturar: el script llegó tarde a la votación; el voto está cubierto en vertical por la prueba de móvil.
 
+## Aspecto parecido a Town of Salem: fondo, juicio, reloj y carta
+
+- Fondo del pueblo: escena dibujada a mano (`public/scene/plaza-day.svg` y `plaza-night.svg`), con plaza circular y caminos radiales. Día y noche según `body.night`. No es arte de la wiki.
+- Juicio: el acusado aparece de pie sobre el anillo de piedra, con la horca detrás y su personaje (`TrialStage` en `game/Plaza.tsx`). La horca es arte de la wiki (`public/scene/gallows.webp`).
+- Botones de Culpable e Inocente: rectangulares, para que el texto quepa.
+- Carta del rol: la ilustración del rol va muy pequeña, junto al nombre.
+- Reloj: anillo que se vacía con el tiempo y muestra los segundos. En el móvil va junto a la fase; en escritorio sustituye a la píldora. Pruebas en `lib/clock.test.ts`.
+- Plaza más opaca para que el texto se lea sobre el fondo.
+- Decidido por el equipo: la casilla del lobby sigue vacía, y los muertos van mezclados en la mesa.
+- Comprobado: `pnpm check` (engine 593, web 150, server 127); prueba de móvil 11 de 11; capturas de votación y juicio en móvil y de escritorio.
+
 ## Incidente: partida parada al vencer un temporizador
 
 - Síntoma: una partida se quedó en "Noche · 0 s" y no avanzó.

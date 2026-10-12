@@ -1,6 +1,7 @@
 import type { GameEvent, MatchView } from "../types.js";
 import { PHASE_PROMPT } from "./TopBar.js";
 import { roleName } from "../lib/roles.js";
+import { avatarUrl } from "../lib/avatars.js";
 
 interface Props {
   view: MatchView;
@@ -38,7 +39,7 @@ export function Plaza({ view, log, subtitle, trialsLeft }: Props) {
     .flatMap((e) => (e.type === "player.killed" || e.type === "player.hanged" ? [e.payload] : []));
 
   return (
-    <section aria-label="La plaza" className="flex h-full min-h-0 flex-col items-center gap-3 overflow-y-auto rounded-3xl border-4 border-ink bg-paper/60 p-4 text-center">
+    <section aria-label="La plaza" className="flex h-full min-h-0 flex-col items-center gap-3 overflow-y-auto rounded-3xl border-4 border-ink bg-paper/90 p-4 text-center">
       <h1 className="font-display text-2xl leading-tight md:text-xl">{PHASE_PROMPT[view.phase]}</h1>
       <p className="text-sm font-semibold">{subtitle}</p>
       {view.phase !== "ended" && (
@@ -82,7 +83,7 @@ export function Plaza({ view, log, subtitle, trialsLeft }: Props) {
 
       {(view.phase === "defense" || view.phase === "judgement" || view.phase === "last_words") && view.defendantId && (
         <div className="space-y-2">
-          <p className="font-display text-3xl">{nick(view.defendantId)}</p>
+          <TrialStage nick={nick(view.defendantId)} avatar={avatarUrl(view.players.find((p) => p.id === view.defendantId)?.seat ?? 1)} />
           {view.phase === "judgement" && (
             <p className="text-sm font-semibold">
               Culpable: {guilty} · Inocente: {innocent}
@@ -95,5 +96,22 @@ export function Plaza({ view, log, subtitle, trialsLeft }: Props) {
         <p className="font-display text-3xl">{view.winner === "mafia" ? "Gana la Mafia" : "Gana el pueblo"}</p>
       )}
     </section>
+  );
+}
+
+/**
+ * El acusado sobre la horca, en el centro de la plaza, como en el juicio de Town of Salem: su personaje, de pie sobre el
+ * anillo de piedra, con la horca detrás. El arte de la horca viene de la wiki; la plaza es dibujo propio.
+ */
+function TrialStage({ nick, avatar }: { nick: string; avatar: string }) {
+  return (
+    <div className="space-y-1" aria-label={`En juicio: ${nick}`}>
+      <div className="relative mx-auto h-44 w-56">
+        <div aria-hidden="true" className="absolute inset-x-6 bottom-0 h-14 rounded-[50%] border-4 border-ink bg-[radial-gradient(circle,#fff8e7,#d6c39a)]" />
+        <img src="/scene/gallows.webp" alt="" className="absolute left-1/2 top-0 h-32 -translate-x-1/2 object-contain" />
+        <img src={avatar} alt="" className="absolute bottom-2 left-1/2 h-28 -translate-x-1/2 object-contain drop-shadow-[3px_3px_0_var(--color-ink)]" />
+      </div>
+      <p className="font-display text-3xl">{nick}</p>
+    </div>
   );
 }

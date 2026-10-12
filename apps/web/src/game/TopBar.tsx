@@ -1,7 +1,7 @@
 import type { MatchView } from "../types.js";
 import { Pill } from "../ui/primitives.js";
 import { PHASE_LABEL } from "../lib/text.js";
-import { formatClock } from "../lib/countdown.js";
+import { ClockRing } from "./ClockRing.js";
 
 /** Lo que el pueblo pregunta en cada fase, como en el título de Town of Salem. */
 export const PHASE_PROMPT: Record<MatchView["phase"], string> = {
@@ -31,7 +31,7 @@ export function TopBar({ view, trialsLeft, secondsLeft, muted = false, onToggleM
     <header className={`flex flex-wrap items-center justify-center gap-2 ${className}`}>
       <Pill className="bg-paper">Día {view.dayNumber}</Pill>
       <Pill className="bg-paper">⚖ {trialsLeft}</Pill>
-      {secondsLeft !== null && <Pill className="tabular-nums bg-paper">⏱ {formatClock(secondsLeft)}</Pill>}
+      {secondsLeft !== null && <ClockRing seconds={secondsLeft} phaseKey={`${view.phase}-${view.dayNumber}`} size={40} />}
       <Pill className="bg-paper">{night ? "🌙 Noche" : "☀️ Día"}</Pill>
       {onToggleMute && (
         <button type="button" onClick={onToggleMute} aria-pressed={muted} aria-label={muted ? "Activar sonidos" : "Silenciar sonidos"} className="cartoon-btn px-2 py-0 text-sm">

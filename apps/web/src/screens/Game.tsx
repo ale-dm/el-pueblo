@@ -9,6 +9,7 @@ import { trialsLeftToday } from "../lib/trials.js";
 import { RoleReveal } from "../game/RoleReveal.js";
 import { ActionDock } from "../game/ActionDock.js";
 import { Table } from "../game/Table.js";
+import { ClockRing } from "../game/ClockRing.js";
 import { Sheet } from "../game/Sheet.js";
 import { voteCommand } from "../lib/quickAction.js";
 import { usePhoneLayout } from "../lib/useMediaQuery.js";
@@ -212,13 +213,14 @@ export function Game({ view }: { view: MatchView }) {
     return (
       <>
         {overlays}
-        <main className="phone-main flex min-h-dvh flex-col gap-2 p-3">
+        <main className="phone-main scene flex min-h-dvh flex-col gap-2 p-3">
           <header className="phone-head flex items-center justify-between gap-2">
             <SettingsMenu muted={muted} onToggleMute={toggleMute} />
             <div className="min-w-0 text-center">
-              <p className="font-display text-xl leading-tight">
-                {PHASE_LABEL[view.phase]}{left !== null ? ` · ${left} s` : ""}
-              </p>
+              <div className="flex items-center justify-center gap-2">
+                <p className="font-display text-xl leading-tight">{PHASE_LABEL[view.phase]}</p>
+                {left !== null && <ClockRing seconds={left} phaseKey={`${view.phase}-${view.dayNumber}-${view.phaseEndsAt}`} />}
+              </div>
               <p className="text-xs font-semibold">Día {view.dayNumber} · ⚖ {trialsLeft} · Sala {view.roomCode}</p>
             </div>
             <div className="flex shrink-0 gap-2">
@@ -263,7 +265,7 @@ export function Game({ view }: { view: MatchView }) {
       {overlays}
       {/* Escritorio, tres zonas. Izquierda: cabecera, pestañas de rol y chat. Centro: la plaza (fase, votos, juicio, muertes).
           Derecha: la lista de jugadores, la única superficie de selección. */}
-      <main className="game-grid md:grid">
+      <main className="game-grid scene md:grid">
         <div className="md:flex md:min-h-0 md:flex-col md:gap-2 md:col-start-1 md:row-start-1">
           <Card className="flex items-center justify-between gap-2 p-2">
             <div className="flex min-w-0 items-center gap-2">

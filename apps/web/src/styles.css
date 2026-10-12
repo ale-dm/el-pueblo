@@ -77,6 +77,16 @@ body.night {
 
 
 
+/* Fondo del pueblo (arte propio en public/scene): de día, y de noche con body.night. */
+.scene {
+  background-image: url(/scene/plaza-day.svg);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-color: var(--color-paper);
+}
+body.night .scene { background-image: url(/scene/plaza-night.svg); }
+
 /* Móvil (ver PHONE_QUERY en lib/useMediaQuery.ts): la mesa de jugadores llena el centro y la acción va abajo. */
 .phone-main { height: 100dvh; overflow: hidden; }
 .phone-table { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); height: 100%; }
