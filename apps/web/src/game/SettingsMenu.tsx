@@ -19,7 +19,7 @@ export function SettingsMenu({ muted, onToggleMute }: { muted: boolean; onToggle
       </button>
       {open && (
         <Card className="absolute left-0 top-full z-30 mt-2 w-56 space-y-2 p-3">
-          <Button className="w-full text-sm" onClick={onToggleMute}>{muted ? "Activar sonidos" : "Silenciar sonidos"}</Button>
+          <Button className="w-full text-sm" onClick={onToggleMute}>{muted ? "Activar sonido y música" : "Silenciar sonido y música"}</Button>
           <Button tone="danger" className="w-full text-sm" onClick={() => {
             if (window.confirm("¿Salir de la partida? No podrás volver a entrar en esta sesión.")) leave();
           }}>Salir de la partida</Button>

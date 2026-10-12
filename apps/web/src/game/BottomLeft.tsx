@@ -4,8 +4,8 @@ import { Chat } from "./Chat.js";
 import { LogPanel } from "./LogPanel.js";
 
 /** Chat y registro juntos abajo a la izquierda: pestañas, como el chat de Town of Salem. */
-export function BottomLeft({ view, log, className = "", fill = false }: { view: MatchView; log: GameEvent[]; className?: string; fill?: boolean }) {
-  const [tab, setTab] = useState<"chat" | "log">("chat");
+export function BottomLeft({ view, log, className = "", fill = false, initialTab = "chat" }: { view: MatchView; log: GameEvent[]; className?: string; fill?: boolean; initialTab?: "chat" | "log" }) {
+  const [tab, setTab] = useState<"chat" | "log">(initialTab);
   return (
     <div className={`flex min-h-0 flex-col gap-1 ${className}`}>
       <div role="tablist" className="flex gap-1">

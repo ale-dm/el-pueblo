@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useGame } from "../state/store.js";
 import { Button, Card, TextField } from "../ui/primitives.js";
+import { rememberNick, savedNick } from "../lib/rememberNick.js";
 
 /** Máximo de bots: la sala admite 15 jugadores y el anfitrión ocupa uno. */
 const MAX_BOTS = 14;
 
 export function Home() {
   const { createRoom, joinRoom, busy, error, clearError } = useGame();
-  const [nick, setNick] = useState("");
+  const [nick, setNick] = useState(savedNick);
   const [code, setCode] = useState("");
   const [bots, setBots] = useState(0);
   const validNick = nick.trim().length > 0 && nick.trim().length <= 24;
@@ -34,7 +35,7 @@ export function Home() {
             <Button aria-label="Añadir un bot" disabled={bots === MAX_BOTS} onClick={() => setBotCount(bots + 1)}>+</Button>
           </div>
         </div>
-        <Button className="w-full" disabled={busy || !validNick} onClick={() => void createRoom(nick.trim(), bots)}>
+        <Button className="w-full" disabled={busy || !validNick} onClick={() => { rememberNick(nick.trim()); void createRoom(nick.trim(), bots); }}>
           Crear sala
         </Button>
       </Card>
@@ -42,7 +43,7 @@ export function Home() {
       <Card className="space-y-3">
         <label className="block font-semibold" htmlFor="code">Código de sala</label>
         <TextField id="code" value={code} maxLength={6} placeholder="ABC123" className="uppercase tracking-widest" onChange={(e) => { setCode(e.target.value); clearError(); }} />
-        <Button className="w-full" tone="town" disabled={busy || !validNick || code.trim().length !== 6} onClick={() => void joinRoom(code, nick.trim())}>
+        <Button className="w-full" tone="town" disabled={busy || !validNick || code.trim().length !== 6} onClick={() => { rememberNick(nick.trim()); void joinRoom(code, nick.trim()); }}>
           Unirme
         </Button>
       </Card>

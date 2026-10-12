@@ -4,6 +4,7 @@ import { Home } from "./screens/Home.js";
 import { Lobby } from "./screens/Lobby.js";
 import { Game } from "./screens/Game.js";
 import { isNight } from "./lib/text.js";
+import { playTrack, trackFor } from "./lib/music.js";
 
 export function App() {
   const { session, view, init, connected, error } = useGame();
@@ -12,6 +13,10 @@ export function App() {
   useEffect(() => {
     document.body.classList.toggle("night", view ? isNight(view.phase) : false);
   }, [view]);
+
+  // Música de fondo: la pista cambia con la pantalla y la fase; en el inicio (sin sala) no suena.
+  const track = session && view ? trackFor({ status: view.status, phase: view.phase, naming: view.namingEndsAt !== null }) : null;
+  useEffect(() => playTrack(track), [track]);
 
   if (!session) return <Home />;
   if (!view) {

@@ -5,6 +5,17 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Música de fondo y calidad de vida
+
+- Música: las siete pistas de la wiki (`public/audio/`), una por pantalla: sala, elección de nombres, día, discusión, votación, defensa (juicio y últimas palabras) y noche. Fundido entre pistas. Comparte el botón de silencio con los efectos (`lib/music.ts`). Sin ficheros en el servicio de precaché: se descargan al oírlas. Licencia: mismo criterio que las imágenes (juego privado, sin publicar); decidido por el responsable del proyecto.
+- Dock: `Tu acción: …` muestra lo enviado esta noche, y se ve al volver a la pantalla.
+- Chat: el botón de chat cuenta los mensajes nuevos con la hoja cerrada. Un resultado privado (investigación) pone un "!" que abre el registro.
+- Avisos de error de la partida y de la sala: se cierran solos a los 5 s.
+- Portada: el nick se recuerda en este navegador.
+- Sala: botón "Compartir código" (hoja del sistema; en escritorio, copia al portapapeles).
+- No hecho: agrupar avisos repetidos ("×3"). Los avisos se cierran solos, que era el problema principal.
+- Comprobado: `pnpm check` (engine 593, web 157, server 127); prueba de móvil 11 de 11 sin errores de consola; en navegador, las peticiones de audio por fase, el chip de acción, el contador de chat y el nick guardado.
+
 ## Botones de habilidad que el servidor no acepta
 
 - Dock: una habilidad que el motor rechazará ahora no se pulsa y dice por qué. Disparar y ejecutar no se ofrecen en la primera noche (día 1). Ejecutar no se ofrece sin prisionero ("Primero encarcela a alguien") ni a quien ya no puede ejecutar. Regla en `abilityBlock` (`apps/web/src/lib/quickAction.ts`), con pruebas.

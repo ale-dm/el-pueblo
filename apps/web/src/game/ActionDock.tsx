@@ -64,6 +64,8 @@ export function ActionDock({ view, targets, clearTargets, inline = false }: Prop
 
   return (
     <div className={`relative flex flex-col items-end gap-3${place}`}>
+      {/* Lo que ya has enviado esta noche: se ve al volver a la pantalla, y se puede cambiar hasta el final. */}
+      {view.phase === "night" && view.me.nightAction && <Hint text={chosenText(view)} />}
       {abilities.map((ability) => (
         <AbilityButton
           key={ability.key}
@@ -143,6 +145,13 @@ function AbilityButton({ ability, icon, view, targets, busy, choosing, onTap, on
       </button>
     </div>
   );
+}
+
+/** Lo enviado esta noche, en palabras: "Tu acción: Atacar a Bruno". */
+function chosenText(view: MatchView): string {
+  const action = view.me.nightAction!;
+  const target = action.targetId ? view.players.find((p) => p.id === action.targetId)?.nick : null;
+  return `Tu acción: ${abilityLabel(action.ability)}${target ? ` a ${target}` : ""}`;
 }
 
 function Hint({ text }: { text: string }) {

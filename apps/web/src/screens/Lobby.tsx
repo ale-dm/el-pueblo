@@ -5,6 +5,7 @@ import { Button, Card, Pill, TextField } from "../ui/primitives.js";
 import { PushButton } from "../game/PushButton.js";
 import { Ring } from "../game/Ring.js";
 import { secondsLeft } from "../lib/countdown.js";
+import { useAutoDismiss } from "../lib/useAutoDismiss.js";
 
 const MIN_PLAYERS = 10;
 const MAX_PLAYERS = 15;
@@ -14,6 +15,7 @@ const MAX_NAME = 16;
 
 export function Lobby({ view }: { view: MatchView }) {
   const { startMatch, beginNaming, chooseName, refresh, busy, error, leave, connected, clearError } = useGame();
+  useAutoDismiss(error !== null, clearError);
   const isHost = view.me.seat === 1;
   const count = view.players.length;
   const naming = view.namingEndsAt !== null;
@@ -34,6 +36,7 @@ export function Lobby({ view }: { view: MatchView }) {
         <p className="font-semibold">Código de sala</p>
         <h1 className="font-display text-6xl tracking-widest drop-shadow-[4px_4px_0_var(--color-ink)]">{view.roomCode}</h1>
         <p className="mt-1">Compártelo con tus amigos. Cuando estéis, el anfitrión reparte los roles.</p>
+        <ShareCode code={view.roomCode} />
       </header>
 
       {/* Mientras se eligen nombres, lo primero es escribir el tuyo y ver la cuenta atrás. */}
@@ -178,4 +181,28 @@ function useNotes(view: MatchView): Note[] {
     if (fresh.length > 0) setNotes((list) => [...fresh, ...list].slice(0, 4));
   }, [view.players]);
   return notes;
+}
+
+/** Comparte el código con la hoja del sistema; sin ella (escritorio), lo copia al portapapeles. */
+function ShareCode({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    const text = `Únete a mi sala de El Pueblo: código ${code}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "El Pueblo", text, url: location.origin });
+        return;
+      }
+      await navigator.clipboard.writeText(`${text} · ${location.origin}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Cancelado por el usuario o sin permiso: no pasa nada.
+    }
+  };
+  return (
+    <button type="button" onClick={() => void share()} className="cartoon-btn mt-3 px-3 py-1 text-sm">
+      {copied ? "Código copiado" : "Compartir código"}
+    </button>
+  );
 }

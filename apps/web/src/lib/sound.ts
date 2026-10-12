@@ -1,5 +1,5 @@
 /**
- * Efectos de sonido (sin música). Se generan con el navegador, sin ficheros.
+ * Efectos de sonido. Se generan con el navegador, sin ficheros. La música de fondo va aparte (lib/music.ts).
  * El silencio se guarda en este navegador. Si el audio no está disponible, no pasa nada.
  */
 
@@ -19,6 +19,8 @@ export function setMuted(muted: boolean) {
   } catch {
     // Sin almacenamiento: el silencio dura lo que la pestaña.
   }
+  // La música (lib/music.ts) escucha este aviso para silenciarse con los efectos.
+  window.dispatchEvent(new Event("pueblo:mute"));
 }
 
 export type Cue = "vote" | "phase" | "night" | "death";

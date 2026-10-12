@@ -26,6 +26,7 @@ import { isMuted, playCue, setMuted } from "../lib/sound.js";
 import { voteStatus } from "../lib/votes.js";
 import { isPickableTarget, targetsNeeded } from "../lib/targets.js";
 import type { GameEvent } from "../types.js";
+import { useAutoDismiss } from "../lib/useAutoDismiss.js";
 
 /** Cuántos objetivos pide la fase actual: votación y noche con dos objetivos. `raise`: el primero es un muerto. */
 /** Lo que dice el pueblo en cada fase, como el texto de ToS sobre el juego. */
@@ -60,6 +61,8 @@ export function Game({ view }: { view: MatchView }) {
   const error = useGame((s) => s.error);
   const connected = useGame((s) => s.connected);
   const clearError = useGame((s) => s.clearError);
+  // Un error de la partida se cierra solo a los 5 s (también al tocarlo).
+  useAutoDismiss(error !== null, clearError);
   const send = useGame((s) => s.send);
   const [targets, setTargets] = useState<string[]>([]);
   const [muted, setMutedState] = useState(isMuted);
@@ -67,6 +70,19 @@ export function Game({ view }: { view: MatchView }) {
   const [liveTab, setLiveTab] = useState<LiveTab>("live");
   const phone = usePhoneLayout();
   const [sheet, setSheet] = useState<"role" | "chat" | null>(null);
+  const sheetRef = useRef(sheet);
+  sheetRef.current = sheet;
+  // Lo que llega con la hoja de chat cerrada: mensajes nuevos (contador) y resultados privados (aviso "!").
+  const [unread, setUnread] = useState(0);
+  const [privateNew, setPrivateNew] = useState(false);
+  const [chatTab, setChatTab] = useState<"chat" | "log">("chat");
+  const openChat = () => {
+    // Con un resultado nuevo, la hoja se abre en el registro, donde están esas líneas privadas.
+    setChatTab(privateNew ? "log" : "chat");
+    setUnread(0);
+    setPrivateNew(false);
+    setSheet("chat");
+  };
   const [banner, setBanner] = useState<{ text: string; tone: "night" | "day" | "trial" } | null>(null);
   const defendantSeen = useRef<string | null>(null);
   const [death, setDeath] = useState<GameEvent | null>(null);
@@ -86,6 +102,11 @@ export function Game({ view }: { view: MatchView }) {
     }
     const fresh = log.filter((e) => e.seq > (seen.current ?? 0));
     seen.current = last;
+    if (sheetRef.current !== "chat") {
+      const mensajes = fresh.filter((e) => e.type === "chat.message").length;
+      if (mensajes > 0) setUnread((u) => u + mensajes);
+    }
+    if (fresh.some((e) => e.type === "investigation.result")) setPrivateNew(true);
     if (fresh.some((e) => e.type === "vote.cast")) playCue("vote");
     for (const e of fresh) {
       if (e.type === "phase.started") playCue(e.payload.phase === "night" ? "night" : "phase");
@@ -227,8 +248,16 @@ export function Game({ view }: { view: MatchView }) {
               <button type="button" aria-label="Tu rol" onClick={() => setSheet("role")} className="cartoon-btn flex size-10 items-center justify-center !p-0">
                 {roleIconUrl(me.roleKey) ? <img src={roleIconUrl(me.roleKey) ?? ""} alt="" className="size-7 object-contain" /> : <span aria-hidden="true">✦</span>}
               </button>
-              <button type="button" aria-label="Chat y registro" onClick={() => setSheet("chat")} className="cartoon-btn flex size-10 items-center justify-center !p-0 text-xl">
+              <button type="button" aria-label="Chat y registro" onClick={openChat} className="cartoon-btn relative flex size-10 items-center justify-center !p-0 text-xl">
                 <span aria-hidden="true">💬</span>
+                {unread > 0 && (
+                  <span aria-hidden="true" className="absolute -right-1 -top-1 min-w-5 rounded-full border-2 border-ink bg-blood px-1 text-xs font-bold leading-4 text-paper">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                )}
+                {privateNew && (
+                  <span aria-hidden="true" className="absolute -left-1 -top-1 flex size-5 items-center justify-center rounded-full border-2 border-ink bg-sun text-xs font-bold leading-none">!</span>
+                )}
               </button>
             </div>
           </header>
@@ -253,7 +282,7 @@ export function Game({ view }: { view: MatchView }) {
         )}
         {sheet === "chat" && (
           <Sheet title="Chat y registro" onClose={closeSheet}>
-            <BottomLeft view={view} log={log} className="h-full" fill />
+            <BottomLeft view={view} log={log} className="h-full" fill initialTab={chatTab} />
           </Sheet>
         )}
       </>

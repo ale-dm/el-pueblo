@@ -34,7 +34,7 @@ export function TopBar({ view, trialsLeft, secondsLeft, muted = false, onToggleM
       {secondsLeft !== null && <ClockRing seconds={secondsLeft} phaseKey={`${view.phase}-${view.dayNumber}`} size={40} />}
       <Pill className="bg-paper">{night ? "🌙 Noche" : "☀️ Día"}</Pill>
       {onToggleMute && (
-        <button type="button" onClick={onToggleMute} aria-pressed={muted} aria-label={muted ? "Activar sonidos" : "Silenciar sonidos"} className="cartoon-btn px-2 py-0 text-sm">
+        <button type="button" onClick={onToggleMute} aria-pressed={muted} aria-label={muted ? "Activar sonido y música" : "Silenciar sonido y música"} className="cartoon-btn px-2 py-0 text-sm">
           {muted ? "🔇" : "🔊"}
         </button>
       )}
