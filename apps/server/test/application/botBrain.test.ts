@@ -18,7 +18,7 @@ function nightState(roles: string[], overrides: Partial<GameState> = {}): GameSt
   return {
     matchId: "m", engineVersion: "test", phase: "night", dayNumber: 1, seq: 0, winner: null, players,
     trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {},
-    wills: {}, jailedBy: {}, forgeries: {}, ...overrides,
+    wills: {}, jailedBy: {}, forgeries: {}, lastDeathDay: 0, ...overrides,
   };
 }
 

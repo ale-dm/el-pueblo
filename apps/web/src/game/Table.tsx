@@ -51,7 +51,8 @@ export function Table({ view, selected, isPickable, onPick }: Props) {
             </span>
           </>
         );
-        const base = `flex h-full min-h-0 w-full flex-col gap-0.5 rounded-xl border-2 border-ink bg-white/70 p-1 text-left ${dead ? "opacity-60 grayscale" : ""}`;
+        // Casilla opaca y de color tinta: el fondo de la plaza no se ve a través, y el texto se lee también de noche.
+        const base = `flex h-full min-h-0 w-full flex-col gap-0.5 rounded-xl border-2 border-ink bg-paper p-1 text-left text-ink ${dead ? "grayscale" : ""}`;
         return (
           <li key={p.id} className="min-h-0">
             {pickable ? (

@@ -92,7 +92,7 @@ export type GameEventPayloads = {
   /** Rechazo de un intento de chat que la wiki comunica como mensaje al emisor (ver rules/chat.ts chatRefusal). Solo lo ve él. */
   "chat.refused": { playerId: PlayerId; reason: "blackmailed" | "blackmailed_whisper" | "mayor_revealed_whisper" | "whisper_to_mayor" };
   "chat.message": { channel: "public" | "mafia" | "dead" | "whisper" | "jail" | "seance"; senderId: PlayerId; text: string; recipientId?: PlayerId; audienceId?: PlayerId; anonymous?: boolean };
-  "game.ended": { winner: FactionKey };
+  "game.ended": { winner: FactionKey | null };
 };
 
 export type GameEventType = keyof GameEventPayloads;

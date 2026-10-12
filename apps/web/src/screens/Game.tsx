@@ -23,6 +23,11 @@ import { SettingsMenu } from "../game/SettingsMenu.js";
 import { BottomLeft } from "../game/BottomLeft.js";
 import { ScreenBanner, DeathFx } from "../game/Fx.js";
 import { isMuted, playCue, setMuted } from "../lib/sound.js";
+import { holdTrack } from "../lib/music.js";
+import { deathCauseText } from "../lib/log.js";
+
+/** Cuánto se ve cada muerte en el reparto de la mañana. */
+const DEATH_REVEAL_MS = 4200;
 import { voteStatus } from "../lib/votes.js";
 import { isPickableTarget, targetsNeeded } from "../lib/targets.js";
 import type { GameEvent } from "../types.js";
@@ -85,7 +90,8 @@ export function Game({ view }: { view: MatchView }) {
   };
   const [banner, setBanner] = useState<{ text: string; tone: "night" | "day" | "trial" } | null>(null);
   const defendantSeen = useRef<string | null>(null);
-  const [death, setDeath] = useState<GameEvent | null>(null);
+  // Muertes por revelar, en orden: una a una, con su música de amanecer (ver el efecto de abajo).
+  const [deaths, setDeaths] = useState<GameEvent[]>([]);
   const seen = useRef<number | null>(null);
   const prevNight = useRef<boolean | null>(null);
   const need = targetsNeeded(view);
@@ -112,7 +118,7 @@ export function Game({ view }: { view: MatchView }) {
       if (e.type === "phase.started") playCue(e.payload.phase === "night" ? "night" : "phase");
       if (e.type === "player.killed" || e.type === "player.hanged") {
         playCue("death");
-        setDeath(e);
+        setDeaths((q) => [...q, e]);
       }
     }
   }, [log]);
@@ -139,11 +145,18 @@ export function Game({ view }: { view: MatchView }) {
     return () => clearTimeout(timer);
   }, [banner]);
 
+  // Una muerte se ve un rato y luego sale la siguiente. Mientras hay muertes por revelar suena la pista de día.
+  const head = deaths[0]?.seq;
   useEffect(() => {
-    if (!death) return;
-    const timer = setTimeout(() => setDeath(null), 2800);
+    if (head === undefined) return;
+    const timer = setTimeout(() => setDeaths((q) => q.slice(1)), DEATH_REVEAL_MS);
     return () => clearTimeout(timer);
-  }, [death]);
+  }, [head]);
+  const revealing = deaths.length > 0;
+  useEffect(() => {
+    holdTrack(revealing ? "day" : null);
+  }, [revealing]);
+  useEffect(() => () => holdTrack(null), []);
 
   // Lo elegido no sobrevive a la fase: un objetivo de día no se arrastra a la votación ni a la noche.
   useEffect(() => setTargets([]), [view.phase, view.dayNumber]);
@@ -173,13 +186,15 @@ export function Game({ view }: { view: MatchView }) {
   };
 
   if (view.phase === "ended") {
-    const won = view.winner === view.me.faction;
+    // Empate (winner null): nadie gana, ni el pueblo ni la Mafia.
+    const draw = view.winner === null;
+    const won = !draw && view.winner === view.me.faction;
     const wills = log.filter((e) => (e.type === "player.killed" || e.type === "player.hanged") && e.payload.will);
     return (
       <main className="mx-auto flex min-h-dvh max-w-lg flex-col gap-5 p-6">
         <Card className="text-center">
-          <h1 className="font-display text-5xl">{view.winner === "mafia" ? "¡Gana la Mafia!" : "¡Gana el pueblo!"}</h1>
-          <p className="mt-2 text-lg">{won ? "Tu bando ha ganado." : "Esta vez, no."}</p>
+          <h1 className="font-display text-5xl">{draw ? "Empate" : view.winner === "mafia" ? "¡Gana la Mafia!" : "¡Gana el pueblo!"}</h1>
+          <p className="mt-2 text-lg">{draw ? "Nadie gana esta partida." : won ? "Tu bando ha ganado." : "Esta vez, no."}</p>
         </Card>
         <Card>
           <h2 className="mb-2 font-display text-2xl">Quién era quién</h2>
@@ -219,7 +234,16 @@ export function Game({ view }: { view: MatchView }) {
     <>
       <RoleReveal view={view} />
       <ScreenBanner text={banner?.text ?? null} tone={banner?.tone} />
-      {death && <DeathFx nick={nickOf(death.payload.playerId)} role={roleName(death.payload.roleKey)} will={death.payload.will ?? null} />}
+      {deaths[0] && (
+        <DeathFx
+          key={deaths[0].seq}
+          nick={nickOf(deaths[0].payload.playerId)}
+          seat={view.players.find((p) => p.id === deaths[0]!.payload.playerId)?.seat ?? 1}
+          role={roleName(deaths[0].payload.roleKey)}
+          cause={deathCauseText(deaths[0])}
+          will={deaths[0].payload.will ?? null}
+        />
+      )}
       {!connected && <p role="status" className="fixed inset-x-0 top-0 z-50 bg-sunset p-2 text-center font-semibold">Sin conexión con el pueblo. Reconectando…</p>}
       {error && (
         <button type="button" role="alert" onClick={clearError} className="fixed inset-x-3 top-3 z-50 rounded-2xl border-4 border-ink bg-blood p-3 text-left font-semibold text-paper">

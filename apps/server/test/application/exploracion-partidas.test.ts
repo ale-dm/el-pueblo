@@ -217,11 +217,18 @@ async function playGame(game: number, report: Report, bots = 0, policy: Policy =
     // (1 contra 1, Victory_ToS.md): exactamente dos jugadores vivos.
     const town = alive.filter((p) => p.faction === "town").length;
     const mafia = alive.filter((p) => p.faction === "mafia").length;
-    const expected = mafia === 0 ? "town" : town === 0 ? "mafia" : null;
-    if (expected !== null && winner !== expected) anomaly(-1, "ganador", `evento ${winner}, vivos ${town} town / ${mafia} mafia`);
-    if (expected === null && alive.length !== 2) {
-      const tail = (await app.events.read(matchId)).slice(-12).map((e) => `${e.seq}:${e.type}${e.type === "phase.started" ? `(${e.payload.phase})` : ""}${e.type === "player.killed" || e.type === "player.hanged" ? `(${e.payload.playerId})` : ""}`);
-      anomaly(-1, "fin-sin-motivo", `evento ${winner} con ${alive.length} vivos; cola: ${tail.join(" ")}`);
+    // Empate (winner null, wiki: Victory_ToS, Draw): solo por aniquilación, o por tiempo desde el día 9.
+    const empate = endEvent?.payload.winner === null;
+    if (empate) {
+      // El empate por tiempo se decide al amanecer del día siguiente: la noche del día 8 ya cuenta (amanece el 9).
+      if (alive.length > 0 && dias < 8) anomaly(-1, "empate-antes-de-tiempo", `empate con ${alive.length} vivos en el día ${dias}`);
+    } else {
+      const expected = mafia === 0 ? "town" : town === 0 ? "mafia" : null;
+      if (expected !== null && winner !== expected) anomaly(-1, "ganador", `evento ${winner}, vivos ${town} town / ${mafia} mafia`);
+      if (expected === null && alive.length !== 2) {
+        const tail = (await app.events.read(matchId)).slice(-12).map((e) => `${e.seq}:${e.type}${e.type === "phase.started" ? `(${e.payload.phase})` : ""}${e.type === "player.killed" || e.type === "player.hanged" ? `(${e.payload.playerId})` : ""}`);
+        anomaly(-1, "fin-sin-motivo", `evento ${winner} con ${alive.length} vivos; cola: ${tail.join(" ")}`);
+      }
     }
   } else {
     anomaly(-1, "partida-no-termina", `tras ${MAX_STEPS} pasos`);

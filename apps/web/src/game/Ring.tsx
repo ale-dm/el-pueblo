@@ -87,7 +87,7 @@ export function Ring({ view, selected, isPickable, onPick }: Props) {
               className={`relative flex w-14 flex-col items-center rounded-b-lg border-4 border-ink px-1 pb-1 pt-2 ${isSelected ? "target-ring" : ""} ${dead ? "bg-stone-300 grayscale" : ""} ${p.ally ? "ring-4 ring-mafia ring-offset-2 ring-offset-paper" : ""}`}
               style={dead ? undefined : { background: houseColor(p.seat) }}
             >
-              <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-full border-2 border-ink bg-paper font-display text-sm">
+              <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-full border-2 border-ink bg-paper font-display text-sm text-ink">
                 {dead ? "✝" : p.nick.charAt(0).toUpperCase()}
               </span>
             </span>

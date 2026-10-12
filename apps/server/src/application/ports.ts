@@ -78,7 +78,7 @@ export type NarrationFact =
   | { kind: "trial"; defendant: string }
   | { kind: "verdict"; defendant: string; verdict: "guilty" | "innocent" }
   | { kind: "hanged"; nick: string; role: string | null }
-  | { kind: "ended"; winner: "town" | "mafia" };
+  | { kind: "ended"; winner: "town" | "mafia" | null };
 
 export interface Narration {
   text: string;

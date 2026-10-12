@@ -56,7 +56,10 @@ export interface GameState {
   dayNumber: number;
   /** Último número de secuencia de evento aplicado. */
   seq: number;
+  /** Ganador de la partida. Null mientras sigue, o si terminó en empate (wiki: Victory_ToS, Draw). */
   winner: FactionKey | null;
+  /** Último día en que murió alguien (la noche de ese día o un ahorcado). Para el empate por tiempo. */
+  lastDeathDay: number;
   players: PlayerState[];
   /** Juicios ya celebrados en el día actual (máximo 3). */
   trialsToday: number;

@@ -38,7 +38,7 @@ export function LiveList({ view, tab, onTab, className = "", selected = [], isPi
             aria-selected={tab === t}
             type="button"
             onClick={() => onTab(t)}
-            className={`px-2 py-2 font-display text-base uppercase ${tab === t ? "bg-sun" : "bg-paper opacity-70"}`}
+            className={`px-2 py-2 font-display text-base uppercase ${tab === t ? "bg-sun" : "bg-paper text-ink opacity-70"}`}
           >
             {t === "live" ? `Vivos (${live.length})` : `Muertos (${dead.length})`}
           </button>

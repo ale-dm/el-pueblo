@@ -5,6 +5,20 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Empates, reparto de muertes y legibilidad de noche
+
+- Motor: empate por aniquilación (si no queda nadie vivo, no gana el pueblo; wiki: Victory_ToS, Wipeout). Antes el pueblo ganaba ahí.
+- Motor: empate por tiempo desde el día 9 si no muere nadie en dos noches seguidas (wiki: Victory_ToS, Draw/timeout). Antes, dos jugadores que se votaban entre sí podían repetir día y noche sin fin. Interpretación de "dos días seguidos": las dos últimas noches. Se decide al amanecer.
+- Motor: `game.ended` con `winner: null` es empate. `GameState.lastDeathDay` registra el último día con muertes.
+- Fin de partida: se ven los roles de todos los jugadores (antes, los vivos salían como "—").
+- Reparto de la mañana: las muertes salen una a una, con el personaje en gris, cómo murió, su rol y su testamento (o "No dejó testamento"). Suena la pista de día mientras dura.
+- Habilidades: pulsar otra vez la habilidad enviada, sin objetivo nuevo, la cancela (`night.action.cancel`). El chip lo indica.
+- Noche: texto de color tinta en los paneles y casillas claros (antes se leía en crema sobre crema). Casillas opacas, así el fondo de la plaza no se ve a través.
+- Quitada la imagen de silueta blanca con interrogación (RandomTownie) del reparto de avatares.
+- "Un juicio empieza con 1 voto" (singular).
+- Pendiente (wiki, fuera del MVP): neutrales (Survivor, Executioner, Jester, Pirate, Guardian Angel, Amnesiac…), Coven, Vampires, Werewolf, Witch, Arsonist, Serial Killer, Juggernaut, Plaguebearer/Pestilence, Medusa, Necromancer, Poisoner, Potion Master, Hex Master, Vampire Hunter. Sus reglas de victoria (y los empates con ellos) no están implementadas.
+- Comprobado: `pnpm check` (engine 599, web 157, server 127); prueba de partidas en navegador: chip y cancelación, contraste de noche, reparto de muertes con testamento y música; prueba de móvil.
+
 ## Música de fondo y calidad de vida
 
 - Música: las siete pistas de la wiki (`public/audio/`), una por pantalla: sala, elección de nombres, día, discusión, votación, defensa (juicio y últimas palabras) y noche. Fundido entre pistas. Comparte el botón de silencio con los efectos (`lib/music.ts`). Sin ficheros en el servicio de precaché: se descargan al oírlas. Licencia: mismo criterio que las imágenes (juego privado, sin publicar); decidido por el responsable del proyecto.

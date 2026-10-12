@@ -49,6 +49,12 @@ const CAUSE_ES: Record<string, string> = {
 
 const WIN_ES = { town: "¡Gana el pueblo!", mafia: "¡Gana la Mafia!" } as const;
 
+/** Causa de una muerte en una frase, para el reparto de la mañana y el registro: "ha sido ahorcado", "ha sido asesinado por la Mafia". */
+export function deathCauseText(e: { type: string; payload: Record<string, any> }): string {
+  if (e.type === "player.hanged") return "ha sido ahorcado";
+  return CAUSE_ES[e.payload.cause] ?? "ha muerto";
+}
+
 /** Motivos de la nota del Jailor (wiki: Death_Note_ToS.md:76-88; Jailor.md:308-320). */
 const JAILOR_REASON_ES: Record<string, string> = {
   no_reason: "Sin motivo especificado.",
@@ -514,7 +520,7 @@ export function buildLog(events: readonly GameEvent[], ctx: LogContext): LogItem
       case "game.ended":
         flushMorning();
         separator(e, "Fin de la partida", false);
-        line(e, WIN_ES[p.winner as keyof typeof WIN_ES] ?? "Fin de la partida", "good");
+        line(e, p.winner === null ? "Empate: nadie gana esta partida." : (WIN_ES[p.winner as keyof typeof WIN_ES] ?? "Fin de la partida"), "good");
         break;
       default:
         break;

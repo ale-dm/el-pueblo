@@ -27,6 +27,6 @@ export function initialState(match: MatchRecord, players: readonly PlayerRecord[
     nightActions: {},
     traps: {},
     dayActionDay: {},
-    wills: {}, jailedBy: {}, forgeries: {},
+    wills: {}, jailedBy: {}, forgeries: {}, lastDeathDay: 0,
   };
 }

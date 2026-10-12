@@ -39,7 +39,7 @@ export function Plaza({ view, log, subtitle, trialsLeft }: Props) {
     .flatMap((e) => (e.type === "player.killed" || e.type === "player.hanged" ? [e.payload] : []));
 
   return (
-    <section aria-label="La plaza" className="flex h-full min-h-0 flex-col items-center gap-3 overflow-y-auto rounded-3xl border-4 border-ink bg-paper/90 p-4 text-center">
+    <section aria-label="La plaza" className="flex h-full min-h-0 flex-col items-center gap-3 overflow-y-auto rounded-3xl border-4 border-ink bg-paper/90 p-4 text-center text-ink">
       <h1 className="font-display text-2xl leading-tight md:text-xl">{PHASE_PROMPT[view.phase]}</h1>
       <p className="text-sm font-semibold">{subtitle}</p>
       {view.phase !== "ended" && (
@@ -51,7 +51,7 @@ export function Plaza({ view, log, subtitle, trialsLeft }: Props) {
       {(view.phase === "day_1" || view.phase === "discussion") && (
         <div className="rounded-2xl border-2 border-ink bg-white/70 px-3 py-2 text-sm">
           <p className="font-display text-base">⚖ {trialsLeft} {trialsLeft === 1 ? "juicio posible" : "juicios posibles"} hoy</p>
-          <p className="text-xs opacity-80">Un juicio empieza con {Math.ceil(alive.length / 2)} votos.</p>
+          <p className="text-xs opacity-80">Un juicio empieza con {Math.ceil(alive.length / 2)} {Math.ceil(alive.length / 2) === 1 ? "voto" : "votos"}.</p>
         </div>
       )}
 
@@ -92,8 +92,8 @@ export function Plaza({ view, log, subtitle, trialsLeft }: Props) {
         </div>
       )}
 
-      {view.phase === "ended" && view.winner && (
-        <p className="font-display text-3xl">{view.winner === "mafia" ? "Gana la Mafia" : "Gana el pueblo"}</p>
+      {view.phase === "ended" && (
+        <p className="font-display text-3xl">{view.winner === null ? "Empate" : view.winner === "mafia" ? "Gana la Mafia" : "Gana el pueblo"}</p>
       )}
     </section>
   );

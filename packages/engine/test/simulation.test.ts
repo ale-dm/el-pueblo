@@ -16,7 +16,7 @@ function newGame(seed: number): { state: GameState; rng: Rng } {
   }));
   let state: GameState = {
     matchId: "m", engineVersion: "sim", phase: "day_1", dayNumber: 1, seq: 0, winner: null, players,
-    trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {}, wills: {}, jailedBy: {}, forgeries: {},
+    trialsToday: 0, votes: {}, verdicts: {}, defendantId: null, nightActions: {}, traps: {}, dayActionDay: {}, wills: {}, jailedBy: {}, forgeries: {}, lastDeathDay: 0,
   };
   const rng = createRng(seed);
   const r = decide(state, { type: "game.start", hostId: "p1" }, { catalog, rng, now: new Date() });
@@ -74,7 +74,7 @@ function nextCommands(s: GameState, rng: Rng): Command[] {
 
 describe("simulación de partidas completas", () => {
   it("300 partidas aleatorias terminan con ganador sin errores del motor", () => {
-    const outcomes = { town: 0, mafia: 0 };
+    const outcomes = { town: 0, mafia: 0, draw: 0 };
     const errors: string[] = [];
     for (let seed = 1; seed <= 300; seed++) {
       let { state, rng } = newGame(seed);
@@ -96,9 +96,11 @@ describe("simulación de partidas completas", () => {
       if (state.phase !== "ended") errors.push(`seed ${seed}: no terminó en ${steps} pasos`);
       if (state.winner === "town") outcomes.town++;
       if (state.winner === "mafia") outcomes.mafia++;
+      // Empate (winner null): aniquilación o tiempo (wiki: Victory_ToS, Draw). Cuenta como partida terminada.
+      if (state.phase === "ended" && state.winner === null) outcomes.draw++;
     }
     expect(errors.slice(0, 5)).toEqual([]);
-    expect(outcomes.town + outcomes.mafia).toBe(300);
+    expect(outcomes.town + outcomes.mafia + outcomes.draw).toBe(300);
   });
 
   it("la misma semilla produce exactamente la misma partida", () => {

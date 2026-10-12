@@ -7,6 +7,11 @@ import type { PlayerState } from "../types/state.js";
  * - Mafia gana cuando no queda ningún Town vivo.
  * Pendiente (fuera del MVP): reglas 1 contra 1, neutrales, Coven, empates.
  */
+/**
+ * Primer día en que puede haber empate por tiempo. Wiki (Victory_ToS.md:13): "The earliest a draw by timeout can occur is Day 9."
+ */
+export const TIMEOUT_FIRST_DAY = 9;
+
 export function checkVictory(players: readonly PlayerState[]): FactionKey | null {
   const alive = players.filter((p) => p.status === "alive");
   const aliveMafia = alive.filter((p) => p.faction === "mafia").length;

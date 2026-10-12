@@ -75,7 +75,13 @@ export function ActionDock({ view, targets, clearTargets, inline = false }: Prop
           targets={targets}
           busy={busy}
           choosing={choosing === ability.key}
+          current={view.me.nightAction?.ability === ability.key}
           onTap={() => {
+            // Pulsar otra vez la habilidad que ya enviaste, sin objetivo nuevo, la cancela.
+            if (ability.night && view.me.nightAction?.ability === ability.key && (ability.target === "none" || targets.length === 0)) {
+              fire({ type: "night.action.cancel", actorId: me.id });
+              return;
+            }
             const plan = abilityPlan(view, ability, targets, null);
             if (plan.kind === "command") fire(plan.command);
             else if (plan.kind === "choose") setChoosing(ability.key);
@@ -97,15 +103,17 @@ interface AbilityButtonProps {
   targets: string[];
   busy: boolean;
   choosing: boolean;
+  /** Es la acción ya enviada esta noche: se puede pulsar para cancelarla. */
+  current: boolean;
   onTap: () => void;
   onChoose: (option: string) => void;
 }
 
-function AbilityButton({ ability, icon, view, targets, busy, choosing, onTap, onChoose }: AbilityButtonProps) {
+function AbilityButton({ ability, icon, view, targets, busy, choosing, current, onTap, onChoose }: AbilityButtonProps) {
   const label = abilityLabel(ability.key);
   const plan = abilityPlan(view, ability, targets, null);
   // Si el servidor no la aceptará ahora (primera noche, sin prisionero), el botón no se pulsa y dice por qué.
-  const needs = abilityBlock(view, ability) ?? (plan.kind === "needs" ? plan.hint : null);
+  const needs = abilityBlock(view, ability) ?? (plan.kind === "needs" && !current ? plan.hint : null);
   return (
     <div className="flex flex-col items-end gap-2">
       {needs && <Hint text={needs} />}
@@ -151,9 +159,9 @@ function AbilityButton({ ability, icon, view, targets, busy, choosing, onTap, on
 function chosenText(view: MatchView): string {
   const action = view.me.nightAction!;
   const target = action.targetId ? view.players.find((p) => p.id === action.targetId)?.nick : null;
-  return `Tu acción: ${abilityLabel(action.ability)}${target ? ` a ${target}` : ""}`;
+  return `Tu acción: ${abilityLabel(action.ability)}${target ? ` a ${target}` : ""} (toca el botón para cancelar)`;
 }
 
 function Hint({ text }: { text: string }) {
-  return <span className="rounded-full border-2 border-ink bg-paper px-3 py-0.5 text-xs font-semibold">{text}</span>;
+  return <span className="rounded-full border-2 border-ink bg-paper px-3 py-0.5 text-xs font-semibold text-ink">{text}</span>;
 }

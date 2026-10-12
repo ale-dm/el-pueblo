@@ -136,7 +136,7 @@ function resolveJudgement(s: GameState): EventInput[] {
 
 function resolveNightPhase(s: GameState, catalog: Catalog, rng: Rng): EventInput[] {
   const events = resolveNight(s, catalog, rng);
-  const withEnd = withVictory(s, events);
+  const withEnd = withVictory(s, events, true);
   if (withEnd.length > events.length) return withEnd;
   return [...events, phaseStarted("discussion", s.dayNumber + 1)];
 }

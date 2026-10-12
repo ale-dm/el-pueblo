@@ -40,7 +40,7 @@ export function factsFromEvents(
         facts.push({ kind: "hanged", nick: nickOf(e.payload.playerId), role: e.payload.roleKey ? roleOf(e.payload.roleKey) : null });
         break;
       case "game.ended":
-        facts.push({ kind: "ended", winner: e.payload.winner === "mafia" ? "mafia" : "town" });
+        facts.push({ kind: "ended", winner: e.payload.winner === null ? null : e.payload.winner === "mafia" ? "mafia" : "town" });
         break;
       default:
         break;

@@ -182,7 +182,8 @@ export function getView(deps: GetViewDeps) {
           isBot: roster.find((r) => r.id === p.id)?.isBot ?? false,
           ally,
           allyRoleKey: ally ? p.roleKey : null,
-          revealedRoleKey: revealed.get(p.id) ?? null,
+          // Al terminar la partida se ven todos los roles (también los de los vivos).
+          revealedRoleKey: revealed.get(p.id) ?? (state.phase === "ended" ? p.roleKey : null),
           mayorRevealed: p.flags.mayorRevealed === true,
         };
       }),

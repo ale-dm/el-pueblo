@@ -64,9 +64,28 @@ function fadeTo(target: number, done?: () => void) {
   }, STEP_MS);
 }
 
-/** Cambia la pista con un fundido. Llamar otra vez con la misma pista no hace nada. */
+let wanted: Track | null = null;
+let hold: Track | null = null;
+
+/** Pista de la pantalla. Si hay una retención (p. ej. el reparto de muertes), esa suena primero. */
 export function playTrack(track: Track | null) {
+  wanted = track;
+  apply();
+}
+
+/** Retiene una pista mientras dure algo (el reparto de muertes de la mañana). Null la suelta y vuelve la de la pantalla. */
+export function holdTrack(track: Track | null) {
+  hold = track;
+  apply();
+}
+
+function apply() {
+  const track = hold ?? wanted;
   if (track === current) return;
+  switchTo(track);
+}
+
+function switchTo(track: Track | null) {
   current = track;
   const a = element();
   const start = () => {

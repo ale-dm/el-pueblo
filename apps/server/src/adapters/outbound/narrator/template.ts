@@ -24,6 +24,7 @@ export function templateLines(facts: NarrationFact[]): string[] {
       case "hanged":
         return `${f.nick} cuelga de la horca.${ROLE(f.role)}`;
       case "ended":
+        if (f.winner === null) return "Nadie gana: la partida termina en empate.";
         return f.winner === "town" ? "La Mafia ha caído. El pueblo gana." : "La Mafia se impone. El pueblo ha perdido.";
     }
   });
