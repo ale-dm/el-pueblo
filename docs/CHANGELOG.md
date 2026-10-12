@@ -5,6 +5,14 @@ Seguimiento de los commits posteriores a `11b1e13`, el último commit que llegó
 Agrupación: desde el lote 3, el mensaje del commit trae la letra del lote (D, E, F, G, H, I, K, L, N, M, P) y cada lote cierra con un commit `Docs: estado de los roles ... tras el lote N`. Los lotes 1 y 2 no están etiquetados en los mensajes: su agrupación es un supuesto por posición en el historial (lote 1 = primeros 20 commits; lote 2 = del 21 al 33, con el docs de fa4fecc). Ver `docs/ROLES_STATUS.md` para el detalle por ítem.
 
 
+## Botones de habilidad que el servidor no acepta
+
+- Dock: una habilidad que el motor rechazará ahora no se pulsa y dice por qué. Disparar y ejecutar no se ofrecen en la primera noche (día 1). Ejecutar no se ofrece sin prisionero ("Primero encarcela a alguien") ni a quien ya no puede ejecutar. Regla en `abilityBlock` (`apps/web/src/lib/quickAction.ts`), con pruebas.
+- Hallado en seis partidas de prueba en navegador (diez móviles, sin bots): el Vigilante y el Jailor pulsaban botones que el servidor rechazaba con aviso.
+- Mesa: el distintivo del rol de cada casilla baja a 20 px (antes tapaba la etiqueta "Mafia" de los compañeros).
+- Pendiente: el avatar de cada casilla sigue siendo pequeño en un móvil de 390×664; la casilla mide unos 50 px de alto. Agrandarlo pide dar más altura a la mesa (menos plaza), decisión de diseño.
+- Pendiente: los avisos de error se quedan hasta cerrarlos ("toca para cerrar"); no se cambia.
+
 ## Chat con avisos, Forger sin compañeros, plaza del primer día
 
 - Chat: los avisos del sistema (votos, juicios, muertes) van en el mismo flujo que los mensajes en cualquier canal, en orden. El registro completo sigue en su pestaña para leerlo con calma.

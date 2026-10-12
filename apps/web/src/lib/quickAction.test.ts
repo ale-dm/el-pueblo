@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { MatchView } from "../types.js";
-import { abilityPlan, dockAbilities, voteCommand, type DockAbility } from "./quickAction.js";
+import { abilityBlock, abilityPlan, dockAbilities, voteCommand, type DockAbility } from "./quickAction.js";
 
 /** Vista mínima: solo lo que miran las funciones de acción. */
 function view(phase: string, me: Partial<MatchView["me"]>): MatchView {
@@ -86,5 +86,29 @@ describe("voteCommand: votar tocando la lista", () => {
     const votando = { ...view("voting", {}), votes: { me: "p2" } } as unknown as MatchView;
     expect(voteCommand(votando, "p2")).toEqual({ type: "vote", voterId: "me", targetId: null });
     expect(voteCommand(votando, "p3")).toEqual({ type: "vote", voterId: "me", targetId: "p3" });
+  });
+});
+
+describe("abilityBlock: habilidades que el motor no aceptará ahora", () => {
+  const dayView = (dayNumber: number, me: Partial<MatchView["me"]> = {}) => ({ ...view("night", { flags: {}, ...me }), dayNumber }) as MatchView;
+
+  it("disparar y ejecutar no se ofrecen en la primera noche", () => {
+    expect(abilityBlock(dayView(1, { jail: "jailor" }), { key: "shoot" })).toBe("No se dispara la primera noche");
+    expect(abilityBlock(dayView(1, { jail: "jailor" }), { key: "execute" })).toBe("No se ejecuta la primera noche");
+  });
+
+  it("ejecutar sin prisionero no se ofrece: primero hay que encarcelar", () => {
+    expect(abilityBlock(dayView(2, { jail: null }), { key: "execute" })).toBe("Primero encarcela a alguien");
+    expect(abilityBlock(dayView(2, { jail: "prisoner" }), { key: "execute" })).toBe("Primero encarcela a alguien");
+  });
+
+  it("con prisionero, ejecutar está disponible; quien ya no puede ejecutar no vuelve a hacerlo", () => {
+    expect(abilityBlock(dayView(2, { jail: "jailor" }), { key: "execute" })).toBeNull();
+    expect(abilityBlock(dayView(2, { jail: "jailor", flags: { noExecute: true } }), { key: "execute" })).toBe("Ya no puedes ejecutar");
+  });
+
+  it("las demás habilidades no cambian, también disparar después de la primera noche", () => {
+    expect(abilityBlock(dayView(1, {}), { key: "heal" })).toBeNull();
+    expect(abilityBlock(dayView(2, {}), { key: "shoot" })).toBeNull();
   });
 });

@@ -37,6 +37,24 @@ export function dockAbilities(view: MatchView): DockAbility[] {
   return [];
 }
 
+/**
+ * Por qué una habilidad no se puede usar ahora, aunque tenga usos. Refleja las reglas del motor (collect.ts), para no
+ * ofrecer un botón que el servidor va a rechazar: la primera noche no se dispara ni se ejecuta, el Jailor solo ejecuta
+ * a quien tiene encarcelado y quien ya no puede ejecutar no vuelve a hacerlo.
+ */
+export function abilityBlock(view: MatchView, ability: Pick<DockAbility, "key">): string | null {
+  // La primera noche es el día 1: el motor bloquea estas acciones en cualquier fase de ese día (también en el primer día).
+  const firstNight = view.dayNumber === 1;
+  if ((ability.key === "shoot" || ability.key === "execute") && firstNight) {
+    return ability.key === "shoot" ? "No se dispara la primera noche" : "No se ejecuta la primera noche";
+  }
+  if (ability.key === "execute") {
+    if (view.me.flags.noExecute) return "Ya no puedes ejecutar";
+    if (view.me.jail !== "jailor") return "Primero encarcela a alguien";
+  }
+  return null;
+}
+
 /** Plan de una habilidad con los objetivos de la lista y la opción elegida (si la pide). */
 export function abilityPlan(view: MatchView, ability: DockAbility, targets: readonly string[], choice: string | null): Plan {
   const [first, second] = targets;

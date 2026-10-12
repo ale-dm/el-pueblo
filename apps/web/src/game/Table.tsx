@@ -39,7 +39,7 @@ export function Table({ view, selected, isPickable, onPick }: Props) {
             {/* El personaje de la wiki es su aspecto; el rol, si se conoce, va en la esquina. */}
             <span className="relative flex min-h-0 flex-1 items-center justify-center py-0.5">
               <img src={avatar} alt="" className="max-h-full max-w-full flex-1 object-contain" />
-              {icon && <img src={icon} alt="" className="absolute right-0 top-0 size-7 rounded-full border-2 border-ink bg-paper object-contain" />}
+              {icon && <img src={icon} alt="" className="absolute right-0 top-0 size-5 rounded-full border-2 border-ink bg-paper object-contain" />}
             </span>
             <span className="flex min-h-4 flex-wrap items-center justify-center gap-0.5 text-[10px] font-semibold">
               {p.ally && <Tag className="bg-mafia text-paper">Mafia</Tag>}

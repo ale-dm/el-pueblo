@@ -4,7 +4,7 @@ import type { MatchView } from "../types.js";
 import { roleIconUrl } from "../lib/roleImages.js";
 import { abilityLabel, CHOICE_LABEL } from "../lib/text.js";
 import { ROLE_NAMES } from "../lib/roles.js";
-import { abilityPlan, dockAbilities, type DockAbility } from "../lib/quickAction.js";
+import { abilityBlock, abilityPlan, dockAbilities, type DockAbility } from "../lib/quickAction.js";
 
 interface Props {
   view: MatchView;
@@ -102,7 +102,8 @@ interface AbilityButtonProps {
 function AbilityButton({ ability, icon, view, targets, busy, choosing, onTap, onChoose }: AbilityButtonProps) {
   const label = abilityLabel(ability.key);
   const plan = abilityPlan(view, ability, targets, null);
-  const needs = plan.kind === "needs" ? plan.hint : null;
+  // Si el servidor no la aceptará ahora (primera noche, sin prisionero), el botón no se pulsa y dice por qué.
+  const needs = abilityBlock(view, ability) ?? (plan.kind === "needs" ? plan.hint : null);
   return (
     <div className="flex flex-col items-end gap-2">
       {needs && <Hint text={needs} />}
